@@ -73,6 +73,17 @@ class sttp_info_t {
         str += "\r\n";
         return str;
     }
+    //获取报头返回码
+    return_code() {
+        //比如：SSTP/1.4 200 OK，返回200
+        var code_table = this.head.split(" ");
+        for(var i = 0; i < code_table.length; i++){
+            if(!isNaN(code_table[i])){
+                return parseInt(code_table[i]);
+            }
+        }
+        return -1;
+    }
 };
 //定义一个包装器
 class jsttp_t {
