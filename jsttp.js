@@ -114,7 +114,7 @@ class jsttp_t {
         xhr.send(data);
     }
     //发送报文
-    send(info, callback, sttphead) {
+    #send(info, callback, sttphead) {
         //若info是sttp_info_t类型
         if (info instanceof sttp_info_t) {
             //获取报文
@@ -140,6 +140,31 @@ class jsttp_t {
         else {
             console.error("jsttp.send: wrong type of info: " + typeof(info));
         }
+    }
+    //发送报文
+    //SEND SSTP/1.1
+    SEND(info, callback) {
+        this.#send(info, callback, "SEND SSTP/1.1");
+    }
+    //NOTIFY SSTP/1.1
+    NOTIFY(info, callback) {
+        this.#send(info, callback, "NOTIFY SSTP/1.1");
+    }
+    //COMMUNICATE SSTP/1.1
+    COMMUNICATE(info, callback) {
+        this.#send(info, callback, "COMMUNICATE SSTP/1.1");
+    }
+    //EXECUTE SSTP/1.1
+    EXECUTE(info, callback) {
+        this.#send(info, callback, "EXECUTE SSTP/1.1");
+    }
+    //GIVE SSTP/1.1
+    GIVE(info, callback) {
+        this.#send(info, callback, "GIVE SSTP/1.1");
+    }
+    //costom_send
+    costom_send(sttphead, info, callback) {
+        this.#send(info, callback, sttphead);
     }
 };
 
