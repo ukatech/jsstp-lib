@@ -117,16 +117,8 @@ class jsttp_t {
         xhr.send(data);
     }
     //发送报文
-    #send(info, callback, sttphead) {
-        //若info是sttp_info_t类型
-        if (info instanceof sttp_info_t) {
-            //获取报文
-            var data = info.to_string();
-            //使用base_post发送
-            this.#base_post(data, callback);
-        }
-        //若info是类似map类型的可迭代对象
-        else if (typeof (info) == "object") {
+    costom_send(sttphead, info, callback) {
+        if (typeof (info) == "object") {
             //获取报文
             var data = new sttp_info_t();
             data.set_head(sttphead);
@@ -147,27 +139,23 @@ class jsttp_t {
     //发送报文
     //SEND SSTP/1.1
     SEND(info, callback) {
-        this.#send(info, callback, "SEND SSTP/1.1");
+        this.costom_send("SEND SSTP/1.1", info, callback);
     }
     //NOTIFY SSTP/1.1
     NOTIFY(info, callback) {
-        this.#send(info, callback, "NOTIFY SSTP/1.1");
+        this.costom_send("NOTIFY SSTP/1.1", info, callback);
     }
     //COMMUNICATE SSTP/1.1
     COMMUNICATE(info, callback) {
-        this.#send(info, callback, "COMMUNICATE SSTP/1.1");
+        this.costom_send("COMMUNICATE SSTP/1.1", info, callback);
     }
     //EXECUTE SSTP/1.1
     EXECUTE(info, callback) {
-        this.#send(info, callback, "EXECUTE SSTP/1.1");
+        this.costom_send("EXECUTE SSTP/1.1", info, callback);
     }
     //GIVE SSTP/1.1
     GIVE(info, callback) {
-        this.#send(info, callback, "GIVE SSTP/1.1");
-    }
-    //costom_send
-    costom_send(sttphead, info, callback) {
-        this.#send(info, callback, sttphead);
+        this.costom_send("GIVE SSTP/1.1", info, callback);
     }
 };
 
