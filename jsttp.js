@@ -17,22 +17,22 @@ class sttp_info_t {
         if(info_head == undefined){
             info_head = "NOTIFY SSTP/1.1";
         }
-        if(info_body == undefined){
-            info_body = new Map();
-        }
         this.head = info_head;//string
-        this.body = info_body;//map[string]string
+        for(var key in info_body){
+            this[key] = info_body[key];
+        }
     }
     //自字符串报文构造
     static from_string(str) {
         var thehead = str.split("\r\n")[0];
         var thebody = new Map();
-        var body = str.split("\r\n\r\n")[1];
-        var body_list = body.split("\r\n");
-        for (var i = 0; i < body_list.length; i++) {
-            var key = body_list[i].split(": ")[0];
-            var value = body_list[i].split(": ")[1];
-            thebody[key] = value;
+        var body = str.split("\r\n");
+        body.shift();
+        for (var i = 0; i < body.length; i++) {
+            var key = body[i].split(": ")[0];
+            var value = body[i].split(": ")[1];
+            if(key != "" && value != undefined)
+                thebody[key] = value;
         }
         return new sttp_info_t(thehead, thebody);
     }
@@ -43,22 +43,14 @@ class sttp_info_t {
         }
         this.head = head;
     }
-    //设置报文体中的一项
-    set(key, value) {
-        if(value == null){
-            //删除key
-            delete this.body[key];
-            return;
-        }
-        this.body[key] = value;
-    }
-    //获取报文体中的一项
-    get(key) {
-        return this.body[key];
-    }
     //获取报文体
     get_body() {
-        return this.body;
+        var body = new Map();
+        for (var key in this) {
+            if (key != "head") {
+                body[key] = this[key];
+            }
+        }
     }
     //获取报文头
     get_head() {
@@ -67,8 +59,8 @@ class sttp_info_t {
     //获取报文
     to_string() {
         var str = this.head + "\r\n";
-        for (var key in this.body) {
-            str += key + ": " + this.body[key] + "\r\n";
+        for (var key in this) {
+            str += key + ": " + this[key] + "\r\n";
         }
         str += "\r\n";
         return str;
@@ -139,10 +131,10 @@ class jsttp_t {
             var data = new sttp_info_t();
             data.set_head(sttphead);
             for (var key in this.default_info) {
-                data.set(key, this.default_info[key]);
+                data[key]=this.default_info[key];
             }
             for (var key in info) {
-                data.set(key, info[key]);
+                data[key]= info[key];
             }
             //使用base_post发送
             this.#base_post(data.to_string(), callback);
