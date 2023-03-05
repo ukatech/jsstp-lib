@@ -38,10 +38,18 @@ class sttp_info_t {
     }
     //设置报文头
     set_head(head) {
+        if(head == undefined){
+            head = "NOTIFY SSTP/1.1";
+        }
         this.head = head;
     }
     //设置报文体中的一项
     set(key, value) {
+        if(value == null){
+            //删除key
+            delete this.body[key];
+            return;
+        }
         this.body[key] = value;
     }
     //获取报文体中的一项
@@ -76,7 +84,6 @@ class jsttp_t {
         this.host = "http://localhost:9801/api/sstp/v1";
         //补充base_post方法所需要的xhr对象
         this.base_post_prototype = new XMLHttpRequest();
-        this.base_post_prototype.open("POST", this.host, true);
         this.base_post_prototype.setRequestHeader("Content-Type", "text/plain");
         //初始化默认的报文
         this.default_info = new Map();
@@ -97,7 +104,7 @@ class jsttp_t {
         //设置回调函数
         xhr.onreadystatechange = function () {
             //如果xhr.readyState == 4 && xhr.status == 200
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            if (xhr.readyState == 4 && xhr.status == 200 && callback != undefined) {
                 //执行callback方法
                 callback(sttp_info_t.from_string(xhr.responseText));
             }
@@ -106,7 +113,7 @@ class jsttp_t {
         xhr.send(data);
     }
     //发送报文
-    send(info, callback) {
+    send(info, callback, sttphead) {
         //若info是sttp_info_t类型
         if (info instanceof sttp_info_t) {
             //获取报文
@@ -118,7 +125,7 @@ class jsttp_t {
         else if (typeof (info) == "object") {
             //获取报文
             var data = new sttp_info_t();
-            data.set_head("NOTIFY SSTP/1.1");
+            data.set_head(sttphead);
             for (var key in this.default_info) {
                 data.set(key, this.default_info[key]);
             }
