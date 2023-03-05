@@ -84,6 +84,7 @@ class jsttp_t {
         this.host = "http://localhost:9801/api/sstp/v1";
         //补充base_post方法所需要的xhr对象
         this.base_post_prototype = new XMLHttpRequest();
+        this.base_post_prototype.open("POST", this.host, true);
         this.base_post_prototype.setRequestHeader("Content-Type", "text/plain");
         //初始化默认的报文
         this.default_info = new Map();
