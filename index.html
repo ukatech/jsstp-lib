@@ -1,19 +1,28 @@
+<!DOCTYPE html>
 <!-- 引用同目录下的"jsttp.js"文件 -->
-
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sample</title>
+<script type="text/javascript" src="jsttp.js"></script>
+<script type="text/javascript">
+	//定义一个测试方法
+	function test_jsttp() {
+		//调用jsttp对象的base_post方法
+		jsttp.send(
+			{
+				"Event": "OnTest",
+				"Script": "\\0Hello, World!\\e"
+			},
+			function (data) {
+				console.log(data);
+			}
+		);
+	}
+</script>
+</head>
 <body>
-    <script type="text/javascript" src="jsttp.js"></script>
-    <script type="text/javascript">
-        //定义一个测试方法
-        function test_jsttp() {
-            //调用jsttp对象的base_post方法
-            jsttp.send(
-                {
-                    "ID": "OnTest"
-                },
-                function (data) {
-                    console.log(data);
-                }
-            );
-        }
-    </script>
+	<h1>Sample</h1>
+	<button onclick="test_jsttp();">Send SSTP</button>
 </body>
+</html>

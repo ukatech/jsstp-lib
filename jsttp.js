@@ -93,6 +93,7 @@ class jsttp_t {
     #base_post(data, callback) {
         //使用base_post_prototype对象发送数据
         var xhr = this.base_post_prototype;
+        xhr.open("POST", this.host, true);
         //设置回调函数
         xhr.onreadystatechange = function () {
             //如果xhr.readyState == 4 && xhr.status == 200
@@ -117,7 +118,7 @@ class jsttp_t {
         else if (typeof (info) == "object") {
             //获取报文
             var data = new sttp_info_t();
-            data.set_head("SEND SSTP/1.0");
+            data.set_head("NOTIFY SSTP/1.1");
             for (var key in this.default_info) {
                 data.set(key, this.default_info[key]);
             }
