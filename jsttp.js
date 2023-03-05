@@ -15,7 +15,7 @@ Option: notranslate
 class sttp_info_t {
     constructor(info_head, info_body) {
         if(info_head == undefined){
-            info_head = "SEND SSTP/1.0";
+            info_head = "NOTIFY SSTP/1.1";
         }
         if(info_body == undefined){
             info_body = new Map();
