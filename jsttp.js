@@ -13,152 +13,148 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 class sttp_info_t {
-    constructor(info_head, info_body) {
-        if(info_head == undefined)
-            info_head = "NOTIFY SSTP/1.1";
-        this.head = info_head;//string
-        for(var key in info_body)
-            this[key] = info_body[key];
-    }
-    //自字符串报文构造
-    static from_string(str) {
-        var thehead = str.split("\r\n")[0];
-        var thebody = new Map();
-        var body = str.split("\r\n");
-        body.shift();
-        for (var i = 0; i < body.length; i++) {
-            var key = body[i].split(": ")[0];
-            var value = body[i].split(": ")[1];
-            if(key != "" && value != undefined)
-                thebody[key] = value;
-        }
-        return new sttp_info_t(thehead, thebody);
-    }
-    //设置报文头
-    set_head(head) {
-        if(head == undefined)
-            head = "NOTIFY SSTP/1.1";
-        this.head = head;
-    }
-    //获取报文体
-    get_body() {
-        var body = new Map();
-        for (var key in this)
-            if (key != "head")
-                body[key] = this[key];
-    }
-    //获取报文头
-    get_head() {
-        return this.head;
-    }
-    //获取报文
-    to_string() {
-        var str = this.head + "\r\n";
-        for (var key in this)
-            str += key + ": " + this[key] + "\r\n";
-        str += "\r\n";
-        return str;
-    }
-    //获取报头返回码
-    return_code() {
-        //比如：SSTP/1.4 200 OK，返回200
-        var code_table = this.head.split(" ");
-        for(var i = 0; i < code_table.length; i++)
-            if(!isNaN(code_table[i]))
-                return parseInt(code_table[i]);
-        return -1;
-    }
+	constructor(info_head, info_body) {
+		this.set_head(info_head);
+		this.head = info_head;
+		for(var key in info_body)
+			this[key] = info_body[key];
+	}
+	//自字符串报文构造
+	static from_string(str) {
+		var thehead = str.split("\r\n")[0];
+		var thebody = new Map();
+		var body = str.split("\r\n");
+		body.shift();
+		for (var i = 0; i < body.length; i++) {
+			var key = body[i].split(": ")[0];
+			var value = body[i].split(": ")[1];
+			if(key != "" && value != undefined)
+				thebody[key] = value;
+		}
+		return new sttp_info_t(thehead, thebody);
+	}
+	//设置报文头
+	set_head(head) {
+		if(head == undefined)
+			head = "NOTIFY SSTP/1.1";
+		this.head = head;
+	}
+	//获取报文体
+	get_body() {
+		var body = new Map();
+		for (var key in this)
+			if (key != "head")
+				body[key] = this[key];
+	}
+	//获取报文头
+	get_head() {
+		return this.head;
+	}
+	//获取报文
+	to_string() {
+		var str = this.head + "\r\n";
+		for (var key in this)
+			str += key + ": " + this[key] + "\r\n";
+		str += "\r\n";
+		return str;
+	}
+	//获取报头返回码
+	return_code() {
+		//比如：SSTP/1.4 200 OK，返回200
+		var code_table = this.head.split(" ");
+		for(var i = 0; i < code_table.length; i++)
+			if(!isNaN(code_table[i]))
+				return parseInt(code_table[i]);
+		return -1;
+	}
 };
 //定义一个包装器
 class jsttp_t {
-    constructor(sendername) {
-        if(sendername == undefined)
-            sendername = "jsstp-client";
-        //定义一个属性
-        this.host = "http://localhost:9801/api/sstp/v1";
-        //补充base_post方法所需要的xhr对象
-        this.base_post_prototype = new XMLHttpRequest();
-        this.base_post_prototype.open("POST", this.host, true);
-        this.base_post_prototype.setRequestHeader("Content-Type", "text/plain");
-        //初始化默认的报文
-        this.default_info = new Map();
-        this.default_info["Charset"] = "UTF-8";
-        this.default_info["Sender"] = sendername;
-    }
-    //设置默认报文
-    set_default_info(info) {
-        this.default_info = info;
-    }
-    set_default_info(key, value) {
-        if(value == null)
-            delete this.default_info[key];
-        else
-            this.default_info[key] = value;
-    }
-    //修改host
-    set_host(host) {
-        if(host == undefined)
-            host = "http://localhost:9801/api/sstp/v1";
-        this.host = host;
-    }
-    //修改sendername
-    set_sendername(sendername) {
-        if(sendername == undefined)
-            sendername = "jsstp-client";
-        this.default_info["Sender"] = sendername;
-    }
-    #base_post(data, callback) {
-        //使用base_post_prototype对象发送数据
-        var xhr = this.base_post_prototype;
-        xhr.open("POST", this.host, true);
-        //设置回调函数
-        xhr.onreadystatechange = function () {
-            //如果xhr.readyState == 4 && xhr.status == 200
-            if (xhr.readyState == 4 && xhr.status == 200 && callback != undefined)
-                //执行callback方法
-                callback(sttp_info_t.from_string(xhr.responseText));
-        };
-        //发送数据
-        xhr.send(data);
-    }
-    //发送报文
-    costom_send(sttphead, info, callback) {
-        if (typeof (info) == "object") {
-            //获取报文
-            var data = new sttp_info_t();
-            data.set_head(sttphead);
-            for (var key in this.default_info)
-                data[key]=this.default_info[key];
-            for (var key in info)
-                data[key]= info[key];
-            //使用base_post发送
-            this.#base_post(data.to_string(), callback);
-        }
-        //否则记录错误
-        else
-            console.error("jsttp.send: wrong type of info: " + typeof(info));
-    }
-    //发送报文
-    //SEND SSTP/1.1
-    SEND(info, callback) {
-        this.costom_send("SEND SSTP/1.1", info, callback);
-    }
-    //NOTIFY SSTP/1.1
-    NOTIFY(info, callback) {
-        this.costom_send("NOTIFY SSTP/1.1", info, callback);
-    }
-    //COMMUNICATE SSTP/1.1
-    COMMUNICATE(info, callback) {
-        this.costom_send("COMMUNICATE SSTP/1.1", info, callback);
-    }
-    //EXECUTE SSTP/1.1
-    EXECUTE(info, callback) {
-        this.costom_send("EXECUTE SSTP/1.1", info, callback);
-    }
-    //GIVE SSTP/1.1
-    GIVE(info, callback) {
-        this.costom_send("GIVE SSTP/1.1", info, callback);
-    }
+	constructor(sendername) {
+		this.set_host();
+		//补充base_post方法所需要的xhr对象
+		this.base_post_prototype = new XMLHttpRequest();
+		this.base_post_prototype.open("POST", this.host, true);
+		this.base_post_prototype.setRequestHeader("Content-Type", "text/plain");
+		//初始化默认的报文
+		this.default_info = new Map();
+		this.default_info["Charset"] = "UTF-8";
+		this.set_sendername();
+	}
+	//设置默认报文
+	set_default_info(info) {
+		this.default_info = info;
+	}
+	set_default_info(key, value) {
+		if(value == null)
+			delete this.default_info[key];
+		else
+			this.default_info[key] = value;
+	}
+	//修改host
+	set_host(host) {
+		if(host == undefined)
+			host = "http://localhost:9801/api/sstp/v1";
+		this.host = host;
+	}
+	//修改sendername
+	set_sendername(sendername) {
+		if(sendername == undefined)
+			sendername = "jsstp-client";
+		this.default_info["Sender"] = sendername;
+	}
+	#base_post(data, callback) {
+		//使用base_post_prototype对象发送数据
+		var xhr = this.base_post_prototype;
+		xhr.open("POST", this.host, true);
+		//设置回调函数
+		xhr.onreadystatechange = function () {
+			//如果xhr.readyState == 4 && xhr.status == 200
+			if (xhr.readyState == 4 && xhr.status == 200 && callback != undefined)
+				//执行callback方法
+				callback(sttp_info_t.from_string(xhr.responseText));
+		};
+		//发送数据
+		xhr.send(data);
+	}
+	//发送报文
+	costom_send(sttphead, info, callback) {
+		if (typeof (info) == "object") {
+			//获取报文
+			var data = new sttp_info_t();
+			data.set_head(sttphead);
+			for (var key in this.default_info)
+				data[key]=this.default_info[key];
+			for (var key in info)
+				data[key]= info[key];
+			//使用base_post发送
+			this.#base_post(data.to_string(), callback);
+		}
+		//否则记录错误
+		else
+			console.error("jsttp.send: wrong type of info: " + typeof(info));
+	}
+	//发送报文
+	//SEND SSTP/1.1
+	SEND(info, callback) {
+		this.costom_send("SEND SSTP/1.1", info, callback);
+	}
+	//NOTIFY SSTP/1.1
+	NOTIFY(info, callback) {
+		this.costom_send("NOTIFY SSTP/1.1", info, callback);
+	}
+	//COMMUNICATE SSTP/1.1
+	COMMUNICATE(info, callback) {
+		this.costom_send("COMMUNICATE SSTP/1.1", info, callback);
+	}
+	//EXECUTE SSTP/1.1
+	EXECUTE(info, callback) {
+		this.costom_send("EXECUTE SSTP/1.1", info, callback);
+	}
+	//GIVE SSTP/1.1
+	GIVE(info, callback) {
+		this.costom_send("GIVE SSTP/1.1", info, callback);
+	}
 };
 
 var jsttp = new jsttp_t();
