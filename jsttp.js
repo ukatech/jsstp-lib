@@ -14,13 +14,11 @@ Option: notranslate
 */
 class sttp_info_t {
     constructor(info_head, info_body) {
-        if(info_head == undefined){
+        if(info_head == undefined)
             info_head = "NOTIFY SSTP/1.1";
-        }
         this.head = info_head;//string
-        for(var key in info_body){
+        for(var key in info_body)
             this[key] = info_body[key];
-        }
     }
     //自字符串报文构造
     static from_string(str) {
@@ -38,19 +36,16 @@ class sttp_info_t {
     }
     //设置报文头
     set_head(head) {
-        if(head == undefined){
+        if(head == undefined)
             head = "NOTIFY SSTP/1.1";
-        }
         this.head = head;
     }
     //获取报文体
     get_body() {
         var body = new Map();
-        for (var key in this) {
-            if (key != "head") {
+        for (var key in this)
+            if (key != "head")
                 body[key] = this[key];
-            }
-        }
     }
     //获取报文头
     get_head() {
@@ -59,9 +54,8 @@ class sttp_info_t {
     //获取报文
     to_string() {
         var str = this.head + "\r\n";
-        for (var key in this) {
+        for (var key in this)
             str += key + ": " + this[key] + "\r\n";
-        }
         str += "\r\n";
         return str;
     }
@@ -69,20 +63,17 @@ class sttp_info_t {
     return_code() {
         //比如：SSTP/1.4 200 OK，返回200
         var code_table = this.head.split(" ");
-        for(var i = 0; i < code_table.length; i++){
-            if(!isNaN(code_table[i])){
+        for(var i = 0; i < code_table.length; i++)
+            if(!isNaN(code_table[i]))
                 return parseInt(code_table[i]);
-            }
-        }
         return -1;
     }
 };
 //定义一个包装器
 class jsttp_t {
     constructor(sendername) {
-        if(sendername == undefined){
+        if(sendername == undefined)
             sendername = "jsstp-client";
-        }
         //定义一个属性
         this.host = "http://localhost:9801/api/sstp/v1";
         //补充base_post方法所需要的xhr对象
@@ -99,7 +90,22 @@ class jsttp_t {
         this.default_info = info;
     }
     set_default_info(key, value) {
-        this.default_info[key] = value;
+        if(value == null)
+            delete this.default_info[key];
+        else
+            this.default_info[key] = value;
+    }
+    //修改host
+    set_host(host) {
+        if(host == undefined)
+            host = "http://localhost:9801/api/sstp/v1";
+        this.host = host;
+    }
+    //修改sendername
+    set_sendername(sendername) {
+        if(sendername == undefined)
+            sendername = "jsstp-client";
+        this.default_info["Sender"] = sendername;
     }
     #base_post(data, callback) {
         //使用base_post_prototype对象发送数据
@@ -108,10 +114,9 @@ class jsttp_t {
         //设置回调函数
         xhr.onreadystatechange = function () {
             //如果xhr.readyState == 4 && xhr.status == 200
-            if (xhr.readyState == 4 && xhr.status == 200 && callback != undefined) {
+            if (xhr.readyState == 4 && xhr.status == 200 && callback != undefined)
                 //执行callback方法
                 callback(sttp_info_t.from_string(xhr.responseText));
-            }
         };
         //发送数据
         xhr.send(data);
@@ -122,19 +127,16 @@ class jsttp_t {
             //获取报文
             var data = new sttp_info_t();
             data.set_head(sttphead);
-            for (var key in this.default_info) {
+            for (var key in this.default_info)
                 data[key]=this.default_info[key];
-            }
-            for (var key in info) {
+            for (var key in info)
                 data[key]= info[key];
-            }
             //使用base_post发送
             this.#base_post(data.to_string(), callback);
         }
         //否则记录错误
-        else {
+        else
             console.error("jsttp.send: wrong type of info: " + typeof(info));
-        }
     }
     //发送报文
     //SEND SSTP/1.1
