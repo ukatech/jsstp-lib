@@ -1,0 +1,19 @@
+<!-- 引用同目录下的"jsttp.js"文件 -->
+
+<body>
+    <script type="text/javascript" src="jsttp.js"></script>
+    <script type="text/javascript">
+        //定义一个测试方法
+        function test_jsttp() {
+            //调用jsttp对象的base_post方法
+            jsttp.send(
+                {
+                    "ID": "OnTest"
+                },
+                function (data) {
+                    console.log(data);
+                }
+            );
+        }
+    </script>
+</body>
