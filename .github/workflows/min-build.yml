@@ -2,6 +2,8 @@ name: min build
 
 on:
   push:
+    paths:
+      - 'jsttp.js'
   workflow_dispatch:
 
 jobs:
