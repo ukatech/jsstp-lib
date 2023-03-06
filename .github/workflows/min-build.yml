@@ -1,0 +1,30 @@
+name: min build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: disable auto crlf
+        uses: steve02081504/disable-autocrlf@v1
+        with:
+          fuck-auto-CRLF: true
+      - uses: actions/checkout@v2
+
+      - name: Auto Minify
+        uses: nizarmah/auto-minify@v2.1
+        with:
+          maxdepth: 1
+
+      - name: add all
+        run: git add -A
+      - name: push
+        uses: actions-go/push@master
+        with:
+          author-email: taromati2@outlook.com
+          author-name: Taromati2
+          commit-message: 'file update~'
+          remote: origin
