@@ -18,8 +18,17 @@ class sttp_info_t {
 	//构造函数
 	constructor(info_head, info_body) {
 		this.set_head(info_head);
-		for(var key in info_body)
-			this[key] = info_body[key];
+		if(info_body){
+			if(typeof(info_body) == "Map")
+				for(var key of info_body.keys())
+					this[key] = info_body.get(key);
+			else if(typeof(info_body) == "object")
+				for(var key in info_body)
+					this[key] = info_body[key];	
+			//否则记录错误
+			else
+				console.error("sttp_info_t: info_body is not a Map or object: " + typeof(info_body));
+		}
 	}
 	//自字符串报文构造
 	static from_string(str) {
@@ -44,9 +53,9 @@ class sttp_info_t {
 	//获取报文体
 	get_body() {
 		var body = new Map();
-		for (var key in this)
-			if (key != "head")
-				body[key] = this[key];
+		for(var key in this)
+			body.set(key, this[key]);
+		return body;
 	}
 	//获取报文头
 	get_head() {
