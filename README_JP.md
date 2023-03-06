@@ -8,6 +8,8 @@ Webページでゴーストと通信し、情報をやりとりするためにjs
 ### 1. jsの導入
 
 ```html
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.min.js"></script>
+<!-- 或 --->
 <script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.js"></script>
 ```
 

@@ -8,6 +8,8 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka)&[SSTP](http://ssp.shillest.
 ### 1. loading js
 
 ```html
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.min.js"></script>
+<!-- or --->
 <script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.js"></script>
 ```
 
