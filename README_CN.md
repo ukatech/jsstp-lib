@@ -1,6 +1,7 @@
 # jsstp  
 
 用js在网页中与伪春菜通信以实现信息交换。
+详情参考[伪春菜](https://zh.moegirl.org.cn/zh-hans/%E4%BC%AA%E6%98%A5%E8%8F%9C)与[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)。
 
 ## 用法
 
@@ -18,11 +19,22 @@ jsttp.SEND(
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"
 	},
-	function (data) {//回调函数
+	function (data) {//回调函数，可省略
 		console.log("return_code: "+data.return_code());
 		console.log(data);
 		console.log(data["Script"]);
 	}
 );
+//你也可以使用promise
+jsttp.SEND(
+	{
+		"Event": "OnTest",
+		"Script": "\\0Hello, World!\\e"
+	}
+).then(function (data) {
+	console.log("return_code: "+data.return_code());
+	console.log(data);
+	console.log(data["Script"]);
+});
 ```
 详细定义与功能请阅读源码。
