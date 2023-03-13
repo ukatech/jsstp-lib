@@ -5,7 +5,7 @@
 //定义sttp报文类
 /*
 sttp报文格式：
-SEND SSTP/1.0
+SEND SSTP/1.1
 Charset: UTF-8
 Sender: SSTPクライアント
 Script: \h\s0テストー。\u\s[10]テストやな。
@@ -160,9 +160,9 @@ class jsttp_t {
 			console.error("jsttp.send: wrong type of info: " + typeof(info));
 	}
 	//发送报文
-	//SEND SSTP/1.1
+	//SEND SSTP/1.4
 	SEND(info, callback) {
-		return this.costom_send("SEND SSTP/1.1", info, callback);
+		return this.costom_send("SEND SSTP/1.4", info, callback);
 	}
 	//NOTIFY SSTP/1.1
 	NOTIFY(info, callback) {
@@ -172,9 +172,9 @@ class jsttp_t {
 	COMMUNICATE(info, callback) {
 		return this.costom_send("COMMUNICATE SSTP/1.1", info, callback);
 	}
-	//EXECUTE SSTP/1.1
+	//EXECUTE SSTP/1.2
 	EXECUTE(info, callback) {
-		return this.costom_send("EXECUTE SSTP/1.1", info, callback);
+		return this.costom_send("EXECUTE SSTP/1.2", info, callback);
 	}
 	//GIVE SSTP/1.1
 	GIVE(info, callback) {
