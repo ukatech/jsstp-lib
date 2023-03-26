@@ -134,27 +134,21 @@ class jsttp_t {
 			headers: this.#headers,
 			body: data
 		};
-		if(callback)
+		var call_base=(resolve, reject) => {
 			fetch(this.#host, param).then(function(response) {
 				if(response.status != 200)
-					callback(response.status);
+					reject(response.status);
 				else
 					response.text().then(function(text) {
-						callback(sttp_info_t.from_string(text));
+						resolve(sttp_info_t.from_string(text));
 					});
 			});
+		}
+		if(callback)
+			call_base(callback, function(){});
 		//如果callback不存在，返回一个promise
 		if(callback == undefined)
-			new Promise(function(resolve, reject) {
-				fetch(this.#host, param).then(function(response) {
-					if(response.status != 200)
-						reject(response.status);
-					else
-						response.text().then(function(text) {
-							resolve(sttp_info_t.from_string(text));
-						});
-				});
-			});
+			return new Promise(call_base);
 	}
 	//发送报文
 	costom_send(sttphead, info, callback) {
