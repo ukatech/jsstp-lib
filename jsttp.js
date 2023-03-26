@@ -14,12 +14,14 @@ Option: notranslate
 */
 class sttp_info_t {
 	#head;
+	#unknown_lines;
 
 	//构造函数
-	constructor(info_head, info_body) {
+	constructor(info_head, info_body, unknown_lines) {
 		this.set_head(info_head);
+		this.#unknown_lines = unknown_lines;
 		if(info_body){
-			if(typeof(info_body) == "Map")
+			if(info_body.keys)
 				for(var key of info_body.keys())
 					this[key] = info_body.get(key);
 			else if(typeof(info_body) == "object")
@@ -36,13 +38,28 @@ class sttp_info_t {
 		var thebody = new Map();
 		var body = str.split("\r\n");
 		body.shift();
+		var unknown_lines = [];
+		var spliter_list = [": ", String.fromCharCode(1)];
 		for (var i = 0; i < body.length; i++) {
-			var key = body[i].split(": ")[0];
-			var value = body[i].split(": ")[1];
-			if(key != "" && value != undefined)
-				thebody[key] = value;
+			var line=body[i];
+			if(line == "")
+				continue;
+			var spliter = "";
+			for (var j = 0; j < spliter_list.length; j++)
+				if (line.indexOf(spliter_list[j]) != -1) {
+					spliter = spliter_list[j];
+					break;
+				}
+			if (spliter != "") {
+				var key = line.split(spliter)[0];
+				var value = line.replace(key + spliter, "");
+				thebody.set(key, value);
+			}
+			else{
+				unknown_lines.push(body[i]);
+			}
 		}
-		return new sttp_info_t(thehead, thebody);
+		return new sttp_info_t(thehead, thebody, unknown_lines);
 	}
 	//设置报文头
 	set_head(head) {
@@ -56,6 +73,10 @@ class sttp_info_t {
 		for(var key in this)
 			body.set(key, this[key]);
 		return body;
+	}
+	//获取未知行
+	get_unknown_lines() {
+		return this.#unknown_lines;
 	}
 	//获取报文头
 	get_head() {
