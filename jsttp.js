@@ -86,16 +86,15 @@ class jsttp_t {
 	#host;
 	#server_url;
 
-	constructor(sendername) {
+	constructor(sendername,host) {
 		this.#headers = new Map();
 		//初始化默认的host
-		this.set_host();
+		this.set_host(host);
 		this.set_RequestHeader("Content-Type", "text/plain");
-		this.set_RequestHeader("Origin", this.#server_url);
 		//初始化默认的报文
 		this.#default_info = new Map();
-		this.#default_info["Charset"] = "UTF-8";
-		this.set_sendername();
+		this.set_default_info("Charset","UTF-8");
+		this.set_sendername(sendername);
 	}
 	//set_RequestHeader
 	set_RequestHeader(key, value) {
