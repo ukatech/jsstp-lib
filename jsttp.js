@@ -81,20 +81,28 @@ class sttp_info_t {
 };
 //定义一个包装器
 class jsttp_t {
-	#base_post_prototype;
+	#headers;
 	#default_info;
 	#host;
+	#server_url;
 
 	constructor(sendername) {
+		this.#headers = new Map();
+		//初始化默认的host
 		this.set_host();
-		//补充base_post方法所需要的xhr对象
-		this.#base_post_prototype = new XMLHttpRequest();
-		this.#base_post_prototype.open("POST", this.#host, true);
-		this.#base_post_prototype.setRequestHeader("Content-Type", "text/plain");
+		this.set_RequestHeader("Content-Type", "text/plain");
+		this.set_RequestHeader("Origin", this.#server_url);
 		//初始化默认的报文
 		this.#default_info = new Map();
 		this.#default_info["Charset"] = "UTF-8";
 		this.set_sendername();
+	}
+	//set_RequestHeader
+	set_RequestHeader(key, value) {
+		if(value == null)
+			delete this.#headers[key];
+		else
+			this.#headers[key] = value;
 	}
 	//设置默认报文
 	set_default_info(info) {
@@ -111,6 +119,8 @@ class jsttp_t {
 		if(host == undefined)
 			host = "http://localhost:9801/api/sstp/v1";
 		this.#host = host;
+		this.#server_url = host.split("api/sstp")[0];
+		this.set_RequestHeader("Origin", this.#server_url);
 	}
 	//修改sendername
 	set_sendername(sendername) {
@@ -119,27 +129,32 @@ class jsttp_t {
 		this.#default_info["Sender"] = sendername;
 	}
 	#base_post(data, callback) {
-		//使用base_post_prototype对象发送数据
-		var xhr = this.#base_post_prototype;
-		xhr.open("POST", this.#host, true);
+		//使用fetch发送数据
+		const param = {
+			method: 'POST',
+			headers: this.#headers,
+			body: data
+		};
 		if(callback)
-			xhr.onreadystatechange = function() {
-				if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-					callback(sttp_info_t.from_string(xhr.responseText));
-				}
-			}
-		xhr.send(data);
+			fetch(this.#host, param).then(function(response) {
+				if(response.status != 200)
+					callback(response.status);
+				else
+					response.text().then(function(text) {
+						callback(sttp_info_t.from_string(text));
+					});
+			});
 		//如果callback不存在，返回一个promise
 		if(callback == undefined)
-			return new Promise(function(resolve, reject) {
-				xhr.onreadystatechange = function() {
-					if(xhr.readyState == XMLHttpRequest.DONE){
-						if(xhr.status != 200)
-							reject(xhr.status);
-						else
-							resolve(sttp_info_t.from_string(xhr.responseText));
-					}
-				}
+			new Promise(function(resolve, reject) {
+				fetch(this.#host, param).then(function(response) {
+					if(response.status != 200)
+						reject(response.status);
+					else
+						response.text().then(function(text) {
+							resolve(sttp_info_t.from_string(text));
+						});
+				});
 			});
 	}
 	//发送报文
