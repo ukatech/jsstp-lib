@@ -5,26 +5,83 @@
 <title>Sample</title>
 <!-- 引用同目录下的"jsttp.js"文件 -->
 <script type="text/javascript" src="./jsttp.js"></script>
-<script type="text/javascript">
-	//定义一个测试方法
-	function test_jsttp() {
-		jsttp.NOTIFY(
-			{
-				"Event": "OnTest",
-				"Script": "\\0Hello, World!\\e"
-			},
-			function (data) {
-				console.log("return_code: "+data.return_code());
-				console.log(data);
-				console.log(data["Script"]);
-			}
-		);
+<script>
+	// 定义一个函数
+	async function send() {
+		// 获取输入框的值并转换为object，如有报错则弹窗
+		try {
+			var json = JSON.parse(document.getElementById("json").value);
+			// 根据下拉选单的值，设置jsttp的类型
+			var jsttptype = document.getElementById("type").value;
+			// 发送请求
+			var result=await jsttp.by_type(jsttptype)(json);
+			// 设置回显框的值
+			document.getElementById("result").value = JSON.stringify(result);
+		} catch (e) {
+			alert("错误：" + e);
+			return;
+		}
 	}
+	// 解析并处理url参数
+	async function args_handler() {
+		// 获取url参数
+		var args = location.search;
+		// 如果没有参数则返回
+		if (args == "") return;
+		// 去掉开头的"?"
+		args = args.substring(1);
+		// 按"&"分割参数
+		args = args.split("&");
+		// 遍历参数并存于map
+		var argv = {};
+		for (var i = 0; i < args.length; i++) {
+			var arg = args[i].split("=");
+			// 对参数值解码
+			argv[arg[0]] = decodeURIComponent(arg[1]);
+		}
+		// 如果有"json"参数则设置输入框的值
+		if (argv["json"] != undefined) {
+			document.getElementById("json").value = argv["json"];
+		}
+		// 如果有"type"参数则设置下拉选单的值
+		if (argv["type"] != undefined) {
+			document.getElementById("type").value = argv["type"];
+		}
+		// 如果有"send"参数则调用send函数
+		if (argv["send"] != undefined) {
+			await send();
+		}
+		// 如果有"jumpback"参数则跳转到该参数指定的url
+		if (argv["jumpback"] != undefined){
+			window.location=argv["jumpback"];
+		}
+	}
+	args_handler();
 </script>
 </head>
 <body>
 	<h1>Sample</h1>
-	<button onclick="test_jsttp();">Send SSTP</button>
+	<!-- 一个下拉选单，用于选择sttp类型 -->
+	<select id="type">
+		<option value="NOTIFY">NOTIFY</option>
+		<option value="SEND">SEND</option>
+		<option value="COMMUNICATE">COMMUNICATE</option>
+		<option value="EXECUTE">EXECUTE</option>
+		<option value="GIVE">GIVE</option>
+	</select>
+	<br>
+	<!-- 一个多行的有默认内容的输入框 -->
+	<textarea id="json" cols="50" rows="10">
+{
+	"Event": "OnTest",
+	"Script": "\\0Hello, World!\\e"
+}
+	</textarea>
+	<br>
+	<button onclick="send()">send</button>
+	<br>
+	<!-- 用于回显的不可编辑的多行输入框 -->
+	<textarea id="result" cols="50" rows="10" readonly></textarea>
 	<br>
 	<br>
 	<!-- github link -->

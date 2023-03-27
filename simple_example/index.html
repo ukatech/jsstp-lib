@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sample</title>
+<!-- 引用同目录下的"jsttp.js"文件 -->
+<script type="text/javascript" src="./jsttp.js"></script>
+<script type="text/javascript">
+	//定义一个测试方法
+	function test_jsttp() {
+		jsttp.NOTIFY(
+			{
+				"Event": "OnTest",
+				"Script": "\\0Hello, World!\\e"
+			},
+			function (data) {
+				console.log("return_code: "+data.return_code());
+				console.log(data);
+				console.log(data["Script"]);
+			}
+		);
+	}
+</script>
+</head>
+<body>
+	<h1>Sample</h1>
+	<button onclick="test_jsttp();">Send SSTP</button>
+	<br>
+	<br>
+	<!-- github link -->
+	<a href="https://github.com/ukatech/jsttp-lib">github: jsttp-lib</a>
+	<br>
+	made by <a href="https://github.com/ukatech/">ukatecher</a> with (buggy) love.
+</body>
+</html>

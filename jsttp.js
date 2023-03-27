@@ -209,6 +209,10 @@ class jsttp_t {
 	GIVE(info, callback) {
 		return this.costom_send("GIVE SSTP/1.1", info, callback);
 	}
+	//根据type发送报文
+	by_type(type) {
+		return eval("this."+type).bind(this);
+	}
 };
 
 var jsttp = new jsttp_t();
