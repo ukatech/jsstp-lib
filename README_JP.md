@@ -8,15 +8,15 @@ Webページでゴーストと通信し、情報をやりとりするためにjs
 ### 1. jsの読み込み
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.min.js"></script>
 <!-- または --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.js"></script>
 ```
 
 ### 2.使用する
 
 ```javascript
-jsttp.SEND(
+jsstp.SEND(
 	{//イベント情報
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"
@@ -28,7 +28,7 @@ jsttp.SEND(
 	}
 );
 //promiseを使用することもできます
-jsttp.SEND(
+jsstp.SEND(
 	{
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"

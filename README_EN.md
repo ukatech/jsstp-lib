@@ -8,15 +8,15 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka)&[SSTP](http://ssp.shillest.
 ### 1. loading js
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.min.js"></script>
 <!-- or --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.js"></script>
 ```
 
 ### 2. Use
 
 ```javascript
-jsttp.SEND(
+jsstp.SEND(
 	{//Event information
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"
@@ -28,7 +28,7 @@ jsttp.SEND(
 	}
 );
 //You can also use promise
-jsttp.SEND(
+jsstp.SEND(
 	{
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"

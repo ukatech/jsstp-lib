@@ -101,7 +101,7 @@ class sttp_info_t {
 	}
 };
 //定义一个包装器
-class jsttp_t {
+class jsstp_t {
 	#headers;
 	#default_info;
 	#host;
@@ -186,7 +186,7 @@ class jsttp_t {
 		}
 		//否则记录错误
 		else
-			console.error("jsttp.send: wrong type of info: " + typeof(info));
+			console.error("jsstp.send: wrong type of info: " + typeof(info));
 	}
 	//发送报文
 	//SEND SSTP/1.4
@@ -215,4 +215,4 @@ class jsttp_t {
 	}
 };
 
-var jsttp = new jsttp_t();
+var jsstp = new jsstp_t();

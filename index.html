@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <title>Sample</title>
-<!-- 引用同目录下的"jsttp.js"文件 -->
-<script type="text/javascript" src="./jsttp.js"></script>
+<!-- 引用同目录下的"jsstp.js"文件 -->
+<script type="text/javascript" src="./jsstp.js"></script>
 <script>
 	// 定义一个函数
 	async function send() {
 		// 获取输入框的值并转换为object，如有报错则弹窗
 		try {
 			var json = JSON.parse(document.getElementById("json").value);
-			// 根据下拉选单的值，设置jsttp的类型
-			var jsttptype = document.getElementById("type").value;
+			// 根据下拉选单的值，设置jsstp的类型
+			var jsstptype = document.getElementById("type").value;
 			// 发送请求
-			var result=await jsttp.by_type(jsttptype)(json);
+			var result=await jsstp.by_type(jsstptype)(json);
 			// 设置回显框的值
 			document.getElementById("result").value = JSON.stringify(result);
 		} catch (e) {
@@ -61,7 +61,7 @@
 </head>
 <body>
 	<h1>Sample</h1>
-	<!-- 一个下拉选单，用于选择sttp类型 -->
+	<!-- 一个下拉选单，用于选择sstp类型 -->
 	<select id="type">
 		<option value="NOTIFY">NOTIFY</option>
 		<option value="SEND">SEND</option>
@@ -85,7 +85,7 @@
 	<br>
 	<br>
 	<!-- github link -->
-	<a href="https://github.com/ukatech/jsttp-lib">github: jsttp-lib</a>
+	<a href="https://github.com/ukatech/jsstp-lib">github: jsstp-lib</a>
 	<br>
 	made by <a href="https://github.com/ukatech/">ukatecher</a> with (buggy) love.
 </body>

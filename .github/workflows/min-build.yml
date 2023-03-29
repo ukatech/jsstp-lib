@@ -3,7 +3,7 @@ name: min build
 on:
   push:
     paths:
-      - 'jsttp.js'
+      - 'jsstp.js'
   workflow_dispatch:
 
 jobs:

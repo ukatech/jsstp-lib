@@ -12,15 +12,15 @@
 ### 1. 引入js
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.min.js"></script>
 <!-- 或 --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsttp-lib@master/jsttp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.js"></script>
 ```
 
 ### 2. 使用
 
 ```javascript
-jsttp.SEND(
+jsstp.SEND(
 	{//事件信息
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"
@@ -32,7 +32,7 @@ jsttp.SEND(
 	}
 );
 //你也可以使用promise
-jsttp.SEND(
+jsstp.SEND(
 	{
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"
