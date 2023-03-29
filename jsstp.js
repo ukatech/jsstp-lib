@@ -2,9 +2,9 @@
 //发信方法：Content-Type: text/plain HTTP/1.1でPOST
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 
-//定义sttp报文类
+//定义sstp报文类
 /*
-sttp报文格式：
+sstp报文格式：
 SEND SSTP/1.1
 Charset: UTF-8
 Sender: SSTPクライアント
@@ -12,7 +12,7 @@ Script: \h\s0テストー。\u\s[10]テストやな。
 Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
-class sttp_info_t {
+class sstp_info_t {
 	#head;
 	#unknown_lines;
 
@@ -29,7 +29,7 @@ class sttp_info_t {
 					this[key] = info_body[key];	
 			//否则记录错误
 			else
-				console.error("sttp_info_t: info_body is not a Map or object: " + typeof(info_body));
+				console.error("sstp_info_t: info_body is not a Map or object: " + typeof(info_body));
 		}
 	}
 	//自字符串报文构造
@@ -59,7 +59,7 @@ class sttp_info_t {
 				unknown_lines.push(body[i]);
 			}
 		}
-		return new sttp_info_t(thehead, thebody, unknown_lines);
+		return new sstp_info_t(thehead, thebody, unknown_lines);
 	}
 	//设置报文头
 	set_head(head) {
@@ -161,7 +161,7 @@ class jsstp_t {
 					reject(response.status);
 				else
 					response.text().then(function(text) {
-						resolve(sttp_info_t.from_string(text));
+						resolve(sstp_info_t.from_string(text));
 					});
 			});
 		}
@@ -172,11 +172,11 @@ class jsstp_t {
 			return new Promise(call_base);
 	}
 	//发送报文
-	costom_send(sttphead, info, callback) {
+	costom_send(sstphead, info, callback) {
 		if (typeof (info) == "object") {
 			//获取报文
-			var data = new sttp_info_t();
-			data.set_head(sttphead);
+			var data = new sstp_info_t();
+			data.set_head(sstphead);
 			for (var key in this.#default_info)
 				data[key]=this.#default_info[key];
 			for (var key in info)
