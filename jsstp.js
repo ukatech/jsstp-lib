@@ -216,3 +216,8 @@ class jsstp_t {
 };
 
 var jsstp = new jsstp_t();
+
+//允许typo到jsttp和jsttp_t以及sttp_info_t
+var jsttp = jsstp;
+var jsttp_t = jsstp_t;
+var sttp_info_t = sstp_info_t;
