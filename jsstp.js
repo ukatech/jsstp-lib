@@ -112,13 +112,8 @@ class jsstp_t {
 		this.set_host(host);
 		this.set_RequestHeader("Content-Type", "text/plain");
 		//如果可以的话获取url并设置Origin
-		if(window.location){
-			var origin = window.location.protocol + "//" + window.location.host;
-			//如果是file协议，那么localhost
-			if(window.location.protocol == "file:")
-				origin = "http://localhost";
-			this.set_RequestHeader("Origin", origin);
-		}
+		if(window.location.origin)
+			this.set_RequestHeader("Origin", window.location.origin);
 		//初始化默认的报文
 		this.#default_info = new Map();
 		this.set_default_info("Charset","UTF-8");
