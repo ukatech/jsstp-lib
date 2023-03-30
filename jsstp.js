@@ -105,13 +105,20 @@ class jsstp_t {
 	#headers;
 	#default_info;
 	#host;
-	#server_url;
 
 	constructor(sendername,host) {
 		this.#headers = new Map();
 		//初始化默认的host
 		this.set_host(host);
 		this.set_RequestHeader("Content-Type", "text/plain");
+		//如果可以的话获取url并设置Origin
+		if(window.location){
+			var origin = window.location.protocol + "//" + window.location.host;
+			//如果是file协议，那么localhost
+			if(window.location.protocol == "file:")
+				origin = "http://localhost";
+			this.set_RequestHeader("Origin", origin);
+		}
 		//初始化默认的报文
 		this.#default_info = new Map();
 		this.set_default_info("Charset","UTF-8");
@@ -139,8 +146,6 @@ class jsstp_t {
 		if(host == undefined)
 			host = "http://localhost:9801/api/sstp/v1";
 		this.#host = host;
-		this.#server_url = host.split("api/sstp")[0];
-		this.set_RequestHeader("Origin", this.#server_url);
 	}
 	//修改sendername
 	set_sendername(sendername) {
