@@ -1,5 +1,7 @@
 # jsstp  
 
+![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)  
+
 Use js to communicate with ukagaka in a web page to exchange information.
 See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka)&[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html) for details.
 

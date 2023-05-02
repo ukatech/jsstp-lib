@@ -1,5 +1,7 @@
 # jsstp  
 
+![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)  
+
 Webページでゴーストと通信し、情報をやりとりするためにjsを使用します。
 詳細は[伺か](https://ja.wikipedia.org/wiki/%E4%BC%BA%E3%81%8B)と[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)を参照してください。
 
