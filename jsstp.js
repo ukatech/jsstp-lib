@@ -245,7 +245,8 @@ class jsstp_t {
 			"Reference0": event_name,
 			"Reference1": security_level
 		});
-		return info.get_passthrough("Result") !== "0";
+		const result = info.get_passthrough("Result");
+		return !!result && result != "0";
 	}
 };
 
