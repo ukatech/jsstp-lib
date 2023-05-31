@@ -99,6 +99,10 @@ class sstp_info_t {
 				return parseInt(code_table[i]);
 		return -1;
 	}
+	get_passthrough(key) {
+		const passthrough = "X-SSTP-PassThru-" + key;
+		return this[passthrough];
+	}
 };
 //定义一个包装器
 class jsstp_t {
@@ -212,6 +216,36 @@ class jsstp_t {
 	//根据type发送报文
 	by_type(type) {
 		return eval("this."+type).bind(this);
+	}
+	//has_event
+	/*
+	示例代码(AYA):
+	SHIORI_EV.On_Has_Event : void {
+		_event_name=reference.raw[0]
+		_SecurityLevel=reference.raw[1]
+		if !_SecurityLevel
+			_SecurityLevel=SHIORI_FW.SecurityLevel
+		if SUBSTR(_event_name,0,2) != 'On'
+			_event_name='On_'+_event_name
+		_result=0
+		if TOLOWER(_SecurityLevel) == 'external'
+			_event_name='ExternalEvent.'+_event_name
+		_result=ISFUNC(_event_name)
+		if !_result
+			_result=ISFUNC('SHIORI_EV.'+_event_name)
+		SHIORI_FW.Make_X_SSTP_PassThru('Result',_result)
+	}
+	SHIORI_EV.ExternalEvent.On_Has_Event{
+		SHIORI_EV.On_Has_Event
+	}
+	*/
+	async has_event(event_name, security_level = "external") {
+		const info = await this.SEND({
+			"Event": "Has_Event",
+			"Reference0": event_name,
+			"Reference1": security_level
+		});
+		return info.get_passthrough("Result") !== "0";
 	}
 };
 
