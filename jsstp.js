@@ -248,6 +248,53 @@ class jsstp_t {
 		const result = info.get_passthrough("Result");
 		return !!result && result != "0";
 	}
+	/*
+	示例代码(AYA):
+	SHIORI_EV.On_Get_Supported_Events: void {
+		_L=GETFUNCLIST('On')
+		_base_local_event_funcs=IARRAY
+		foreach _L;_func{
+			if SUBSTR(_func,2,1) == '_'
+				_func=SUBSTR(_func,3,STRLEN(_func))
+			_base_local_event_funcs,=_func
+		}
+		_L=GETFUNCLIST('SHIORI_EV.On')
+		foreach _L;_func{
+			if SUBSTR(_func,12,1) == '_'
+				_func=SUBSTR(_func,13,STRLEN(_func))
+			_base_local_event_funcs,=_func
+		}
+		SHIORI_FW.Make_X_SSTP_PassThru('local',ARRAYDEDUP(_base_local_event_funcs))
+		_L=GETFUNCLIST('ExternalEvent.On')
+		_base_external_event_funcs=IARRAY
+		foreach _L;_func{
+			if SUBSTR(_func,16,1) == '_'
+				_func=SUBSTR(_func,17,STRLEN(_func))
+			_base_external_event_funcs,=_func
+		}
+		_L=GETFUNCLIST('SHIORI_EV.ExternalEvent.On')
+		foreach _L;_func{
+			if SUBSTR(_func,26,1) == '_'
+				_func=SUBSTR(_func,27,STRLEN(_func))
+			_base_external_event_funcs,=_func
+		}
+		SHIORI_FW.Make_X_SSTP_PassThru('external',ARRAYDEDUP(_base_external_event_funcs))
+	}
+	SHIORI_EV.ExternalEvent.On_Get_Supported_Events{
+		SHIORI_EV.On_Get_Supported_Events
+	}
+	*/
+	async get_supported_events() {
+		const info = await this.SEND({
+			"Event": "Get_Supported_Events"
+		});
+		const local = info.get_passthrough("local");
+		const external = info.get_passthrough("external");
+		return {
+			local: local ? local.split(",") : [],
+			external: external ? external.split(",") : []
+		};
+	}
 };
 
 var jsstp = new jsstp_t();
