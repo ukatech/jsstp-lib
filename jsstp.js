@@ -104,6 +104,31 @@ class sstp_info_t {
 		return this[passthrough];
 	}
 };
+class sstp_fmo_info_t{
+	//构造函数
+	constructor(fmo_info) {
+		//fmo_info每个key的格式都是"uuid.属性名"
+		for(var key in fmo_info){
+			var uuid = key.split(".")[0];
+			var name = key.split(".")[1];
+			if(!this[uuid])
+				this[uuid] = {};
+			this[uuid][name] = fmo_info[key];
+		}
+	}
+	get_uuid_by(name, value) {
+		for(var uuid in this)
+			if(this[uuid][name] == value)
+				return uuid;
+		return null;
+	}
+	get_list_of(name) {
+		var list = [];
+		for(var uuid in this)
+			list.push(this[uuid][name]);
+		return list;
+	}
+};
 //定义一个包装器
 class jsstp_t {
 	#headers;
@@ -295,11 +320,18 @@ class jsstp_t {
 			external: external ? external.split(",") : []
 		};
 	}
+	async get_fmo_infos() {
+		const fmo = await this.EXECUTE({
+			"Command": "GetFMO"
+		});
+		return new sstp_fmo_info_t(fmo);
+	}
 };
 
 var jsstp = new jsstp_t();
 
-//允许typo到jsttp和jsttp_t以及sttp_info_t
+//允许typo到jsttp
 var jsttp = jsstp;
 var jsttp_t = jsstp_t;
 var sttp_info_t = sstp_info_t;
+var sttp_fmo_info_t = sstp_fmo_info_t;
