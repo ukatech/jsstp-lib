@@ -327,10 +327,15 @@ class jsstp_t {
 		};
 	}
 	async get_fmo_infos() {
-		const fmo = await this.EXECUTE({
-			"Command": "GetFMO"
-		});
-		return new sstp_fmo_info_t(fmo);
+		try{
+			const fmo = await this.EXECUTE({
+				"Command": "GetFMO"
+			});
+			return new sstp_fmo_info_t(fmo);
+		}
+		catch(e){
+			return null;
+		}
 	}
 };
 
