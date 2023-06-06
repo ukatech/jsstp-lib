@@ -115,7 +115,6 @@ class sstp_fmo_info_t{
 				this[uuid] = {};
 			this[uuid][name] = fmo_info[key];
 		}
-		this.length = Object.keys(this).length;
 	}
 	get_uuid_by(name, value) {
 		for(var uuid in this)
@@ -131,6 +130,9 @@ class sstp_fmo_info_t{
 	}
 	keys() {
 		return Object.keys(this);
+	}
+	length() {
+		return this.keys().length;
 	}
 };
 //定义一个包装器
