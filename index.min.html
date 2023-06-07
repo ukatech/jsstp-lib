@@ -1,6 +1,0 @@
-<!doctype html><meta charset=utf-8><title>Sample</title><script src=./jsstp.js></script><script>async function send(){try{var e=JSON.parse(document.getElementById("json").value),n=document.getElementById("type").value,t=await jsstp.by_type(n)(e);document.getElementById("result").value=JSON.stringify(t)}catch(e){return void alert("错误："+e)}}async function args_handler(){var e=location.search;if(""!=e){e=(e=e.substring(1)).split("&");for(var n={},t=0;t<e.length;t++){var a=e[t].split("=");n[a[0]]=decodeURIComponent(a[1])}null!=n.json&&(document.getElementById("json").value=n.json),null!=n.type&&(document.getElementById("type").value=n.type),null!=n.send&&await send(),null!=n.jumpback&&(window.location=n.jumpback)}}args_handler()</script><h1>Sample</h1><select id=type><option value=NOTIFY>NOTIFY<option value=SEND>SEND<option value=COMMUNICATE>COMMUNICATE<option value=EXECUTE>EXECUTE<option value=GIVE>GIVE</select><br><textarea id=json cols=50 rows=10>
-{
-	"Event": "OnTest",
-	"Script": "\\0Hello, World!\\e"
-}
-</textarea><br><button onclick=send()>send</button><br><textarea id=result cols=50 rows=10 readonly></textarea><br><br><a href=https://github.com/ukatech/jsstp-lib>github: jsstp-lib</a><br>made by <a href=https://github.com/ukatech/ >ukatecher</a> with (buggy) love.
