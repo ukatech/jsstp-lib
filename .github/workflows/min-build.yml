@@ -19,6 +19,8 @@ jobs:
 
       - name: Auto Minify
         uses: steve02081504/auto-minify@master
+        with:
+          js_engine: "uglify-js"
 
       - name: add all
         run: git add -A
