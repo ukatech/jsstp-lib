@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Auto Minify
-        uses: anthonyftwang/minify-action@master
+        uses: steve02081504/auto-minify@master
 
       - name: add all
         run: git add -A
