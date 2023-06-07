@@ -22,10 +22,10 @@ class sstp_info_t {
 		this.#unknown_lines = unknown_lines;
 		if(info_body){
 			if(info_body.keys)
-				for(var key of info_body.keys())
+				for(let key of info_body.keys())
 					this[key] = info_body.get(key);
 			else if(typeof(info_body) == "object")
-				for(var key in info_body)
+				for(let key in info_body)
 					this[key] = info_body[key];	
 			//否则记录错误
 			else
@@ -34,25 +34,25 @@ class sstp_info_t {
 	}
 	//自字符串报文构造
 	static from_string(str) {
-		var thehead = str.split("\r\n")[0];
-		var thebody = new Map();
-		var body = str.split("\r\n");
+		let thehead = str.split("\r\n")[0];
+		let thebody = new Map();
+		let body = str.split("\r\n");
 		body.shift();
-		var unknown_lines = [];
-		var spliter_list = [": ", String.fromCharCode(1)];
-		for (var i = 0; i < body.length; i++) {
-			var line=body[i];
+		let unknown_lines = [];
+		let spliter_list = [": ", String.fromCharCode(1)];
+		for (let i = 0; i < body.length; i++) {
+			let line=body[i];
 			if(line == "")
 				continue;
-			var spliter = "";
-			for (var j = 0; j < spliter_list.length; j++)
+			let spliter = "";
+			for (let j = 0; j < spliter_list.length; j++)
 				if (line.indexOf(spliter_list[j]) != -1) {
 					spliter = spliter_list[j];
 					break;
 				}
 			if (spliter != "") {
-				var key = line.split(spliter)[0];
-				var value = line.replace(key + spliter, "");
+				let key = line.split(spliter)[0];
+				let value = line.replace(key + spliter, "");
 				thebody.set(key, value);
 			}
 			else{
@@ -69,8 +69,8 @@ class sstp_info_t {
 	}
 	//获取报文体
 	get_body() {
-		var body = new Map();
-		for(var key in this)
+		let body = new Map();
+		for(let key in this)
 			body.set(key, this[key]);
 		return body;
 	}
@@ -84,8 +84,8 @@ class sstp_info_t {
 	}
 	//获取报文
 	to_string() {
-		var str = this.#head + "\r\n";
-		for (var key in this)
+		let str = this.#head + "\r\n";
+		for (let key in this)
 			str += `${key}: ${this[key]}\r\n`;
 		str += "\r\n";
 		return str;
@@ -93,8 +93,8 @@ class sstp_info_t {
 	//获取报头返回码
 	return_code() {
 		//比如：SSTP/1.4 200 OK，返回200
-		var code_table = this.#head.split(" ");
-		for(var i = 0; i < code_table.length; i++)
+		let code_table = this.#head.split(" ");
+		for(let i = 0; i < code_table.length; i++)
 			if(!isNaN(code_table[i]))
 				return parseInt(code_table[i]);
 		return -1;
@@ -106,25 +106,25 @@ class sstp_info_t {
 };
 class sstp_fmo_info_t{
 	//构造函数
-	constructor(fmo_info) {
+	constructor(fmo_info={}) {
 		//fmo_info每个key的格式都是"uuid.属性名"
-		for(var key in fmo_info){
-			var uuid = key.split(".")[0];
-			var name = key.split(".")[1];
+		for(let key in fmo_info){
+			let uuid = key.split(".")[0];
+			let name = key.split(".")[1];
 			if(!this[uuid])
 				this[uuid] = {};
 			this[uuid][name] = fmo_info[key];
 		}
 	}
 	get_uuid_by(name, value) {
-		for(var uuid in this)
+		for(let uuid in this)
 			if(this[uuid][name] == value)
 				return uuid;
 		return null;
 	}
 	get_list_of(name) {
-		var list = [];
-		for(var uuid in this)
+		let list = [];
+		for(let uuid in this)
 			list.push(this[uuid][name]);
 		return list;
 	}
@@ -133,6 +133,58 @@ class sstp_fmo_info_t{
 	}
 	length() {
 		return this.keys().length;
+	}
+	available() {
+		return this.length() != 0;
+	}
+};
+class ghost_events_queryer_t{
+	#base_jsstp;
+	#ghost_has_has_event;
+	#ghost_has_get_supported_events;
+	#ghost_event_list;
+	#ghost_event_list_cache;
+
+	constructor(base_jsstp=jsstp) {
+		this.#base_jsstp = base_jsstp;
+	}
+	async check_event(event_name, security_level="local") {
+		if(this.#ghost_has_get_supported_events)
+			return this.#ghost_event_list[security_level].includes(event_name);
+		else if(this.#ghost_has_has_event){
+			if(this.#ghost_event_list_cache[security_level][event_name] != undefined)
+				return this.#ghost_event_list_cache[security_level][event_name];
+			let result = await this.#base_jsstp.has_event(event_name);
+			this.#ghost_event_list_cache[security_level][event_name] = result;
+			return result;
+		}
+		else
+			return false;
+	}
+	available(){
+		return this.#ghost_has_has_event;
+	}
+	get_supported_events_available(){
+		return this.#ghost_has_get_supported_events;
+	}
+	async reset() {
+		this.clear();
+		this.#ghost_has_has_event = await this.#base_jsstp.has_event("Has_Event");
+		this.#ghost_has_get_supported_events = await this.#base_jsstp.has_event("Get_Supported_Events");
+		if(this.#ghost_has_get_supported_events)
+			this.#ghost_event_list = await this.#base_jsstp.get_supported_events();
+	}
+	async init() {
+		await this.reset();
+	}
+	clear() {
+		this.#ghost_has_has_event = false;
+		this.#ghost_has_get_supported_events = false;
+		this.#ghost_event_list = null;
+		this.#ghost_event_list_cache = {
+			"local": {},
+			"external": {}
+		};
 	}
 };
 //定义一个包装器
@@ -190,7 +242,7 @@ class jsstp_t {
 			headers: this.#headers,
 			body: data
 		};
-		var call_base=(resolve, reject) => {
+		let call_base=(resolve, reject) => {
 			fetch(this.#host, param).then(function(response) {
 				if(response.status != 200)
 					reject(response.status);
@@ -210,11 +262,11 @@ class jsstp_t {
 	costom_send(sstphead, info, callback) {
 		if (typeof (info) == "object") {
 			//获取报文
-			var data = new sstp_info_t();
+			let data = new sstp_info_t();
 			data.set_head(sstphead);
-			for (var key in this.#default_info)
+			for (let key in this.#default_info)
 				data[key]=this.#default_info[key];
-			for (var key in info)
+			for (let key in info)
 				data[key]= info[key];
 			//使用base_post发送
 			return this.#base_post(data.to_string(), callback);
@@ -327,15 +379,22 @@ class jsstp_t {
 		};
 	}
 	async get_fmo_infos() {
+		let fmo={};
 		try{
-			const fmo = await this.EXECUTE({
+			fmo = await this.EXECUTE({
 				"Command": "GetFMO"
 			});
-			return new sstp_fmo_info_t(fmo);
 		}
-		catch(e){
-			return null;
-		}
+		catch(e){}
+		return new sstp_fmo_info_t(fmo);
+	}
+	async available() {
+		return (await this.get_fmo_infos()).available();
+	}
+	async new_event_queryer() {
+		let result = new ghost_events_queryer_t(this);
+		await result.init();
+		return result;
 	}
 };
 
