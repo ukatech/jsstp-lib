@@ -19,57 +19,34 @@ class sstp_info_t {
 	//构造函数
 	constructor(info_head, info_body, unknown_lines) {
 		this.set_head(info_head);
-		this.#unknown_lines = unknown_lines;
-		if (info_body) {
-			if (info_body.keys)
-				for (let key of info_body.keys())
-					this[key] = info_body.get(key);
-			else if (info_body instanceof Object)
-				for (let key in info_body)
-					this[key] = info_body[key];
-			//否则记录错误
-			else console.error("sstp_info_t: info_body is not a Map or object: " + typeof info_body);
-		}
+		this.#unknown_lines = unknown_lines || [];
+		Object.assign(this, info_body);
 	}
 	//自字符串报文构造
 	static from_string(str) {
-		let thehead = str.split("\r\n")[0];
-		let thebody = new Map();
-		let body = str.split("\r\n");
-		body.shift();//去掉报文头
+		let [head,...lines] = str.split("\r\n");
+		let body = {};
 		let unknown_lines = [];
 		let spliter_list = [": ", String.fromCharCode(1)];
-		for (let line of body) {
+		for (let line of lines) {
 			if (!line) continue;
-			let spliter;
+			let spliter,index;
 			for (let test_spliter of spliter_list)
-				if (~line.indexOf(test_spliter)) {
+				if (~(index=line.indexOf(test_spliter))) {
 					spliter = test_spliter;
 					break;
 				}
 			if (spliter) {
-				let key = line.split(spliter)[0];
-				let value = line.replace(key + spliter, "");
-				thebody.set(key, value);
+				let [key, value] = [line.slice(0, index), line.slice(index + spliter.length)];
+				body[key] = value;
 			}
 			else
-				unknown_lines.push(body[i]);
+				unknown_lines.push(lines[i]);
 		}
-		return new sstp_info_t(thehead, thebody, unknown_lines);
+		return new sstp_info_t(head, body, unknown_lines);
 	}
 	//设置报文头
-	set_head(head) {
-		if (!head)
-			head = "NOTIFY SSTP/1.1";
-		this.#head = head;
-	}
-	//获取报文体
-	get_body() {
-		let body = new Map();
-		for (let key in this)
-			body.set(key, this[key]);
-		return body;
-	}
+	set_head(head) { this.#head = head || "NOTIFY SSTP/1.1"; }
 	//获取未知行
 	get_unknown_lines() { return this.#unknown_lines; }
 	//获取报文头
@@ -87,9 +64,9 @@ class sstp_info_t {
 	return_code() {
 		//比如：SSTP/1.4 200 OK，返回200
 		let code_table = this.#head.split(" ");
-		for (let i = 0; i < code_table.length; i++)
-			if (!isNaN(code_table[i]))
-				return parseInt(code_table[i]);
+		for (let code in code_table)
+			if (!isNaN(code))
+				return parseInt(code);
 		return -1;
 	}
 	get_passthrough(key) { return this["X-SSTP-PassThru-" + key]; }
@@ -100,8 +77,9 @@ class sstp_fmo_info_t {
 	constructor(fmo_info = {}) {
 		//fmo_info每个key的格式都是"uuid.属性名"
 		for (let key in fmo_info) {
-			let uuid = key.split(".")[0];
-			let name = key.split(".")[1];
+			let splited = key.split(".");
+			let uuid = splited[0];
+			let name = splited[1];
 			if (!this[uuid]) this[uuid] = {};
 			this[uuid][name] = fmo_info[key];
 		}
@@ -176,46 +154,50 @@ class jsstp_t {
 	#host;
 
 	constructor(sendername, host) {
-		this.#headers = new Map();
+		this.#headers = {};
 		//初始化默认的host
 		this.set_host(host);
 		this.set_RequestHeader("Content-Type", "text/plain");
 		//如果可以的话获取url并设置Origin
 		this.set_RequestHeader("Origin", window.location.origin);//origin若为null则这句没有效果
 		//初始化默认的报文
-		this.#default_info = new Map();
-		this.set_default_info("Charset", "UTF-8");
+		this.#default_info = {Charset: "UTF-8"};
 		this.set_sendername(sendername);
+		//初始化所有的sstp操作
+		let sstp_version_table = {
+			SEND: "1.4",
+			NOTIFY: "1.1",
+			COMMUNICATE: "1.1",
+			EXECUTE: "1.2",
+			GIVE: "1.1"
+		};
+		for (let sttp_type in sstp_version_table)
+			this[sttp_type] = this.costom_send.bind(this, `${sttp_type} SSTP/${sstp_version_table[sttp_type]}`);
 	}
-	static #update_map(map, key, value) {
+	static #update_info(info, key, value) {
 		if (value == null || value == "")
-			map.delete(key);
+			delete info[key];
 		else
-			map[key] = value;
+			info[key] = value;
 	}
 	//set_RequestHeader
-	set_RequestHeader(key, value) { jsstp_t.#update_map(this.#headers, key, value); }
+	set_RequestHeader(key, value) { jsstp_t.#update_info(this.#headers, key, value); }
 	//设置默认报文
 	reset_default_info(info) { this.#default_info = info; }
-	set_default_info(key, value) { jsstp_t.#update_map(this.#default_info, key, value); }
+	set_default_info(key, value) { jsstp_t.#update_info(this.#default_info, key, value); }
 	//修改host
-	set_host(host) {
-		if (!host)
-			host = "http://localhost:9801/api/sstp/v1";
-		this.#host = host;
-	}
+	set_host(host) { this.#host = host || "http://localhost:9801/api/sstp/v1"; }
 	//修改sendername
-	set_sendername(sendername) {
-		if (!sendername)
-			sendername = "jsstp-client";
-		this.#default_info["Sender"] = sendername;
-	}
-	#base_post(data, callback) {
+	set_sendername(sendername) { this.#default_info["Sender"] = sendername || "jsstp-client"; }
+	//发送报文
+	costom_send(sstphead, info, callback) {
+		//获取报文
+		let data = new sstp_info_t(sstphead,{...this.#default_info,...info});
 		//使用fetch发送数据
 		const param = {
 			method: "POST",
 			headers: this.#headers,
-			body: data
+			body: `${data}`
 		};
 		let call_base = (resolve, reject) => {
 			fetch(this.#host, param).then(function (response) {
@@ -231,41 +213,6 @@ class jsstp_t {
 		//如果callback不存在，返回一个promise
 		else
 			return new Promise(call_base);
-	}
-	//发送报文
-	costom_send(sstphead, info, callback) {
-		if (info instanceof Object) {
-			//获取报文
-			let data = new sstp_info_t();
-			data.set_head(sstphead);
-			for (let key in this.#default_info) data[key] = this.#default_info[key];
-			for (let key in info) data[key] = info[key];
-			//使用base_post发送
-			return this.#base_post(`${data}`, callback);
-		}
-		//否则记录错误
-		else console.error("jsstp.send: wrong type of info: " + typeof info);
-	}
-	//发送报文
-	//SEND SSTP/1.4
-	SEND(info, callback) {
-		return this.costom_send("SEND SSTP/1.4", info, callback);
-	}
-	//NOTIFY SSTP/1.1
-	NOTIFY(info, callback) {
-		return this.costom_send("NOTIFY SSTP/1.1", info, callback);
-	}
-	//COMMUNICATE SSTP/1.1
-	COMMUNICATE(info, callback) {
-		return this.costom_send("COMMUNICATE SSTP/1.1", info, callback);
-	}
-	//EXECUTE SSTP/1.2
-	EXECUTE(info, callback) {
-		return this.costom_send("EXECUTE SSTP/1.2", info, callback);
-	}
-	//GIVE SSTP/1.1
-	GIVE(info, callback) {
-		return this.costom_send("GIVE SSTP/1.1", info, callback);
 	}
 	//根据type发送报文
 	by_type(type) { return eval("this." + type).bind(this); }
@@ -342,8 +289,8 @@ class jsstp_t {
 		const local = info.get_passthrough("local");
 		const external = info.get_passthrough("external");
 		return {
-			local: local ? local.split(",") : [],
-			external: external ? external.split(",") : []
+			local: (local||"").split(","),
+			external: (external||"").split(",")
 		};
 	}
 	async get_fmo_infos() {
