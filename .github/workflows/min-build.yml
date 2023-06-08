@@ -20,7 +20,7 @@ jobs:
       - name: Minify
         run: |
           npm install uglify-js -g
-          uglifyjs ./jsstp.js -o ./jsstp.min.js -c -m --mangle-props regex=/^#/
+          uglifyjs ./jsstp.js -o ./jsstp.min.js -c "pure_funcs=['console.info','console.error'],unsafe=true" -m --mangle-props regex=/^#/
 
       - name: add all
         run: git add -A

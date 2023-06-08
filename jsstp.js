@@ -24,7 +24,7 @@ class sstp_info_t {
 			if (info_body.keys)
 				for (let key of info_body.keys())
 					this[key] = info_body.get(key);
-			else if (typeof info_body == "object")
+			else if (info_body instanceof Object)
 				for (let key in info_body)
 					this[key] = info_body[key];
 			//否则记录错误
@@ -36,19 +36,18 @@ class sstp_info_t {
 		let thehead = str.split("\r\n")[0];
 		let thebody = new Map();
 		let body = str.split("\r\n");
-		body.shift();
+		body.shift();//去掉报文头
 		let unknown_lines = [];
 		let spliter_list = [": ", String.fromCharCode(1)];
-		for (let i = 0; i < body.length; i++) {
-			let line = body[i];
-			if (line == "") continue;
-			let spliter = "";
-			for (let j = 0; j < spliter_list.length; j++)
-				if (line.indexOf(spliter_list[j]) != -1) {
-					spliter = spliter_list[j];
+		for (let line of body) {
+			if (!line) continue;
+			let spliter;
+			for (let test_spliter of spliter_list)
+				if (~line.indexOf(test_spliter)) {
+					spliter = test_spliter;
 					break;
 				}
-			if (spliter != "") {
+			if (spliter) {
 				let key = line.split(spliter)[0];
 				let value = line.replace(key + spliter, "");
 				thebody.set(key, value);
@@ -76,12 +75,14 @@ class sstp_info_t {
 	//获取报文头
 	get_head() { return this.#head; }
 	//获取报文
-	to_string() {
+	//注入toString方法便于使用
+	toString() {
 		let str = this.#head + "\r\n";
 		for (let key in this)
 			str += `${key}: ${this[key]}\r\n`;
 		return str + "\r\n";
 	}
+	to_string() { return this.toString(); }//兼容命名
 	//获取报头返回码
 	return_code() {
 		//比如：SSTP/1.4 200 OK，返回200
@@ -119,7 +120,7 @@ class sstp_fmo_info_t {
 	}
 	keys() { return Object.keys(this); }
 	length() { return this.keys().length; }
-	available() { return this.length() != 0; }
+	available() { return !!this.length(); }
 }
 
 class ghost_events_queryer_t {
@@ -154,8 +155,9 @@ class ghost_events_queryer_t {
 		this.#ghost_has_get_supported_events = await this.#base_jsstp.has_event("Get_Supported_Events");
 		if (this.#ghost_has_get_supported_events)
 			this.#ghost_event_list = await this.#base_jsstp.get_supported_events();
+		return this;
 	}
-	async init() { await this.reset(); }
+	async init() { return await this.reset(); }
 	clear() {
 		this.#ghost_has_has_event = false;
 		this.#ghost_has_get_supported_events = false;
@@ -179,30 +181,23 @@ class jsstp_t {
 		this.set_host(host);
 		this.set_RequestHeader("Content-Type", "text/plain");
 		//如果可以的话获取url并设置Origin
-		if (window.location.origin)
-			this.set_RequestHeader("Origin", window.location.origin);
+		this.set_RequestHeader("Origin", window.location.origin);//origin若为null则这句没有效果
 		//初始化默认的报文
 		this.#default_info = new Map();
 		this.set_default_info("Charset", "UTF-8");
 		this.set_sendername(sendername);
 	}
+	static #update_map(map, key, value) {
+		if (value == null || value == "")
+			map.delete(key);
+		else
+			map[key] = value;
+	}
 	//set_RequestHeader
-	set_RequestHeader(key, value) {
-		if (value == null)
-			delete this.#headers[key];
-		else
-			this.#headers[key] = value;
-	}
+	set_RequestHeader(key, value) { jsstp_t.#update_map(this.#headers, key, value); }
 	//设置默认报文
-	set_default_info(info) {
-		this.#default_info = info;
-	}
-	set_default_info(key, value) {
-		if (value == null)
-			delete this.#default_info[key];
-		else
-			this.#default_info[key] = value;
-	}
+	reset_default_info(info) { this.#default_info = info; }
+	set_default_info(key, value) { jsstp_t.#update_map(this.#default_info, key, value); }
 	//修改host
 	set_host(host) {
 		if (!host)
@@ -226,27 +221,27 @@ class jsstp_t {
 			fetch(this.#host, param).then(function (response) {
 				if (response.status != 200)
 					reject(response.status);
-				else response.text().then(function (text) {
-					resolve(sstp_info_t.from_string(text));
-				});
+				else response.text().then(
+					text => resolve(sstp_info_t.from_string(text))
+				);
 			});
 		};
 		if (callback)
-			call_base(callback, function () { });
+			call_base(callback, function(){});
 		//如果callback不存在，返回一个promise
-		if (callback == undefined)
+		else
 			return new Promise(call_base);
 	}
 	//发送报文
 	costom_send(sstphead, info, callback) {
-		if (typeof info == "object") {
+		if (info instanceof Object) {
 			//获取报文
 			let data = new sstp_info_t();
 			data.set_head(sstphead);
 			for (let key in this.#default_info) data[key] = this.#default_info[key];
 			for (let key in info) data[key] = info[key];
 			//使用base_post发送
-			return this.#base_post(data.to_string(), callback);
+			return this.#base_post(`${data}`, callback);
 		}
 		//否则记录错误
 		else console.error("jsstp.send: wrong type of info: " + typeof info);
@@ -273,9 +268,7 @@ class jsstp_t {
 		return this.costom_send("GIVE SSTP/1.1", info, callback);
 	}
 	//根据type发送报文
-	by_type(type) {
-		return eval("this." + type).bind(this);
-	}
+	by_type(type) { return eval("this." + type).bind(this); }
 	//has_event
 	/*
 	示例代码(AYA):
@@ -299,12 +292,11 @@ class jsstp_t {
 	}
 	*/
 	async has_event(event_name, security_level = "external") {
-		const info = await this.SEND({
+		const result = (await this.SEND({
 			Event: "Has_Event",
 			Reference0: event_name,
 			Reference1: security_level
-		});
-		const result = info.get_passthrough("Result");
+		})).get_passthrough("Result");
 		return !!result && result != "0";
 	}
 	/*
@@ -360,17 +352,11 @@ class jsstp_t {
 			fmo = await this.EXECUTE({
 				Command: "GetFMO"
 			});
-		} catch (e) { }
+		} catch(e) {}
 		return new sstp_fmo_info_t(fmo);
 	}
-	async available() {
-		return (await this.get_fmo_infos()).available();
-	}
-	async new_event_queryer() {
-		let result = new ghost_events_queryer_t(this);
-		await result.init();
-		return result;
-	}
+	async available() { return (await this.get_fmo_infos()).available(); }
+	async new_event_queryer() { return await (new ghost_events_queryer_t(this)).init(); }
 }
 
 var jsstp = new jsstp_t();
