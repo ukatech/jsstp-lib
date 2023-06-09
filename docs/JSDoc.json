@@ -9,9 +9,9 @@
 		"destination": "./docs/"
 	},
 	"tags": {
-        "allowUnknownTags": true
-    },
+		"allowUnknownTags": true
+	},
 	"templates": {
-        "cleverLinks": true
-    }
+		"cleverLinks": true
+	}
 }

@@ -1,6 +1,6 @@
-- [JP](./README_JP.md)  
-- [EN](./README_EN.md)  
-- [CN](./README_CN.md)  
+- [JP](docs/README_JP.md)  
+- [EN](docs/README_EN.md)  
+- [CN](docs/README_CN.md)  
 
 # jsstp  
 
