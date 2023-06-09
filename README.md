@@ -19,6 +19,12 @@
 <script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.0.0/jsstp.js"></script>
 ```
 
+你也可以在js中动态载入jsstp
+
+```javascript
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.0.0/jsstp.mjs").then(m=>m.jsstp);
+```
+
 ### 2. 使用
 
 ```javascript
