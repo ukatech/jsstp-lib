@@ -509,6 +509,41 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * );
 		 */
 		/*@__PURE__*/async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
+		/**
+		 * 发送`SEND`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 */
+		/*@__DECL__*/SEND(info, callback){};
+		/**
+		 * 发送`NOTIFY`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 */
+		/*@__DECL__*/NOTIFY(info, callback){};
+		/**
+		 * 发送`COMMUNICATE`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 */
+		/*@__DECL__*/COMMUNICATE(info, callback){};
+		/**
+		 * 发送`EXECUTE`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 */
+		/*@__DECL__*/EXECUTE(info, callback){};
+		/**
+		 * 发送`GIVE`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 */
+		/*@__DECL__*/GIVE(info, callback){};
 	};
 	//初始化所有的sstp操作
 	let sstp_version_table = {
