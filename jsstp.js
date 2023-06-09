@@ -4,8 +4,13 @@
 
 //定义一个包装器
 var jsstp = (()=>{
+	//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
 	let has_event_event_name = "Has_Event";
 	let get_supported_events_event_name = "Get_Supported_Events";
+	let assign=Object.assign;
+	let endline="\r\n";
+	let local_str = "local";
+	let external_str = "external";
 	//定义sstp报文类
 	/*
 	sstp报文格式：
@@ -24,11 +29,11 @@ var jsstp = (()=>{
 		constructor(info_head, info_body, unknown_lines) {
 			this.#head = `${info_head}`;
 			this.#unknown_lines = unknown_lines || [];
-			Object.assign(this, info_body);
+			assign(this, info_body);
 		}
 		//自字符串报文构造
 		static from_string(str) {
-			let [head,...lines] = str.split("\r\n");
+			let [head,...lines] = str.split(endline);
 			let body = {};
 			let unknown_lines = [];
 			let spliter_list = [": ", String.fromCharCode(1)];
@@ -56,14 +61,14 @@ var jsstp = (()=>{
 		//获取报文
 		//注入toString方法便于使用
 		toString() {
-			let str = this.#head + "\r\n";
+			let str = this.#head + endline;
 			for (let key in this)
-				str += `${key}: ${this[key]}\r\n`;
-			return str + "\r\n";
+				str += `${key}: ${this[key]}`+endline;
+			return str + endline;
 		}
 		to_string() { return this.toString(); }//兼容命名
 		toJSON() {
-			let json = { head: this.#head, body: Object.assign({},this) };
+			let json = { head: this.#head, body: assign({},this) };
 			if(this.#unknown_lines.length)
 				json.unknown_lines = this.#unknown_lines;
 			return json;
@@ -118,7 +123,7 @@ var jsstp = (()=>{
 		constructor(base_jsstp = jsstp) {
 			this.#base_jsstp = base_jsstp;
 		}
-		async check_event(event_name, security_level = "local") {
+		async check_event(event_name, security_level = local_str) {
 			if (this.#ghost_has_get_supported_events)
 				return this.#ghost_event_list[security_level].includes(event_name);
 			else if (this.#ghost_has_has_event) {
@@ -136,10 +141,11 @@ var jsstp = (()=>{
 		get supported_events_available() { return this.#ghost_has_get_supported_events; }
 		async reset() {
 			this.clear();
-			this.#ghost_has_has_event = await this.#base_jsstp.has_event(has_event_event_name);
-			this.#ghost_has_get_supported_events = await this.#base_jsstp.has_event(get_supported_events_event_name);
+			let jsstp = this.#base_jsstp;
+			this.#ghost_has_has_event = await jsstp.has_event(has_event_event_name);
+			this.#ghost_has_get_supported_events = await jsstp.has_event(get_supported_events_event_name);
 			if (this.#ghost_has_get_supported_events)
-				this.#ghost_event_list = await this.#base_jsstp.get_supported_events();
+				this.#ghost_event_list = await jsstp.get_supported_events();
 			return this;
 		}
 		async init() { return this.reset(); }//省略await是合法的
@@ -152,37 +158,22 @@ var jsstp = (()=>{
 			};
 		}
 	}
-	let update_info=(info, key, value)=>{
-		if (value == null || value == "")
-			delete info[key];
-		else
-			info[key] = value;
-	}
 	//定义一个包装器
 	class jsstp_t{
-		#headers;
-		#default_info;
 		#host;
+		RequestHeader;
+		default_info;
 
 		constructor(sendername, host) {
-			this.#headers = {
+			this.RequestHeader = {
 				"Content-Type": "text/plain",
 				"Origin": window.location.origin
 			};
-			this.#default_info = {Charset: "UTF-8"};
+			this.default_info = {Charset: "UTF-8"};
 
 			this.host=host;
 			this.sendername=sendername;
 		}
-		//set_RequestHeader
-		set_RequestHeader(key, value) { update_info(this.#headers, key, value); }
-		//设置默认报文
-		/**
-		 * @param {Object} info
-		 */
-		set default_info(info) { this.#default_info = info; }
-		get default_info() { return this.#default_info; }
-		set_default_info(key, value) { update_info(this.#default_info, key, value); }
 		//修改host
 		/**
 		 * @param {string} host
@@ -193,16 +184,16 @@ var jsstp = (()=>{
 		/**
 		 * @param {string} sendername
 		 */
-		set sendername(sendername) { this.#default_info.Sender = sendername || "jsstp-client"; }
-		get sendername() { return this.#default_info.Sender; }
+		set sendername(sendername) { this.default_info.Sender = sendername || "jsstp-client"; }
+		get sendername() { return this.default_info.Sender; }
 		//发送报文
 		costom_send(sstphead, info, callback) {
 			//获取报文
-			let data = new sstp_info_t(sstphead,{...this.#default_info,...info});
+			let data = new sstp_info_t(sstphead,{...this.default_info,...info});
 			//使用fetch发送数据
-			const param = {
+			let param = {
 				method: "POST",
-				headers: this.#headers,
+				headers: this.RequestHeader,
 				body: `${data}`
 			};
 			let call_base = (resolve, reject) => {
@@ -242,8 +233,8 @@ var jsstp = (()=>{
 			SHIORI_EV.On_Has_Event
 		}
 		*/
-		async has_event(event_name, security_level = "external") {
-			const result = (await this.SEND({
+		async has_event(event_name, security_level = external_str) {
+			let result = (await this.SEND({
 				Event: has_event_event_name,
 				Reference0: event_name,
 				Reference1: security_level
@@ -287,11 +278,11 @@ var jsstp = (()=>{
 		}
 		*/
 		async get_supported_events() {
-			const info = await this.SEND({
+			let info = await this.SEND({
 				Event: get_supported_events_event_name
 			});
-			const local = info.get_passthrough("local");
-			const external = info.get_passthrough("external");
+			let local = info.get_passthrough(local_str);
+			let external = info.get_passthrough(external_str);
 			return {
 				local: (local||"").split(","),
 				external: (external||"").split(",")
@@ -307,7 +298,7 @@ var jsstp = (()=>{
 			return new fmo_info_t(fmo);
 		}
 		async available() { return (await this.get_fmo_infos()).available; }
-		async new_event_queryer() { return await (new ghost_events_queryer_t(this)).init(); }
+		async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
 	};
 	//初始化所有的sstp操作
 	let sstp_version_table = {
@@ -318,11 +309,11 @@ var jsstp = (()=>{
 		GIVE: "1.1"
 	};
 	let proto = jsstp_t.prototype;
-	for (let sttp_type in sstp_version_table)
-		proto[sttp_type] = function(info, callback) {
-			return this.costom_send(`${sttp_type} SSTP/${sstp_version_table[sttp_type]}`, info, callback);
+	for (let sstp_type in sstp_version_table)
+		proto[sstp_type] = function(info, callback) {
+			return this.costom_send(`${sstp_type} SSTP/${sstp_version_table[sstp_type]}`, info, callback);
 		}
-	Object.assign(proto,{
+	assign(proto,{
 		type:jsstp_t,
 		sstp_info_t:sstp_info_t,
 		fmo_info_t:fmo_info_t,
