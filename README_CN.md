@@ -10,9 +10,9 @@
 ### 1. 引入js
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.0.0/jsstp.min.js"></script>
 <!-- 或 --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.0.0/jsstp.js"></script>
 ```
 
 ### 2. 使用
@@ -24,9 +24,9 @@ jsstp.SEND(
 		"Script": "\\0Hello, World!\\e"
 	},
 	function (data) {//回调函数，可省略
-		console.log("return_code: "+data.return_code());
+		console.log("return_code: "+data.return_code);
 		console.log(data);
-		console.log(data["Script"]);
+		console.log(data.Script);
 	}
 );
 //你也可以使用promise
@@ -36,8 +36,8 @@ jsstp.SEND(
 		"Script": "\\0Hello, World!\\e"
 	}
 ).then(function (data) {
-	console.log("return_code: "+data.return_code());
-	console.log(data);
+	console.log("head: "+data.head);
+	console.log(JSON.stringify(data));
 	console.log(data["Script"]);
 });
 ```

@@ -10,9 +10,9 @@ Webページでゴーストと通信し、情報をやりとりするためにjs
 ### 1. jsの読み込み
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.0.0/jsstp.min.js"></script>
 <!-- または --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@master/jsstp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.0.0/jsstp.js"></script>
 ```
 
 ### 2.使用する
@@ -24,9 +24,9 @@ jsstp.SEND(
 		"Script": "\\0Hello, World!\\e"
 	},
 	function (data) {//コールバック関数、省略可能
-		console.log("return_code: "+data.return_code());
+		console.log("return_code: "+data.return_code);
 		console.log(data);
-		console.log(data["Script"]);
+		console.log(data.Script);
 	}
 );
 //promiseを使用することもできます
@@ -36,8 +36,8 @@ jsstp.SEND(
 		"Script": "\\0Hello, World!\\e"
 	}
 ).then(function (data) {
-	console.log("return_code: "+data.return_code());
-	console.log(data);
+	console.log("head: "+data.head);
+	console.log(JSON.stringify(data));
 	console.log(data["Script"]);
 });
 ```

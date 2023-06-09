@@ -12,11 +12,11 @@
 		try {
 			var json = JSON.parse(document.getElementById("json").value);
 			// 根据下拉选单的值，设置jsstp的类型
-			var jsstptype = document.getElementById("type").value;
+			var sstptype = document.getElementById("type").value;
 			// 发送请求
-			var result=await jsstp.by_type(jsstptype)(json);
+			var result=await jsstp[sstptype](json);
 			// 设置回显框的值
-			document.getElementById("result").value = JSON.stringify(result);
+			document.getElementById("result").value = JSON.stringify(result, null, "\t");
 		} catch (e) {
 			alert("错误：" + e);
 			return;
