@@ -3,6 +3,17 @@
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 
 //定义一个包装器
+/**
+ * @description sstp包装器
+ * @example
+ * jsstp.SEND({
+ *   Event: "OnTest",
+ *   Script: "\\s[0]Hell Wold!\\e"
+ * });
+ * @alias `jsstp`
+ * @namespace jsstp
+ * @type {jsstp.type}
+ */
 var jsstp = (/*@__PURE__*/()=>{
 	//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
 	let has_event_event_name = "Has_Event";
@@ -21,6 +32,15 @@ var jsstp = (/*@__PURE__*/()=>{
 	Option: notranslate
 	由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 	*/
+	/**
+	 * @class sstp_info_t
+	 * @description sstp报文类
+	 * @example
+	 * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
+	 * @alias `jsstp.sstp_info_t`
+	 */
 	class sstp_info_t{
 		#head;
 		/**
@@ -104,6 +124,18 @@ var jsstp = (/*@__PURE__*/()=>{
 		 */
 		/*@__PURE__*/get_passthrough(key) { return this["X-SSTP-PassThru-" + key]; }
 	}
+	/**
+	 * @class fmo_info_t
+	 * @description fmo报文类
+	 * @example
+	 * let fmo = jsstp.get_fmo_infos();
+	 * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+	 * if(kikka_uuid)
+	 *   console.log(fmo[kikka_uuid].ghostpath);
+	 * @alias `jsstp.fmo_info_t`
+	 * @see {@link jsstp.get_fmo_infos}
+	 * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+	 */
 	class fmo_info_t{
 		/**
 		 * @param {sstp_info_t|Object} fmo_info
@@ -150,6 +182,20 @@ var jsstp = (/*@__PURE__*/()=>{
 		/*@__PURE__*/get length() { return this.keys.length; }
 		/*@__PURE__*/get available() { return !!this.length; }
 	}
+	/**
+	 * @class ghost_events_queryer_t
+	 * @description ghost事件查询器
+	 * @example
+	 * let ghost_events_queryer = jsstp.new_event_queryer();
+	 * if(!ghost_events_queryer.available)
+	 *   console.log("当前ghost不支持事件查询");
+	 * if(ghost_events_queryer.has_event("OnBoom"))
+	 *   jsstp.send({
+	 *     Event: "OnBoom"
+	 *   });
+	 * @alias `jsstp.ghost_events_queryer_t`
+	 * @see {@link jsstp.new_event_queryer}
+	 */
 	class ghost_events_queryer_t{
 		/**
 		 * @type {jsstp_t}
@@ -260,6 +306,14 @@ var jsstp = (/*@__PURE__*/()=>{
 		}
 	}
 	//定义一个包装器
+	/**
+	 * @class jsstp_t
+	 * @description jsstp对象
+	 * @see {@link jsstp}
+	 * @alias `jsstp.type`
+	 * @example
+	 * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
+	 */
 	class jsstp_t{
 		/**
 		 * @type {String}
