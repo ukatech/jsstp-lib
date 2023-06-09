@@ -3,7 +3,7 @@
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 
 //定义一个包装器
-var jsstp = (()=>{
+var jsstp = (/*@__PURE__*/()=>{
 	//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
 	let has_event_event_name = "Has_Event";
 	let get_supported_events_event_name = "Get_Supported_Events";
@@ -34,8 +34,9 @@ var jsstp = (()=>{
 		 * @param {String} info_head 报文头
 		 * @param {Object} info_body 对象格式的报文体
 		 * @param {Array<String>} unknown_lines 未知行的数组
+		 * @see {@link sstp_info_t.from_string}
 		 */
-		constructor(info_head, info_body, unknown_lines) {
+		/*@__PURE__*/constructor(info_head, info_body, unknown_lines) {
 			this.#head = `${info_head}`;
 			this.#unknown_lines = unknown_lines || [];
 			assign(this, info_body);
@@ -47,7 +48,7 @@ var jsstp = (()=>{
 		 * @example
 		 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 		 */
-		static from_string(str) {
+		/*@__PURE__*/static from_string(str) {
 			let [head,...lines] = str.split(endline);
 			let body = {};
 			let unknown_lines = [];
@@ -70,26 +71,26 @@ var jsstp = (()=>{
 			return new sstp_info_t(head, body, unknown_lines);
 		}
 		//获取未知行
-		get unknown_lines() { return this.#unknown_lines; }
+		/*@__PURE__*/get unknown_lines() { return this.#unknown_lines; }
 		//获取报文头
-		get head() { return this.#head; }
+		/*@__PURE__*/get head() { return this.#head; }
 		//获取报文
 		//注入toString方法便于使用
-		toString() {
+		/*@__PURE__*/toString() {
 			let str = this.#head + endline;
 			for (let key in this)
 				str += `${key}: ${this[key]}`+endline;
 			return str + endline;
 		}
-		to_string() { return this.toString(); }//兼容命名
-		toJSON() {
+		/*@__PURE__*/to_string() { return this.toString(); }//兼容命名
+		/*@__PURE__*/toJSON() {
 			let json = { head: this.#head, body: assign({},this) };
 			if(this.#unknown_lines.length)
 				json.unknown_lines = this.#unknown_lines;
 			return json;
 		}
 		//获取报头返回码
-		get return_code() {
+		/*@__PURE__*/get return_code() {
 			//比如：SSTP/1.4 200 OK，返回200
 			let code_table = this.#head.split(" ");
 			for (let code in code_table)
@@ -101,14 +102,14 @@ var jsstp = (()=>{
 		 * @param {String} key 获取的PassThru名称
 		 * @returns {String} PassThru的值
 		 */
-		get_passthrough(key) { return this["X-SSTP-PassThru-" + key]; }
+		/*@__PURE__*/get_passthrough(key) { return this["X-SSTP-PassThru-" + key]; }
 	}
 	class fmo_info_t{
 		/**
 		 * @param {sstp_info_t|Object} fmo_info
 		 * @description 从sstp_info_t或Object构造fmo_info_t，不建议直接使用
 		 */
-		constructor(fmo_info = {}) {
+		/*@__PURE__*/constructor(fmo_info = {}) {
 			//fmo_info每个key的格式都是"uuid.属性名"
 			for (let key in fmo_info) {
 				let splited = key.split(".");
@@ -126,7 +127,7 @@ var jsstp = (()=>{
 		 * @example 
 		 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 		 */
-		get_uuid_by(name, value) {
+		/*@__PURE__*/get_uuid_by(name, value) {
 			for (let uuid in this)
 				if (this[uuid][name] == value)
 					return uuid;
@@ -138,36 +139,36 @@ var jsstp = (()=>{
 		 * @example
 		 * let ghost_list = fmo_info.get_list_of("name");
 		 */
-		get_list_of(name) {
+		/*@__PURE__*/get_list_of(name) {
 			let list = [];
 			for (let uuid in this)
 				list.push(this[uuid][name]);
 			return list;
 		}
-		get uuids() { return Object.keys(this); }
-		get keys() { return this.uuids; }
-		get length() { return this.keys.length; }
-		get available() { return !!this.length; }
+		/*@__PURE__*/get uuids() { return Object.keys(this); }
+		/*@__PURE__*/get keys() { return this.uuids; }
+		/*@__PURE__*/get length() { return this.keys.length; }
+		/*@__PURE__*/get available() { return !!this.length; }
 	}
 	class ghost_events_queryer_t{
 		/**
 		 * @type {jsstp_t}
-		 * @description 基础jsstp对象
+		 * @description 基础{@link jsstp_t}对象
 		 */
 		#base_jsstp;
 		/**
 		 * @type {Boolean}
-		 * @description 是否有has_event方法
+		 * @description 是否有`Has_Event`方法
 		 */
 		#ghost_has_has_event;
 		/**
 		 * @type {Boolean}
-		 * @description 是否有get_supported_events方法
+		 * @description 是否有`Get_Supported_Events`方法
 		 */
 		#ghost_has_get_supported_events;
 		/**
 		 * @type {{local:Array<String>,external:Array<String>}}
-		 * @description 自get_supported_events获取的事件列表
+		 * @description 自`Get_Supported_Events`获取的事件列表
 		 * @example 
 		 * {
 		 *     local:["On_connect","On_disconnect"],
@@ -177,13 +178,13 @@ var jsstp = (()=>{
 		#ghost_event_list;
 		/**
 		 * @type {{local:{String:Boolean},external:{String:Boolean}}}
-		 * @description 自has_event获取的事件列表缓存
+		 * @description 自`Has_Event`获取的事件列表缓存
 		 * @example 
 		 * {
 		 *     local:{On_connect:true,On_disconnect:true},
 		 *     external:{On_connect:true}
 		 * }
-		 * @description 仅当#ghost_has_get_supported_events为false时有效
+		 * @description 仅当`#ghost_has_get_supported_events`为false时有效
 		 */
 		#ghost_event_list_cache;
 
@@ -191,19 +192,19 @@ var jsstp = (()=>{
 		 * @param {jsstp_t} base_jsstp
 		 * @description 构造一个事件查询器
 		 */
-		constructor(base_jsstp = jsstp) {
+		/*@__PURE__*/constructor(base_jsstp = jsstp) {
 			this.#base_jsstp = base_jsstp;
 		}
 		/**
 		 * @param {String} event_name
 		 * @param {String} security_level
 		 * @returns {Promise<Boolean>}
-		 * @description 检查事件是否存在
+		 * @description 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 		 * @example
 		 * let result = await ghost_events_queryer.check_event("On_connect");
-		 * @see `jsstp_t.has_event`|`jsstp_t.get_supported_events`
+		 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 		 */
-		async check_event(event_name, security_level = local_str) {
+		/*@__PURE__*/async check_event(event_name, security_level = local_str) {
 			if (this.#ghost_has_get_supported_events)
 				return this.#ghost_event_list[security_level].includes(event_name);
 			else if (this.#ghost_has_has_event) {
@@ -224,7 +225,7 @@ var jsstp = (()=>{
 		 * if(!ghost_events_queryer.available)
 		 *    console.error("无法检查事件");
 		 */
-		get available() { return this.#ghost_has_has_event; }
+		/*@__PURE__*/get available() { return this.#ghost_has_has_event; }
 		/**
 		 * @returns {Promise<Boolean>}
 		 * @description 检查是否能够使用get_supported_events快速获取支持的事件列表
@@ -235,7 +236,7 @@ var jsstp = (()=>{
 		 *   console.info("好哦");
 		 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
 		 */
-		get supported_events_available() { return this.#ghost_has_get_supported_events; }
+		/*@__PURE__*/get supported_events_available() { return this.#ghost_has_get_supported_events; }
 		/**
 		 * @returns {Promise<ghost_events_queryer_t>} this
 		 */
@@ -273,7 +274,7 @@ var jsstp = (()=>{
 		 * @param {String} sendername 对象与服务器交互时的发送者名称
 		 * @param {String} host 目标服务器地址
 		 */
-		constructor(sendername, host) {
+		/*@__PURE__*/constructor(sendername, host) {
 			this.RequestHeader = {
 				"Content-Type": "text/plain",
 				"Origin": window.location.origin
@@ -288,13 +289,13 @@ var jsstp = (()=>{
 		 * @param {string} host
 		 */
 		set host(host) { this.#host = host || "http://localhost:9801/api/sstp/v1"; }
-		get host() { return this.#host; }
+		/*@__PURE__*/get host() { return this.#host; }
 		//修改sendername
 		/**
 		 * @param {String} sendername
 		 */
 		set sendername(sendername) { this.default_info.Sender = sendername || "jsstp-client"; }
-		get sendername() { return this.default_info.Sender; }
+		/*@__PURE__*/get sendername() { return this.default_info.Sender; }
 		/**
 		 * 发送报文
 		 * @param {String} sstphead 报文头
@@ -327,10 +328,12 @@ var jsstp = (()=>{
 				return new Promise(call_base);
 		}
 		/**
-		 * @param {String} event_name
-		 * @param {String} security_level
-		 * @returns {Promise<Boolean>}
-		 * @description 判断是否存在某个事件
+		 * @param {String} event_name 事件名
+		 * @param {String} security_level 安全等级
+		 * @returns {Promise<Boolean>} 是否存在
+		 * @description
+		 * 判断是否存在某个事件
+		 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
 		 * @example
 		 * jsstp.has_event("OnTest").then(result => console.log(result));
 		 * @example
@@ -354,7 +357,7 @@ var jsstp = (()=>{
 		 * 	SHIORI_EV.On_Has_Event
 		 * }
 		 */
-		async has_event(event_name, security_level = external_str) {
+		/*@__PURE__*/async has_event(event_name, security_level = external_str) {
 			let result = (await this.SEND({
 				Event: has_event_event_name,
 				Reference0: event_name,
@@ -363,7 +366,9 @@ var jsstp = (()=>{
 			return !!result && result != "0";
 		}
 		/**
-		 * @description 以约定好的结构获取支持的事件
+		 * @description
+		 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
+		 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
 		 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
 		 * @example
 		 * jsstp.get_supported_events().then(result => console.log(result));
@@ -403,7 +408,7 @@ var jsstp = (()=>{
 		 * 	SHIORI_EV.On_Get_Supported_Events
 		 * }
 		 */
-		async get_supported_events() {
+		/*@__PURE__*/async get_supported_events() {
 			let info = await this.SEND({
 				Event: get_supported_events_event_name
 			});
@@ -420,7 +425,7 @@ var jsstp = (()=>{
 		 * @example
 		 * jsstp.get_fmo_infos().then(result => console.log(result));
 		 */
-		async get_fmo_infos() {
+		/*@__PURE__*/async get_fmo_infos() {
 			let fmo = {};
 			try {
 				fmo = await this.EXECUTE({
@@ -438,7 +443,7 @@ var jsstp = (()=>{
 		 * else
 		 * 	console.error("ghost不可用,请检查ghost是否启动");
 		 */
-		async available() { return (await this.get_fmo_infos()).available; }
+		/*@__PURE__*/async available() { return (await this.get_fmo_infos()).available; }
 		/**
 		 * @description 获取一个用于查询ghost所支持事件的queryer
 		 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
@@ -449,7 +454,7 @@ var jsstp = (()=>{
 		 *  )
 		 * );
 		 */
-		async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
+		/*@__PURE__*/async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
 	};
 	//初始化所有的sstp操作
 	let sstp_version_table = {
@@ -460,15 +465,18 @@ var jsstp = (()=>{
 		GIVE: "1.1"
 	};
 	let proto = jsstp_t.prototype;
+	//对每个sstp操作进行封装并补充到原型
 	for (let sstp_type in sstp_version_table)
 		proto[sstp_type] = function(info, callback) {
 			return this.costom_send(`${sstp_type} SSTP/${sstp_version_table[sstp_type]}`, info, callback);
 		}
+	//对定义中的所有类型补充到原型
 	assign(proto,{
 		type:jsstp_t,
 		sstp_info_t:sstp_info_t,
 		fmo_info_t:fmo_info_t,
 		ghost_events_queryer_t:ghost_events_queryer_t
 	});
+	//返回jsstp_t实例以初始化jsstp
 	return new jsstp_t();
 })();
