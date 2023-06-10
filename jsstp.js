@@ -23,6 +23,11 @@ var jsstp = (/*@__PURE__*/()=>{
 	let local_str = "local";
 	let external_str = "external";
 	let passthroughs = "get_passthrough";
+	//工具函数，用于分割字符串
+	let key_value_split = (str, spliter) => {
+		let index = str.indexOf(spliter);
+		return [str.substring(0, index), str.substring(index + spliter.length)];
+	}
 	//定义sstp报文类
 	/*
 	sstp报文格式：
@@ -54,7 +59,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 		 * @param {String} info_head 报文头
 		 * @param {Object} info_body 对象格式的报文体
-		 * @param {Array<String>} unknown_lines 未知行的数组
+		 * @param {Array<String>|undefined} unknown_lines 未知行的数组
 		 * @see {@link sstp_info_t.from_string}
 		 * @ignore
 		 */
@@ -74,21 +79,19 @@ var jsstp = (/*@__PURE__*/()=>{
 			let [head,...lines] = str.split(endline);
 			let body = {};
 			let unknown_lines = [];
-			let spliter_list = [": ", String.fromCharCode(1)];
+			let last_key;
+			//去掉最后的空行
+			lines.length-=2;
 			for (let line of lines) {
-				if (!line) continue;
-				let spliter,index;
-				for (let test_spliter of spliter_list)
-					if (~(index=line.indexOf(test_spliter))) {
-						spliter = test_spliter;
-						break;
-					}
-				if (spliter) {
-					let [key, value] = [line.slice(0, index), line.slice(index + spliter.length)];
-					body[key] = value;
+				let[key,value] = key_value_split(line, ': ');
+				if (!/^\w[^\s]*$/.test(key)){
+					if(last_key)
+						body[last_key] += endline + line;
+					else
+						unknown_lines.push(line);
 				}
 				else
-					unknown_lines.push(lines[i]);
+					body[last_key = key] = value;
 			}
 			return new sstp_info_t(head, body, unknown_lines);
 		}
@@ -110,6 +113,8 @@ var jsstp = (/*@__PURE__*/()=>{
 		 */
 		/*@__PURE__*/toString() {
 			let str = this.#head + endline;
+			for (let line of this.#unknown_lines)
+				str += line + endline;
 			for (let key in this)
 				str += `${key}: ${this[key]}`+endline;
 			return str + endline;
@@ -125,9 +130,13 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @ignore
 		 */
 		/*@__PURE__*/toJSON() {
-			let json = { head: this.#head, body: assign({},this) };
-			if(this.#unknown_lines.length)
-				json.unknown_lines = this.#unknown_lines;
+			let json = {
+				head: this.#head,
+				unknown_lines : this.#unknown_lines,
+				body: assign({},this)
+			};
+			if(!json.unknown_lines.length)
+				delete json.unknown_lines;
 			return json;
 		}
 		//获取报头返回码
@@ -164,19 +173,20 @@ var jsstp = (/*@__PURE__*/()=>{
 	 */
 	class fmo_info_t{
 		/**
-		 * @param {sstp_info_t|Object} fmo_info
-		 * @description 从sstp_info_t或Object构造fmo_info_t，不建议直接使用
+		 * @param {sstp_info_t|undefined} fmo_info
+		 * @description 从sstp_info_t构造fmo_info_t，不建议直接使用
 		 * @ignore
 		 */
-		/*@__PURE__*/constructor(fmo_info = {}) {
-			//fmo_info每个key的格式都是"uuid.属性名"
-			for (let key in fmo_info) {
-				let splited = key.split(".");
-				let uuid = splited[0];
-				let name = splited[1];
-				if (!this[uuid]) this[uuid] = {};
-				this[uuid][name] = fmo_info[key];
-			}
+		/*@__PURE__*/constructor(fmo_info) {
+			if(fmo_info)
+				//fmo_info每个key的格式都是"uuid.属性名"
+				for (let line of fmo_info.unknown_lines){
+					if(!line)break;
+					let [key,value] = key_value_split(line,String.fromCharCode(1)); 
+					let [uuid,name] = key_value_split(key,".");
+					this[uuid] ||= {};
+					this[uuid][name] = value;
+				}
 		}
 		/**
 		 * @param {String} name 要检查的属性名
@@ -337,10 +347,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		async init() { return this.reset(); }//省略await是合法的
 		clear() {
 			this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;
-			this.#ghost_event_list_cache = {
-				local: {},
-				external: {}
-			};
+			this.#ghost_event_list_cache = { local: {},external: {} };
 		}
 	}
 	//定义一个包装器
@@ -399,16 +406,13 @@ var jsstp = (/*@__PURE__*/()=>{
 		 *      - 否则返回`undefined`
 		 */
 		costom_send(sstphead, info, callback) {
-			//获取报文
-			let data = new sstp_info_t(sstphead,{...this.default_info,...info});
 			//使用fetch发送数据
-			let param = {
-				method: "POST",
-				headers: this.RequestHeader,
-				body: `${data}`
-			};
 			let call_base = (resolve, reject) => 
-				fetch(this.#host, param).then(response=>
+				fetch(this.#host, {
+					method: "POST",
+					headers: this.RequestHeader,
+					body: `${new sstp_info_t(sstphead,{...this.default_info,...info})}`
+				}).then(response=>
 					response.status != 200?
 						reject(response.status):
 					response.text().then(
