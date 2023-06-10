@@ -112,12 +112,10 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @ignore
 		 */
 		/*@__PURE__*/toString() {
-			let str = this.#head + endline;
-			for (let line of this.#unknown_lines)
-				str += line + endline;
+			let list = [this.#head,...this.#unknown_lines];
 			for (let key in this)
-				str += `${key}: ${this[key]}`+endline;
-			return str + endline;
+				list.push(`${key}: ${this[key]}`);
+			return list.join(endline) + endline + endline;
 		}
 		/**
 		 * @returns {String} 字符串报文
@@ -141,7 +139,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		}
 		//获取报头返回码
 		/**
-		 * @returns {Number} 报头返回码
+		 * @returns {Number|undefined} 报头返回码
 		 * @description 获取报头返回码
 		 */
 		/*@__PURE__*/get return_code() {
@@ -150,7 +148,6 @@ var jsstp = (/*@__PURE__*/()=>{
 			for (let code in code_table)
 				if (!isNaN(code))
 					return parseInt(code);
-			return -1;
 		}
 		/**
 		 * @param {String} key 获取的PassThru名称
@@ -181,7 +178,7 @@ var jsstp = (/*@__PURE__*/()=>{
 			if(fmo_info)
 				//fmo_info每个key的格式都是"uuid.属性名"
 				for (let line of fmo_info.unknown_lines){
-					if(!line)break;
+					if(!line)continue;
 					let [key,value] = key_value_split(line,String.fromCharCode(1)); 
 					let [uuid,name] = key_value_split(key,".");
 					this[uuid] ||= {};
