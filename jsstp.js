@@ -14,12 +14,12 @@
  * @type {jsstp.type}
  * @global
  */
-var jsstp = (/*@__PURE__*/()=>{
+var jsstp = (/*@__PURE__*/() => {
 	//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
 	let has_event_event_name = "Has_Event";
 	let get_supported_events_event_name = "Get_Supported_Events";
-	let assign=Object.assign;
-	let endline="\r\n";
+	let assign = Object.assign;
+	let endline = "\r\n";
 	let local_str = "local";
 	let external_str = "external";
 	let passthroughs = "get_passthrough";
@@ -55,7 +55,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * console.log(info.Option);//notranslate
 	 * @alias jsstp.sstp_info_t
 	 */
-	class sstp_info_t{
+	class sstp_info_t {
 		#head;
 		/**
 		 * @type {Array<String>}
@@ -84,16 +84,16 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 		 */
 		/*@__PURE__*/static from_string(str) {
-			let [head,...lines] = str.split(endline);
+			let [head, ...lines] = str.split(endline);
 			let body = {};
 			let unknown_lines = [];
 			let last_key;
 			//去掉最后的空行*2
-			lines.length-=2;
+			lines.length -= 2;
 			for (let line of lines) {
-				let[key,value] = key_value_split(line, ': ');
-				if (!/^\w[^\s]*$/.test(key)){
-					if(last_key)
+				let [key, value] = key_value_split(line, ': ');
+				if (!/^\w[^\s]*$/.test(key)) {
+					if (last_key)
 						body[last_key] += endline + line;
 					else
 						unknown_lines.push(line);
@@ -120,7 +120,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @ignore
 		 */
 		/*@__PURE__*/toString() {
-			let list = [this.#head,...this.#unknown_lines];
+			let list = [this.#head, ...this.#unknown_lines];
 			for (let key in this)
 				list.push(`${key}: ${this[key]}`);
 			return list.join(endline) + endline + endline;
@@ -138,10 +138,10 @@ var jsstp = (/*@__PURE__*/()=>{
 		/*@__PURE__*/toJSON() {
 			let json = {
 				head: this.#head,
-				unknown_lines : this.#unknown_lines,
-				body: assign({},this)
+				unknown_lines: this.#unknown_lines,
+				body: assign({}, this)
 			};
-			if(!json.unknown_lines.length)
+			if (!json.unknown_lines.length)
 				delete json.unknown_lines;
 			return json;
 		}
@@ -152,7 +152,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 */
 		/*@__PURE__*/get return_code() {
 			//比如：SSTP/1.4 200 OK，返回200
-			return this.#head.split(" ").find(value => value*1!=NaN)*1;
+			return +this.#head.split(" ").find(value => NaN != +value);
 		}
 		/**
 		 * @param {String} key 获取的PassThru名称
@@ -173,19 +173,19 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * @see {@link jsstp.get_fmo_infos}
 	 * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
 	 */
-	class fmo_info_t{
+	class fmo_info_t {
 		/**
 		 * @param {sstp_info_t|undefined} fmo_info
 		 * @description 从sstp_info_t构造fmo_info_t，不建议直接使用
 		 * @ignore
 		 */
 		/*@__PURE__*/constructor(fmo_info) {
-			if(fmo_info)
+			if (fmo_info)
 				//fmo_info每个key的格式都是"uuid.属性名"
-				for (let line of fmo_info.unknown_lines){
-					if(!line)continue;
-					let [key,value] = key_value_split(line,String.fromCharCode(1)); 
-					let [uuid,name] = key_value_split(key,".");
+				for (let line of fmo_info.unknown_lines) {
+					if (!line) continue;
+					let [key, value] = key_value_split(line, String.fromCharCode(1));
+					let [uuid, name] = key_value_split(key, ".");
 					this[uuid] ||= {};
 					this[uuid][name] = value;
 				}
@@ -244,7 +244,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * @alias jsstp.ghost_events_queryer_t
 	 * @see {@link jsstp.new_event_queryer}
 	 */
-	class ghost_events_queryer_t{
+	class ghost_events_queryer_t {
 		/**
 		 * @type {jsstp_t}
 		 * @description 基础{@link jsstp_t}对象
@@ -346,7 +346,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		async init() { return this.reset(); }//省略await是合法的
 		clear() {
 			this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;
-			this.#ghost_event_list_cache = { local: {},external: {} };
+			this.#ghost_event_list_cache = { local: {}, external: {} };
 		}
 	}
 	//定义一个包装器
@@ -358,7 +358,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * @example
 	 * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
 	 */
-	class jsstp_t{
+	class jsstp_t {
 		/**
 		 * @type {String}
 		 * @description 对象与服务器交互时的发送者名称
@@ -377,10 +377,10 @@ var jsstp = (/*@__PURE__*/()=>{
 				"Content-Type": "text/plain",
 				"Origin": window.location.origin
 			};
-			this.default_info = {Charset: "UTF-8"};
+			this.default_info = { Charset: "UTF-8" };
 
-			this.host=host;
-			this.sendername=sendername;
+			this.host = host;
+			this.sendername = sendername;
 		}
 		//修改host
 		/**
@@ -406,20 +406,20 @@ var jsstp = (/*@__PURE__*/()=>{
 		 */
 		costom_send(sstphead, info, callback) {
 			//使用fetch发送数据
-			let call_base = (resolve, reject) => 
+			let call_base = (resolve, reject) =>
 				fetch(this.#host, {
 					method: "POST",
 					headers: this.RequestHeader,
-					body: `${new sstp_info_t(sstphead,{...this.default_info,...info})}`
-				}).then(response=>
-					response.status != 200?
-						reject(response.status):
-					response.text().then(
-						text => resolve(sstp_info_t.from_string(text))
-					)
+					body: `${new sstp_info_t(sstphead, { ...this.default_info, ...info })}`
+				}).then(response =>
+					response.status != 200 ?
+						reject(response.status) :
+						response.text().then(
+							text => resolve(sstp_info_t.from_string(text))
+						)
 				).catch(reject);
-			return callback?
-				call_base(callback, ()=>{}):
+			return callback ?
+				call_base(callback, () => { }) :
 				new Promise(call_base);//如果callback不存在，返回一个promise
 		}
 		/**
@@ -510,8 +510,8 @@ var jsstp = (/*@__PURE__*/()=>{
 			let local = info[passthroughs](local_str);
 			let external = info[passthroughs](external_str);
 			return {
-				local: (local||"").split(","),
-				external: (external||"").split(",")
+				local: (local || "").split(","),
+				external: (external || "").split(",")
 			};
 		}
 		/**
@@ -561,7 +561,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
 		 *      - 否则返回`undefined`
 		 */
-		/*@__DECL__*/SEND(info, callback){return this.SEND(info, callback);}
+		/*@__DECL__*/SEND(info, callback) { return this.SEND(info, callback); }
 		/**
 		 * 发送`NOTIFY`报文
 		 * @param {Object} info 报文体
@@ -571,7 +571,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
 		 *      - 否则返回`undefined`
 		 */
-		/*@__DECL__*/NOTIFY(info, callback){return this.NOTIFY(info, callback);}
+		/*@__DECL__*/NOTIFY(info, callback) { return this.NOTIFY(info, callback); }
 		/**
 		 * 发送`COMMUNICATE`报文
 		 * @param {Object} info 报文体
@@ -581,7 +581,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
 		 *      - 否则返回`undefined`
 		 */
-		/*@__DECL__*/COMMUNICATE(info, callback){return this.COMMUNICATE(info, callback);}
+		/*@__DECL__*/COMMUNICATE(info, callback) { return this.COMMUNICATE(info, callback); }
 		/**
 		 * 发送`EXECUTE`报文
 		 * @param {Object} info 报文体
@@ -591,7 +591,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
 		 *      - 否则返回`undefined`
 		 */
-		/*@__DECL__*/EXECUTE(info, callback){return this.EXECUTE(info, callback);}
+		/*@__DECL__*/EXECUTE(info, callback) { return this.EXECUTE(info, callback); }
 		/**
 		 * 发送`GIVE`报文
 		 * @param {Object} info 报文体
@@ -601,7 +601,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
 		 *      - 否则返回`undefined`
 		 */
-		/*@__DECL__*/GIVE(info, callback){return this.GIVE(info, callback);}
+		/*@__DECL__*/GIVE(info, callback) { return this.GIVE(info, callback); }
 	}
 	//初始化所有的sstp操作
 	let sstp_version_table = {
@@ -614,15 +614,15 @@ var jsstp = (/*@__PURE__*/()=>{
 	let proto = jsstp_t.prototype;
 	//对每个sstp操作进行封装并补充到原型
 	for (let sstp_type in sstp_version_table)
-		proto[sstp_type] = function(info, callback) {
+		proto[sstp_type] = function (info, callback) {
 			return this.costom_send(`${sstp_type} SSTP/${sstp_version_table[sstp_type]}`, info, callback);
 		}
 	//对定义中的所有类型补充到原型
-	assign(proto,{
-		type:jsstp_t,
-		sstp_info_t:sstp_info_t,
-		fmo_info_t:fmo_info_t,
-		ghost_events_queryer_t:ghost_events_queryer_t
+	assign(proto, {
+		type: jsstp_t,
+		sstp_info_t: sstp_info_t,
+		fmo_info_t: fmo_info_t,
+		ghost_events_queryer_t: ghost_events_queryer_t
 	});
 	//返回jsstp_t实例以初始化jsstp
 	return new jsstp_t();
