@@ -584,14 +584,13 @@ var jsstp = (/*@__PURE__*/()=>{
 		 */
 		/*@__DECL__*/GIVE(info, callback){return this.GIVE(info, callback);}
 	}
-	let v1_1 = 1.1,//这个变量可以使压缩后的代码小1字节！
 	//初始化所有的sstp操作
-	sstp_version_table = {
+	let sstp_version_table = {
 		SEND: 1.4,
-		NOTIFY: v1_1,
-		COMMUNICATE: v1_1,
+		NOTIFY: 1.1,
+		COMMUNICATE: 1.1,
 		EXECUTE: 1.2,
-		GIVE: v1_1
+		GIVE: 1.1
 	};
 	let proto = jsstp_t.prototype;
 	//对每个sstp操作进行封装并补充到原型
