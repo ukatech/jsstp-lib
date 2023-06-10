@@ -152,7 +152,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 */
 		/*@__PURE__*/get return_code() {
 			//比如：SSTP/1.4 200 OK，返回200
-			return +this.#head.split(" ").find(value => NaN != +value);
+			return +this.#head.split(" ").find(value => +value == +value);
 		}
 		/**
 		 * @param {String} key 获取的PassThru名称
