@@ -22,6 +22,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	let endline="\r\n";
 	let local_str = "local";
 	let external_str = "external";
+	let passthroughs = "get_passthrough";
 	//定义sstp报文类
 	/*
 	sstp报文格式：
@@ -454,7 +455,7 @@ var jsstp = (/*@__PURE__*/()=>{
 				Event: has_event_event_name,
 				Reference0: event_name,
 				Reference1: security_level
-			})).get_passthrough("Result");
+			}))[passthroughs]("Result");
 			return !!result && result != "0";
 		}
 		/**
@@ -504,8 +505,8 @@ var jsstp = (/*@__PURE__*/()=>{
 			let info = await this.SEND({
 				Event: get_supported_events_event_name
 			});
-			let local = info.get_passthrough(local_str);
-			let external = info.get_passthrough(external_str);
+			let local = info[passthroughs](local_str);
+			let external = info[passthroughs](external_str);
 			return {
 				local: (local||"").split(","),
 				external: (external||"").split(",")
@@ -583,13 +584,14 @@ var jsstp = (/*@__PURE__*/()=>{
 		 */
 		/*@__DECL__*/GIVE(info, callback){return this.GIVE(info, callback);}
 	}
+	let v1_1 = "1.1",//这个变量可以使压缩后的代码小7字节！
 	//初始化所有的sstp操作
-	let sstp_version_table = {
+	sstp_version_table = {
 		SEND: "1.4",
-		NOTIFY: "1.1",
-		COMMUNICATE: "1.1",
+		NOTIFY: v1_1,
+		COMMUNICATE: v1_1,
 		EXECUTE: "1.2",
-		GIVE: "1.1"
+		GIVE: v1_1
 	};
 	let proto = jsstp_t.prototype;
 	//对每个sstp操作进行封装并补充到原型
