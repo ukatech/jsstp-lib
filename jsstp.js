@@ -336,8 +336,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		}
 		async init() { return this.reset(); }//省略await是合法的
 		clear() {
-			this.#ghost_has_has_event = false;
-			this.#ghost_has_get_supported_events = false;
+			this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;
 			this.#ghost_event_list_cache = {
 				local: {},
 				external: {}
@@ -394,7 +393,10 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @param {String} sstphead 报文头
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *      - 否则返回`undefined`
 		 */
 		costom_send(sstphead, info, callback) {
 			//获取报文
@@ -405,20 +407,17 @@ var jsstp = (/*@__PURE__*/()=>{
 				headers: this.RequestHeader,
 				body: `${data}`
 			};
-			let call_base = (resolve, reject) => {
-				fetch(this.#host, param).then(response=>{
-					if (response.status != 200)
-						reject(response.status);
-					else response.text().then(
+			let call_base = (resolve, reject) => 
+				fetch(this.#host, param).then(response=>
+					response.status != 200?
+						reject(response.status):
+					response.text().then(
 						text => resolve(sstp_info_t.from_string(text))
-					);
-				});
-			};
-			if (callback)
-				call_base(callback, ()=>{});
-			//如果callback不存在，返回一个promise
-			else
-				return new Promise(call_base);
+					)
+				).catch(reject);
+			return callback?
+				call_base(callback, ()=>{}):
+				new Promise(call_base);//如果callback不存在，返回一个promise
 		}
 		/**
 		 * @param {String} event_name 事件名
@@ -519,13 +518,13 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * jsstp.get_fmo_infos().then(result => console.log(result));
 		 */
 		/*@__PURE__*/async get_fmo_infos() {
-			let fmo = {};
-			try {
-				fmo = await this.EXECUTE({
-					Command: "GetFMO"
-				});
-			} catch(e) {}
-			return new fmo_info_t(fmo);
+			return this.EXECUTE({
+				Command: "GetFMO"
+			}).then(
+				fmo => new fmo_info_t(fmo)
+			).catch(
+				() => new fmo_info_t()
+			);
 		}
 		/**
 		 * @description 获取当前ghost是否可用
@@ -552,35 +551,50 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * 发送`SEND`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *      - 否则返回`undefined`
 		 */
 		/*@__DECL__*/SEND(info, callback){return this.SEND(info, callback);}
 		/**
 		 * 发送`NOTIFY`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *      - 否则返回`undefined`
 		 */
 		/*@__DECL__*/NOTIFY(info, callback){return this.NOTIFY(info, callback);}
 		/**
 		 * 发送`COMMUNICATE`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *      - 否则返回`undefined`
 		 */
 		/*@__DECL__*/COMMUNICATE(info, callback){return this.COMMUNICATE(info, callback);}
 		/**
 		 * 发送`EXECUTE`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *      - 否则返回`undefined`
 		 */
 		/*@__DECL__*/EXECUTE(info, callback){return this.EXECUTE(info, callback);}
 		/**
 		 * 发送`GIVE`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *      - 否则返回`undefined`
 		 */
 		/*@__DECL__*/GIVE(info, callback){return this.GIVE(info, callback);}
 	}
