@@ -4,7 +4,7 @@
 
 //定义一个包装器
 /**
- * @description sstp包装器
+ * sstp包装器
  * @example
  * jsstp.SEND({
  *   Event: "OnTest",
@@ -25,7 +25,7 @@ var jsstp = (/*@__PURE__*/() => {
 	let passthroughs = "get_passthrough";
 	//工具函数，用于分割字符串
 	/**
-	 * @description 以spliter分割字符串str，只对第一个匹配的分隔符做分割
+	 * 以spliter分割字符串str，只对第一个匹配的分隔符做分割
 	 * @param {String} str 需要分割的字符串
 	 * @param {String} spliter 分隔符
 	 * @returns {[String,String]} 分割后的字符串数组
@@ -47,8 +47,7 @@ var jsstp = (/*@__PURE__*/() => {
 	由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 	*/
 	/**
-	 * @class sstp_info_t
-	 * @description sstp报文类
+	 * sstp报文类
 	 * @example
 	 * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 * console.log(info.head);//SSTP/1.4 200 OK
@@ -58,8 +57,8 @@ var jsstp = (/*@__PURE__*/() => {
 	class sstp_info_t {
 		#head;
 		/**
+		 * 未知行的数组
 		 * @type {Array<String>}
-		 * @description 未知行的数组
 		 */
 		#unknown_lines;
 
@@ -77,9 +76,9 @@ var jsstp = (/*@__PURE__*/() => {
 			assign(this, info_body);
 		}
 		/**
+		 * 从字符串构造sstp_info_t
 		 * @param {String} str 字符串报文
 		 * @returns {sstp_info_t} 构造的sstp_info_t
-		 * @description 从字符串构造sstp_info_t
 		 * @example
 		 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 		 */
@@ -104,19 +103,19 @@ var jsstp = (/*@__PURE__*/() => {
 			return new sstp_info_t(head, body, unknown_lines);
 		}
 		/**
+		 * 获取未知行的数组
 		 * @returns {Array<String>} 未知行的数组
-		 * @description 获取未知行的数组
 		 */
 		/*@__PURE__*/get unknown_lines() { return this.#unknown_lines; }
 		/**
+		 * 获取报文头
 		 * @returns {String} 报文头
-		 * @description 获取报文头
 		 */
 		/*@__PURE__*/get head() { return this.#head; }
 		//注入toString方法便于使用
 		/**
+		 * 获取字符串报文
 		 * @returns {String} 字符串报文
-		 * @description 获取字符串报文
 		 * @ignore
 		 */
 		/*@__PURE__*/toString() {
@@ -126,13 +125,13 @@ var jsstp = (/*@__PURE__*/() => {
 			return list.join(endline) + endline + endline;
 		}
 		/**
+		 * 获取字符串报文
 		 * @returns {String} 字符串报文
-		 * @description 获取字符串报文
 		 */
 		/*@__PURE__*/to_string() { return this.toString(); }//兼容命名
 		/**
-		 * @returns {Object} 用于JSON.stringify的对象
-		 * @description 获取用于JSON.stringify的对象
+		 * 获取用于`JSON.stringify`的对象
+		 * @returns {Object} 用于`JSON.stringify`的对象
 		 * @ignore
 		 */
 		/*@__PURE__*/toJSON() {
@@ -141,42 +140,40 @@ var jsstp = (/*@__PURE__*/() => {
 				unknown_lines: this.#unknown_lines,
 				body: assign({}, this)
 			};
-			if (!json.unknown_lines.length)
+			if (!this.#unknown_lines.length)
 				delete json.unknown_lines;
 			return json;
 		}
-		//获取报头返回码
 		/**
+		 * 获取报头返回码（若出现意外返回`NaN`）
 		 * @returns {Number} 报头返回码（若出现意外则为`NaN`）
-		 * @description 获取报头返回码（若出现意外返回`NaN`）
 		 */
 		/*@__PURE__*/get return_code() {
 			//比如：SSTP/1.4 200 OK，返回200
 			return +this.#head.split(" ").find(value => +value == +value);
 		}
 		/**
+		 * 获取PassThru的值
 		 * @param {String} key 获取的PassThru名称
 		 * @returns {String} PassThru的值
-		 * @description 获取PassThru的值
 		 */
 		/*@__PURE__*/get_passthrough(key) { return this["X-SSTP-PassThru-" + key]; }
 	}
 	/**
-	 * @class fmo_info_t
-	 * @description fmo报文类
+	 * fmo报文类
 	 * @example
 	 * let fmo = jsstp.get_fmo_infos();
 	 * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
 	 * if(kikka_uuid)
-	 *   console.log(fmo[kikka_uuid].ghostpath);
+	 * 	console.log(fmo[kikka_uuid].ghostpath);
 	 * @alias jsstp.fmo_info_t
-	 * @see {@link jsstp.get_fmo_infos}
+	 * @see {@link jsstp_t.get_fmo_infos}
 	 * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
 	 */
 	class fmo_info_t {
 		/**
+		 * 从sstp_info_t构造fmo_info_t，不建议直接使用
 		 * @param {sstp_info_t|undefined} fmo_info
-		 * @description 从sstp_info_t构造fmo_info_t，不建议直接使用
 		 * @ignore
 		 */
 		/*@__PURE__*/constructor(fmo_info) {
@@ -231,69 +228,68 @@ var jsstp = (/*@__PURE__*/() => {
 		/*@__PURE__*/get available() { return !!this.length; }
 	}
 	/**
-	 * @class ghost_events_queryer_t
-	 * @description ghost事件查询器
+	 * ghost事件查询器
 	 * @example
 	 * let ghost_events_queryer = jsstp.new_event_queryer();
 	 * if(!ghost_events_queryer.available)
-	 *   console.log("当前ghost不支持事件查询");
+	 * 	console.log("当前ghost不支持事件查询");
 	 * if(ghost_events_queryer.has_event("OnBoom"))
-	 *   jsstp.send({
-	 *     Event: "OnBoom"
-	 *   });
+	 * 	jsstp.send({
+	 * 		Event: "OnBoom"
+	 * 	});
 	 * @alias jsstp.ghost_events_queryer_t
-	 * @see {@link jsstp.new_event_queryer}
+	 * @see {@link jsstp_t.new_event_queryer}
 	 */
 	class ghost_events_queryer_t {
 		/**
+		 * 基础{@link jsstp_t}对象
 		 * @type {jsstp_t}
-		 * @description 基础{@link jsstp_t}对象
 		 */
 		#base_jsstp;
 		/**
+		 * 是否有`Has_Event`方法
 		 * @type {Boolean}
-		 * @description 是否有`Has_Event`方法
 		 */
 		#ghost_has_has_event;
 		/**
+		 * 是否有`Get_Supported_Events`方法
 		 * @type {Boolean}
-		 * @description 是否有`Get_Supported_Events`方法
 		 */
 		#ghost_has_get_supported_events;
 		/**
+		 * 自`Get_Supported_Events`获取的事件列表
 		 * @type {{local:Array<String>,external:Array<String>}}
-		 * @description 自`Get_Supported_Events`获取的事件列表
 		 * @example 
 		 * {
-		 *     local:["On_connect","On_disconnect"],
-		 *     external:["On_connect"]
+		 * 	local:["On_connect","On_disconnect"],
+		 * 	external:["On_connect"]
 		 * }
 		 */
 		#ghost_event_list;
 		/**
+		 * 自`Has_Event`获取的事件列表缓存
 		 * @type {{local:{String:Boolean},external:{String:Boolean}}}
-		 * @description 自`Has_Event`获取的事件列表缓存
 		 * @example 
 		 * {
-		 *     local:{On_connect:true,On_disconnect:true},
-		 *     external:{On_connect:true}
+		 * 	local:{On_connect:true,On_disconnect:true},
+		 * 	external:{On_connect:true}
 		 * }
 		 * @description 仅当`#ghost_has_get_supported_events`为false时有效
 		 */
 		#ghost_event_list_cache;
 
 		/**
+		 * 构造一个事件查询器
 		 * @param {jsstp_t} base_jsstp
-		 * @description 构造一个事件查询器
 		 */
 		/*@__PURE__*/constructor(base_jsstp = jsstp) {
 			this.#base_jsstp = base_jsstp;
 		}
 		/**
+		 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 		 * @param {String} event_name
 		 * @param {String} security_level
 		 * @returns {Promise<Boolean>}
-		 * @description 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 		 * @example
 		 * let result = await ghost_events_queryer.check_event("On_connect");
 		 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
@@ -313,21 +309,21 @@ var jsstp = (/*@__PURE__*/() => {
 				return false;
 		}
 		/**
+		 * 检查是否能够检查事件
 		 * @returns {Promise<Boolean>}
-		 * @description 检查是否能够检查事件
 		 * @example
 		 * if(!ghost_events_queryer.available)
-		 *    console.error("无法检查事件");
+		 * 	console.error("无法检查事件");
 		 */
 		/*@__PURE__*/get available() { return this.#ghost_has_has_event; }
 		/**
+		 * 检查是否能够使用get_supported_events快速获取支持的事件列表
 		 * @returns {Promise<Boolean>}
-		 * @description 检查是否能够使用get_supported_events快速获取支持的事件列表
 		 * @example
 		 * if(!ghost_events_queryer.supported_events_available)
-		 *   console.info("无法快速获取支持的事件列表");
+		 * 	console.info("无法快速获取支持的事件列表");
 		 * else
-		 *   console.info("好哦");
+		 * 	console.info("好哦");
 		 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
 		 */
 		/*@__PURE__*/get supported_events_available() { return this.#ghost_has_get_supported_events; }
@@ -351,8 +347,7 @@ var jsstp = (/*@__PURE__*/() => {
 	}
 	//定义一个包装器
 	/**
-	 * @class jsstp_t
-	 * @description jsstp对象
+	 * jsstp对象
 	 * @see {@link jsstp}
 	 * @alias jsstp.type
 	 * @example
@@ -360,15 +355,15 @@ var jsstp = (/*@__PURE__*/() => {
 	 */
 	class jsstp_t {
 		/**
+		 * 对象与服务器交互时的发送者名称
 		 * @type {String}
-		 * @description 对象与服务器交互时的发送者名称
 		 */
 		#host;
 		RequestHeader;
 		default_info;
 
 		/**
-		 * @description 基础jsstp对象
+		 * 基础jsstp对象
 		 * @param {String} sendername 对象与服务器交互时的发送者名称
 		 * @param {String} host 目标服务器地址
 		 */
@@ -382,14 +377,14 @@ var jsstp = (/*@__PURE__*/() => {
 			this.host = host;
 			this.sendername = sendername;
 		}
-		//修改host
 		/**
+		 * 修改host
 		 * @param {string} host
 		 */
 		set host(host) { this.#host = host || "http://localhost:9801/api/sstp/v1"; }
 		/*@__PURE__*/get host() { return this.#host; }
-		//修改sendername
 		/**
+		 * 修改sendername
 		 * @param {String} sendername
 		 */
 		set sendername(sendername) { this.default_info.Sender = sendername || "jsstp-client"; }
@@ -401,8 +396,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *      - 否则返回`undefined`
+		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
 		 */
 		costom_send(sstphead, info, callback) {
 			//使用fetch发送数据
@@ -423,12 +418,11 @@ var jsstp = (/*@__PURE__*/() => {
 				new Promise(call_base);//如果callback不存在，返回一个promise
 		}
 		/**
+		 * 判断是否存在某个事件
+		 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
 		 * @param {String} event_name 事件名
 		 * @param {String} security_level 安全等级
 		 * @returns {Promise<Boolean>} 是否存在
-		 * @description
-		 * 判断是否存在某个事件
-		 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
 		 * @example
 		 * jsstp.has_event("OnTest").then(result => console.log(result));
 		 * @example
@@ -461,7 +455,6 @@ var jsstp = (/*@__PURE__*/() => {
 			return !!result && result != "0";
 		}
 		/**
-		 * @description
 		 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
 		 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
 		 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
@@ -515,12 +508,12 @@ var jsstp = (/*@__PURE__*/() => {
 			};
 		}
 		/**
-		 * @description 获取fmo信息
+		 * 获取fmo信息
 		 * @returns {Promise<fmo_info_t>} fmo信息
 		 * @example
 		 * let fmo=await jsstp.get_fmo_infos();
 		 * if(fmo.available)
-		 *   console.log(fmo);
+		 * 	console.log(fmo);
 		 */
 		/*@__PURE__*/async get_fmo_infos() {
 			return this.EXECUTE({
@@ -532,7 +525,7 @@ var jsstp = (/*@__PURE__*/() => {
 			);
 		}
 		/**
-		 * @description 获取当前ghost是否可用
+		 * 获取当前ghost是否可用
 		 * @returns {Promise<Boolean>} ghost是否可用
 		 * @example
 		 * if(await jsstp.available())
@@ -542,13 +535,13 @@ var jsstp = (/*@__PURE__*/() => {
 		 */
 		/*@__PURE__*/async available() { return (await this.get_fmo_infos()).available; }
 		/**
-		 * @description 获取一个用于查询ghost所支持事件的queryer
+		 * 获取一个用于查询ghost所支持事件的queryer
 		 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
 		 * @example
 		 * jsstp.new_event_queryer().then(queryer => 
-		 *  queryer.check_event("OnTest").then(result =>
-		 *   console.log(result)
-		 *  )
+		 * 	queryer.check_event("OnTest").then(result =>
+		 * 		console.log(result)
+		 * 	)
 		 * );
 		 */
 		/*@__PURE__*/async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
@@ -558,8 +551,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *      - 否则返回`undefined`
+		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
 		 */
 		/*@__DECL__*/SEND(info, callback) { return this.SEND(info, callback); }
 		/**
@@ -568,8 +561,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *      - 否则返回`undefined`
+		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
 		 */
 		/*@__DECL__*/NOTIFY(info, callback) { return this.NOTIFY(info, callback); }
 		/**
@@ -578,8 +571,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *      - 否则返回`undefined`
+		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
 		 */
 		/*@__DECL__*/COMMUNICATE(info, callback) { return this.COMMUNICATE(info, callback); }
 		/**
@@ -588,8 +581,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *      - 否则返回`undefined`
+		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
 		 */
 		/*@__DECL__*/EXECUTE(info, callback) { return this.EXECUTE(info, callback); }
 		/**
@@ -598,8 +591,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *      - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *      - 否则返回`undefined`
+		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
 		 */
 		/*@__DECL__*/GIVE(info, callback) { return this.GIVE(info, callback); }
 	}
@@ -613,11 +606,13 @@ var jsstp = (/*@__PURE__*/() => {
 	};
 	let proto = jsstp_t.prototype;
 	//对每个sstp操作进行封装并补充到原型
+	//便于维护，代码大小少
 	for (let sstp_type in sstp_version_table)
 		proto[sstp_type] = function (info, callback) {
 			return this.costom_send(`${sstp_type} SSTP/${sstp_version_table[sstp_type]}`, info, callback);
 		}
 	//对定义中的所有类型补充到原型
+	//纯为了压缩体积（不然每个类型都要写一遍`static`）
 	assign(proto, {
 		type: jsstp_t,
 		sstp_info_t: sstp_info_t,
