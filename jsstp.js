@@ -24,7 +24,15 @@ var jsstp = (/*@__PURE__*/()=>{
 	let external_str = "external";
 	let passthroughs = "get_passthrough";
 	//工具函数，用于分割字符串
-	let key_value_split = (str, spliter) => {
+	/**
+	 * @description 以spliter分割字符串str，只对第一个匹配的分隔符做分割
+	 * @param {String} str 需要分割的字符串
+	 * @param {String} spliter 分隔符
+	 * @returns {[String,String]} 分割后的字符串数组
+	 * @example
+	 * let [key,value] = key_value_split("key: value",": ");
+	 */
+	let key_value_split = /*@__PURE__*/(str, spliter) => {
 		let index = str.indexOf(spliter);
 		return [str.substring(0, index), str.substring(index + spliter.length)];
 	}
@@ -80,7 +88,7 @@ var jsstp = (/*@__PURE__*/()=>{
 			let body = {};
 			let unknown_lines = [];
 			let last_key;
-			//去掉最后的空行
+			//去掉最后的空行*2
 			lines.length-=2;
 			for (let line of lines) {
 				let[key,value] = key_value_split(line, ': ');
@@ -139,15 +147,12 @@ var jsstp = (/*@__PURE__*/()=>{
 		}
 		//获取报头返回码
 		/**
-		 * @returns {Number|undefined} 报头返回码
-		 * @description 获取报头返回码
+		 * @returns {Number} 报头返回码（若出现意外则为`NaN`）
+		 * @description 获取报头返回码（若出现意外返回`NaN`）
 		 */
 		/*@__PURE__*/get return_code() {
 			//比如：SSTP/1.4 200 OK，返回200
-			let code_table = this.#head.split(" ");
-			for (let code in code_table)
-				if (!isNaN(code))
-					return parseInt(code);
+			return this.#head.split(" ").find(value => value*1!=NaN)*1;
 		}
 		/**
 		 * @param {String} key 获取的PassThru名称
@@ -192,11 +197,10 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
 		 * @example 
 		 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
+		 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
 		 */
 		/*@__PURE__*/get_uuid_by(name, value) {
-			for (let uuid in this)
-				if (this[uuid][name] == value)
-					return uuid;
+			return this.uuids.find(uuid => this[uuid][name] == value);
 		}
 		/**
 		 * @param {String} name
@@ -204,12 +208,10 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @description 获取所有指定属性的值
 		 * @example
 		 * let ghost_list = fmo_info.get_list_of("name");
+		 * @description 等价于`this.uuids.map(uuid => this[uuid][name])`
 		 */
 		/*@__PURE__*/get_list_of(name) {
-			let list = [];
-			for (let uuid in this)
-				list.push(this[uuid][name]);
-			return list;
+			return this.uuids.map(uuid => this[uuid][name]);
 		}
 		/**
 		 * @description 获取所有uuid
@@ -516,7 +518,9 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @description 获取fmo信息
 		 * @returns {Promise<fmo_info_t>} fmo信息
 		 * @example
-		 * jsstp.get_fmo_infos().then(result => console.log(result));
+		 * let fmo=await jsstp.get_fmo_infos();
+		 * if(fmo.available)
+		 *   console.log(fmo);
 		 */
 		/*@__PURE__*/async get_fmo_infos() {
 			return this.EXECUTE({
