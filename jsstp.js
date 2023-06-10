@@ -10,9 +10,9 @@
  *   Event: "OnTest",
  *   Script: "\\s[0]Hell Wold!\\e"
  * });
- * @alias `jsstp`
- * @namespace jsstp
+ * @var jsstp
  * @type {jsstp.type}
+ * @global
  */
 var jsstp = (/*@__PURE__*/()=>{
 	//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
@@ -39,7 +39,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 * console.log(info.head);//SSTP/1.4 200 OK
 	 * console.log(info.Option);//notranslate
-	 * @alias `jsstp.sstp_info_t`
+	 * @alias jsstp.sstp_info_t
 	 */
 	class sstp_info_t{
 		#head;
@@ -55,6 +55,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @param {Object} info_body 对象格式的报文体
 		 * @param {Array<String>} unknown_lines 未知行的数组
 		 * @see {@link sstp_info_t.from_string}
+		 * @ignore
 		 */
 		/*@__PURE__*/constructor(info_head, info_body, unknown_lines) {
 			this.#head = `${info_head}`;
@@ -90,19 +91,38 @@ var jsstp = (/*@__PURE__*/()=>{
 			}
 			return new sstp_info_t(head, body, unknown_lines);
 		}
-		//获取未知行
+		/**
+		 * @returns {Array<String>} 未知行的数组
+		 * @description 获取未知行的数组
+		 */
 		/*@__PURE__*/get unknown_lines() { return this.#unknown_lines; }
-		//获取报文头
+		/**
+		 * @returns {String} 报文头
+		 * @description 获取报文头
+		 */
 		/*@__PURE__*/get head() { return this.#head; }
-		//获取报文
 		//注入toString方法便于使用
+		/**
+		 * @returns {String} 字符串报文
+		 * @description 获取字符串报文
+		 * @ignore
+		 */
 		/*@__PURE__*/toString() {
 			let str = this.#head + endline;
 			for (let key in this)
 				str += `${key}: ${this[key]}`+endline;
 			return str + endline;
 		}
+		/**
+		 * @returns {String} 字符串报文
+		 * @description 获取字符串报文
+		 */
 		/*@__PURE__*/to_string() { return this.toString(); }//兼容命名
+		/**
+		 * @returns {Object} 用于JSON.stringify的对象
+		 * @description 获取用于JSON.stringify的对象
+		 * @ignore
+		 */
 		/*@__PURE__*/toJSON() {
 			let json = { head: this.#head, body: assign({},this) };
 			if(this.#unknown_lines.length)
@@ -110,6 +130,10 @@ var jsstp = (/*@__PURE__*/()=>{
 			return json;
 		}
 		//获取报头返回码
+		/**
+		 * @returns {Number} 报头返回码
+		 * @description 获取报头返回码
+		 */
 		/*@__PURE__*/get return_code() {
 			//比如：SSTP/1.4 200 OK，返回200
 			let code_table = this.#head.split(" ");
@@ -121,6 +145,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		/**
 		 * @param {String} key 获取的PassThru名称
 		 * @returns {String} PassThru的值
+		 * @description 获取PassThru的值
 		 */
 		/*@__PURE__*/get_passthrough(key) { return this["X-SSTP-PassThru-" + key]; }
 	}
@@ -132,7 +157,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
 	 * if(kikka_uuid)
 	 *   console.log(fmo[kikka_uuid].ghostpath);
-	 * @alias `jsstp.fmo_info_t`
+	 * @alias jsstp.fmo_info_t
 	 * @see {@link jsstp.get_fmo_infos}
 	 * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
 	 */
@@ -140,6 +165,7 @@ var jsstp = (/*@__PURE__*/()=>{
 		/**
 		 * @param {sstp_info_t|Object} fmo_info
 		 * @description 从sstp_info_t或Object构造fmo_info_t，不建议直接使用
+		 * @ignore
 		 */
 		/*@__PURE__*/constructor(fmo_info = {}) {
 			//fmo_info每个key的格式都是"uuid.属性名"
@@ -177,9 +203,21 @@ var jsstp = (/*@__PURE__*/()=>{
 				list.push(this[uuid][name]);
 			return list;
 		}
+		/**
+		 * @description 获取所有uuid
+		 */
 		/*@__PURE__*/get uuids() { return Object.keys(this); }
+		/**
+		 * @description 获取所有uuid
+		 */
 		/*@__PURE__*/get keys() { return this.uuids; }
+		/**
+		 * @description 获取fmo数量
+		 */
 		/*@__PURE__*/get length() { return this.keys.length; }
+		/**
+		 * @description 判断fmo是否有效
+		 */
 		/*@__PURE__*/get available() { return !!this.length; }
 	}
 	/**
@@ -193,7 +231,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 *   jsstp.send({
 	 *     Event: "OnBoom"
 	 *   });
-	 * @alias `jsstp.ghost_events_queryer_t`
+	 * @alias jsstp.ghost_events_queryer_t
 	 * @see {@link jsstp.new_event_queryer}
 	 */
 	class ghost_events_queryer_t{
@@ -310,7 +348,7 @@ var jsstp = (/*@__PURE__*/()=>{
 	 * @class jsstp_t
 	 * @description jsstp对象
 	 * @see {@link jsstp}
-	 * @alias `jsstp.type`
+	 * @alias jsstp.type
 	 * @example
 	 * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
 	 */
@@ -515,36 +553,36 @@ var jsstp = (/*@__PURE__*/()=>{
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
 		 */
-		/*@__DECL__*/SEND(info, callback){};
+		/*@__DECL__*/SEND(info, callback){return this.SEND(info, callback);}
 		/**
 		 * 发送`NOTIFY`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
 		 */
-		/*@__DECL__*/NOTIFY(info, callback){};
+		/*@__DECL__*/NOTIFY(info, callback){return this.NOTIFY(info, callback);}
 		/**
 		 * 发送`COMMUNICATE`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
 		 */
-		/*@__DECL__*/COMMUNICATE(info, callback){};
+		/*@__DECL__*/COMMUNICATE(info, callback){return this.COMMUNICATE(info, callback);}
 		/**
 		 * 发送`EXECUTE`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
 		 */
-		/*@__DECL__*/EXECUTE(info, callback){};
+		/*@__DECL__*/EXECUTE(info, callback){return this.EXECUTE(info, callback);}
 		/**
 		 * 发送`GIVE`报文
 		 * @param {Object} info 报文体
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t>|undefined} 如果callback不存在，返回一个promise
 		 */
-		/*@__DECL__*/GIVE(info, callback){};
-	};
+		/*@__DECL__*/GIVE(info, callback){return this.GIVE(info, callback);}
+	}
 	//初始化所有的sstp操作
 	let sstp_version_table = {
 		SEND: "1.4",
