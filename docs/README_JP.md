@@ -10,15 +10,15 @@ Webページでゴーストと通信し、情報をやりとりするためにjs
 ### 1. jsの読み込み
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.0/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.1/jsstp.min.js"></script>
 <!-- または --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.0/jsstp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.1/jsstp.js"></script>
 ```
 
 jsstpはjsで動的に読み込むことも可能です。
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.0/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.1/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2.使用する
