@@ -318,16 +318,16 @@ var jsstp = (/*@__PURE__*/() => {
 		 */
 		/*@__PURE__*/get available() { return this.#ghost_has_has_event; }
 		/**
-		 * 检查是否能够使用get_supported_events快速获取支持的事件列表
+		 * 检查是否能够使用`Get_Supported_Events`快速获取支持的事件列表
 		 * @returns {Promise<Boolean>}
 		 * @example
-		 * if(!ghost_events_queryer.supported_events_available)
+		 * if(!ghost_events_queryer.fast_query_available)
 		 * 	console.info("无法快速获取支持的事件列表");
 		 * else
 		 * 	console.info("好哦");
 		 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
 		 */
-		/*@__PURE__*/get supported_events_available() { return this.#ghost_has_get_supported_events; }
+		/*@__PURE__*/get fast_query_available() { return this.#ghost_has_get_supported_events; }
 		/**
 		 * @returns {Promise<ghost_events_queryer_t>} this
 		 */
@@ -397,7 +397,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {Function|undefined} callback 回调函数
 		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
 		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
+		 *   - 若一切正常其内容为{@link callback}`(result:sstp_info_t)`的返回值
 		 *   - 否则返回`undefined`
 		 */
 		costom_send(sstphead, info, callback) {
@@ -419,8 +419,59 @@ var jsstp = (/*@__PURE__*/() => {
 				new Promise(call_base);//如果callback不存在，返回一个promise
 		}
 		/**
+		 * 发送`SEND`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *   - 若一切正常其内容为{@link callback}`(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
+		 */
+		/*@__DECL__*/SEND(info, callback) { return this.SEND(info, callback); }
+		/**
+		 * 发送`NOTIFY`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *   - 若一切正常其内容为{@link callback}`(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
+		 */
+		/*@__DECL__*/NOTIFY(info, callback) { return this.NOTIFY(info, callback); }
+		/**
+		 * 发送`COMMUNICATE`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *   - 若一切正常其内容为{@link callback}`(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
+		 */
+		/*@__DECL__*/COMMUNICATE(info, callback) { return this.COMMUNICATE(info, callback); }
+		/**
+		 * 发送`EXECUTE`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *   - 若一切正常其内容为{@link callback}`(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
+		 */
+		/*@__DECL__*/EXECUTE(info, callback) { return this.EXECUTE(info, callback); }
+		/**
+		 * 发送`GIVE`报文
+		 * @param {Object} info 报文体
+		 * @param {Function|undefined} callback 回调函数
+		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
+		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
+		 *   - 若一切正常其内容为{@link callback}`(result:sstp_info_t)`的返回值
+		 *   - 否则返回`undefined`
+		 */
+		/*@__DECL__*/GIVE(info, callback) { return this.GIVE(info, callback); }
+		
+		/**
 		 * 判断是否存在某个事件
-		 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
+		 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 		 * @param {String} event_name 事件名
 		 * @param {String} security_level 安全等级
 		 * @returns {Promise<Boolean>} 是否存在
@@ -457,7 +508,7 @@ var jsstp = (/*@__PURE__*/() => {
 		}
 		/**
 		 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
-		 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过`jsstp.new_event_queryer()`获取）来查询
+		 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 		 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
 		 * @example
 		 * jsstp.get_supported_events().then(result => console.log(result));
@@ -546,56 +597,6 @@ var jsstp = (/*@__PURE__*/() => {
 		 * );
 		 */
 		/*@__PURE__*/async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
-		/**
-		 * 发送`SEND`报文
-		 * @param {Object} info 报文体
-		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
-		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *   - 否则返回`undefined`
-		 */
-		/*@__DECL__*/SEND(info, callback) { return this.SEND(info, callback); }
-		/**
-		 * 发送`NOTIFY`报文
-		 * @param {Object} info 报文体
-		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
-		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *   - 否则返回`undefined`
-		 */
-		/*@__DECL__*/NOTIFY(info, callback) { return this.NOTIFY(info, callback); }
-		/**
-		 * 发送`COMMUNICATE`报文
-		 * @param {Object} info 报文体
-		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
-		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *   - 否则返回`undefined`
-		 */
-		/*@__DECL__*/COMMUNICATE(info, callback) { return this.COMMUNICATE(info, callback); }
-		/**
-		 * 发送`EXECUTE`报文
-		 * @param {Object} info 报文体
-		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
-		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *   - 否则返回`undefined`
-		 */
-		/*@__DECL__*/EXECUTE(info, callback) { return this.EXECUTE(info, callback); }
-		/**
-		 * 发送`GIVE`报文
-		 * @param {Object} info 报文体
-		 * @param {Function|undefined} callback 回调函数
-		 * @returns {Promise<sstp_info_t|any|undefined>} 返回一个promise  
-		 * 如果callback不存在其内容为获取到的`sstp_info_t`，否则
-		 *   - 若一切正常其内容为`callback(result:sstp_info_t)`的返回值
-		 *   - 否则返回`undefined`
-		 */
-		/*@__DECL__*/GIVE(info, callback) { return this.GIVE(info, callback); }
 	}
 	//初始化所有的sstp操作
 	let sstp_version_table = {
