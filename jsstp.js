@@ -18,7 +18,8 @@ var jsstp = (/*@__PURE__*/() => {
 	//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
 	let has_event_event_name = "Has_Event";
 	let get_supported_events_event_name = "Get_Supported_Events";
-	let assign = Object.assign;
+	let object = Object;
+	let assign = object.assign;
 	let endline = "\r\n";
 	let local_str = "local";
 	let external_str = "external";
@@ -70,9 +71,10 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @see {@link sstp_info_t.from_string}
 		 * @ignore
 		 */
-		/*@__PURE__*/constructor(info_head, info_body, unknown_lines) {
+		/*@__PURE__*/constructor(info_head, info_body, unknown_lines = {}) {
 			this.#head = `${info_head}`;
-			this.#unknown_lines = unknown_lines || [];
+			if (unknown_lines.length)
+				this.#unknown_lines = unknown_lines;
 			assign(this, info_body);
 		}
 		/**
@@ -106,7 +108,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 * 获取未知行的数组
 		 * @returns {Array<String>} 未知行的数组
 		 */
-		/*@__PURE__*/get unknown_lines() { return this.#unknown_lines; }
+		/*@__PURE__*/get unknown_lines() { return this.#unknown_lines || []; }
 		/**
 		 * 获取报文头
 		 * @returns {String} 报文头
@@ -119,10 +121,12 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @ignore
 		 */
 		/*@__PURE__*/toString() {
-			let list = [this.#head, ...this.#unknown_lines];
-			for (let key in this)
-				list.push(`${key}: ${this[key]}`);
-			return list.join(endline) + endline + endline;
+			return [
+				this.#head,
+				...this.unknown_lines,
+				...object.entries(this).map(([key, value]) => `${key}: ${value}`),
+				"", ""//空行结尾
+			].join(endline);
 		}
 		/**
 		 * 获取字符串报文
@@ -135,14 +139,11 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @ignore
 		 */
 		/*@__PURE__*/toJSON() {
-			let json = {
+			return {
 				head: this.#head,
 				unknown_lines: this.#unknown_lines,
 				body: assign({}, this)
 			};
-			if (!this.#unknown_lines.length)
-				delete json.unknown_lines;
-			return json;
 		}
 		/**
 		 * 获取报头返回码（若出现意外返回`NaN`）
@@ -213,7 +214,7 @@ var jsstp = (/*@__PURE__*/() => {
 		/**
 		 * @description 获取所有uuid
 		 */
-		/*@__PURE__*/get uuids() { return Object.keys(this); }
+		/*@__PURE__*/get uuids() { return object.keys(this); }
 		/**
 		 * @description 获取所有uuid
 		 */
@@ -334,7 +335,7 @@ var jsstp = (/*@__PURE__*/() => {
 			this.clear();
 			let jsstp = this.#base_jsstp;
 			this.#ghost_has_has_event = await jsstp.has_event(has_event_event_name);
-			this.#ghost_has_get_supported_events = await jsstp.has_event(get_supported_events_event_name);
+			this.#ghost_has_get_supported_events = this.#ghost_has_has_event && await jsstp.has_event(get_supported_events_event_name);
 			if (this.#ghost_has_get_supported_events)
 				this.#ghost_event_list = await jsstp.get_supported_events();
 			return this;
