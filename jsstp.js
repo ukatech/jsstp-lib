@@ -262,7 +262,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 * 获取报头返回码（若出现意外返回`NaN`）
 		 * @returns {Number} 报头返回码（若出现意外则为`NaN`）
 		 */
-		/*@__PURE__*/get return_code() {
+		/*@__PURE__*/get status_code() {
 			//比如：SSTP/1.4 200 OK，返回200
 			return +this.#head.split(" ").find(value => is_not_nan(+value));
 		}
@@ -590,13 +590,13 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @param {String} method_name 方法名称
 		 * @returns {{
 		 * 	(info: Object): Promise<sstp_info_t>,
-		 * 	get_result_by_text(info: Object): Promise<String>
+		 * 	get_row(info: Object): Promise<String>
 		 * }} 调用器
 		 */
 		get_caller_of_method(method_name) {
 			let header = get_sstp_header(method_name);
 			return assign((info) => this.costom_send(header, info), {
-				get_result_by_text: (info) => this.costom_text_send(header, info)
+				get_row: (info) => this.costom_text_send(header, info)
 			});
 		}
 		/**
@@ -727,7 +727,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 * 	console.log(fmo);
 		 */
 		/*@__PURE__*/async get_fmo_infos() {
-			return this.proxy.EXECUTE.get_result_by_text({
+			return this.proxy.EXECUTE.get_row({
 				Command: "GetFMO"
 			}).then(
 				fmo_text => new fmo_info_t(fmo_text)
