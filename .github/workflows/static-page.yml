@@ -7,7 +7,7 @@ on:
     branches: ["master"]
     # and only run when the following files are changed
     paths:
-      - "index.html"
+      - "docs/index.html"
       - "jsstp.js"
 
   # Allows you to run this workflow manually from the Actions tab
@@ -34,13 +34,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Move files
+        run: mv jsstp.js docs/jsstp.js
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: '.'
+          path: './docs'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

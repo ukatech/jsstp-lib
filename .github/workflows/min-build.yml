@@ -20,8 +20,7 @@ jobs:
       - name: Minify
         run: |
           npm install uglify-js -g
-          uglifyjs ./jsstp.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/ --comments /^@__DECL__/
-          sed -i -E ':a;N;$!ba;s/\n\/\*@__DECL__\*\/[^}]*\}//g' ./jsstp.min.js
+          uglifyjs ./jsstp.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           rm -rf ./jsstp.mjs
           echo -n "export " > jsstp.mjs && cat jsstp.min.js >> jsstp.mjs
 

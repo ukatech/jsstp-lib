@@ -57,7 +57,7 @@ var jsstp = (/*@__PURE__*/() => {
 		}
 		/**
 		 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-		 * @param {(...dimensions,value):any} func 要执行的函数，返回值将被添加到数组中
+		 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 		 */
 		/*@__PURE__*/flat_map(func) {
 			let result = [];
@@ -531,9 +531,9 @@ var jsstp = (/*@__PURE__*/() => {
 			this.proxy = new Proxy(this, {
 				get: new get_handler({
 					string_key_handler: (target, key) => {
-						if(key in sstp_version_table)
+						if (key in sstp_version_table)
 							return target.get_caller_of_method(key);
-						if(is_event_name(key))
+						if (is_event_name(key))
 							return target.get_simple_caller_of_event(get_reorganized_event_name(key));
 					}
 				})
@@ -712,7 +712,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 */
 		/*@__PURE__*/async get_supported_events() {
 			let info = await this.event.Get_Supported_Events();
-			let [local,external] = [info.local,info.external];
+			let [local, external] = [info.local, info.external];
 			return {
 				local: (local || "").split(","),
 				external: (external || "").split(",")
