@@ -9,18 +9,13 @@
 	// 定义一个函数
 	async function send() {
 		// 获取输入框的值并转换为object，如有报错则弹窗
-		try {
-			var json = JSON.parse(document.getElementById("json").value);
-			// 根据下拉选单的值，设置jsstp的类型
-			var sstptype = document.getElementById("type").value;
-			// 发送请求
-			var result=await jsstp[sstptype](json);
-			// 设置回显框的值
-			document.getElementById("result").value = JSON.stringify(result, null, "\t");
-		} catch (e) {
-			alert("错误：" + e);
-			return;
-		}
+		var json = JSON.parse(document.getElementById("json").value);
+		// 根据下拉选单的值，设置jsstp的类型
+		var sstptype = document.getElementById("type").value;
+		// 发送请求
+		var result=await jsstp[sstptype](json);
+		// 设置回显框的值
+		document.getElementById("result").value = JSON.stringify(result, null, "\t");
 	}
 	// 解析并处理url参数
 	async function args_handler() {
