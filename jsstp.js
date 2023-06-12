@@ -69,7 +69,7 @@ var jsstp = (/*@__PURE__*/() => {
 			});
 			return result;
 		}
-	};
+	}
 	//工具函数
 	/**
 	 * 生成一个新的info_object
@@ -120,7 +120,7 @@ var jsstp = (/*@__PURE__*/() => {
 		 * @returns {Function} 代理的get方法
 		 */
 		constructor(info) {
-			return (target, key, receiver) => {
+			return (target, key) => {
 				if (info.block && info.block(target, key))
 					return;
 				let result;
@@ -586,24 +586,27 @@ var jsstp = (/*@__PURE__*/() => {
 			);
 		}
 		/**
+		 * 获取指定方法的调用器
+		 * @param {String} method_name 方法名称
+		 * @returns {{
+		 * 	(info: Object): Promise<sstp_info_t>,
+		 * 	get_result_by_text(info: Object): Promise<String>
+		 * }} 调用器
+		 */
+		get_caller_of_method(method_name) {
+			let header = get_sstp_header(method_name);
+			return assign((info) => this.costom_send(header, info), {
+				get_result_by_text: (info) => this.costom_text_send(header, info)
+			});
+		}
+		/**
 		 * 获取指定事件的调用器
 		 * @param {String} event_name 事件名称
 		 * @param {String|undefined} method_name 方法名称
 		 * @returns {Function} 调用器
 		 */
 		get_caller_of_event(event_name, method_name = "SEND") {
-			return (info) => this[method_name](assign({ Event: event_name }, info));
-		}
-		/**
-		 * 用于获取指定事件的简单调用器的代理
-		 * @returns {Proxy}
-		 * @example
-		 * jsstp.event.OnTest("test");
-		 */
-		get event() {
-			return new Proxy({}, {
-				get: (target, prop) => this.get_simple_caller_of_event(prop)
-			});
+			return (info) => this.proxy[method_name](assign({ Event: event_name }, info));
 		}
 		/**
 		 * 用于获取指定事件的简单调用器
@@ -618,21 +621,18 @@ var jsstp = (/*@__PURE__*/() => {
 				args.forEach((arg) =>
 					info[`Reference${reference_num++}`] = arg
 				);
-				return get_caller_of_event(event_name, method_name)(info);
+				return this.get_caller_of_event(event_name, method_name)(info);
 			};
 		}
 		/**
-		 * 获取指定方法的调用器
-		 * @param {String} method_name 方法名称
-		 * @returns {{
-		 * 	(info: Object): Promise<sstp_info_t>,
-		 * 	get_result_by_text(info: Object): Promise<String>
-		 * }} 调用器
+		 * 用于获取指定事件的简单调用器的代理
+		 * @returns {Proxy}
+		 * @example
+		 * jsstp.event.OnTest("test");
 		 */
-		get_caller_of_method(method_name) {
-			let header = get_sstp_header(method_name);
-			return assign((info) => this.costom_send(header, info), {
-				get_result_by_text: (info) => this.costom_text_send(header, info)
+		get event() {
+			return new Proxy({}, {
+				get: (target, prop) => this.get_simple_caller_of_event(prop)
 			});
 		}
 		/**
