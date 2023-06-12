@@ -10,41 +10,107 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka)&[SSTP](http://ssp.shillest.
 ### 1. loading js
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.1/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.min.js"></script>
 <!-- or --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.1/jsstp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.js"></script>
 ```
 
 You can also load jsstp dynamically in js
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v1.1.1.1/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. Use
 
 ```javascript
+// You may need to check if ghost is available before jsstp related operations
+if (!await jsstp.available())
+	console.log("ghost is not available, please check if ghost is up");
+
+//jsstp used to support passing callback functions as arguments before 2.0, but now it no longer does
+//You can use Promise or async/await to get the return value if you need to
+//You can use jsstp.SEND to send a message
 jsstp.SEND(
-	{//Event information
-		"Event": "OnTest",
-		"Script": "\\0Hello, World!\\e"
-	},
-	function (data) {//callback function, can be omitted
-		console.log("return_code: "+data.return_code);
-		console.log(data);
-		console.log(data.Script);
-	}
-);
-//You can also use promise
-jsstp.SEND(
-	{
+	{// Event message
 		"Event": "OnTest",
 		"Script": "\\0Hello, World!\\e"
 	}
-).then(function (data) {
-	console.log("head: "+data.head);
+).then((data) => {
+	console.log("head: " + data.head);
 	console.log(JSON.stringify(data));
 	console.log(data["Script"]);
 });
+//jsstp supports all the sstp base operations, jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE] can be called.
+//If you like nostalgia and just want to get the message itself, you can use jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_row
+
+// If you just want to trigger the event and don't need to customize it to send a more complex message, you can write it like this
+
+let data = await jsstp.OnTest("from jsstp.js!", 123123);
+/*
+	This is equivalent to:
+	jsstp.SEND({
+		"Event": "OnTest",
+		"Reference0": "from jsstp.js!",
+		"Reference1": 123123
+	});
+	You can write this for all events, but if the event doesn't start with `On`, you need to prefix the event name with `On_` to access jsstp so that it recognizes that you want to trigger the event
+	You can also use `jsstp.event.eventName(parameter)` to trigger the event, so you don't need to prefix the event name with `On_`
+*/
+console.log("status code: " + data.status_code);
+//data is of type jsstp.sstp_info_t and is used in various ways
+//The following methods are inherited from info_object
+data.keys; //get all keys
+data.values; //Get all values
+data.entries; //Get all key-value pairs
+data.length; //Get the number of key-value pairs
+data.forEach((value, key) => console.log(key + "=" + value)); // iterate through all key-value pairs: if the iteration function returns a value, that value will be updated to this key-value pair
+//The following methods are unique
+data.get_passthrough("Rseult"); //get the value of a key of X-SSTP-PassThru in the message, equivalent to data["X-SSTP-PassThru-Rseult"]
+data.Script; //Get the value of the Script key in the message
+data.head; //Get the header of the message
+data.status_code; //Get the status code in the message header
+//If there is no Rseult key in the message, you can also just use data.Rseult or data["Rseult"] to get the value of X-SSTP-PassThru-Rseult: this might be cleaner
+
+// If you want to get whether ghost supports a certain event, you can write it like this
+let result = await jsstp.has_event("OnTest");//this is almost the same as (await jsstp.event.Has_Event(event_name, security_level)).Result!="1";!
+console.log(result);
+// If you want to query events in bulk (like ukadoc does!) ), you can use jsstp.new_event_queryer() to get a queryer
+let queryer = await jsstp.new_event_queryer();
+//queryer is of type jsstp.ghost_events_queryer_t and is used in various ways
+queryer.check_event("OnTest").then(result => console.log(result));
+//queryer, like jsstp, checks for events with an optional parameter specifying the security level of the event, the default being "external" (as this is the common security level for web pages sending events to ghost)
+// If you want to query for local events, you need to specify the security level as "local", like this:
+queryer.check_event("OnBoot", "local");
+jsstp.has_event("OnBoot", "local");//use jsstp like this
+//queryer has a caching mechanism, if you want to clear the cache:
+await queryer.reset();
+//queryer is bound to the jsstp instance that constructed it, if you want queryer to point to a specific ghost, change the default additional message by setting jsstp.default_info and use reset to clear the cache
+// use the hwnd you get in fmo, this avoids awkward situations caused by renaming
+jsstp.default_info.ReceiverGhostHWnd = 123456;// see below for how to get fmo, here is just an example
+//If you're sure your ghost name is unique enough, you can also just use the ghost name
+jsstp.default_info.ReceiverGhostName = "橘花";
+//queryer also supports some quick detection
+if (!queryer.available)
+	console.info("Unable to get a list of supported events");//queryer is not available, you need to alert the user to update the ghost or give feedback to its author: jsstp uses the `Has_Event` event to check the availability of events, as does the ghost terminal.
+if (!queryer.fast_query_available)
+	console.info("Can't get the list of supported events fast");//this won't affect usage, but will cause a query request to be made for uncached events: if ghost supports `Get_Supported_Events` events the queryer will use it to get the list of events (which will be much faster!)
+else
+	console.info("ok oh");
+
+// If you want to get fmo information, you can write it like this
+let fmo = await jsstp.get_fmo_infos();
+if (fmo.available)
+	console.log(fmo);
+//fmo is of type jsstp.fmo_info_t and is used in various ways
+//fmo_info_t is a specialised sstp_info_t, so you can use all the sstp_info_t methods on it
+//It also has some special methods
+fmo.uuids; //Get all uuids, equivalent to `fmo.keys`.
+fmo.get_uuid_by("fullname", "Taromati2"); //get the uuid of the specified attribute value equal to the specified value
+fmo.get_list_of("fullname"); //get all values of the specified attribute
+fmo.available; //get whether fmo has content
+//each key-value pair of fmo is a String:info_object, the key is the uuid and the value is the fmo information corresponding to that uuid
+//You can still use the info_object member methods to manipulate the fmo information in fmo (see the introduction to sstp_info_t above)
+//If you still don't understand it, you can check the structure of fmo in the console or look at the source code of jsstp
 ```
 Please read the source code for detailed definitions and functionality.
