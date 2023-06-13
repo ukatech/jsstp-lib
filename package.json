@@ -1,13 +1,15 @@
 {
 	"name": "jsstp",
 	"version": "2.0.0",
-	"description": "Use js to communicate with ukagaka in a web page to exchange information.",
+	"description": "Use js to communicate with ukagaka in js to exchange information.",
 	"main": "src/jsstp.mjs",
 	"directories": {
 		"doc": "docs"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "npm run test:unit && npm run test:browser",
+		"test:unit": "node tests/unit.mjs",
+		"test:browser": "node tests/browser.mjs"
 	},
 	"repository": {
 		"type": "git",
@@ -28,6 +30,7 @@
 	},
 	"files":[
 		"docs",
-		"src"
+		"src",
+		"tests"
 	]
 }

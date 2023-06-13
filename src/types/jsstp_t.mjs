@@ -16,6 +16,7 @@ import {
 	get_reorganized_event_name,
 	new_get_handler,
 
+	in_browser,
 	default_security_level
 } from "../base.mjs";
 
@@ -75,7 +76,7 @@ class jsstp_t {
 	/*@__PURE__*/constructor(sendername, host) {
 		this.RequestHeader = {
 			"Content-Type": "text/plain",
-			"Origin": window.location.origin
+			"Origin": in_browser ? window.location.origin : "localhost"
 		};
 		this[default_info] = { Charset: "UTF-8" };
 
