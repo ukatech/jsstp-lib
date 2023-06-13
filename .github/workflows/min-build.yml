@@ -3,7 +3,7 @@ name: min build
 on:
   push:
     paths:
-      - 'jsstp.js'
+      - 'src/jsstp.js'
   workflow_dispatch:
 
 jobs:
@@ -20,9 +20,11 @@ jobs:
       - name: Minify
         run: |
           npm install uglify-js -g
+          cd src
           uglifyjs ./jsstp.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           rm -rf ./jsstp.mjs
           echo -n "export " > jsstp.mjs && cat jsstp.min.js >> jsstp.mjs
+          cd ..
 
       - name: add all
         run: git add -A

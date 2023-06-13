@@ -41,16 +41,16 @@ jsstp.SEND(
 	console.log(JSON.stringify(data));
 	console.log(data["Script"]);
 });
-//jsstp は sstp の基本操作をすべてサポートしているので、jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE] が呼び出せます。
-// ノスタルジーが好きで、メッセージそのものを取得したいだけなら、 jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_row を使用することができます。
+//jsstpはsstpの基本操作をすべてサポートしており、jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE]はすべて呼び出すことができます。
+// ノスタルジーが好きで、メッセージそのものを取得したいだけなら、jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_rowを使うことができます。
 
-// イベントをトリガーするだけで、より複雑なメッセージを送信するためのカスタマイズが必要ない場合は、次のように記述します。
+// イベントをトリガーするだけで、より複雑なメッセージを送信するためにカスタマイズする必要がない場合は、次のように書くことができます。
 
 let data = await jsstp.OnTest("from jsstp.js!", 123123);
 /*
 	これと同等です：
 	jsstp.SEND({
-		"イベント": "OnTest",
+		"Event": "OnTest",
 		"Reference0": "from jsstp.js!",
 		"Reference1": 123123
 	});
@@ -59,30 +59,32 @@ let data = await jsstp.OnTest("from jsstp.js!", 123123);
 */
 console.log("status code: " + data.status_code);
 //data は jsstp.sstp_info_t 型であり、様々な方法で使用される。
-//以下のメソッドはinfo_objectから継承されます。
+//以下のメソッドはinfo_objectから継承されています。
 data.keys; //すべてのキーを取得する
 data.values;//すべての値を取得する
 data.entries; //すべてのキーと値のペアを取得する
 data.length; //キー・バリュー・ペアの数を取得する。
-data.forEach((value, key) => console.log(key + "=" + value)); // すべてのキーと値のペアを反復する：反復関数が値を返す場合、その値はこのキーと値のペアに更新されます。
+data.forEach((value, key) => console.log(key + "=" + value)); // すべてのキーと値のペアを繰り返し処理する：繰り返し処理関数が値を返す場合、その値はこのキーと値のペアに更新されます。
+//以下のメソッドは、jsstp.base_sstp_info_tから継承されています。
+data.Script; //メッセージのScriptキーの値を取得する。
+data.head; //メッセージのヘッダを取得する。
+data.status_code; //メッセージのヘッダーにあるステータスコードを取得する
 //以下のメソッドはユニークです。
-data.get_passthrough("Result"); //メッセージ内のX-SSTP-PassThruのキーの値を取得。data["X-SSTP-PassThru-Result"]と同等。
-data.Script; //メッセージ中のScriptのキーの値を取得する
-data.head; //メッセージのヘッダーを取得する。
-data.status_code; //メッセージヘッダのステータスコードを取得する。
+data.get_passthrough("Result"); //メッセージ内のX-SSTP-PassThruキーのいずれかの値を取得する。
 // メッセージにResultキーがない場合、data.Resultまたはdata["Result"]を使用してX-SSTP-PassThru-Resultの 値を取得することもできる。
 
-// ゴーストが特定のイベントをサポートしているかどうかを取得したい場合、次のように記述することができます。
-let result = await jsstp.has_event("OnTest");//(await jsstp.event.Has_Event(event_name, security_level)).Result!="1";とほぼ同じである！
+// ゴーストが特定のイベントをサポートしているかどうかを取得したい場合、以下のように記述することができます。
+let result = await jsstp.has_event("OnTest");// これは jsstp.event.Has_Event(event_name, security_level).then(({ Result }) => Result == "1") とほぼ同じである．
 console.log(result);
 // イベントを一括して問い合わせたい場合（ukadocがそうであるように!） )、jsstp.new_event_queryer()を使ってクエリを取得することができます。
-let queryer = await jsstp.new_event_queryer();
-//queryer は jsstp.ghost_events_queryer_t 型であり、様々な方法で使用されます。
-queryer.check_event("OnTest").then(result => console.log(result));
-//queryerは、jsstpと同様に、イベントのセキュリティレベルを指定するオプションのパラメータでイベントをチェックします。デフォルトは「external」です（これは、ghostにイベントを送信するWebページの一般的なセキュリティレベルであるため）。
-// ローカルイベントを照会したい場合は、次のようにセキュリティレベルを「local」と指定する必要があります：
-queryer.check_event("OnBoot", "local");
-jsstp.has_event("OnBoot", "local");//jsstp をこのように使用します。
+let queryer = await jsstp.new_event_queryer()。
+//queryer は jsstp.ghost_events_queryer_t 型であり、様々な方法で使用される。
+queryer.check_event("OnTest").then(result => console.log(result)).
+//queryerは、jsstpと同様に、イベントのセキュリティレベルを指定するオプションの引数でイベントをチェックします：
+//jsstpがnodejsで動作している場合、セキュリティレベルは「local」、jsstpがブラウザで動作している場合、セキュリティレベルは「external」（ブラウザのjsstpは外部イベントしかトリガーできないため！）。
+// クエリローカルイベントを修正したい場合は、このようにセキュリティレベルを「local」に指定する必要があります：
+queryer.check_event("OnBoot", "local").
+jsstp.has_event("OnBoot", "local");//jsstp をこのように使用する。
 //queryer にはキャッシュの仕組みがあるので、キャッシュをクリアしたい場合：
 await queryer.reset();
 //queryerを構築したjsstpインスタンスにバインドされます。queryerが特定のゴーストを指すようにしたい場合は、jsstp.default_infoを設定してデフォルトの追加メッセージを変更し、リセットでキャッシュをクリアしてください。
@@ -102,15 +104,15 @@ else
 let fmo = await jsstp.get_fmo_infos();
 if (fmo.available)
 	console.log(fmo);
-//fmo は jsstp.fmo_info_t 型で、様々な用途に使われます。
-//fmo_info_t は特殊化された sstp_info_t なので、sstp_info_t のメソッドをすべて使うことができる。
-// また、いくつかの特殊なメソッドも持っている
-fmo.uuids; //全てのuuidを取得する、`fmo.keys`に相当する。
-fmo.get_uuid_by("fullname", "Taromati2"); //指定した属性値に等しいuuidを取得する。
+//fmo は jsstp.fmo_info_t 型で、様々な用途で使われます。
+//fmo_info_t は特殊化された base_sstp_info_t で、base_sstp_info_t のすべてのメソッドが使えます（つまり、sstp_info_t の `get_passthrough` 以外のすべてのメソッドが使えます）。
+// また、いくつかの特殊なメソッドも持っています
+fmo.uuids; //全てのuuidを取得する、`fmo.keys`と等価
+fmo.get_uuid_by("fullname", "Taromati2"); //属性値が指定された値と等しいuuidを取得する。
 fmo.get_list_of("fullname"); //指定された属性の全ての値を取得する。
-fmo.available; //コンテンツがあるかどうかを取得します。
-//fmo の各キーと値のペアは String:info_object であり、キーは uuid、値はその uuid に対応する fmo 情報である。
-// info_objectのメンバーメソッドを使用しても、fmoのfmo情報を操作することができます（上記のsstp_info_tの紹介を参照）。
+fmo.available; //fmoがコンテンツを持っているかどうかを取得する。
+//fmoの各キーと値のペアはString:info_objectであり、キーはuuid、値はそのuuidに対応するfmo情報である。
+// info_objectのメンバーメソッドを使って、fmoのfmo情報を操作することは可能です（上記のsstp_info_tの紹介を参照）。
 // それでも理解できない場合は、コンソールでfmoの構造を確認するか、jsstpのソースコードを見てみてください
 ```
 詳細な定義や機能については、ソースコードをお読みください。

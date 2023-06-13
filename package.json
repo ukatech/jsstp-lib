@@ -1,0 +1,25 @@
+{
+  "name": "jsstp",
+  "version": "2.0.0",
+  "description": "Use js to communicate with ukagaka in a web page to exchange information.",
+  "main": "src/jsstp.node.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ukatech/jsstp-lib.git"
+  },
+  "keywords": [
+    "ukagaka"
+  ],
+  "author": "steve02081504",
+  "license": "SEE LICENSE IN <LICENSE>",
+  "bugs": {
+    "url": "https://github.com/ukatech/jsstp-lib/issues"
+  },
+  "homepage": "https://github.com/ukatech/jsstp-lib#readme"
+}

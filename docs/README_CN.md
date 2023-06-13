@@ -65,22 +65,24 @@ data.values; //获取所有值
 data.entries; //获取所有键值对
 data.length; //获取键值对数量
 data.forEach((value, key) => console.log(key + "=" + value)); //遍历所有键值对：如果遍历函数有返回值，该值会被更新到此键值对中
-//以下是特有的方法
-data.get_passthrough("Result"); //获取报文中X-SSTP-PassThru的某个键的值，和data["X-SSTP-PassThru-Result"]等价
+//以下是自jsstp.base_sstp_info_t继承的方法
 data.Script; //获取报文中的Script键的值
 data.head; //获取报文头
 data.status_code; //获取报文头中的状态码
+//以下是特有的方法
+data.get_passthrough("Result"); //获取报文中X-SSTP-PassThru的某个键的值，和data["X-SSTP-PassThru-Result"]等价
 //如果报文中没有Result键，你也可以直接使用data.Result或者data["Result"]来获取X-SSTP-PassThru-Result的值：这可能简洁一些
 
 //如果你想获取ghost是否支持某个事件，可以这样写
-let result = await jsstp.has_event("OnTest");//这和(await jsstp.event.Has_Event(event_name, security_level)).Result!="1";几乎一样！
+let result = await jsstp.has_event("OnTest");//这和jsstp.event.Has_Event(event_name, security_level).then(({ Result }) => Result == "1")几乎一样！
 console.log(result);
 //如果你想大批量的查询事件（像ukadoc那样！），你可以使用jsstp.new_event_queryer()来获取一个queryer
 let queryer = await jsstp.new_event_queryer();
 //queryer的类型是jsstp.ghost_events_queryer_t，使用方法各种各样
 queryer.check_event("OnTest").then(result => console.log(result));
-//queryer和jsstp一样，检查事件时有可选的参数指定事件的安全等级，默认是"external"（因为这是网页向ghost发送事件的常见安全等级）
-//如果你想要查询local事件，你需要指定安全等级为"local"，像这样：
+//queryer和jsstp一样，检查事件时有可选的参数指定事件的安全等级，默认的安全等级随着jsstp的运行环境而变化：
+//如果jsstp运行在nodejs中，安全等级为"local"，如果jsstp运行在浏览器中，安全等级为"external"（因为浏览器中的jsstp只能触发外部事件！）
+//如果你想要固定查询local事件，你需要指定安全等级为"local"，像这样：
 queryer.check_event("OnBoot", "local");
 jsstp.has_event("OnBoot", "local");//使用jsstp的话这样
 //queryer具有缓存机制，如果想清空缓存：
@@ -103,7 +105,7 @@ let fmo = await jsstp.get_fmo_infos();
 if (fmo.available)
 	console.log(fmo);
 //fmo的类型是jsstp.fmo_info_t，使用方法各种各样
-//fmo_info_t是特化的sstp_info_t，所以你可以对其使用sstp_info_t的所有方法
+//fmo_info_t是特化的base_sstp_info_t，所以你可以对其使用base_sstp_info_t的所有方法（也就是说，sstp_info_t的所有方法除了`get_passthrough`）
 //它还有一些特殊的方法
 fmo.uuids; //获取所有uuid，和`fmo.keys`等价
 fmo.get_uuid_by("fullname", "Taromati2"); //获取指定属性值与指定值相等的uuid
