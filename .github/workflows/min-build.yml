@@ -3,7 +3,7 @@ name: build
 on:
   push:
     paths:
-      - 'src/jsstp.js'
+      - 'src/**'
   workflow_dispatch:
 
 jobs:
