@@ -21,12 +21,13 @@ var jsstp = (/*@__PURE__*/() => {
 	let endline = "\r\n";
 	let undefined;// =undefined
 
-	let Get_Supported_Events="Get_Supported_Events";
-	let Has_Event="Has_Event";
-	let get_supported_events=Get_Supported_Events.toLowerCase();
-	let has_event=Has_Event.toLowerCase();
-	let get_simple_caller_of_event="get_simple_caller_of_event";
-	let trivial_clone="trivial_clone";
+	let Get_Supported_Events = "Get_Supported_Events";
+	let Has_Event = "Has_Event";
+	let get_supported_events = Get_Supported_Events.toLowerCase();
+	let has_event = Has_Event.toLowerCase();
+	let get_simple_caller_of_event = "get_simple_caller_of_event";
+	let trivial_clone = "trivial_clone";
+	let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["blocker", "string_key_handler", "symbol_key_handler", "default_handler"];
 	/**
 	 * 拓展object，提供一些简单且遍历的操作
 	 */
@@ -126,21 +127,21 @@ var jsstp = (/*@__PURE__*/() => {
 	 */
 	let new_get_handler = /*@__PURE__*/(info) =>
 		(target, key) => {
-			if (info.blocker && info.blocker(target, key))
+			if (info[blocker] && info[blocker](target, key))
 				return;
 			let result;
 			if (Object(key) instanceof String)//string
-				result = info.string_key_handler && info.string_key_handler(target, key);
+				result = info[string_key_handler] && info[string_key_handler](target, key);
 			else//symbol
-				result = info.symbol_key_handler && info.symbol_key_handler(target, key);
+				result = info[symbol_key_handler] && info[symbol_key_handler](target, key);
 			if (result !== undefined)
 				return result;
-			else if (info.default_handler)
-				return info.default_handler(target, key)
+			else if (info[default_handler])
+				return info[default_handler](target, key)
 			return (result = target[key]) instanceof Function ? result.bind(target) : result;
 		}
 	//定义默认安全等级
-	let default_security_level = window? "external" : "local";
+	let default_security_level = window ? "external" : "local";
 	//定义sstp报文类
 	let x_sstp_passthru_head = "X-SSTP-PassThru-";
 	/*
