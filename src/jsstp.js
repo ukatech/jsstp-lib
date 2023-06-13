@@ -27,6 +27,7 @@ var jsstp = (/*@__PURE__*/() => {
 	let has_event = Has_Event.toLowerCase();
 	let get_simple_caller_of_event = "get_simple_caller_of_event";
 	let trivial_clone = "trivial_clone";
+	let default_info = "default_info";
 	let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["blocker", "string_key_handler", "symbol_key_handler", "default_handler"];
 	/**
 	 * 拓展object，提供一些简单且遍历的操作
@@ -538,7 +539,7 @@ var jsstp = (/*@__PURE__*/() => {
 				"Content-Type": "text/plain",
 				"Origin": window.location.origin
 			};
-			this.default_info = { Charset: "UTF-8" };
+			this[default_info] = { Charset: "UTF-8" };
 
 			this.host = host;
 			this.sendername = sendername;
@@ -564,8 +565,8 @@ var jsstp = (/*@__PURE__*/() => {
 		 * 修改sendername
 		 * @param {String} sendername
 		 */
-		set sendername(sendername) { this.default_info.Sender = sendername || "jsstp-client"; }
-		/*@__PURE__*/get sendername() { return this.default_info.Sender; }
+		set sendername(sendername) { this[default_info].Sender = sendername || "jsstp-client"; }
+		/*@__PURE__*/get sendername() { return this[default_info].Sender; }
 		/**
 		 * 发送报文，但是不对返回结果进行处理
 		 * @param {String} sstphead 报文头
