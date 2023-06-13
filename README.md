@@ -70,11 +70,11 @@ data.entries; //获取所有键值对
 data.length; //获取键值对数量
 data.forEach((value, key) => console.log(key + "=" + value)); //遍历所有键值对：如果遍历函数有返回值，该值会被更新到此键值对中
 //以下是特有的方法
-data.get_passthrough("Rseult"); //获取报文中X-SSTP-PassThru的某个键的值，和data["X-SSTP-PassThru-Rseult"]等价
+data.get_passthrough("Result"); //获取报文中X-SSTP-PassThru的某个键的值，和data["X-SSTP-PassThru-Result"]等价
 data.Script; //获取报文中的Script键的值
 data.head; //获取报文头
 data.status_code; //获取报文头中的状态码
-//如果报文中没有Rseult键，你也可以直接使用data.Rseult或者data["Rseult"]来获取X-SSTP-PassThru-Rseult的值：这可能简洁一些
+//如果报文中没有Result键，你也可以直接使用data.Result或者data["Result"]来获取X-SSTP-PassThru-Result的值：这可能简洁一些
 
 //如果你想获取ghost是否支持某个事件，可以这样写
 let result = await jsstp.has_event("OnTest");//这和(await jsstp.event.Has_Event(event_name, security_level)).Result!="1";几乎一样！

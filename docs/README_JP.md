@@ -26,7 +26,7 @@ var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/j
 ```javascript
 // jsstp関連の操作の前に、ghostが利用可能かどうかを確認する必要があるかもしれません。
 if (!await jsstp.available())
-	console.log("ghost is not available, please check if ghost is up");
+	console.log("ghostは利用できません。ghostが起動しているかどうか確認してください。");
 
 //jsstp は2.0以前はコールバック関数を引数として渡すことをサポートしていましたが、現在はサポートされていません。
 // 必要であれば Promise や async/await を使って戻り値を取得することができます。
@@ -66,11 +66,11 @@ data.entries; //すべてのキーと値のペアを取得する
 data.length; //キー・バリュー・ペアの数を取得する。
 data.forEach((value, key) => console.log(key + "=" + value)); // すべてのキーと値のペアを反復する：反復関数が値を返す場合、その値はこのキーと値のペアに更新されます。
 //以下のメソッドはユニークです。
-data.get_passthrough("Rseult"); //メッセージ内のX-SSTP-PassThruのキーの値を取得。data["X-SSTP-PassThru-Rseult"]と同等。
+data.get_passthrough("Result"); //メッセージ内のX-SSTP-PassThruのキーの値を取得。data["X-SSTP-PassThru-Result"]と同等。
 data.Script; //メッセージ中のScriptのキーの値を取得する
 data.head; //メッセージのヘッダーを取得する。
 data.status_code; //メッセージヘッダのステータスコードを取得する。
-// メッセージにRseultキーがない場合、data.Rseultまたはdata["Rseult"]を使用してX-SSTP-PassThru-Rseultの 値を取得することもできる。
+// メッセージにResultキーがない場合、data.Resultまたはdata["Result"]を使用してX-SSTP-PassThru-Resultの 値を取得することもできる。
 
 // ゴーストが特定のイベントをサポートしているかどうかを取得したい場合、次のように記述することができます。
 let result = await jsstp.has_event("OnTest");//(await jsstp.event.Has_Event(event_name, security_level)).Result!="1";とほぼ同じである！

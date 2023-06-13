@@ -66,11 +66,11 @@ data.entries; //Get all key-value pairs
 data.length; //Get the number of key-value pairs
 data.forEach((value, key) => console.log(key + "=" + value)); // iterate through all key-value pairs: if the iteration function returns a value, that value will be updated to this key-value pair
 //The following methods are unique
-data.get_passthrough("Rseult"); //get the value of a key of X-SSTP-PassThru in the message, equivalent to data["X-SSTP-PassThru-Rseult"]
+data.get_passthrough("Result"); //get the value of a key of X-SSTP-PassThru in the message, equivalent to data["X-SSTP-PassThru-Result"]
 data.Script; //Get the value of the Script key in the message
 data.head; //Get the header of the message
 data.status_code; //Get the status code in the message header
-//If there is no Rseult key in the message, you can also just use data.Rseult or data["Rseult"] to get the value of X-SSTP-PassThru-Rseult: this might be cleaner
+//If there is no Result key in the message, you can also just use data.Result or data["Result"] to get the value of X-SSTP-PassThru-Result: this might be cleaner
 
 // If you want to get whether ghost supports a certain event, you can write it like this
 let result = await jsstp.has_event("OnTest");//this is almost the same as (await jsstp.event.Has_Event(event_name, security_level)).Result!="1";!
