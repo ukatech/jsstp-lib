@@ -14,15 +14,15 @@
 ### 1. 引入js
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.min.js"></script>
 <!-- 或 --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.js"></script>
 ```
 
 你也可以在js中动态载入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. 使用

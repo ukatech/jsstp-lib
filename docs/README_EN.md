@@ -10,15 +10,15 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka)&[SSTP](http://ssp.shillest.
 ### 1. loading js
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.min.js"></script>
 <!-- or --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.js"></script>
 ```
 
 You can also load jsstp dynamically in js
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. Use
