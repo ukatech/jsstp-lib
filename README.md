@@ -13,16 +13,22 @@
 
 ### 1. 引入js
 
-```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.min.js"></script>
-<!-- 或 --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.js"></script>
+如果你使用npm，你可以使用npm安装jsstp
+
+```shell
+npm i jsstp
 ```
 
-你也可以在js中动态载入jsstp
+或者你是怀旧党，你可以通过cdn访问jsstp的源码
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/dist/jsstp.min.js"></script>
+```
+
+或者在js中动态载入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. 使用

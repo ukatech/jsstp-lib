@@ -1,4 +1,4 @@
-name: min build
+name: build
 
 on:
   push:
@@ -17,13 +17,13 @@ jobs:
           fuck-auto-CRLF: true
       - uses: actions/checkout@v2
 
-      - name: Minify
+      - name: build & minify
         run: |
           npm install uglify-js -g
-          cd src
-          uglifyjs ./jsstp.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
-          rm -rf ./jsstp.mjs
-          echo -n "export " > jsstp.mjs && cat jsstp.min.js >> jsstp.mjs
+          npm install rollup -g
+          rollup -c
+          cd dist
+          uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           cd ..
 
       - name: add all

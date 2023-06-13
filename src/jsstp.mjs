@@ -1,1 +1,329 @@
-export var jsstp=(()=>{let t=Object,r=t.assign,o="\r\n",n,e="Get_Supported_Events",s="Has_Event",i=(e,"has_event"),h="get_simple_caller_of_event",a="trivial_clone",_="default_info",[u,l,c,g]=["blocker","string_key_handler","symbol_key_handler","default_handler"];class d{get keys(){return t.keys(this)}get values(){return t.values(this)}get entries(){return t.entries(this)}get length(){return this.keys.length}forEach(s){return this.entries.forEach(([t,e])=>{this[t]=s(e,t)||e})}get trivial_clone(){return r(v(),this)}flat_map(s){let r=[];return this.entries.map(([t,e])=>{e instanceof d?r.push(...e.flat_map(s.bind(s,t))):r.push(s(t,e))}),r}}let v=()=>new d,f=(t,e)=>{var s=t.indexOf(e);return[t.substring(0,s),t.substring(s+e.length)]},p=t=>/^On/.test(t),y=t=>"_"==t[2]?t.substring(3):t,w=t=>t==t,m=r=>(e,s)=>{if(!r[u]||!r[u](e,s)){let t;return(t=Object(s)instanceof String?r[l]&&r[l](e,s):r[c]&&r[c](e,s))!==n?t:r[g]?r[g](e,s):(t=e[s])instanceof Function?t.bind(e):t}},b=window?"external":"local",S="X-SSTP-PassThru-";class x extends d{#t;#i;constructor(t,e,s={}){super(),this.#t=""+t,s.length&&(this.#i=s),r(this,e)}get unknown_lines(){return this.#i||[]}get head(){return this.#t}toString(){return[this.#t,...this.unknown_lines,...this.entries.map(([t,e])=>t+": "+e),"",""].join(o)}to_string(){return this.toString()}toJSON(){return{head:this.#t,unknown_lines:this.#i,body:this[a]}}get status_code(){return+this.#t.split(" ").find(t=>w(+t))}}class E extends x{constructor(t,e,s={}){return super(t,e,s),new Proxy(this,{get:m({string_key_handler:(t,e)=>S+e in t?t.get_passthrough(e):n})})}static from_string(t){var e,[t,...s]=t.split(o),r={},n=[];let i;s.length-=2;for(e of s){var[h,a]=f(e,": ");/^\w[^\s]*$/.test(h)?r[i=h]=a:i?r[i]+=o+e:n.push(e)}return new E(t,r,n)}get_passthrough(t){return this[S+t]}}class k extends x{constructor(t){var e,s,r,n,[t,...i]=t.split(o);super(t,{});for(e of i)e&&([r,s]=f(e,""),[r,n]=f(r,"."),this[r]||=v(),this[r][n]=s)}get_uuid_by(e,s){return this.uuids.find(t=>this[t][e]==s)}get_list_of(e){return this.uuids.map(t=>this[t][e])}get uuids(){return this.keys}get available(){return!!this.length}toString(){return[this.head,"",...this.flat_map((t,e,s)=>t+"."+e+""+s),"",""].join(o)}toJSON(){return{head:this.head,fmo_infos:this[a]}}}class O{#h;#o;#_;#u;#l;constructor(t=jsstp){this.#h=t}async check_event(t,e=b){return this.#_?this.#u[e].includes(t):!!this.#o&&(this.#l[e][t]??=await this.#h[i](t))}get available(){return this.#o}get fast_query_available(){return this.#_}async reset(){this.clear();var t=this.#h;return this.#o=await t[i](s),this.#_=this.#o&&await t[i](e),this.#_&&(this.#u=await t.get_supported_events()),this}async init(){return this.reset()}clear(){this.#o=this.#_=!1,this.#l={local:{},external:{}}}}let T={SEND:1.4,NOTIFY:1.1,COMMUNICATE:1.1,EXECUTE:1.2,GIVE:1.1},P=t=>t+" SSTP/"+T[t];class N{#g;proxy;RequestHeader;default_info;static sstp_version_table=T;constructor(t,e){return this.RequestHeader={"Content-Type":"text/plain",Origin:window.location.origin},this[_]={Charset:"UTF-8"},this.host=e,this.sendername=t,this.proxy=new Proxy(this,{get:m({string_key_handler:(t,e)=>e in T?t.get_caller_of_method(e):p(e)?t[h](y(e)):void 0})}),this.proxy}set host(t){this.#g=t||"http://localhost:9801/api/sstp/v1"}get host(){return this.#g}set sendername(t){this[_].Sender=t||"jsstp-client"}get sendername(){return this[_].Sender}costom_text_send(t,r){return new Promise((e,s)=>fetch(this.host,{method:"POST",headers:this.RequestHeader,body:""+new E(t,{...this.default_info,...r})}).then(t=>200!=t.status?s(t.status):t.text().then(e)).catch(s))}async costom_send(t,e){return this.costom_text_send(t,e).then(t=>E.from_string(t))}get_caller_of_method(t){let e=P(t);return r(t=>this.costom_send(e,t),{get_row:t=>this.costom_text_send(e,t)})}get_caller_of_event(e,s="SEND"){return t=>this.proxy[s](r({Event:e},t))}get_simple_caller_of_event(r,n="SEND"){return(...t)=>{let e=0,s={};return t.forEach(t=>s["Reference"+e++]=t),this.get_caller_of_event(r,n)(s)}}get event(){return new Proxy({},{get:(t,e)=>this[h](e)})}async has_event(t,e=b){return this.event[s](t,e).then(({Result:t})=>"1"==t)}async get_supported_events(){return this.event[e]().then(({local:t,external:e})=>({local:(t||"").split(","),external:(e||"").split(",")}))}async get_fmo_infos(){return this.proxy.EXECUTE.get_row({Command:"GetFMO"}).then(t=>new k(t))}async available(){return this.get_fmo_infos().then(t=>t.available).catch(()=>!1)}async new_event_queryer(){return new O(this).init()}}return r(N.prototype,{type:N,base_sstp_info_t:x,sstp_info_t:E,fmo_info_t:k,ghost_events_queryer_t:O}),new N})();
+//构建一个包装器与http://localhost:9801/api/sstp/v1通信。
+//发信方法：Content-Type: text/plain HTTP/1.1でPOST
+//收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
+
+import {
+	assign,
+	//endline,
+	//undefined,
+
+	Get_Supported_Events,
+	Has_Event,
+	get_simple_caller_of_event,
+	default_info,
+
+	is_event_name,
+	get_reorganized_event_name,
+	new_get_handler,
+
+	default_security_level
+} from "./base.mjs";
+
+import fmo_info_t from "./types/fmo_info_t.mjs";
+import ghost_events_queryer_t from "./types/ghost_events_queryer_t.mjs";
+import sstp_info_t from "./types/sstp_info_t.mjs";
+import base_sstp_info_t from "./types/base_sstp_info_t.mjs";
+
+//SSTP协议版本号列表
+let sstp_version_table = {
+	SEND: 1.4,
+	NOTIFY: 1.1,
+	COMMUNICATE: 1.1,
+	EXECUTE: 1.2,
+	GIVE: 1.1
+};
+/**
+ * 根据方法名称获取SSTP协议头
+ * @param {String} type 方法名称
+ * @returns {String} SSTP协议头
+ */
+let get_sstp_header = (type) => `${type} SSTP/${sstp_version_table[type]}`;
+//定义一个包装器
+/**
+ * jsstp对象
+ * @see {@link jsstp}
+ * @alias jsstp.type
+ * @example
+ * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
+ */
+class jsstp_t {
+	/**
+	 * 对象与服务器交互时的发送者名称
+	 * @type {String}
+	 */
+	#host;
+	/**
+	 * 对自身的代理
+	 * @type {Proxy}
+	 */
+	proxy;
+	RequestHeader;
+	default_info;
+	static sstp_version_table = sstp_version_table;
+
+	/**
+	 * 基础jsstp对象
+	 * @param {String} sendername 对象与服务器交互时的发送者名称
+	 * @param {String} host 目标服务器地址
+	 */
+	/*@__PURE__*/constructor(sendername, host) {
+		this.RequestHeader = {
+			"Content-Type": "text/plain",
+			"Origin": window.location.origin
+		};
+		this[default_info] = { Charset: "UTF-8" };
+
+		this.host = host;
+		this.sendername = sendername;
+		this.proxy = new Proxy(this, {
+			get: new_get_handler({
+				string_key_handler: (target, key) => {
+					if (key in sstp_version_table)
+						return target.get_caller_of_method(key);
+					if (is_event_name(key))
+						return target[get_simple_caller_of_event](get_reorganized_event_name(key));
+				}
+			})
+		});
+		return this.proxy;
+	}
+	/**
+	 * 修改host
+	 * @param {string} host
+	 */
+	set host(host) { this.#host = host || "http://localhost:9801/api/sstp/v1"; }
+	/*@__PURE__*/get host() { return this.#host; }
+	/**
+	 * 修改sendername
+	 * @param {String} sendername
+	 */
+	set sendername(sendername) { this[default_info].Sender = sendername || "jsstp-client"; }
+	/*@__PURE__*/get sendername() { return this[default_info].Sender; }
+	/**
+	 * 发送报文，但是不对返回结果进行处理
+	 * @param {String} sstphead 报文头
+	 * @param {Object} info 报文体
+	 * @returns {Promise<String|undefined>} 返回一个promise  
+	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 */
+	costom_text_send(sstphead, info) {
+		//使用fetch发送数据
+		return new Promise(
+			(resolve, reject) =>
+				fetch(this.host, {
+					method: "POST",
+					headers: this.RequestHeader,
+					body: `${new sstp_info_t(sstphead, { ...this.default_info, ...info })}`
+				}).then(response =>
+					response.status != 200 ?
+						reject(response.status) :
+						response.text().then(resolve)
+				).catch(reject)
+		);
+	}
+	/**
+	 * 发送报文
+	 * @param {String} sstphead 报文头
+	 * @param {Object} info 报文体
+	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 */
+	async costom_send(sstphead, info) {
+		return this.costom_text_send(sstphead, info).then(
+			result => sstp_info_t.from_string(result)
+		);
+	}
+	/**
+	 * 获取指定方法的调用器
+	 * @param {String} method_name 方法名称
+	 * @returns {{
+	 * 	(info: Object): Promise<sstp_info_t>,
+	 * 	get_row(info: Object): Promise<String>
+	 * }} 调用器
+	 */
+	/*@__PURE__*/get_caller_of_method(method_name) {
+		let header = get_sstp_header(method_name);
+		return assign((info) => this.costom_send(header, info), {
+			get_row: (info) => this.costom_text_send(header, info)
+		});
+	}
+	/**
+	 * 获取指定事件的调用器
+	 * @param {String} event_name 事件名称
+	 * @param {String|undefined} method_name 方法名称
+	 * @returns {(info: Object) => Promise<sstp_info_t>} 调用器
+	 */
+	/*@__PURE__*/get_caller_of_event(event_name, method_name = "SEND") {
+		return (info) => this.proxy[method_name](assign({ Event: event_name }, info));
+	}
+	/**
+	 * 用于获取指定事件的简单调用器
+	 * @param {String} event_name 事件名称
+	 * @param {String|undefined} method_name 方法名称
+	 * @returns {(...args: any[]) => Promise<sstp_info_t>} 调用器
+	 */
+	/*@__PURE__*/get_simple_caller_of_event(event_name, method_name = "SEND") {
+		return (...args) => {
+			let reference_num = 0;
+			let info = {};
+			args.forEach((arg) =>
+				info[`Reference${reference_num++}`] = arg
+			);
+			return this.get_caller_of_event(event_name, method_name)(info);
+		};
+	}
+	/**
+	 * 用于获取指定事件的简单调用器的代理
+	 * @returns {Proxy}
+	 * @example
+	 * jsstp.event.OnTest("test");
+	 */
+	/*@__PURE__*/get event() {
+		return new Proxy({}, {
+			get: (_target, prop) => this[get_simple_caller_of_event](prop)
+		});
+	}
+	/**
+	 * 判断是否存在某个事件
+	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
+	 * @param {String} event_name 事件名
+	 * @param {String} security_level 安全等级
+	 * @returns {Promise<Boolean>} 是否存在
+	 * @example
+	 * jsstp.has_event("OnTest").then(result => console.log(result));
+	 * @example
+	 * //示例代码(AYA):
+	 * SHIORI_EV.On_Has_Event : void {
+	 * 	_event_name=reference.raw[0]
+	 * 	_SecurityLevel=reference.raw[1]
+	 * 	if !_SecurityLevel
+	 * 		_SecurityLevel=SHIORI_FW.SecurityLevel
+	 * 	if SUBSTR(_event_name,0,2) != 'On'
+	 * 		_event_name='On_'+_event_name
+	 * 	_result=0
+	 * 	if TOLOWER(_SecurityLevel) == 'external'
+	 * 		_event_name='ExternalEvent.'+_event_name
+	 * 	_result=ISFUNC(_event_name)
+	 * 	if !_result
+	 * 		_result=ISFUNC('SHIORI_EV.'+_event_name)
+	 * 	SHIORI_FW.Make_X_SSTP_PassThru('Result',_result)
+	 * }
+	 * SHIORI_EV.ExternalEvent.On_Has_Event{
+	 * 	SHIORI_EV.On_Has_Event
+	 * }
+	 */
+	/*@__PURE__*/async has_event(event_name, security_level = default_security_level) {
+		return this.event[Has_Event](event_name, security_level).then(({ Result }) => Result == "1");
+	}
+	/**
+	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
+	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
+	 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
+	 * @example
+	 * jsstp.get_supported_events().then(result => console.log(result));
+	 * @example
+	 * //示例代码(AYA):
+	 * SHIORI_EV.On_Get_Supported_Events: void {
+	 * 	_L=GETFUNCLIST('On')
+	 * 	_base_local_event_funcs=IARRAY
+	 * 	foreach _L;_func{
+	 * 		if SUBSTR(_func,2,1) == '_'
+	 * 			_func=SUBSTR(_func,3,STRLEN(_func))
+	 * 		_base_local_event_funcs,=_func
+	 * 	}
+	 * 	_L=GETFUNCLIST('SHIORI_EV.On')
+	 * 	foreach _L;_func{
+	 * 		if SUBSTR(_func,12,1) == '_'
+	 * 			_func=SUBSTR(_func,13,STRLEN(_func))
+	 * 		_base_local_event_funcs,=_func
+	 * 	}
+	 * 	SHIORI_FW.Make_X_SSTP_PassThru('local',ARRAYDEDUP(_base_local_event_funcs))
+	 * 	_L=GETFUNCLIST('ExternalEvent.On')
+	 * 	_base_external_event_funcs=IARRAY
+	 * 	foreach _L;_func{
+	 * 		if SUBSTR(_func,16,1) == '_'
+	 * 			_func=SUBSTR(_func,17,STRLEN(_func))
+	 * 		_base_external_event_funcs,=_func
+	 * 	}
+	 * 	_L=GETFUNCLIST('SHIORI_EV.ExternalEvent.On')
+	 * 	foreach _L;_func{
+	 * 		if SUBSTR(_func,26,1) == '_'
+	 * 			_func=SUBSTR(_func,27,STRLEN(_func))
+	 * 		_base_external_event_funcs,=_func
+	 * 	}
+	 * 	SHIORI_FW.Make_X_SSTP_PassThru('external',ARRAYDEDUP(_base_external_event_funcs))
+	 * }
+	 * SHIORI_EV.ExternalEvent.On_Get_Supported_Events{
+	 * 	SHIORI_EV.On_Get_Supported_Events
+	 * }
+	 */
+	/*@__PURE__*/async get_supported_events() {
+		return this.event[Get_Supported_Events]().then(({ local, external }) => (
+			{
+				local: (local || "").split(","),
+				external: (external || "").split(",")
+			}
+		));
+	}
+	/**
+	 * 获取fmo信息
+	 * @returns {Promise<fmo_info_t>} fmo信息
+	 * @example
+	 * let fmo=await jsstp.get_fmo_infos();
+	 * if(fmo.available)
+	 * 	console.log(fmo);
+	 */
+	/*@__PURE__*/async get_fmo_infos() {
+		return this.proxy.EXECUTE.get_row({
+			Command: "GetFMO"
+		}).then(
+			fmo_text => new fmo_info_t(fmo_text)
+		);
+	}
+	/**
+	 * 获取当前ghost是否可用
+	 * @returns {Promise<Boolean>} ghost是否可用
+	 * @example
+	 * if(await jsstp.available())
+	 * 	//do something
+	 * else
+	 * 	console.error("ghost不可用,请检查ghost是否启动");
+	 */
+	/*@__PURE__*/async available() {
+		return this.get_fmo_infos().then(fmo => fmo.available).catch(() => false);
+	}
+	/**
+	 * 获取一个用于查询ghost所支持事件的queryer
+	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
+	 * @example
+	 * jsstp.new_event_queryer().then(queryer => 
+	 * 	queryer.check_event("OnTest").then(result =>
+	 * 		console.log(result)
+	 * 	)
+	 * );
+	 */
+	/*@__PURE__*/async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
+}
+//对定义中的所有类型补充到原型
+//纯为了压缩体积（不然每个类型都要写一遍`static`）
+assign(jsstp_t.prototype, {
+	type: jsstp_t,
+	base_sstp_info_t: base_sstp_info_t,
+	sstp_info_t: sstp_info_t,
+	fmo_info_t: fmo_info_t,
+	ghost_events_queryer_t: ghost_events_queryer_t
+});
+
+//定义一个包装器
+/**
+ * sstp包装器
+ * @example
+ * jsstp.SEND({
+ *   Event: "OnTest",
+ *   Script: "\\s[0]Hell Wold!\\e"
+ * });
+ * @var jsstp
+ * @type {jsstp_t}
+ * @global
+ */
+var jsstp = new jsstp_t();
+export default jsstp;

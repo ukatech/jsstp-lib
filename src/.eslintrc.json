@@ -1,7 +1,7 @@
 {
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "script",
+        "sourceType": "module",
         "ecmaFeatures": {}
     },
     "rules": {

@@ -2,7 +2,7 @@
   "name": "jsstp",
   "version": "2.0.0",
   "description": "Use js to communicate with ukagaka in a web page to exchange information.",
-  "main": "src/jsstp.node.js",
+  "main": "src/jsstp.mjs",
   "directories": {
     "doc": "docs"
   },
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/ukatech/jsstp-lib/issues"
   },
-  "homepage": "https://github.com/ukatech/jsstp-lib#readme"
+  "homepage": "https://github.com/ukatech/jsstp-lib#readme",
+  "devDependencies": {
+    "rollup": "^3.25.1"
+  }
 }

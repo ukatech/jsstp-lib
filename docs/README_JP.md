@@ -9,16 +9,22 @@ Webページでゴーストと通信し、情報をやりとりするためにjs
 
 ### 1. jsの読み込み
 
-```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.min.js"></script>
-<!-- または --->
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.js"></script>
+npmを使用している場合は、npmを使用してjsstpをインストールすることができます。
+
+```shell
+npm i jsstp
 ```
 
-jsstpはjsで動的に読み込むことも可能です。
+また、懐古主義者であれば、cdn経由でjsstpのソースコードにアクセスすることができます。
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/dist/jsstp.min.js"></script>
+```
+
+または、jsstpをjsで動的に読み込む。
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/src/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2.使用する
