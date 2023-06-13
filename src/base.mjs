@@ -73,7 +73,11 @@ let new_get_handler = /*@__PURE__*/(info) =>
 		return (result = target[key]) instanceof Function ? result.bind(target) : result;
 	}
 
-//定义默认安全等级
+/**
+ * 默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+ * @type {String}
+ * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+ */
 let default_security_level = window ? "external" : "local";
 
 export{
