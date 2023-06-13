@@ -8,7 +8,6 @@ on:
     # and only run when the following files are changed
     paths:
       - "docs/index.html"
-      - "src/jsstp.js"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,7 +34,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Move files
-        run: mv src/jsstp.js docs/jsstp.js
+        run: mv dist/jsstp.js docs/jsstp.js
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact

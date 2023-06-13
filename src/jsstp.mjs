@@ -326,4 +326,14 @@ assign(jsstp_t.prototype, {
  * @global
  */
 var jsstp = new jsstp_t();
-export default jsstp;
+
+//导出
+export {
+	jsstp as default,
+	jsstp,
+	jsstp_t,
+	base_sstp_info_t,
+	sstp_info_t,
+	fmo_info_t,
+	ghost_events_queryer_t
+}

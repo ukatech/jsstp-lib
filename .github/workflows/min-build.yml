@@ -24,6 +24,7 @@ jobs:
           rollup -c
           cd dist
           uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
+          uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
           cd ..
 
       - name: add all
