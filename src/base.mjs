@@ -73,14 +73,19 @@ let new_get_handler = /*@__PURE__*/(info) =>
 		return (result = target[key]) instanceof Function ? result.bind(target) : result;
 	}
 
-let in_browser = typeof window != undefined + '';
+let in_browser = !!globalThis.window;
 
 /**
- * 默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+ * 默认的origin，在nodejs中为`http://localhost: env.PORT?? 9801`，在浏览器中为location.origin
+ * @type {String}
+ */
+let my_origin = in_browser? location.origin : "http://localhost:" + process.env.PORT?? 9801;
+/**
+ * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
  * @type {String}
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  */
-let default_security_level = in_browser ? "external" : "local";
+let default_security_level = /^\w+:\/\/localhost/.test(my_origin) ? "local" : "external";
 
 export {
 	object,
@@ -107,5 +112,6 @@ export {
 	new_get_handler,
 
 	in_browser,
+	my_origin,
 	default_security_level
 };
