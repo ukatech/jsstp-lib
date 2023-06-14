@@ -79,7 +79,7 @@ let in_browser = !!globalThis.window;
  * 默认的origin，在nodejs中为`http://localhost: env.PORT?? 9801`，在浏览器中为location.origin
  * @type {String}
  */
-let my_origin = in_browser? location.origin : "http://localhost:" + process.env.PORT?? 9801;
+let my_origin = in_browser ? location.origin : "http://localhost:" + process.env.PORT ?? 9801;
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
  * @type {String}
