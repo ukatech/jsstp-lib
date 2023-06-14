@@ -107,6 +107,27 @@ class jsstp_t {
 	set sendername(sendername) { this[default_info].Sender = sendername || "jsstp-client"; }
 	/*@__PURE__*/get sendername() { return this[default_info].Sender; }
 	/**
+	 * 以文本发送报文并以文本接收返信
+	 * @param {String} info 报文体
+	 * @returns {Promise<String|undefined>} 返回一个promise  
+	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 */
+	row_send(info) {
+		//使用fetch发送数据
+		return new Promise(
+			(resolve, reject) =>
+				fetch(this.host, {
+					method: "POST",
+					headers: this.RequestHeader,
+					body: `${info}`
+				}).then(response =>
+					response.status != 200 ?
+						reject(response.status) :
+						response.text().then(resolve)
+				).catch(reject)
+		);
+	}
+	/**
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
@@ -114,19 +135,7 @@ class jsstp_t {
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */
 	costom_text_send(sstphead, info) {
-		//使用fetch发送数据
-		return new Promise(
-			(resolve, reject) =>
-				fetch(this.host, {
-					method: "POST",
-					headers: this.RequestHeader,
-					body: `${new sstp_info_t(sstphead, { ...this.default_info, ...info })}`
-				}).then(response =>
-					response.status != 200 ?
-						reject(response.status) :
-						response.text().then(resolve)
-				).catch(reject)
-		);
+		return this.row_send(new sstp_info_t(sstphead, { ...this.default_info, ...info }));
 	}
 	/**
 	 * 发送报文
