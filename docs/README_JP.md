@@ -1,8 +1,10 @@
 # jsstp  
 
-[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)  
+[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
+![npm downloads](https://img.shields.io/npm/dm/jsstp?label=npm%20downloads)
+![install size](https://packagephobia.now.sh/badge?p=jsstp)  
 
-Webページでゴーストと通信し、情報をやりとりするためにjsを使用します。
+Webページやnode.jsなどの環境で、ゴーストと通信して情報をやりとりするためにjsを使用します。  
 詳細は[伺か](https://ja.wikipedia.org/wiki/%E4%BC%BA%E3%81%8B)と[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)を参照してください。
 
 ## 使用方法
