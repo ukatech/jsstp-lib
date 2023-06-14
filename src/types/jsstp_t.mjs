@@ -76,7 +76,7 @@ class jsstp_t {
 	/*@__PURE__*/constructor(sendername, host) {
 		this.RequestHeader = {
 			"Content-Type": "text/plain",
-			"Origin": in_browser ? window.location.origin : "localhost"
+			"Origin": in_browser ? window.location.origin : "http://localhost:" + (process.env.PORT || 9801)
 		};
 		this[default_info] = { Charset: "UTF-8" };
 
