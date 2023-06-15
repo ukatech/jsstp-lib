@@ -27,13 +27,13 @@ var jsstp=require("jsstp");
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.min.js"></script>
 ```
 
 或者在js中动态载入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.0/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. 使用
