@@ -7,6 +7,7 @@ import {
 	new_get_handler
 } from "../base.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
+import new_object from "./info_object.mjs";
 
 //定义sstp报文类
 let x_sstp_passthru_head = "X-SSTP-PassThru-";
@@ -40,7 +41,7 @@ class sstp_info_t extends base_sstp_info_t {
 		super(info_head, info_body, unknown_lines);
 		return new Proxy(this, {
 			get: new_get_handler({
-				string_key_handler: (target, key) => x_sstp_passthru_head + key in target ? target.get_passthrough(key) : undefined
+				string_key_handler: (target, key) => (key in target == 0 && x_sstp_passthru_head + key in target) ? target.get_passthrough(key) : undefined
 			})
 		});
 	}
@@ -77,6 +78,23 @@ class sstp_info_t extends base_sstp_info_t {
 	 * @returns {String|undefined} PassThru的值
 	 */
 	/*@__PURE__*/get_passthrough(key) { return this[x_sstp_passthru_head + key]; }
+	/**
+	 * 用于缓存所有的PassThru
+	 * @type {info_object}
+	 * @private
+	 */
+	#passthroughs;
+	/**
+	 * 获取所有的PassThru
+	 * @returns {info_object} 所有的PassThru
+	 */
+	/*@__PURE__*/get passthroughs() {
+		return this.#passthroughs ??= new_object().push(
+			this.map((value, key) => key.startsWith(x_sstp_passthru_head) ?
+				[key.slice(x_sstp_passthru_head.length), value] : undefined
+			)
+		);
+	}
 }
 
 export default sstp_info_t;

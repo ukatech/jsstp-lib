@@ -1,4 +1,4 @@
-import { object, assign } from "../base.mjs";
+import { object, assign, undefined } from "../base.mjs";
 /**
  * 拓展object，提供一些简单且遍历的操作
  */
@@ -48,6 +48,21 @@ class info_object {
 				result.push(func(key, value));
 		});
 		return result;
+	}
+	/**
+	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
+	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 */
+	/*@__PURE__*/map(func) {
+		return this.entries.map(([key, value]) => func(value, key));
+	}
+	/**
+	 * @description 对自身按照数组追加元素
+	 * @param {[undefined|[String,String]]} array 要追加的数组
+	 */
+	/*@__PURE__*/push(array) {
+		array.forEach((pair) => pair ? this[pair[0]] = pair[1] : undefined);
+		return this;
 	}
 }
 /**
