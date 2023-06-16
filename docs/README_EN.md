@@ -20,13 +20,13 @@ npm i jsstp
 Or if you're a nostalgist, you can access jsstp's source code via cdn.
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.min.js"></script>
 ```
 
 Or load jsstp dynamically in js.
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. Use
@@ -56,7 +56,7 @@ jsstp.SEND(
 ```
 
 jsstp supports all the sstp base operations: `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE]` can be called.  
-If you like nostalgia and just want to get the message itself, you can use `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_row`  
+If you like nostalgia and just want to get the message itself, you can use `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_raw`  
 
 If you just want to trigger the event and don't need to customize it to send more complex messages, you can write it like this
 
@@ -106,9 +106,14 @@ data.status_code_text; //get the text of the status code in the message header
 ```javascript
 data.get_passthrough("Result");
 //Get the value of a key of `X-SSTP-PassThru` in the message, equivalent to `data["X-SSTP-PassThru-Result"]`
-// If there is no `Result` key in the message, you can also just use `data.Result` or `data["Result"]` to get the value of `X-SSTP-PassThru-Result`: this might be cleaner
-data.passthroughs; // get all `X-SSTP-PassThru` key-value pairs
+// You can also just use `data.Result` or `data["Result"]` to get the value of `X-SSTP-PassThru-Result`: this might be cleaner
+data.passthroughs; //Get all `X-SSTP-PassThru` key-value pairs
+data.raw; // remove the proxy and access the original object
 ```
+
+`sstp_info_t` is wrapped in a proxy since its construction, and given that in most cases developers don't need to access non-`X-SSTP-PassThru` key-value pairs, this proxy will preferentially return the `X-SSTP-PassThru-{key}` value when you access a key for which an `X-SSTP-PassThru` version exists.  
+In other words, if the returned message has a `Script` key and an `X-SSTP-PassThru-Script` key, then `data.Script` or `data["Script"]` will return the value of `X-SSTP-PassThru-Script`, while `data.raw.Script` and `data.raw["Script"]` will return the value of `Script`.  
+In most cases this proxy will reduce the amount of code you have to work with, but always remember to use `data.raw` to access the original object when you need to access non-`X-SSTP-PassThru` key-value pairs.  
 
 If you want to get whether ghost supports a certain event or not, you can write it like this
 

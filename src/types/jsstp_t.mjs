@@ -153,13 +153,13 @@ class jsstp_t {
 	 * @param {String} method_name 方法名称
 	 * @returns {{
 	 * 	(info: Object): Promise<sstp_info_t>,
-	 * 	get_row(info: Object): Promise<String>
+	 * 	get_raw(info: Object): Promise<String>
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name) {
 		let header = get_sstp_header(method_name);
 		return assign((info) => this.costom_send(header, info), {
-			get_row: (info) => this.costom_text_send(header, info)
+			get_raw: (info) => this.costom_text_send(header, info)
 		});
 	}
 	/**
@@ -289,7 +289,7 @@ class jsstp_t {
 	 * 	console.log(fmo);
 	 */
 	/*@__PURE__*/async get_fmo_infos() {
-		return this.proxy.EXECUTE.get_row({
+		return this.proxy.EXECUTE.get_raw({
 			Command: "GetFMO"
 		}).then(
 			fmo_text => new fmo_info_t(fmo_text)

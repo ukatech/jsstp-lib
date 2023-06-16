@@ -41,7 +41,7 @@ class sstp_info_t extends base_sstp_info_t {
 		super(info_head, info_body, unknown_lines);
 		return new Proxy(this, {
 			get: new_get_handler({
-				string_key_handler: (target, key) => (key in target == 0 && x_sstp_passthru_head + key in target) ? target.get_passthrough(key) : undefined
+				string_key_handler: (target, key) => x_sstp_passthru_head + key in target ? target.get_passthrough(key) : undefined
 			})
 		});
 	}
@@ -95,6 +95,11 @@ class sstp_info_t extends base_sstp_info_t {
 			)
 		);
 	}
+	/**
+	 * 获取原始对象
+	 * @returns {sstp_info_t} 原始对象
+	 */
+	/*@__PURE__*/get raw() { return this; }
 }
 
 export default sstp_info_t;

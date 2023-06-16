@@ -24,13 +24,13 @@ npm i jsstp
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.min.js"></script>
 ```
 
 或者在js中动态载入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. 使用
@@ -60,7 +60,7 @@ jsstp.SEND(
 ```
 
 jsstp支持所有的sstp基础操作，`jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE]`都可以被调用。  
-如果你喜欢怀旧，只想获得报文本身，你可以使用`jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_row`  
+如果你喜欢怀旧，只想获得报文本身，你可以使用`jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_raw`  
 
 如果你只是想触发事件，而不需要自定义发送较为复杂的报文，可以这样写
 
@@ -110,9 +110,14 @@ data.status_code_text; //获取报文头中的状态码文本
 ```javascript
 data.get_passthrough("Result");
 //获取报文中`X-SSTP-PassThru`的某个键的值，和`data["X-SSTP-PassThru-Result"]`等价
-//如果报文中没有`Result`键，你也可以直接使用`data.Result`或者`data["Result"]`来获取`X-SSTP-PassThru-Result`的值：这可能简洁一些
+//你也可以直接使用`data.Result`或者`data["Result"]`来获取`X-SSTP-PassThru-Result`的值：这可能简洁一些
 data.passthroughs; //获取所有`X-SSTP-PassThru`键值对
+data.raw; //去除代理，访问原始对象
 ```
+
+`sstp_info_t`自构造起便被一层代理包裹着，考虑到大多数情况开发者不需要访问非`X-SSTP-PassThru`键值对，此代理会在你访问某个键而该键存在`X-SSTP-PassThru`版本时优先返回`X-SSTP-PassThru-{key}`键的值。  
+换句话说，假若返回的报文有`Script`键和`X-SSTP-PassThru-Script`键，那么`data.Script`或`data["Script"]`会返回`X-SSTP-PassThru-Script`的值，而`data.raw.Script`和`data.raw["Script"]`会返回`Script`的值。  
+大多数情况下这个代理会减轻你的代码量，而在你需要访问非`X-SSTP-PassThru`键值对时，请一定记得使用`data.raw`来访问原始对象。  
 
 如果你想获取ghost是否支持某个事件，可以这样写
 

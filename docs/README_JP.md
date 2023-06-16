@@ -20,13 +20,13 @@ npm i jsstp
 また、懐古主義者であれば、cdn経由でjsstpのソースコードにアクセスすることができます。
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.min.js"></script>
 ```
 
 または、jsstpをjsで動的に読み込む。
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.0.1/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2.使用する
@@ -56,7 +56,7 @@ jsstp.SEND(
 ```
 
 jsstpはsstpの基本操作をすべてサポートしており、`jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE]`が呼び出せます。 
-ノスタルジアが好きで、メッセージそのものを取得したいだけなら、 `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_row` を使用することができます。 
+ノスタルジアが好きで、メッセージそのものを取得したいだけなら、 `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_raw` を使用することができます。 
 
 イベントをトリガーするだけで、より複雑なメッセージを送信するためにカスタマイズする必要がない場合は、次のように書くことができます。
 
@@ -106,11 +106,16 @@ data.status_code_text; //メッセージヘッダのステータスコードの�
 ```javascript
 data.get_passthrough("Result");
 //メッセージ内の `X-SSTP-PassThru` のキーの値を取得する（`data["X-SSTP-PassThru-Result"]`と同等）。
-// メッセージに `Result` キーがない場合、`data.Result` または `data["Result"]` を使用して `X-SSTP-PassThru-Result` の値を取得することも可能である。
-data.passthroughs; // すべての `X-SSTP-PassThru` キーバリューペアを取得する。
+//`X-SSTP-PassThru-Result` の値を取得するために `data.Result` または `data["Result"]` を使用することもできる: この方がすっきりするかもしれない
+data.passthroughs; // すべての `X-SSTP-PassThru` のキーバリューペアを取得する。
+data.raw; // プロキシを削除して、元のオブジェクトにアクセスする。
 ```
 
-ゴーストが特定のイベントをサポートしているかどうかを取得したい場合は、次のように記述します。
+ほとんどの場合、開発者は `X-SSTP-PassThru` 以外のキーバリューペアにアクセスする必要はないので、 `X-SSTP-PassThru-{key}` バージョンが存在するキーにアクセスすると、このプロキシは優先的に `X-SSTP-PassThru-{key}` の値を返す。  
+つまり、返されたメッセージに `Script` キーと `X-SSTP-PassThru-Script` キーがある場合、 `data.Script` または `data["Script"]` は `X-SSTP-PassThru-Script` の値を返し、 `data.raw.Script` および と `data.raw["Script"]` は `Script` の値を返す。  
+ほとんどの場合、このプロキシを使用すると、必要なコードの量を減らすことができます。また、`X-SSTP-PassThru` 以外のキーと値のペアにアクセスする必要がある場合は、常に `data.raw` を使用して raw オブジェクトにアクセスすることを忘れないでください。  
+
+この `data.raw` は、次のインスタンスで特定の `data.raw` オブジェクトを取得するために使用される。
 
 ```javascript
 let result = await jsstp.has_event("OnTest");// これは jsstp.event.Has_Event(event_name, security_level).then(({ Result }) => Result == "1") とほとんど同じです．
