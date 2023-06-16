@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>Sample</title>
-<!-- 引用"jsstp.js"文件 -->
-<script type="text/javascript" src="../jsstp.min.js"></script>
-<script type="text/javascript">
-	//定义一个测试方法
-	function test_jsstp() {
-		jsstp.NOTIFY(
-			{
-				"Event": "OnTest",
-				"Script": "\\0Hello, World!\\e"
-			},
-			function (data) {
-				console.log("status_code: "+data.status_code);
-				console.log(data);
-				console.log(data.Script);
-			}
-		);
-	}
-</script>
+	<meta charset="utf-8">
+	<title>Sample</title>
+	<!-- 引用"jsstp.js"文件 -->
+	<script type="text/javascript" src="../jsstp.min.js"></script>
+	<script type="text/javascript">
+		//定义一个测试方法
+		function test_jsstp() {
+			jsstp.NOTIFY(
+				{
+					"Event": "OnTest",
+					"Script": "\\0Hello, World!\\e"
+				}
+			).then(
+				(data) => {
+					console.log("status_code: " + data.status_code);
+					console.log(data);
+					console.log(data.Script);
+				}
+			);
+		}
+	</script>
 </head>
+
 <body>
 	<h1>Sample</h1>
 	<button onclick="test_jsstp();">Send SSTP</button>
@@ -32,4 +35,5 @@
 	<br>
 	made by <a href="https://github.com/ukatech/">ukatecher</a> with (buggy) love.
 </body>
+
 </html>

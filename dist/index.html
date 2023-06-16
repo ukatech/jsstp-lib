@@ -1,59 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>Sample</title>
-<!-- 引用"jsstp.js"文件 -->
-<script type="text/javascript" src="./jsstp.min.js"></script>
-<script>
-	// 定义一个函数
-	async function send() {
+	<meta charset="utf-8">
+	<title>Sample</title>
+	<!-- 引用"jsstp.js"文件 -->
+	<script type="text/javascript" src="./jsstp.min.js"></script>
+	<script>
 		// 获取输入框的值并转换为object，如有报错则弹窗
-		var json = JSON.parse(document.getElementById("json").value);
-		// 根据下拉选单的值，设置jsstp的类型
-		var sstptype = document.getElementById("type").value;
-		// 发送请求
-		var result=await jsstp[sstptype](json);
-		// 设置回显框的值
-		document.getElementById("result").value = JSON.stringify(result, null, "\t");
-	}
-	// 解析并处理url参数
-	async function args_handler() {
-		// 获取url参数
-		var args = location.search;
-		// 如果没有参数则返回
-		if (args == "") return;
-		// 去掉开头的"?"
-		args = args.substring(1);
-		// 按"&"分割参数
-		args = args.split("&");
-		// 遍历参数并存于map
-		var argv = {};
-		for (var i = 0; i < args.length; i++) {
-			var arg = args[i].split("=");
-			// 对参数值解码
-			argv[arg[0]] = decodeURIComponent(arg[1]);
+		function getjson() {
+			try {
+				return JSON.parse(document.getElementById("json").value);
+			} catch (e) {
+				alert(e);
+			}
 		}
-		// 如果有"json"参数则设置输入框的值
-		if (argv["json"] != undefined) {
-			document.getElementById("json").value = argv["json"];
+		function gettype() {
+			return document.getElementById("type").value;
 		}
-		// 如果有"type"参数则设置下拉选单的值
-		if (argv["type"] != undefined) {
-			document.getElementById("type").value = argv["type"];
+		async function send() {
+			return jsstp[gettype()](getjson()).then((result) => {
+				// 设置回显框的值
+				document.getElementById("result").value = JSON.stringify(result, null, "\t");
+			});
 		}
-		// 如果有"send"参数则调用send函数
-		if (argv["send"] != undefined) {
-			await send();
+		// 解析并处理url参数
+		async function args_handler() {
+			// 获取url参数
+			var args = location.search;
+			// 如果没有参数则返回
+			if (!args) return;
+			// 去掉开头的"?"并分割参数
+			args = args.substring(1).split("&");
+			// 遍历参数并存于map
+			var argv = {};
+			args.forEach((pair)=>{
+				pair = pair.split("=");
+				// 对参数值解码
+				argv[pair[0]] = decodeURIComponent(pair[1]);
+			});
+			// 如果有"json"参数则设置输入框的值
+			if (argv.json)
+				document.getElementById("json").value = argv.json;
+			// 如果有"type"参数则设置下拉选单的值
+			if (argv.type)
+				document.getElementById("type").value = argv.type;
+			// 如果有"send"参数则调用send函数
+			if (argv.send)
+				await send().catch((e)=>{});
+			// 如果有"jumpback"参数则跳转到该参数指定的url
+			if (argv.jumpback)
+				window.location = argv.jumpback;
 		}
-		// 如果有"jumpback"参数则跳转到该参数指定的url
-		if (argv["jumpback"] != undefined){
-			window.location=argv["jumpback"];
-		}
-	}
-	args_handler();
-</script>
+		args_handler();
+	</script>
 </head>
+
 <body>
 	<h1>Sample</h1>
 	<!-- 一个下拉选单，用于选择sstp类型 -->
@@ -84,4 +86,5 @@
 	<br>
 	made by <a href="https://github.com/ukatech/">ukatecher</a> with (buggy) love.
 </body>
+
 </html>
