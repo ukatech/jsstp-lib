@@ -17,6 +17,14 @@ npmを使用している場合は、npmを使用してjsstpをインストール
 npm i jsstp
 ```
 
+その後、jsstpをjsにインポートします。
+
+```javascript
+var jsstp=require("jsstp");
+//または
+import jsstp from "jsstp";
+```
+
 また、懐古主義者であれば、cdn経由でjsstpのソースコードにアクセスすることができます。
 
 ```html

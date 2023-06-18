@@ -17,6 +17,14 @@ If you use npm, you can use npm to install jsstp.
 npm i jsstp
 ```
 
+After that, import jsstp in js.
+
+```javascript
+var jsstp=require("jsstp");
+//or
+import jsstp from "jsstp";
+```
+
 Or if you're a nostalgist, you can access jsstp's source code via cdn.
 
 ```html

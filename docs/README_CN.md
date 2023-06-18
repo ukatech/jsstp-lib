@@ -1,6 +1,5 @@
 # jsstp  
 
-
 [![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
 ![npm downloads](https://img.shields.io/npm/dm/jsstp?label=npm%20downloads)
 ![install size](https://packagephobia.now.sh/badge?p=jsstp)  
@@ -22,6 +21,8 @@ npm i jsstp
 
 ```javascript
 var jsstp=require("jsstp");
+//或者
+import jsstp from "jsstp";
 ```
 
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
@@ -38,16 +39,16 @@ var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/d
 
 ### 2. 使用
 
-你可能需要先在jsstp相关操作前检查ghost是否可用
+你可能需要先在jsstp相关操作前检查ghost是否可用  
 
 ```javascript
 if (!await jsstp.available())
 	console.log("ghost不可用,请检查ghost是否启动");
 ```
 
-jsstp2.0前曾经支持将回调函数作为参数传入，现在已经不再支持
-如果你需要的话，可以使用`Promise`或者`async`/`await`来获取返回值
-你可以使用`jsstp.SEND`来发送报文
+jsstp2.0前曾经支持将回调函数作为参数传入，现在已经不再支持  
+如果你需要的话，可以使用`Promise`或者`async`/`await`来获取返回值  
+你可以使用`jsstp.SEND`来发送报文  
 
 ```javascript
 jsstp.SEND(
