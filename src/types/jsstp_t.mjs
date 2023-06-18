@@ -5,7 +5,7 @@
 import {
 	assign,
 	//endline,
-	//undefined,
+	undefined,
 
 	Get_Supported_Events,
 	Has_Event,
@@ -86,13 +86,14 @@ class jsstp_t {
 		this.sendername = sendername;
 		this.proxy = new Proxy(this, {
 			get: new_get_handler({
-				string_key_handler: (target, key) => {
-					if (key in sstp_version_table)
-						return target.get_caller_of_method(key);
-					if (is_event_name(key))
-						return target[get_simple_caller_of_event](get_reorganized_event_name(key));
+				string_key_handler: (target, key) => 
+					(key in sstp_version_table)?
+						target.get_caller_of_method(key):
+					(is_event_name(key))?
+						target[get_simple_caller_of_event](get_reorganized_event_name(key)):
+					undefined
 				}
-			})
+			)
 		});
 		return this.proxy;
 	}

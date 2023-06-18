@@ -42,3 +42,4 @@ jobs:
           author-name: Taromati2
           commit-message: 'file update~'
           remote: origin
+          token: ${{ secrets.BOT_TOKEN }}
