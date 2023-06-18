@@ -25,13 +25,13 @@ var jsstp=require("jsstp");
 import jsstp from "jsstp";
 ```
 
-また、懐古主義者であれば、cdn経由でjsstpのソースコードにアクセスすることができます。
+あるいは、古式ゆかしい方法で、cdn経由でjsstpのソースコードにアクセスすることができます。
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.min.js"></script>
 ```
 
-または、jsstpをjsで動的に読み込む。
+jsstpをjsで動的に読み込むこともできます。
 
 ```javascript
 var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.mjs").then(m=>m.jsstp);
@@ -64,7 +64,7 @@ jsstp.SEND(
 ```
 
 jsstpはsstpの基本操作をすべてサポートしており、`jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE]`が呼び出せます。 
-ノスタルジアが好きで、メッセージそのものを取得したいだけなら、 `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_raw` を使用することができます。 
+古式ゆかしい方法が好きで、メッセージそのものを取得したいだけなら、 `jsstp.[SEND|NOTIFY|COMMUNICATE|EXECUTE|GIVE].get_raw` を使用することができます。 
 
 イベントをトリガーするだけで、より複雑なメッセージを送信するためにカスタマイズする必要がない場合は、次のように書くことができます。
 
@@ -72,7 +72,7 @@ jsstpはsstpの基本操作をすべてサポートしており、`jsstp.[SEND|N
 let data = await jsstp.OnTest("from jsstp.js!", 123123);
 ```
 
-これは次のように等価です： 
+これは以下と等価です： 
 
 ```javascript
 let data = await jsstp.SEND({
@@ -83,9 +83,9 @@ let data = await jsstp.SEND({
 ```
 
 これはすべてのイベントに対して書くことができますが、イベントが `On` で始まらない場合は、イベント名の前に `On_` を付けて、jsstp にアクセスして、イベントをトリガーしたいことを認識させる必要があります。 
-また、`jsstp.event.eventName(parameter)`を使用してイベントをトリガーすることができるので、イベント名の前に`On_`を付ける必要はない。  
+また、`jsstp.event.eventName(parameter)`を使用してイベントをトリガーすることができ、その際はイベント名の前に`On_`を付ける必要はありません。  
 
-返された内容を取得すると、`jsstp.sstp_info_t`型であり、様々な方法で利用される。  
+返される内容は、`jsstp.sstp_info_t`型で取得され、様々な方法で利用されます。  
 
 - 以下のメソッドは `info_object` から継承されます。
 
@@ -109,7 +109,7 @@ data.Script; //メッセージのScriptキーの値を取得する（他のキ�
 data.status_code_text; //メッセージヘッダのステータスコードのテキストを取得する
 ```
 
-- 以下は `jsstp.sstp_info_t` が所有するメソッドです。
+- 以下は `jsstp.sstp_info_t` が持つメソッドです。
 
 ```javascript
 data.get_passthrough("Result");
@@ -119,11 +119,11 @@ data.passthroughs; // すべての `X-SSTP-PassThru` のキーバリューペア
 data.raw; // プロキシを削除して、元のオブジェクトにアクセスする。
 ```
 
-ほとんどの場合、開発者は `X-SSTP-PassThru` 以外のキーバリューペアにアクセスする必要はないので、 `X-SSTP-PassThru-{key}` バージョンが存在するキーにアクセスすると、このプロキシは優先的に `X-SSTP-PassThru-{key}` の値を返す。  
-つまり、返されたメッセージに `Script` キーと `X-SSTP-PassThru-Script` キーがある場合、 `data.Script` または `data["Script"]` は `X-SSTP-PassThru-Script` の値を返し、 `data.raw.Script` および と `data.raw["Script"]` は `Script` の値を返す。  
+ほとんどの場合、開発者は `X-SSTP-PassThru` 以外のキーバリューペアにアクセスする必要はないので、 `X-SSTP-PassThru-{key}` バージョンが存在するキーにアクセスすると、このプロキシは優先的に `X-SSTP-PassThru-{key}` の値を返します。  
+つまり、返されたメッセージに `Script` キーと `X-SSTP-PassThru-Script` キーがある場合、 `data.Script` または `data["Script"]` は `X-SSTP-PassThru-Script` の値を返し、 `data.raw.Script` および `data.raw["Script"]` は `Script` の値を返します。  
 ほとんどの場合、このプロキシを使用すると、必要なコードの量を減らすことができます。また、`X-SSTP-PassThru` 以外のキーと値のペアにアクセスする必要がある場合は、常に `data.raw` を使用して raw オブジェクトにアクセスすることを忘れないでください。  
 
-この `data.raw` は、次のインスタンスで特定の `data.raw` オブジェクトを取得するために使用される。
+ゴーストがあるイベントをサポートしているかどうかを取得したい場合は、次のように記述します：
 
 ```javascript
 let result = await jsstp.has_event("OnTest");// これは jsstp.event.Has_Event(event_name, security_level).then(({ Result }) => Result == "1") とほとんど同じです．
@@ -142,7 +142,7 @@ queryer は `jsstp.ghost_events_queryer_t` 型であり、様々な方法で使�
 queryer.check_event("OnTest").then(result => console.log(result));
 ```
 
-クエリアは `jsstp` と同様に、オプションの引数でイベントのセキュリティレベルを指定してイベントをチェックします。デフォルトのセキュリティレベルは `jsstp` が動作している環境によって異なります：  
+queryer は `jsstp` と同様に、オプションの引数でイベントのセキュリティレベルを指定してイベントをチェックします。デフォルトのセキュリティレベルは `jsstp` が動作している環境によって異なります：  
 jsstpがnodejsで動作している場合、セキュリティレベルは `local` で、jsstpがブラウザで動作している場合、セキュリティレベルは `external` です（ブラウザのjsstpは外部イベントのみをトリガーできるため！）。  
 クエリのローカルイベントを修正したい場合は、次のようにセキュリティレベルを `local` に指定する必要があります：  
 
@@ -151,7 +151,7 @@ queryer.check_event("OnBoot", "local");
 jsstp.has_event("OnBoot", "local");// このようにjsstpを使用します。
 ```
 
-クエリアは、いくつかのクイック検出もサポートしています。  
+queryer は、いくつかのクイック検出もサポートしています。  
 もしクエリアが特定のゴーストを指すようにしたい場合は、`jsstp.default_info`を設定してデフォルトの追加メッセージを変更し、`reset`を使用してキャッシュをクリアしてください。  
 
 ```javascript
@@ -197,6 +197,6 @@ fmo.get_list_of("fullname"); //指定された属性のすべての値を取得�
 fmo.available; //fmoがコンテンツを持っているかどうかを取得します。
 ```
 
-fmoの各キーと値のペアは `String:info_object` で、キーはuuid、値はそのuuidに対応するfmo情報である。  
+fmoの各キーと値のペアは `String:info_object` で、キーはuuid、値はそのuuidに対応するfmo情報です。  
 fmoのfmo情報を操作するために、`info_object`のメンバーメソッドを使用することができます（上記の`sstp_info_t`の紹介を参照）。  
 それでも理解できない場合は、コンソールでfmoの構造を確認したり、jsstpのソースコードを見たりしてください  
