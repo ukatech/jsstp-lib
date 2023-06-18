@@ -25,6 +25,12 @@ jobs:
           cd dist
           uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
+
+          sed -i 's/var jsstp=function(){/var jsstp=(()=>{/g' jsstp.min.js
+          sed -i 's/}();$/})()\n/g' jsstp.min.js
+
+          sed -i 's/};$/}\n/g' jsstp.mjs
+
           cd ..
 
       - name: add all
