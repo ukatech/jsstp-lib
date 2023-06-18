@@ -15,7 +15,8 @@ export default [
 			{
 				file: 'dist/jsstp.min.js',
 				format: 'iife',
-				name: 'jsstp'
+				name: 'jsstp',
+				strict: false//jsstp在不在严格模式下都可以正常工作，去除以节省体积
 			}
 		]
 	}

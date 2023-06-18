@@ -6,11 +6,12 @@ let undefined;// =undefined
 
 let Get_Supported_Events = "Get_Supported_Events";
 let Has_Event = "Has_Event";
-let get_supported_events = Get_Supported_Events.toLowerCase();
-let has_event = Has_Event.toLowerCase();
+let get_supported_events = "get_supported_events";
+let has_event = "has_event";
 let get_simple_caller_of_event = "get_simple_caller_of_event";
 let trivial_clone = "trivial_clone";
 let default_info = "default_info";
+let substring = "substring";
 let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["blocker", "string_key_handler", "symbol_key_handler", "default_handler"];
 
 /**
@@ -24,7 +25,7 @@ let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["block
  */
 let key_value_split = /*@__PURE__*/(str, spliter) => {
 	let index = str.indexOf(spliter);
-	return [str.substring(0, index), str.substring(index + spliter.length)];
+	return [str[substring](0, index), str[substring](index + spliter.length)];
 }
 /**
  * 判断某一string是否是事件名
@@ -39,11 +40,12 @@ let is_event_name = /*@__PURE__*/(str) => /^On/.test(str);
  * @returns {String} 重整后的事件名
  * @ignore
  */
-let get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str.substring(3) : str;
+let get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str[substring](3) : str;
 /**
  * 判断一个数是否不是NaN
  * @param {Number} num 要判断的数
  * @returns {Boolean} 是否不是NaN
+ * @description 不使用Number.isNaN是为了节省压缩后字数
  * @ignore
  */
 let is_not_nan = /*@__PURE__*/(num) => num == num;
