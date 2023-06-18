@@ -74,14 +74,27 @@ let new_get_handler = /*@__PURE__*/(info) =>
 		return (result = target[key]) instanceof Function ? result.bind(target) : result;
 	}
 
+/**
+ * 是否在浏览器中
+ * @type {Boolean}
+ * @ignore
+ */
 let in_browser = !!globalThis.window;
+
+/**
+ * 根据端口返回本地地址
+ * @param {Number|undefined} [port] 端口，默认为9801
+ * @returns {String} 本地地址
+ * @ignore
+ */
+let get_local_address = (port) => `http://localhost:${port??9801}`;
 
 /**
  * 默认的origin，在nodejs中为`http://localhost: env.PORT?? 9801`，在浏览器中为location.origin
  * @type {String}
  * @ignore
  */
-let my_origin = in_browser ? location.origin : "http://localhost:" + process.env.PORT ?? 9801;
+let my_origin = in_browser ? location.origin : get_local_address(process.env.PORT);
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
  * @type {String}
@@ -115,6 +128,7 @@ export {
 	new_get_handler,
 
 	in_browser,
+	get_local_address,
 	my_origin,
 	default_security_level
 };

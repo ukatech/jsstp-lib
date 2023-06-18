@@ -17,6 +17,7 @@ import {
 	new_get_handler,
 
 	my_origin,
+	get_local_address,
 	default_security_level
 } from "../base.mjs";
 
@@ -99,7 +100,7 @@ class jsstp_t {
 	 * 修改host
 	 * @param {string} host
 	 */
-	set host(host) { this.#host = host || "http://localhost:9801/api/sstp/v1"; }
+	set host(host) { this.#host = host || get_local_address()+"/api/sstp/v1"; }
 	/*@__PURE__*/get host() { return this.#host; }
 	/**
 	 * 修改sendername
