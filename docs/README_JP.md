@@ -134,7 +134,11 @@ console.log(result);
 
 ```javascript
 let queryer = await jsstp.new_event_queryer();
-//queryer は jsstp.ghost_events_queryer_t 型であり、様々な方法で使用されます。
+```
+
+queryer は `jsstp.ghost_events_queryer_t` 型であり、様々な方法で使用されます。
+
+```javascript
 queryer.check_event("OnTest").then(result => console.log(result));
 ```
 

@@ -134,7 +134,11 @@ console.log(result);
 
 ```javascript
 let queryer = await jsstp.new_event_queryer();
-//queryer的类型是jsstp.ghost_events_queryer_t，使用方法各种各样
+```
+
+queryer的类型是`jsstp.ghost_events_queryer_t`，使用方法各种各样
+
+```javascript
 queryer.check_event("OnTest").then(result => console.log(result));
 ```
 

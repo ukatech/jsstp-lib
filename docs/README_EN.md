@@ -134,7 +134,11 @@ If you want to query events in bulk (like ukadoc does!) , you can use `jsstp.new
 
 ```javascript
 let queryer = await jsstp.new_event_queryer();
-//queryer is of type jsstp.ghost_events_queryer_t and is used in various ways
+```
+
+queryer is of type `jsstp.ghost_events_queryer_t` and is used in various ways.
+
+```javascript
 queryer.check_event("OnTest").then(result => console.log(result));
 ```
 
