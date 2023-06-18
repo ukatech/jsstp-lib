@@ -28,13 +28,13 @@ import jsstp from "jsstp";
 Or if you're a nostalgist, you can access jsstp's source code via cdn.
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.1/dist/jsstp.min.js"></script>
 ```
 
 Or load jsstp dynamically in js.
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.0/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.1/dist/jsstp.mjs").then(m=>m.jsstp);
 ```
 
 ### 2. Use
