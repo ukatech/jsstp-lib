@@ -37,6 +37,7 @@ let sstp_version_table = {
  * 根据方法名称获取SSTP协议头
  * @param {String} type 方法名称
  * @returns {String} SSTP协议头
+ * @ignore
  */
 let get_sstp_header = (type) => `${type} SSTP/${sstp_version_table[type]}`;
 //定义一个包装器

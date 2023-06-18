@@ -21,7 +21,7 @@ jobs:
         run: |
           npm install uglify-js -g
           npm install rollup -g
-          rollup -c
+          rollup -c ./.github/rollup.config.mjs
           cd dist
           uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module

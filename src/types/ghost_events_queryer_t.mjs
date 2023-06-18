@@ -20,9 +20,7 @@ import {
  * if(!ghost_events_queryer.available)
  * 	console.log("当前ghost不支持事件查询");
  * if(ghost_events_queryer.has_event("OnBoom"))
- * 	jsstp.send({
- * 		Event: "OnBoom"
- * 	});
+ * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */

@@ -1,0 +1,18 @@
+{
+	"plugins": ["plugins/markdown"],
+	"source": {
+		"include": ["./src","./src/types"],
+		"exclude": [ "./src/base.mjs" ],
+		"includePattern": ".+\\.mjs$"
+	},
+	"opts": {
+		"encoding": "utf8",
+		"destination": "./docs/"
+	},
+	"tags": {
+		"allowUnknownTags": true
+	},
+	"templates": {
+		"cleverLinks": true
+	}
+}

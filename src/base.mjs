@@ -1,7 +1,3 @@
-//构建一个包装器与http://localhost:9801/api/sstp/v1通信。
-//发信方法：Content-Type: text/plain HTTP/1.1でPOST
-//收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
-
 //一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
 let object = Object;
 let assign = object.assign;
@@ -24,6 +20,7 @@ let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["block
  * @returns {[String,String]} 分割后的字符串数组
  * @example
  * let [key,value] = key_value_split("key: value",": ");
+ * @ignore
  */
 let key_value_split = /*@__PURE__*/(str, spliter) => {
 	let index = str.indexOf(spliter);
@@ -33,18 +30,21 @@ let key_value_split = /*@__PURE__*/(str, spliter) => {
  * 判断某一string是否是事件名
  * @param {String} str 要判断的string
  * @returns {Boolean} 是否是事件名
+ * @ignore
  */
 let is_event_name = /*@__PURE__*/(str) => /^On/.test(str);
 /**
  * 获取重整过的事件名
  * @param {String} str 要重整的事件名
  * @returns {String} 重整后的事件名
+ * @ignore
  */
 let get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str.substring(3) : str;
 /**
  * 判断一个数是否不是NaN
  * @param {Number} num 要判断的数
  * @returns {Boolean} 是否不是NaN
+ * @ignore
  */
 let is_not_nan = /*@__PURE__*/(num) => num == num;
 /**
@@ -56,6 +56,7 @@ let is_not_nan = /*@__PURE__*/(num) => num == num;
  * 	default_handler:undefined|(target,key:String|Symbol) =>any|undefined
  * }} info 代理的get方法的信息
  * @returns {(target, key:String|Symbol)=>any|undefined} 代理的get方法
+ * @ignore
  */
 let new_get_handler = /*@__PURE__*/(info) =>
 	(target, key) => {
@@ -78,12 +79,14 @@ let in_browser = !!globalThis.window;
 /**
  * 默认的origin，在nodejs中为`http://localhost: env.PORT?? 9801`，在浏览器中为location.origin
  * @type {String}
+ * @ignore
  */
 let my_origin = in_browser ? location.origin : "http://localhost:" + process.env.PORT ?? 9801;
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
  * @type {String}
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+ * @ignore
  */
 let default_security_level = /^\w+:\/\/localhost/.test(my_origin) ? "local" : "external";
 
