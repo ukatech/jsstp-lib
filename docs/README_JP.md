@@ -72,7 +72,7 @@ jsstpはsstpの基本操作をすべてサポートしており、`jsstp.[SEND|N
 let data = await jsstp.OnTest("from jsstp.js!", 123123);
 ```
 
-これは以下と等価です： 
+これは以下と等価です：  
 
 ```javascript
 let data = await jsstp.SEND({
@@ -115,7 +115,7 @@ data.status_code_text; //メッセージヘッダのステータスコードの�
 data.get_passthrough("Result");
 //メッセージ内の `X-SSTP-PassThru` のキーの値を取得する（`data["X-SSTP-PassThru-Result"]`と同等）。
 //`X-SSTP-PassThru-Result` の値を取得するために `data.Result` または `data["Result"]` を使用することもできる: この方がすっきりするかもしれない
-data.passthroughs; // すべての `X-SSTP-PassThru` のキーバリューペアを取得する。
+data.passthroughs; // すべての `X-SSTP-PassThru` のキーバリューペアを取得します。
 data.raw; // プロキシを削除して、元のオブジェクトにアクセスする。
 ```
 
@@ -126,11 +126,11 @@ data.raw; // プロキシを削除して、元のオブジェクトにアクセ�
 ゴーストがあるイベントをサポートしているかどうかを取得したい場合は、次のように記述します：
 
 ```javascript
-let result = await jsstp.has_event("OnTest");// これは jsstp.event.Has_Event(event_name, security_level).then(({ Result }) => Result == "1") とほとんど同じです．
+let result = await jsstp.has_event("OnTest");// これは jsstp.event.Has_Event(event_name, security_level).then(({ Result }) => Result == "1") とほとんど同じです
 console.log(result);
 ```
 
-イベントを一括して問い合わせたい場合（ukadocがそうであるように!）、`jsstp.new_event_queryer()`を使ってクエリを取得することができます。
+イベントを一括して問い合わせたい場合（Ukadocがそうであるように!）、`jsstp.new_event_queryer()`を使ってクエリを取得することができます。
 
 ```javascript
 let queryer = await jsstp.new_event_queryer();

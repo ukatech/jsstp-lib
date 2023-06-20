@@ -82,7 +82,7 @@ let data = await jsstp.SEND({
 });
 ```
 
-You can write this for all events, but if the event doesn't start with `On`, you need to prefix the event name with `On_` when accessing jsstp so that it recognizes that you want to trigger the event  
+You can write this for all events, but if the event doesn't start with `On`, you need to prefix the event name with `On_` when accessing jsstp so that it recognizes that you want to trigger the event.  
 You can also use `jsstp.event.eventName(parameter)` to trigger the event, so you don't need to prefix the event name with `On_`  
 
 After getting the return content, which is of type `jsstp.sstp_info_t`, there are various ways to use it.  
@@ -121,7 +121,7 @@ data.raw; //Remove the proxy and access the original object
 
 `sstp_info_t` is wrapped in a proxy since its construction, and given that in most cases developers don't need to access non-`X-SSTP-PassThru` key-value pairs, this proxy will preferentially return the `X-SSTP-PassThru-{key}` value when you access a key for which an `X-SSTP-PassThru` version exists.  
 In other words, if the returned message has a `Script` key and an `X-SSTP-PassThru-Script` key, then `data.Script` or `data["Script"]` will return the value of `X-SSTP-PassThru-Script`, while `data.raw.Script` and `data.raw["Script"]` will return the value of `Script`.  
-In most cases this proxy will reduce the amount of code you have to work with, but always remember to use `data.raw` to access the original object when you need to access non-`X-SSTP-PassThru` key-value pairs.  
+In most cases, this proxy will reduce the amount of code you have to work with, but always remember to use `data.raw` to access the original object when you need to access non-`X-SSTP-PassThru` key-value pairs.  
 
 If you want to get whether ghost supports a certain event or not, you can write it like this:
 
@@ -130,7 +130,7 @@ let result = await jsstp.has_event("OnTest"); //This is almost the same as jsstp
 console.log(result);
 ```
 
-If you want to query events in bulk (like ukadoc does!) , you can use `jsstp.new_event_queryer()` to get a queryer
+If you want to query events in bulk (like Ukadoc does!) , you can use `jsstp.new_event_queryer()` to get a queryer.
 
 ```javascript
 let queryer = await jsstp.new_event_queryer();
@@ -143,7 +143,7 @@ queryer.check_event("OnTest").then(result => console.log(result));
 ```
 
 The queryer, like `jsstp`, checks the event with an optional argument that specifies the event's security level. The default security level varies with the environment in which `jsstp` is running:  
-If jsstp is running in nodejs, the security level is `local`. If jsstp is running in a browser, the security level is `external` (because jsstp in a browser can only trigger external events!)  
+If jsstp is running in node.js, the security level is `local`. If jsstp is running in a browser, the security level is `external` (because jsstp in a browser can only trigger external events!)  
 If you want to modify the query local event, you need to specify the security level as `local`, like this:  
 
 ```javascript
@@ -167,7 +167,7 @@ jsstp.default_info.ReceiverGhostName = "橘花";
 await queryer.reset();
 ```
 
-The queryer also supports some quick tests for checking the availability of the queryer.
+The queryer also supports some quick tests to check the availability of the queryer.
 
 ```javascript
 if (!queryer.available)
