@@ -143,7 +143,7 @@ queryer.check_event("OnTest").then(result => console.log(result));
 ```
 
 queryer は `jsstp` と同様に、オプションの引数でイベントのセキュリティレベルを指定してイベントをチェックします。デフォルトのセキュリティレベルは `jsstp` が動作している環境によって異なります：  
-jsstpがnodejsで動作している場合、セキュリティレベルは `local` で、jsstpがブラウザで動作している場合、セキュリティレベルは `external` です（ブラウザのjsstpは外部イベントのみをトリガーできるため！）。  
+jsstpがnode.jsで動作している場合、セキュリティレベルは `local` で、jsstpがブラウザで動作している場合、セキュリティレベルは `external` です（ブラウザのjsstpは外部イベントのみをトリガーできるため！）。  
 クエリのローカルイベントを修正したい場合は、次のようにセキュリティレベルを `local` に指定する必要があります：  
 
 ```javascript

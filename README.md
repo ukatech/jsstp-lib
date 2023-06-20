@@ -147,7 +147,7 @@ queryer.check_event("OnTest").then(result => console.log(result));
 ```
 
 queryer和`jsstp`一样，检查事件时有可选的参数指定事件的安全等级，默认的安全等级随着`jsstp`的运行环境而变化：  
-如果jsstp运行在nodejs中，安全等级为`local`，如果jsstp运行在浏览器中，安全等级为`external`（因为浏览器中的jsstp只能触发外部事件！）  
+如果jsstp运行在node.js中，安全等级为`local`，如果jsstp运行在浏览器中，安全等级为`external`（因为浏览器中的jsstp只能触发外部事件！）  
 如果你想要固定查询local事件，你需要指定安全等级为`local`，像这样：  
 
 ```javascript
