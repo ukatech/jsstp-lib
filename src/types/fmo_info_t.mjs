@@ -3,9 +3,11 @@ import {
 	endline,
 	//undefined,
 
+	length,
 	trivial_clone,
 
-	key_value_split
+	key_value_split,
+	void_string
 } from "../base.mjs";
 import new_object from "./info_object.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
@@ -69,7 +71,7 @@ class fmo_info_t extends base_sstp_info_t {
 	/**
 	 * @description 判断fmo是否有效
 	 */
-	/*@__PURE__*/get available() { return !!this.length; }
+	/*@__PURE__*/get available() { return !!this[length]; }
 	//注入toString方法便于使用
 	/**
 	 * 获取字符串报文
@@ -79,9 +81,9 @@ class fmo_info_t extends base_sstp_info_t {
 	/*@__PURE__*/toString() {
 		return [
 			this.head,
-			"",
+			void_string,
 			...this.flat_map((uuid, key, value) => uuid + "." + key + String.fromCharCode(1) + value),
-			"", ""
+			void_string,void_string
 		].join(endline);
 	}
 	/**

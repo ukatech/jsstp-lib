@@ -6,6 +6,7 @@ import {
 	assign,
 	//endline,
 	undefined,
+	the_proxy,
 
 	Get_Supported_Events,
 	Has_Event,
@@ -15,6 +16,9 @@ import {
 	is_event_name,
 	get_reorganized_event_name,
 	new_get_handler,
+	to_string,
+
+	proxy,
 
 	my_origin,
 	get_local_address,
@@ -41,6 +45,9 @@ let sstp_version_table = {
  * @ignore
  */
 let get_sstp_header = (type) => `${type} SSTP/${sstp_version_table[type]}`;
+
+let default_method = "SEND";
+
 //定义一个包装器
 /**
  * jsstp对象
@@ -84,18 +91,16 @@ class jsstp_t {
 
 		this.host = host;
 		this.sendername = sendername;
-		this.proxy = new Proxy(this, {
+		return this[proxy] = new the_proxy(this, {
 			get: new_get_handler({
-				string_key_handler: (target, key) => 
-					(key in sstp_version_table)?
-						target.get_caller_of_method(key):
-					(is_event_name(key))?
-						target[get_simple_caller_of_event](get_reorganized_event_name(key)):
+				_string_key_handler_: (target, key) =>
+					(key in sstp_version_table) ?
+						target.get_caller_of_method(key) :
+					(is_event_name(key)) ?
+						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
 					undefined
-				}
-			)
+			})
 		});
-		return this.proxy;
 	}
 	/**
 	 * 修改host
@@ -122,7 +127,7 @@ class jsstp_t {
 				fetch(this.host, {
 					method: "POST",
 					headers: this.RequestHeader,
-					body: `${info}`
+					body: /*@__INLINE__*/to_string(info)
 				}).then(response =>
 					response.status != 200 ?
 						reject(response.status) :
@@ -171,8 +176,8 @@ class jsstp_t {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {(info: Object) => Promise<sstp_info_t>} 调用器
 	 */
-	/*@__PURE__*/get_caller_of_event(event_name, method_name = "SEND") {
-		return (info) => this.proxy[method_name](assign({ Event: event_name }, info));
+	/*@__PURE__*/get_caller_of_event(event_name, method_name = default_method) {
+		return (info) => this[proxy][method_name](assign({ Event: event_name }, info));
 	}
 	/**
 	 * 用于获取指定事件的简单调用器
@@ -180,7 +185,7 @@ class jsstp_t {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {(...args: any[]) => Promise<sstp_info_t>} 调用器
 	 */
-	/*@__PURE__*/get_simple_caller_of_event(event_name, method_name = "SEND") {
+	/*@__PURE__*/get_simple_caller_of_event(event_name, method_name = default_method) {
 		return (...args) => {
 			let reference_num = 0;
 			let info = {};
@@ -197,7 +202,7 @@ class jsstp_t {
 	 * jsstp.event.OnTest("test");
 	 */
 	/*@__PURE__*/get event() {
-		return new Proxy({}, {
+		return new the_proxy({}, {
 			get: (_target, prop) => this[get_simple_caller_of_event](prop)
 		});
 	}
@@ -231,7 +236,7 @@ class jsstp_t {
 	 * }
 	 */
 	/*@__PURE__*/async has_event(event_name, security_level = default_security_level) {
-		return this.event[Has_Event](event_name, security_level).then(({ Result }) => Result == "1");
+		return this.event[Has_Event](event_name, security_level).then(({ Result }) => Result == 1);
 	}
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
@@ -278,8 +283,8 @@ class jsstp_t {
 	/*@__PURE__*/async get_supported_events() {
 		return this.event[Get_Supported_Events]().then(({ local, external }) => (
 			{
-				local: (local || "").split(","),
-				external: (external || "").split(",")
+				local: (local || void_string).split(","),
+				external: (external || void_string).split(",")
 			}
 		));
 	}
@@ -292,7 +297,7 @@ class jsstp_t {
 	 * 	console.log(fmo);
 	 */
 	/*@__PURE__*/async get_fmo_infos() {
-		return this.proxy.EXECUTE.get_raw({
+		return this[proxy].EXECUTE.get_raw({
 			Command: "GetFMO"
 		}).then(
 			fmo_text => new fmo_info_t(fmo_text)

@@ -1,6 +1,18 @@
 //一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
-let object = Object;
-let assign = object.assign;
+
+/**
+ * @typename the_object
+ * @type {ObjectConstructor}
+ * @ignore
+ */
+let the_object = Object;
+/**
+ * @typename the_proxy
+ * @type {ProxyConstructor}
+ * @ignore
+ */
+let the_proxy = Proxy;
+let assign = the_object.assign;
 let endline = "\r\n";
 let undefined;// =undefined
 
@@ -12,7 +24,19 @@ let get_simple_caller_of_event = "get_simple_caller_of_event";
 let trivial_clone = "trivial_clone";
 let default_info = "default_info";
 let substring = "substring";
-let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["blocker", "string_key_handler", "symbol_key_handler", "default_handler"];
+let length = "length";
+let entries = "entries";
+let proxy = "proxy";
+let constructor = "constructor";
+
+let void_string = "";
+
+/**
+ * @typename the_string
+ * @type {StringConstructor}
+ * @ignore
+ */
+let the_string = void_string[constructor];
 
 /**
  * 以spliter分割字符串str，只对第一个匹配的分隔符做分割
@@ -25,15 +49,24 @@ let [blocker, string_key_handler, symbol_key_handler, default_handler] = ["block
  */
 let key_value_split = /*@__PURE__*/(str, spliter) => {
 	let index = str.indexOf(spliter);
-	return [str[substring](0, index), str[substring](index + spliter.length)];
+	return [str[substring](0, index), str[substring](index + spliter[length])];
 }
+/**
+ * 判断某一string是否符合给定的正则表达式
+ * @param {String} str 要判断的string
+ * @param {RegExp} reg 正则表达式
+ * @returns {Boolean} 是否符合给定的正则表达式
+ * @inline 这个函数使用的还不够多，以至于它带来的字节减少还没有抵消它本身的定义，我们持续inline直到未来其收益为正
+ * @ignore
+ */
+/*@__INLINE__*/let reg_test = /*@__PURE__*/(reg, str) => reg.test(str);
 /**
  * 判断某一string是否是事件名
  * @param {String} str 要判断的string
  * @returns {Boolean} 是否是事件名
  * @ignore
  */
-let is_event_name = /*@__PURE__*/(str) => /^On/.test(str);
+let is_event_name = /*@__PURE__*/(str) => /*@__INLINE__*/reg_test(/^On/, str);
 /**
  * 获取重整过的事件名
  * @param {String} str 要重整的事件名
@@ -50,29 +83,49 @@ let get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str[subst
  */
 let is_not_nan = /*@__PURE__*/(num) => num == num;
 /**
+ * @typename the_function
+ * @type {FunctionConstructor}
+ * @ignore
+ */
+let the_function = is_not_nan[constructor];
+/**
+ * 将任意数据转换为字符串
+ * @param {*} data 任意数据
+ * @returns {String} 转换后的字符串
+ * @inline 这个函数不会带来任何压缩收益，所以我们保持其inline以节省其定义所占空间
+ * @ignore
+ */
+/*@__INLINE__*/let to_string = /*@__PURE__*/(data) => void_string + data;
+/**
  * 对代理的get方法进行封装，使其定义更为简单
  * @param {{
- * 	blocker: undefined|(target,key:String|Symbol) =>Boolean,
- * 	string_key_handler:undefined|(target,key:String) =>any|undefined,
- * 	symbol_key_handler:undefined|(target,key:Symbol) =>any|undefined,
- * 	default_handler:undefined|(target,key:String|Symbol) =>any|undefined
+ * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,
+ * 	_string_key_handler_:undefined|(target,key:String) =>any|undefined,
+ * 	_symbol_key_handler_:undefined|(target,key:Symbol) =>any|undefined,
+ * 	_default_handler_:undefined|(target,key:String|Symbol) =>any|undefined
  * }} info 代理的get方法的信息
  * @returns {(target, key:String|Symbol)=>any|undefined} 代理的get方法
  * @ignore
  */
 let new_get_handler = /*@__PURE__*/(info) =>
 	(target, key) => {
-		if (info[blocker] && info[blocker](target, key))
+		/*
+		the_function和the_string是为了节省压缩后字数而存在的，但是目前来说Function和String这两个东西只在这个函数有用到
+		反而，引入这两个变量会导致压缩后的代码变大，所以在这个函数中我们仍然使用Function和String
+
+		the_function和the_string的相关定义会作为dead code被优化掉
+		*/
+		if (info._blocker_ && info._blocker_(target, key))
 			return;
 		let result;
-		if (Object(key) instanceof String)//string
-			result = info[string_key_handler] && info[string_key_handler](target, key);
+		if (the_object(key) instanceof String)//string
+			result = info._string_key_handler_ && info._string_key_handler_(target, key);
 		else//symbol
-			result = info[symbol_key_handler] && info[symbol_key_handler](target, key);
+			result = info._symbol_key_handler_ && info._symbol_key_handler_(target, key);
 		if (result !== undefined)
 			return result;
-		else if (info[default_handler])
-			return info[default_handler](target, key)
+		else if (info._default_handler_)
+			return info._default_handler_(target, key)
 		return (result = target[key]) instanceof Function ? result.bind(target) : result;
 	}
 
@@ -103,10 +156,13 @@ let my_origin = in_browser ? location.origin : get_local_address(process.env.POR
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  * @ignore
  */
-let default_security_level = /^\w+:\/\/localhost/.test(my_origin) ? "local" : "external";
+let default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? "local" : "external";
 
 export {
-	object,
+	the_object,
+	the_proxy,
+	the_function,
+	the_string,
 	assign,
 	endline,
 	undefined,
@@ -118,19 +174,22 @@ export {
 	get_simple_caller_of_event,
 	trivial_clone,
 	default_info,
-	blocker,
-	string_key_handler,
-	symbol_key_handler,
-	default_handler,
+	length,
+	entries,
+	proxy,
 
 	key_value_split,
 	is_event_name,
 	get_reorganized_event_name,
 	is_not_nan,
 	new_get_handler,
+	reg_test,
 
 	in_browser,
 	get_local_address,
 	my_origin,
-	default_security_level
+	default_security_level,
+
+	to_string,
+	void_string
 };

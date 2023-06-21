@@ -19,10 +19,20 @@ jobs:
 
       - name: build & minify
         run: |
-          npm install uglify-js -g
           npm install rollup -g
+          npm install terser -g
+          npm install uglify-js -g
           rollup -c ./.github/rollup.config.mjs
           cd dist
+          terser ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true,inline=2" -m --mangle-props "regex=/^_.*_$/"
+          terser ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true,inline=2" -m --mangle-props "regex=/^_.*_$/" --module
+
+          uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
+          uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
+
+          sed -i 's/\${t=t}/\${t}/g' ./jsstp.min.js
+          sed -i 's/\${t=t}/\${t}/g' ./jsstp.mjs
+
           uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
 

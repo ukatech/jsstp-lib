@@ -3,9 +3,13 @@ import {
 	endline,
 	//undefined,
 
+	entries,
+	length,
 	trivial_clone,
 
 	is_not_nan,
+	void_string,
+	to_string
 } from "../base.mjs";
 import { info_object } from "./info_object.mjs";
 
@@ -44,8 +48,8 @@ class base_sstp_info_t extends info_object {
 	 */
 	/*@__PURE__*/constructor(info_head, info_body, unknown_lines = {}) {
 		super();
-		this.#head = `${info_head}`;
-		if (unknown_lines.length)
+		this.#head = /*@__INLINE__*/to_string(info_head);
+		if (unknown_lines[length])
 			this.#unknown_lines = unknown_lines;
 		assign(this, info_body);
 	}
@@ -69,15 +73,15 @@ class base_sstp_info_t extends info_object {
 		return [
 			this.#head,
 			...this.unknown_lines,
-			...this.entries.map(([key, value]) => `${key}: ${value}`),
-			"", ""//空行结尾
+			...this[entries].map(([key, value]) => `${key}: ${value}`),
+			void_string,void_string//空行结尾
 		].join(endline);
 	}
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
 	 */
-	/*@__PURE__*/to_string() { return this.toString(); }//兼容命名
+	/*@__PURE__*/to_string() { return /*@__INLINE__*/to_string(this); }//兼容命名
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象

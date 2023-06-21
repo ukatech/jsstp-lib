@@ -1,4 +1,11 @@
-import { object, assign, undefined } from "../base.mjs";
+import {
+	the_object,
+	assign,
+	undefined,
+
+	entries,
+	length
+} from "../base.mjs";
 /**
  * 拓展object，提供一些简单且遍历的操作
  */
@@ -6,25 +13,25 @@ class info_object {
 	/**
 	 * @description 获取所有key的数组
 	 */
-	/*@__PURE__*/get keys() { return object.keys(this); }
+	/*@__PURE__*/get keys() { return the_object.keys(this); }
 	/**
 	 * @description 获取所有value的数组
 	 */
-	/*@__PURE__*/get values() { return object.values(this); }
+	/*@__PURE__*/get values() { return the_object.values(this); }
 	/**
 	 * @description 获取所有key-value对的数组
 	 */
-	/*@__PURE__*/get entries() { return object.entries(this); }
+	/*@__PURE__*/get entries() { return the_object[entries](this); }
 	/**
 	 * @description 获取成员数量
 	 */
-	/*@__PURE__*/get length() { return this.keys.length; }
+	/*@__PURE__*/get length() { return this.keys[length]; }
 	/**
 	 * @description 对每个key-value对执行某个函数
 	 * @param {(value,key?)} func 要执行的函数
 	 */
 	/*@__PURE__*/forEach(func) {
-		return this.entries.forEach(([key, value]) => {
+		return this[entries].forEach(([key, value]) => {
 			this[key] = func(value, key) || value;
 		});
 	}
@@ -41,7 +48,7 @@ class info_object {
 	 */
 	/*@__PURE__*/flat_map(func) {
 		let result = [];
-		this.entries.map(([key, value]) => {
+		this[entries].map(([key, value]) => {
 			if (value instanceof info_object)
 				result.push(...value.flat_map(func.bind(func, key)));
 			else
@@ -54,7 +61,7 @@ class info_object {
 	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
 	 */
 	/*@__PURE__*/map(func) {
-		return this.entries.map(([key, value]) => func(value, key));
+		return this[entries].map(([key, value]) => func(value, key));
 	}
 	/**
 	 * @description 对自身按照数组追加元素

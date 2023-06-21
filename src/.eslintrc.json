@@ -4,6 +4,9 @@
         "sourceType": "module",
         "ecmaFeatures": {}
     },
+    "globals": {
+        "globalThis": false, // means it is not writeable
+    },
     "rules": {
         "constructor-super": [
             "error"

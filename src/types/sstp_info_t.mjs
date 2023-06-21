@@ -2,9 +2,13 @@ import {
 	//assign,
 	endline,
 	undefined,
+	the_proxy,
+
+	length,
 
 	key_value_split,
-	new_get_handler
+	new_get_handler,
+	reg_test
 } from "../base.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
 import new_object from "./info_object.mjs";
@@ -39,9 +43,9 @@ class sstp_info_t extends base_sstp_info_t {
 	 */
 	/*@__PURE__*/constructor(info_head, info_body, unknown_lines = {}) {
 		super(info_head, info_body, unknown_lines);
-		return new Proxy(this, {
+		return new the_proxy(this, {
 			get: new_get_handler({
-				string_key_handler: (target, key) => x_sstp_passthru_head + key in target ? target.get_passthrough(key) : undefined
+				_string_key_handler_: (target, key) => x_sstp_passthru_head + key in target ? target.get_passthrough(key) : undefined
 			})
 		});
 	}
@@ -58,10 +62,10 @@ class sstp_info_t extends base_sstp_info_t {
 		let unknown_lines = [];
 		let last_key;
 		//去掉最后的空行*2
-		lines.length -= 2;
+		lines[length] -= 2;
 		for (let line of lines) {
 			let [key, value] = key_value_split(line, ': ');
-			if (!/^\w[^\s]*$/.test(key)) {
+			if (!/*@__INLINE__*/reg_test(/^\w[^\s]*$/, key)) {
 				if (last_key)
 					body[last_key] += endline + line;
 				else
@@ -91,7 +95,7 @@ class sstp_info_t extends base_sstp_info_t {
 	/*@__PURE__*/get passthroughs() {
 		return this.#passthroughs ??= new_object().push(
 			this.map((value, key) => key.startsWith(x_sstp_passthru_head) ?
-				[key.slice(x_sstp_passthru_head.length), value] : undefined
+				[key.slice(x_sstp_passthru_head[length]), value] : undefined
 			)
 		);
 	}
