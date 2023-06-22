@@ -30,9 +30,7 @@ jobs:
           uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
 
-          sed -i 's/\${t=t}/\${t}/g' ./jsstp.min.js
-          sed -i 's/\${t=t}/\${t}/g' ./jsstp.mjs
-
+          # 为了消除${t=t}这种代码，你需要多调用几遍uglifyjs
           uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
           uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
 
