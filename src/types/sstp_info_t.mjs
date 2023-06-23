@@ -14,7 +14,7 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
 import new_object from "./info_object.mjs";
 
 //定义sstp报文类
-let x_sstp_passthru_head = "X-SSTP-PassThru-";
+var x_sstp_passthru_head = "X-SSTP-PassThru-";
 /*
 sstp报文格式：
 SEND SSTP/1.1

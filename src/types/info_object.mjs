@@ -77,5 +77,5 @@ class info_object {
  * @returns {info_object} 生成的对象
  * @ignore
  */
-let new_object = () => new info_object();
+var new_object = () => new info_object();
 export { new_object as default, info_object };

@@ -33,7 +33,7 @@ import sstp_info_t from "./sstp_info_t.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
 
 //SSTP协议版本号列表
-let sstp_version_table = {
+var sstp_version_table = {
 	SEND: 1.4,
 	NOTIFY: 1.1,
 	COMMUNICATE: 1.1,
@@ -46,9 +46,9 @@ let sstp_version_table = {
  * @returns {String} SSTP协议头
  * @ignore
  */
-let get_sstp_header = (type) => `${type} SSTP/${sstp_version_table[type]}`;
+var get_sstp_header = (type) => `${type} SSTP/${sstp_version_table[type]}`;
 
-let default_method = "SEND";
+var default_method = "SEND";
 
 //定义一个包装器
 /**
