@@ -20,9 +20,9 @@ npm i jsstp
 その後、jsstpをjsにインポートします。
 
 ```javascript
-var jsstp=require("jsstp");
-//または
 import jsstp from "jsstp";
+//または
+var jsstp=(await import("jsstp")).jsstp;
 ```
 
 あるいは、古式ゆかしい方法で、cdn経由でjsstpのソースコードにアクセスすることができます。

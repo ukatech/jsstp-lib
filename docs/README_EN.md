@@ -20,9 +20,9 @@ npm i jsstp
 After that, import jsstp in js.
 
 ```javascript
-var jsstp=require("jsstp");
-//or
 import jsstp from "jsstp";
+//or
+var jsstp=(await import("jsstp")).jsstp;
 ```
 
 Or if you're a nostalgist, you can access jsstp's source code via cdn.

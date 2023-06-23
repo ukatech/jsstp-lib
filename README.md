@@ -24,9 +24,9 @@ npm i jsstp
 之后在js中引入jsstp
 
 ```javascript
-var jsstp=require("jsstp");
-//或者
 import jsstp from "jsstp";
+//或者
+var jsstp=(await import("jsstp")).jsstp;
 ```
 
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
