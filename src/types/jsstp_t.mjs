@@ -20,6 +20,7 @@ import {
 
 	proxy,
 	then,
+	void_string,
 
 	my_origin,
 	get_local_address,
@@ -300,7 +301,7 @@ class jsstp_t {
 	/*@__PURE__*/async get_fmo_infos() {
 		return this[proxy].EXECUTE.get_raw({
 			Command: "GetFMO"
-		}).then(
+		})[then](
 			fmo_text => new fmo_info_t(fmo_text)
 		);
 	}
