@@ -28,6 +28,7 @@ let length = "length";
 let entries = "entries";
 let proxy = "proxy";
 let constructor = "constructor";
+let then = "then";
 
 let void_string = "";
 
@@ -142,7 +143,7 @@ let in_browser = !!globalThis.window;
  * @returns {String} 本地地址
  * @ignore
  */
-let get_local_address = (port) => `http://localhost:${port??9801}`;
+let get_local_address = /*@__PURE__*/(port) => `http://localhost:${port??9801}`;
 
 /**
  * 默认的origin，在nodejs中为`http://localhost: env.PORT?? 9801`，在浏览器中为location.origin
@@ -177,6 +178,7 @@ export {
 	length,
 	entries,
 	proxy,
+	then,
 
 	key_value_split,
 	is_event_name,

@@ -19,6 +19,7 @@ import {
 	to_string,
 
 	proxy,
+	then,
 
 	my_origin,
 	get_local_address,
@@ -84,10 +85,10 @@ class jsstp_t {
 	 */
 	/*@__PURE__*/constructor(sendername, host) {
 		this.RequestHeader = {
-			"Content-Type": "text/plain",
+			//"Content-Type": "text/plain",//省略Content-Type并不会导致sstp无法正常工作，还能压缩dist体积。
 			"Origin": my_origin
 		};
-		this[default_info] = { Charset: "UTF-8" };
+		this[default_info] = { Charset: "UTF-8" };//指定字符集，否则ssp会以本地字符集解码
 
 		this.host = host;
 		this.sendername = sendername;
@@ -128,10 +129,10 @@ class jsstp_t {
 					method: "POST",
 					headers: this.RequestHeader,
 					body: /*@__INLINE__*/to_string(info)
-				}).then(response =>
+				})[then](response =>
 					response.status != 200 ?
 						reject(response.status) :
-						response.text().then(resolve)
+						response.text()[then](resolve)
 				).catch(reject)
 		);
 	}
@@ -152,7 +153,7 @@ class jsstp_t {
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 */
 	async costom_send(sstphead, info) {
-		return this.costom_text_send(sstphead, info).then(
+		return this.costom_text_send(sstphead, info)[then](
 			result => sstp_info_t.from_string(result)
 		);
 	}
@@ -236,7 +237,7 @@ class jsstp_t {
 	 * }
 	 */
 	/*@__PURE__*/async has_event(event_name, security_level = default_security_level) {
-		return this.event[Has_Event](event_name, security_level).then(({ Result }) => Result == 1);
+		return this.event[Has_Event](event_name, security_level)[then](({ Result }) => Result == 1);
 	}
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
@@ -281,7 +282,7 @@ class jsstp_t {
 	 * }
 	 */
 	/*@__PURE__*/async get_supported_events() {
-		return this.event[Get_Supported_Events]().then(({ local, external }) => (
+		return this.event[Get_Supported_Events]()[then](({ local, external }) => (
 			{
 				local: (local || void_string).split(","),
 				external: (external || void_string).split(",")
@@ -313,7 +314,7 @@ class jsstp_t {
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
 	/*@__PURE__*/async available() {
-		return this.get_fmo_infos().then(fmo => fmo.available).catch(() => false);
+		return this.get_fmo_infos()[then](fmo => fmo.available).catch(() => false);
 	}
 	/**
 	 * 获取一个用于查询ghost所支持事件的queryer
