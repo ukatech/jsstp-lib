@@ -35,10 +35,9 @@ class fmo_info_t extends base_sstp_info_t {
 		//fmo_info每个key的格式都是"uuid.属性名"
 		for (let line of lines) {
 			if (!line) continue;
-			let [key, value] = key_value_split(line, String.fromCharCode(1));
-			let [uuid, name] = key_value_split(key, ".");
-			this[uuid] ||= new_object();
-			this[uuid][name] = value;
+			let [key_base, value] = key_value_split(line, String.fromCharCode(1));
+			let [uuid, key] = key_value_split(key_base, ".");
+			(this[uuid] ||= new_object())[key] = value;//uuid对应的对象应是info_object以方便使用，且下方flat_map调用需要其方法
 		}
 	}
 	/**

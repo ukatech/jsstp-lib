@@ -32,7 +32,7 @@ class info_object {
 	 */
 	/*@__PURE__*/forEach(func) {
 		return this[entries].forEach(([key, value]) => {
-			this[key] = func(value, key) || value;
+			this[key] = func(value, key) ?? value;
 		});
 	}
 	/**
@@ -48,12 +48,13 @@ class info_object {
 	 */
 	/*@__PURE__*/flat_map(func) {
 		let result = [];
-		this[entries].map(([key, value]) => {
-			if (value instanceof info_object)
-				result.push(...value.flat_map(func.bind(func, key)));
-			else
-				result.push(func(key, value));
-		});
+		this[entries].map(([key, value]) => 
+			result.push(...(
+				value instanceof info_object?
+				value.flat_map(func.bind(func, key)):
+				[func(key, value)]//构建数组，因为外部有展开操作
+			))
+		);
 		return result;
 	}
 	/**

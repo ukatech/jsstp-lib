@@ -1,6 +1,6 @@
 {
 	"name": "jsstp",
-	"version": "2.1.5",
+	"version": "2.1.6",
 	"description": "Use js to communicate with ukagaka in js to exchange information.",
 	"main": "src/jsstp.mjs",
 	"directories": {
