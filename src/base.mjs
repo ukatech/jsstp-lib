@@ -135,7 +135,10 @@ var new_get_handler = /*@__PURE__*/(info) =>
  * @type {Boolean}
  * @ignore
  */
-var in_browser = !!globalThis.window;
+var in_browser = !!globalThis.window;//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
+//但是为了避免node今后实现self，我们使用window
+//node大概率不会实现window，因为多数代码都在使用windows判断是否在浏览器中
+//这样做还能兼容html4！...大概？
 
 /**
  * 根据端口返回本地地址

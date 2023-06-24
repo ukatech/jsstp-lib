@@ -1,8 +1,8 @@
 # jsstp  
 
-[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
-![npm downloads](https://img.shields.io/npm/dm/jsstp?label=npm%20downloads)
-![install size](https://packagephobia.now.sh/badge?p=jsstp)  
+[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
+[![npmダウンロード](https://img.shields.io/npm/dm/jsstp?label=npm%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89)](https://www.npmjs.com/package/jsstp)
+[![npmバンドルのサイズ](https://img.shields.io/bundlephobia/min/jsstp?label=npm%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%AE%E3%82%B5%E3%82%A4%E3%82%BA)](../dist/jsstp.min.js)  
 
 Webページやnode.jsなどの環境で、ゴーストと通信して情報をやりとりするためにjsを使用します。  
 詳細は[伺か](https://ja.wikipedia.org/wiki/%E4%BC%BA%E3%81%8B)と[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)を参照してください。

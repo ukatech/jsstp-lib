@@ -117,6 +117,9 @@ class ghost_events_queryer_t {
 			this.#ghost_event_list = await jsstp[get_supported_events]();
 		return this;
 	}
+	/**
+	 * @returns {Promise<ghost_events_queryer_t>} this
+	 */
 	async init() { return this.reset(); }//省略await是合法的
 	clear() {
 		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;

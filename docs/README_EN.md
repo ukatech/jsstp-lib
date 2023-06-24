@@ -1,8 +1,8 @@
 # jsstp  
 
-[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib?color=green)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
-![npm downloads](https://img.shields.io/npm/dm/jsstp?label=npm%20downloads)
-![install size](https://packagephobia.now.sh/badge?p=jsstp)  
+[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
+[![npm downloads](https://img.shields.io/npm/dm/jsstp?label=npm%20downloads)](https://www.npmjs.com/package/jsstp)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/jsstp?label=npm%20bundle%20size)](../dist/jsstp.min.js)  
 
 Use js to communicate with ukagaka in environments such as web pages or node.js in order to exchange information.
 See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka) & [SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html) for details.
