@@ -22,6 +22,8 @@ import {
 	forEach,
 	costom_text_send,
 	get_caller_of_method,
+	get_caller_of_event,
+	sendername,
 	split,
 	proxy,
 	then,
@@ -73,10 +75,10 @@ class jsstp_t {
 
 	/**
 	 * 基础jsstp对象
-	 * @param {String} sendername 对象与服务器交互时的发送者名称
+	 * @param {String} sender_name 对象与服务器交互时的发送者名称
 	 * @param {String} host 目标服务器地址
 	 */
-	/*@__PURE__*/constructor(sendername, host) {
+	/*@__PURE__*/constructor(sender_name, host) {
 		this.RequestHeader = {
 			//"Content-Type": "text/plain",//省略Content-Type并不会导致sstp无法正常工作，还能压缩dist体积。
 			"Origin": my_origin
@@ -84,7 +86,7 @@ class jsstp_t {
 		this[default_info] = { Charset: "UTF-8" };//指定字符集，否则ssp会以本地字符集解码
 
 		this.host = host;
-		this.sendername = sendername;
+		this[sendername] = sender_name;
 
 		/**
 		 * SSTP协议版本号列表
@@ -122,10 +124,10 @@ class jsstp_t {
 	/*@__PURE__*/get host() { return this.#host; }
 	/**
 	 * 修改sendername
-	 * @param {String} sendername
+	 * @param {String} sender_name
 	 */
-	set sendername(sendername) { this[default_info].Sender = sendername || "jsstp-client"; }
-	/*@__PURE__*/get sendername() { return this[default_info].Sender; }
+	set [sendername](sender_name) { this[default_info].Sender = sender_name || "jsstp-client"; }
+	/*@__PURE__*/get [sendername]() { return this[default_info].Sender; }
 	/**
 	 * 以文本发送报文并以文本接收返信
 	 * @param {String} info 报文体
@@ -188,7 +190,7 @@ class jsstp_t {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {(info: Object) => Promise<sstp_info_t>} 调用器
 	 */
-	/*@__PURE__*/get_caller_of_event(event_name, method_name = default_method) {
+	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_method) {
 		return (info) => this[proxy][method_name](assign({ Event: event_name }, info));
 	}
 	/**
@@ -204,7 +206,7 @@ class jsstp_t {
 			args[forEach]((arg) =>
 				info[`Reference${reference_num++}`] = arg
 			);
-			return this.get_caller_of_event(event_name, method_name)(info);
+			return this[get_caller_of_event](event_name, method_name)(info);
 		};
 	}
 	/**

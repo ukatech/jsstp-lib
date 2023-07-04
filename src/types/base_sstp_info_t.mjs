@@ -9,6 +9,7 @@ import {
 	length,
 	split,
 	trivial_clone,
+	unknown_lines,
 } from "../base/value_table.mjs";
 import {
 	is_not_nan,
@@ -60,7 +61,7 @@ class base_sstp_info_t extends info_object {
 	 * 获取未知行的数组
 	 * @returns {Array<String>} 未知行的数组
 	 */
-	/*@__PURE__*/get unknown_lines() { return this.#unknown_lines || []; }
+	/*@__PURE__*/get [unknown_lines]() { return this.#unknown_lines || []; }
 	/**
 	 * 获取报文头
 	 * @returns {String} 报文头
@@ -75,7 +76,7 @@ class base_sstp_info_t extends info_object {
 	/*@__PURE__*/toString() {
 		return [
 			this.#head,
-			...this.unknown_lines,
+			...this[unknown_lines],
 			...this[entries].map(([key, value]) => `${key}: ${value}`),
 			void_string,void_string//空行结尾
 		].join(endline);
@@ -93,7 +94,7 @@ class base_sstp_info_t extends info_object {
 	/*@__PURE__*/toJSON() {
 		return {
 			head: this.#head,
-			unknown_lines: this.#unknown_lines,
+			[unknown_lines]: this.#unknown_lines,
 			body: this[trivial_clone]
 		};
 	}

@@ -40,6 +40,9 @@ var entries = "entries";
 var costom_text_send = "costom_text_send";
 var forEach = "forEach";
 var get_caller_of_method = "get_caller_of_method";
+var unknown_lines = "unknown_lines";
+var get_caller_of_event = "get_caller_of_event";
+var sendername = "sendername";
 var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
@@ -88,6 +91,9 @@ export {
 	forEach,
 	length,
 	get_caller_of_method,
+	get_caller_of_event,
+	unknown_lines,
+	sendername,
 	entries,
 	proxy,
 	then,
