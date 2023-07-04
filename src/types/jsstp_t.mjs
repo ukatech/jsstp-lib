@@ -13,6 +13,9 @@ import {
 	get_simple_caller_of_event,
 	default_info,
 
+	local,
+	external,
+
 	is_event_name,
 	get_reorganized_event_name,
 	new_get_handler,
@@ -32,21 +35,14 @@ import ghost_events_queryer_t from "./ghost_events_queryer_t.mjs";
 import sstp_info_t from "./sstp_info_t.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
 
-//SSTP协议版本号列表
-var sstp_version_table = {
-	SEND: 1.4,
-	NOTIFY: 1.1,
-	COMMUNICATE: 1.1,
-	EXECUTE: 1.2,
-	GIVE: 1.1
-};
 /**
  * 根据方法名称获取SSTP协议头
  * @param {String} type 方法名称
+ * @param {Object} version_table SSTP协议版本号列表
  * @returns {String} SSTP协议头
  * @ignore
  */
-var get_sstp_header = (type) => `${type} SSTP/${sstp_version_table[type]}`;
+var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type]}`;
 
 var default_method = "SEND";
 
@@ -65,19 +61,21 @@ class jsstp_t {
 	 */
 	#host;
 	/**
-	 * 对自身的代理
-	 * @type {Proxy}
+	 * SSTP协议版本号列表
 	 */
-	proxy;
-	RequestHeader;
-	default_info;
-	static sstp_version_table = sstp_version_table;
+	sstp_version_table = {
+		SEND: 1.4,
+		NOTIFY: 1.1,
+		COMMUNICATE: 1.1,
+		EXECUTE: 1.2,
+		GIVE: 1.1
+	};
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
 	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	static default_security_level = default_security_level;
+	default_security_level = default_security_level;
 
 	/**
 	 * 基础jsstp对象
@@ -96,7 +94,7 @@ class jsstp_t {
 		return this[proxy] = new the_proxy(this, {
 			get: new_get_handler({
 				_string_key_handler_: (target, key) =>
-					(key in sstp_version_table) ?
+					(key in target.sstp_version_table) ?
 						target.get_caller_of_method(key) :
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
@@ -126,7 +124,7 @@ class jsstp_t {
 		//使用fetch发送数据
 		return new Promise(
 			(resolve, reject) =>
-				fetch(this.host, {
+				fetch(this.#host, {
 					method: "POST",
 					headers: this.RequestHeader,
 					body: /*@__INLINE__*/to_string(info)
@@ -167,7 +165,7 @@ class jsstp_t {
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name) {
-		let header = get_sstp_header(method_name);
+		let header = get_sstp_header(method_name,this.sstp_version_table);
 		return assign((info) => this.costom_send(header, info), {
 			get_raw: (info) => this.costom_text_send(header, info)
 		});
@@ -237,7 +235,7 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name, security_level = default_security_level) {
+	/*@__PURE__*/has_event(event_name, security_level = this.default_security_level) {
 		return this.event[Has_Event](event_name, security_level)[then](({ Result }) => Result == 1);
 	}
 	/**
@@ -283,10 +281,10 @@ class jsstp_t {
 	 * }
 	 */
 	/*@__PURE__*/get_supported_events() {
-		return this.event[Get_Supported_Events]()[then](({ local, external }) => (
+		return this.event[Get_Supported_Events]()[then](({ [local]:local_evt, [external]:external_evt }) => (
 			{
-				local: (local || void_string).split(","),
-				external: (external || void_string).split(",")
+				[local]: (local_evt || void_string).split(","),
+				[external]: (external_evt || void_string).split(",")
 			}
 		));
 	}

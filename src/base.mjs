@@ -30,6 +30,9 @@ var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
 
+var local = "local";
+var external = "external";
+
 var void_string = "";
 
 /**
@@ -160,7 +163,7 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  * @ignore
  */
-var default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? "local" : "external";
+var default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
 
 export {
 	the_object,
@@ -182,6 +185,9 @@ export {
 	entries,
 	proxy,
 	then,
+
+	local,
+	external,
 
 	key_value_split,
 	is_event_name,

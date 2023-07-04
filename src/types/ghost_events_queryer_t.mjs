@@ -10,7 +10,8 @@ import {
 	get_supported_events,
 	has_event,
 
-	default_security_level
+	local,
+	external,
 } from "../base.mjs";
 
 /**
@@ -68,6 +69,12 @@ class ghost_events_queryer_t {
 	 */
 	/*@__PURE__*/constructor(base_jsstp) {
 		this.#base_jsstp = base_jsstp;
+		/**
+		 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+		 * @type {String}
+		 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+		 */
+		this.default_security_level = base_jsstp.default_security_level;
 	}
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
@@ -78,7 +85,7 @@ class ghost_events_queryer_t {
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/async check_event(event_name, security_level = default_security_level) {
+	/*@__PURE__*/async check_event(event_name, security_level = this.default_security_level) {
 		if (this.#ghost_has_get_supported_events)
 			return this.#ghost_event_list[security_level].includes(event_name);
 		else if (this.#ghost_has_has_event)
@@ -125,7 +132,7 @@ class ghost_events_queryer_t {
 	}
 	clear() {
 		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;
-		this.#ghost_event_list_cache = { local: {}, external: {} };
+		this.#ghost_event_list_cache = { [local]: {}, [external]: {} };
 	}
 }
 
