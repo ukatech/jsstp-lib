@@ -6,6 +6,8 @@ import {
 	void_string,
 
 	length,
+	split,
+	available,
 	trivial_clone,
 } from "../base/value_table.mjs";
 import {
@@ -32,7 +34,7 @@ class fmo_info_t extends base_sstp_info_t {
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text) {
-		let [head, ...lines] = fmo_text.split(endline);
+		let [head, ...lines] = fmo_text[split](endline);
 		super(head, {});
 		//fmo_info每个key的格式都是"uuid.属性名"
 		for (let line of lines) {
@@ -72,7 +74,7 @@ class fmo_info_t extends base_sstp_info_t {
 	/**
 	 * @description 判断fmo是否有效
 	 */
-	/*@__PURE__*/get available() { return !!this[length]; }
+	/*@__PURE__*/get [available]() { return !!this[length]; }
 	//注入toString方法便于使用
 	/**
 	 * 获取字符串报文

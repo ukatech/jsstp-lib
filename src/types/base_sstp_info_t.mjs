@@ -7,6 +7,7 @@ import {
 
 	entries,
 	length,
+	split,
 	trivial_clone,
 } from "../base/value_table.mjs";
 import {
@@ -102,7 +103,7 @@ class base_sstp_info_t extends info_object {
 	 */
 	/*@__PURE__*/get status_code() {
 		//比如：SSTP/1.4 200 OK，返回200
-		return +this.#head.split(" ").find(value => is_not_nan(+value));
+		return +this.#head[split](" ").find(value => is_not_nan(+value));
 	}
 }
 

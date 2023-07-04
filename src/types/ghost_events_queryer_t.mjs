@@ -10,6 +10,7 @@ import {
 	get_supported_events,
 	has_event,
 	default_security_level,
+	available,
 
 	local,
 	external,
@@ -103,7 +104,7 @@ class ghost_events_queryer_t {
 	 * if(!ghost_events_queryer.available)
 	 * 	console.error("无法检查事件");
 	 */
-	/*@__PURE__*/get available() { return this.#ghost_has_has_event; }
+	/*@__PURE__*/get [available]() { return this.#ghost_has_has_event; }
 	/**
 	 * 检查是否能够使用`Get_Supported_Events`快速获取支持的事件列表
 	 * @returns {Promise<Boolean>}

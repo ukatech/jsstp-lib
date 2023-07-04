@@ -27,7 +27,11 @@ var default_security_level="default_security_level";
 var sstp_version_table = "sstp_version_table";
 var substring = "substring";
 var length = "length";
+var available = "available";
+var split = "split";
 var entries = "entries";
+var costom_text_send = "costom_text_send";
+var forEach = "forEach";
 var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
@@ -67,9 +71,13 @@ export {
 	get_simple_caller_of_event,
 	sstp_version_table,
 	substring,
+	available,
+	split,
 	default_security_level,
 	trivial_clone,
 	default_info,
+	costom_text_send,
+	forEach,
 	length,
 	entries,
 	proxy,

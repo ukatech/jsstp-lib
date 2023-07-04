@@ -6,6 +6,7 @@ import {
 	undefined,
 
 	length,
+	split,
 } from "../base/value_table.mjs";
 import {
 	key_value_split,
@@ -59,7 +60,7 @@ class sstp_info_t extends base_sstp_info_t {
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
 	/*@__PURE__*/static from_string(str) {
-		let [head, ...lines] = str.split(endline);
+		let [head, ...lines] = str[split](endline);
 		let body = {};
 		let unknown_lines = [];
 		let last_key;

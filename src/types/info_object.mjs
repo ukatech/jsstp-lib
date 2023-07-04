@@ -5,6 +5,7 @@ import {
 
 	entries,
 	length,
+	forEach,
 	trivial_clone,
 } from "../base/value_table.mjs";
 import {
@@ -33,8 +34,8 @@ class info_object {
 	 * @description 对每个key-value对执行某个函数
 	 * @param {(value,key?)} func 要执行的函数
 	 */
-	/*@__PURE__*/forEach(func) {
-		return this[entries].forEach(([key, value]) => {
+	/*@__PURE__*/[forEach](func) {
+		return this[entries][forEach](([key, value]) => {
 			this[key] = func(value, key) ?? value;
 		});
 	}
@@ -72,7 +73,7 @@ class info_object {
 	 * @param {[undefined|[String,String]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array) {
-		array.forEach((pair) => pair ? this[pair[0]] = pair[1] : undefined);
+		array[forEach]((pair) => pair ? this[pair[0]] = pair[1] : undefined);
 		return this;
 	}
 }

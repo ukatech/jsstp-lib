@@ -18,6 +18,10 @@ import {
 	default_info,
 	default_security_level,
 	sstp_version_table,
+	available,
+	forEach,
+	costom_text_send,
+	split,
 	proxy,
 	then,
 
@@ -149,7 +153,7 @@ class jsstp_t {
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */
-	costom_text_send(sstphead, info) {
+	[costom_text_send](sstphead, info) {
 		return this.row_send(new sstp_info_t(sstphead, { ...this[default_info], ...info }));
 	}
 	/**
@@ -159,7 +163,7 @@ class jsstp_t {
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 */
 	costom_send(sstphead, info) {
-		return this.costom_text_send(sstphead, info)[then](
+		return this[costom_text_send](sstphead, info)[then](
 			result => sstp_info_t.from_string(result)
 		);
 	}
@@ -174,7 +178,7 @@ class jsstp_t {
 	/*@__PURE__*/get_caller_of_method(method_name) {
 		let header = get_sstp_header(method_name,this[sstp_version_table]);
 		return assign((info) => this.costom_send(header, info), {
-			get_raw: (info) => this.costom_text_send(header, info)
+			get_raw: (info) => this[costom_text_send](header, info)
 		});
 	}
 	/**
@@ -196,7 +200,7 @@ class jsstp_t {
 		return (...args) => {
 			let reference_num = 0;
 			let info = {};
-			args.forEach((arg) =>
+			args[forEach]((arg) =>
 				info[`Reference${reference_num++}`] = arg
 			);
 			return this.get_caller_of_event(event_name, method_name)(info);
@@ -290,8 +294,8 @@ class jsstp_t {
 	/*@__PURE__*/[get_supported_events]() {
 		return this.event[Get_Supported_Events]()[then](({ [local]:local_evt, [external]:external_evt }) => (
 			{
-				[local]: (local_evt || void_string).split(","),
-				[external]: (external_evt || void_string).split(",")
+				[local]: (local_evt || void_string)[split](","),
+				[external]: (external_evt || void_string)[split](",")
 			}
 		));
 	}
@@ -319,8 +323,8 @@ class jsstp_t {
 	 * else
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
-	/*@__PURE__*/available() {
-		return this.get_fmo_infos()[then](fmo => fmo.available).catch(() => false);
+	/*@__PURE__*/[available]() {
+		return this.get_fmo_infos()[then](fmo => fmo[available]).catch(() => false);
 	}
 	/**
 	 * 获取一个用于查询ghost所支持事件的queryer
