@@ -12,6 +12,8 @@ import {
 	Has_Event,
 	get_simple_caller_of_event,
 	default_info,
+	default_security_level,
+	sstp_version_table,
 
 	local,
 	external,
@@ -27,7 +29,7 @@ import {
 
 	my_origin,
 	get_local_address,
-	default_security_level
+	my_default_security_level
 } from "../base.mjs";
 
 import fmo_info_t from "./fmo_info_t.mjs";
@@ -60,22 +62,6 @@ class jsstp_t {
 	 * @type {String}
 	 */
 	#host;
-	/**
-	 * SSTP协议版本号列表
-	 */
-	sstp_version_table = {
-		SEND: 1.4,
-		NOTIFY: 1.1,
-		COMMUNICATE: 1.1,
-		EXECUTE: 1.2,
-		GIVE: 1.1
-	};
-	/**
-	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
-	 * @type {String}
-	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
-	 */
-	default_security_level = default_security_level;
 
 	/**
 	 * 基础jsstp对象
@@ -91,10 +77,28 @@ class jsstp_t {
 
 		this.host = host;
 		this.sendername = sendername;
+
+		/**
+		 * SSTP协议版本号列表
+		 */
+		this[sstp_version_table] = {
+			SEND: 1.4,
+			NOTIFY: 1.1,
+			COMMUNICATE: 1.1,
+			EXECUTE: 1.2,
+			GIVE: 1.1
+		};
+		/**
+		 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+		 * @type {String}
+		 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+		 */
+		this[default_security_level] = my_default_security_level;
+
 		return this[proxy] = new the_proxy(this, {
 			get: new_get_handler({
 				_string_key_handler_: (target, key) =>
-					(key in target.sstp_version_table) ?
+					(key in target[sstp_version_table]) ?
 						target.get_caller_of_method(key) :
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
@@ -165,7 +169,7 @@ class jsstp_t {
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name) {
-		let header = get_sstp_header(method_name,this.sstp_version_table);
+		let header = get_sstp_header(method_name,this[sstp_version_table]);
 		return assign((info) => this.costom_send(header, info), {
 			get_raw: (info) => this.costom_text_send(header, info)
 		});
@@ -235,7 +239,7 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name, security_level = this.default_security_level) {
+	/*@__PURE__*/has_event(event_name, security_level = this[default_security_level]) {
 		return this.event[Has_Event](event_name, security_level)[then](({ Result }) => Result == 1);
 	}
 	/**

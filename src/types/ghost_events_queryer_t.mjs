@@ -9,6 +9,7 @@ import {
 	Has_Event,
 	get_supported_events,
 	has_event,
+	default_security_level,
 
 	local,
 	external,
@@ -74,7 +75,7 @@ class ghost_events_queryer_t {
 		 * @type {String}
 		 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 		 */
-		this.default_security_level = base_jsstp.default_security_level;
+		this[default_security_level] = base_jsstp[default_security_level];
 	}
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
@@ -85,7 +86,7 @@ class ghost_events_queryer_t {
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/async check_event(event_name, security_level = this.default_security_level) {
+	/*@__PURE__*/async check_event(event_name, security_level = this[default_security_level]) {
 		if (this.#ghost_has_get_supported_events)
 			return this.#ghost_event_list[security_level].includes(event_name);
 		else if (this.#ghost_has_has_event)

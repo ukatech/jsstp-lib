@@ -23,6 +23,8 @@ var has_event = "has_event";
 var get_simple_caller_of_event = "get_simple_caller_of_event";
 var trivial_clone = "trivial_clone";
 var default_info = "default_info";
+var default_security_level="default_security_level";
+var sstp_version_table = "sstp_version_table";
 var substring = "substring";
 var length = "length";
 var entries = "entries";
@@ -163,7 +165,7 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  * @ignore
  */
-var default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
+var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
 
 export {
 	the_object,
@@ -179,6 +181,8 @@ export {
 	get_supported_events,
 	has_event,
 	get_simple_caller_of_event,
+	sstp_version_table,
+	default_security_level,
 	trivial_clone,
 	default_info,
 	length,
@@ -199,7 +203,7 @@ export {
 	in_browser,
 	get_local_address,
 	my_origin,
-	default_security_level,
+	my_default_security_level,
 
 	to_string,
 	void_string
