@@ -10,6 +10,13 @@ import {
 	local,
 	external,
 } from "./value_table.mjs"
+
+/**
+ * 将字符串转换为小写
+ * @param {String} str 要转换的字符串
+ * @returns {String} 转换后的字符串
+ */
+var to_lower_case = str => str.toLowerCase();
 /**
  * 以spliter分割字符串str，只对第一个匹配的分隔符做分割
  * @param {String} str 需要分割的字符串
@@ -128,6 +135,7 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
 var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
 
 export {
+	to_lower_case,
 	key_value_split,
 	is_event_name,
 	get_reorganized_event_name,

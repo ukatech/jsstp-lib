@@ -27,9 +27,12 @@ import {
 	split,
 	proxy,
 	then,
+	SEND,
 
 	local,
 	external,
+
+	_false_,
 } from "../base/value_table.mjs";
 import {
 	is_event_name,
@@ -56,7 +59,7 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
  */
 var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type]}`;
 
-var default_method = "SEND";
+var default_method = SEND;
 
 //定义一个包装器
 /**
@@ -66,7 +69,7 @@ var default_method = "SEND";
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-class jsstp_t {
+class jsstp_t /*extends Function*/ {
 	/**
 	 * 对象与服务器交互时的发送者名称
 	 * @type {String}
@@ -79,6 +82,7 @@ class jsstp_t {
 	 * @param {String} host 目标服务器地址
 	 */
 	/*@__PURE__*/constructor(sender_name, host) {
+		//super();
 		this.RequestHeader = {
 			//"Content-Type": "text/plain",//省略Content-Type并不会导致sstp无法正常工作，还能压缩dist体积。
 			"Origin": my_origin
@@ -92,7 +96,7 @@ class jsstp_t {
 		 * SSTP协议版本号列表
 		 */
 		this[sstp_version_table] = {
-			SEND: 1.4,
+			[SEND]: 1.4,
 			NOTIFY: 1.1,
 			COMMUNICATE: 1.1,
 			EXECUTE: 1.2,
@@ -113,7 +117,13 @@ class jsstp_t {
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
 					undefined
-			})
+			}),
+			/*
+			//for useage like `new jsstp()`?
+			apply: (target, thisArg, args) => {
+				if(new.target) return new target.constructor(...args);
+			}
+			*/
 		});
 	}
 	/**
@@ -185,13 +195,49 @@ class jsstp_t {
 		});
 	}
 	/**
+	 * 对指定事件名的调用器进行适当的包装
+	 * 作用1：使得调用器可以像promise一样使用then方法
+	 * 作用2：使得调用器可以通过属性追加事件名来获取新的调用器
+	 * @param {String} event_name 事件名称
+	 * @param {String|undefined} method_name 方法名称
+	 * @param {Function} value 调用器的值
+	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
+	 * @returns {Proxy<Function>} 调用器
+	 */
+	/*@__PURE__*/#warp_the_caller_of_event(event_name,method_name,value,caller_factory) {
+		return new the_proxy(value, {
+				get: (target, prop) => 
+				prop in target ?
+					target[prop] :
+				prop == then ?
+					(resolve, reject) => this[has_event](event_name).then(result =>
+						result ?
+							resolve(value) :
+							reject(_false_)
+					).catch(reject) :
+				//else
+					this[caller_factory](event_name+"."+prop, method_name)
+		});
+	}
+	/**
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {(info: Object) => Promise<sstp_info_t>} 调用器
+	 * @returns {{
+	 * 	(info: Object) => Promise<sstp_info_t>
+	 * 	then(
+	 * 		resolve: (Function) => any,
+	 * 		reject: (Boolean|any) => any
+	 * 	): Promise<any>
+	 * }} 调用器
 	 */
 	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_method) {
-		return (info) => this[proxy][method_name](assign({ Event: event_name }, info));
+		return this.#warp_the_caller_of_event(
+			event_name,
+			method_name,
+			(info) => this[proxy][method_name](assign({ Event: event_name }, info)),
+			get_caller_of_event
+		);
 	}
 	/**
 	 * 用于获取指定事件的简单调用器
@@ -200,14 +246,19 @@ class jsstp_t {
 	 * @returns {(...args: any[]) => Promise<sstp_info_t>} 调用器
 	 */
 	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_method) {
-		return (...args) => {
-			let reference_num = 0;
-			let info = {};
-			args[forEach]((arg) =>
-				info[`Reference${reference_num++}`] = arg
-			);
-			return this[get_caller_of_event](event_name, method_name)(info);
-		};
+		return this.#warp_the_caller_of_event(
+			event_name,
+			method_name,
+			(...args) => {
+				let reference_num = 0;
+				let info = {};
+				args[forEach]((arg) =>
+					info[`Reference${reference_num++}`] = arg
+				);
+				return this[get_caller_of_event](event_name, method_name)(info);
+			},
+			get_simple_caller_of_event
+		);
 	}
 	/**
 	 * 用于获取指定事件的简单调用器的代理
@@ -327,7 +378,22 @@ class jsstp_t {
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
 	/*@__PURE__*/[available]() {
-		return this.get_fmo_infos()[then](fmo => fmo[available]).catch(() => false);
+		return this.get_fmo_infos()[then](fmo => fmo[available]).catch(() => _false_);
+	}
+	/**
+	 * 获取当前ghost是否可用
+	 * @returns {Promise} ghost是否可用
+	 * @example
+	 * jsstp.then(() => {
+	 * 	//do something
+	 * });
+	 * //or
+	 * await jsstp;
+	 */
+	/*@__PURE__*/[then](resolve, reject) {
+		return this[available]()[then](result => 
+			result ? resolve(this) : reject()
+		);
 	}
 	/**
 	 * 获取一个用于查询ghost所支持事件的queryer

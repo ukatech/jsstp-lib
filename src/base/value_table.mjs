@@ -16,12 +16,7 @@ var assign = the_object.assign;
 var endline = "\r\n";
 var undefined;// =undefined
 
-/**
- * 将字符串转换为小写
- * @param {String} str 要转换的字符串
- * @returns {String} 转换后的字符串
- */
-var to_lower_case = str => str.toLowerCase();
+import{to_lower_case}from"./tools.mjs";
 
 var Get_Supported_Events = "Get_Supported_Events";
 var Has_Event = "Has_Event";
@@ -46,11 +41,13 @@ var sendername = "sendername";
 var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
+var SEND = "SEND";
 
 var local = "local";
 var external = "external";
 
 var void_string = "";
+var _false_ = !1;
 
 /**
  * @typename the_string
@@ -97,9 +94,11 @@ export {
 	entries,
 	proxy,
 	then,
+	SEND,
 
 	local,
 	external,
 
-	void_string
+	void_string,
+	_false_,
 };

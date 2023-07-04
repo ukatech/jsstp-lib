@@ -14,6 +14,8 @@ import {
 
 	local,
 	external,
+
+	_false_,
 } from "../base/value_table.mjs";
 import {
 } from "../base/tools.mjs";
@@ -95,7 +97,7 @@ class ghost_events_queryer_t {
 		else if (this.#ghost_has_has_event)
 			return this.#ghost_event_list_cache[security_level][event_name] ??= await this.#base_jsstp[has_event](event_name);
 		else
-			return false;
+			return _false_;
 	}
 	/**
 	 * 检查是否能够检查事件
@@ -135,7 +137,7 @@ class ghost_events_queryer_t {
 		return this;
 	}
 	clear() {
-		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;
+		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = _false_;
 		this.#ghost_event_list_cache = { [local]: {}, [external]: {} };
 	}
 }
