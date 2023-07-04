@@ -108,8 +108,14 @@ class ghost_events_queryer_t {
 	/**
 	 * @returns {Promise<ghost_events_queryer_t>} this
 	 */
-	async reset() {
+	reset() {
 		this.clear();
+		return this.init();
+	}
+	/**
+	 * @returns {Promise<ghost_events_queryer_t>} this
+	 */
+	async init() {
 		let jsstp = this.#base_jsstp;
 		this.#ghost_has_has_event = await jsstp[has_event](Has_Event);
 		this.#ghost_has_get_supported_events = this.#ghost_has_has_event && await jsstp[has_event](Get_Supported_Events);
@@ -117,10 +123,6 @@ class ghost_events_queryer_t {
 			this.#ghost_event_list = await jsstp[get_supported_events]();
 		return this;
 	}
-	/**
-	 * @returns {Promise<ghost_events_queryer_t>} this
-	 */
-	async init() { return this.reset(); }//省略await是合法的
 	clear() {
 		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = false;
 		this.#ghost_event_list_cache = { local: {}, external: {} };

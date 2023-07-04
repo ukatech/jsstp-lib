@@ -5,7 +5,7 @@
         "ecmaFeatures": {}
     },
     "globals": {
-        "globalThis": false, // means it is not writeable
+        "globalThis": false // means it is not writeable
     },
     "rules": {
         "constructor-super": [

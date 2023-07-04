@@ -153,7 +153,7 @@ class jsstp_t {
 	 * @param {Object} info 报文体
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 */
-	async costom_send(sstphead, info) {
+	costom_send(sstphead, info) {
 		return this.costom_text_send(sstphead, info)[then](
 			result => sstp_info_t.from_string(result)
 		);
@@ -237,7 +237,7 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/async has_event(event_name, security_level = default_security_level) {
+	/*@__PURE__*/has_event(event_name, security_level = default_security_level) {
 		return this.event[Has_Event](event_name, security_level)[then](({ Result }) => Result == 1);
 	}
 	/**
@@ -282,7 +282,7 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Get_Supported_Events
 	 * }
 	 */
-	/*@__PURE__*/async get_supported_events() {
+	/*@__PURE__*/get_supported_events() {
 		return this.event[Get_Supported_Events]()[then](({ local, external }) => (
 			{
 				local: (local || void_string).split(","),
@@ -298,7 +298,7 @@ class jsstp_t {
 	 * if(fmo.available)
 	 * 	console.log(fmo);
 	 */
-	/*@__PURE__*/async get_fmo_infos() {
+	/*@__PURE__*/get_fmo_infos() {
 		return this[proxy].EXECUTE.get_raw({
 			Command: "GetFMO"
 		})[then](
@@ -314,7 +314,7 @@ class jsstp_t {
 	 * else
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
-	/*@__PURE__*/async available() {
+	/*@__PURE__*/available() {
 		return this.get_fmo_infos()[then](fmo => fmo.available).catch(() => false);
 	}
 	/**
@@ -327,7 +327,7 @@ class jsstp_t {
 	 * 	)
 	 * );
 	 */
-	/*@__PURE__*/async new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
+	/*@__PURE__*/new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
 }
 //对定义中的所有类型补充到原型
 //纯为了压缩体积（不然每个类型都要写一遍`static`）

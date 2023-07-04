@@ -18,14 +18,14 @@
 		function gettype() {
 			return document.getElementById("type").value;
 		}
-		async function send() {
+		function send() {
 			return jsstp[gettype()](getjson()).then((result) => {
 				// 设置回显框的值
 				document.getElementById("result").value = JSON.stringify(result, null, "\t");
 			});
 		}
 		// 解析并处理url参数
-		async function args_handler() {
+		function args_handler() {
 			// 获取url参数
 			let args = location.search;
 			// 如果没有参数则返回
