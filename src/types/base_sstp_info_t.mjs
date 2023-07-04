@@ -3,14 +3,16 @@ import {
 	endline,
 	//undefined,
 
+	void_string,
+
 	entries,
 	length,
 	trivial_clone,
-
+} from "../base/value_table.mjs";
+import {
 	is_not_nan,
-	void_string,
-	to_string
-} from "../base.mjs";
+	to_string,
+} from "../base/tools.mjs";
 import { info_object } from "./info_object.mjs";
 
 /*

@@ -1,49 +1,15 @@
-//一些会反复用到的常量或函数，提前定义以便在压缩时能够以短名称存在
+import { 
+	the_object,
+	undefined,
 
-/**
- * @typename the_object
- * @type {ObjectConstructor}
- * @ignore
- */
-var the_object = Object;
-/**
- * @typename the_proxy
- * @type {ProxyConstructor}
- * @ignore
- */
-var the_proxy = Proxy;
-var assign = the_object.assign;
-var endline = "\r\n";
-var undefined;// =undefined
+	void_string,
+	
+	substring,
+	length,
 
-var Get_Supported_Events = "Get_Supported_Events";
-var Has_Event = "Has_Event";
-var get_supported_events = "get_supported_events";
-var has_event = "has_event";
-var get_simple_caller_of_event = "get_simple_caller_of_event";
-var trivial_clone = "trivial_clone";
-var default_info = "default_info";
-var default_security_level="default_security_level";
-var sstp_version_table = "sstp_version_table";
-var substring = "substring";
-var length = "length";
-var entries = "entries";
-var proxy = "proxy";
-var constructor = "constructor";
-var then = "then";
-
-var local = "local";
-var external = "external";
-
-var void_string = "";
-
-/**
- * @typename the_string
- * @type {StringConstructor}
- * @ignore
- */
-var the_string = void_string[constructor];
-
+	local,
+	external,
+} from "./value_table.mjs"
 /**
  * 以spliter分割字符串str，只对第一个匹配的分隔符做分割
  * @param {String} str 需要分割的字符串
@@ -88,12 +54,6 @@ var get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str[subst
  * @ignore
  */
 var is_not_nan = /*@__PURE__*/(num) => num == num;
-/**
- * @typename the_function
- * @type {FunctionConstructor}
- * @ignore
- */
-var the_function = is_not_nan[constructor];
 /**
  * 将任意数据转换为字符串
  * @param {*} data 任意数据
@@ -168,31 +128,6 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
 var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
 
 export {
-	the_object,
-	the_proxy,
-	the_function,
-	the_string,
-	assign,
-	endline,
-	undefined,
-
-	Get_Supported_Events,
-	Has_Event,
-	get_supported_events,
-	has_event,
-	get_simple_caller_of_event,
-	sstp_version_table,
-	default_security_level,
-	trivial_clone,
-	default_info,
-	length,
-	entries,
-	proxy,
-	then,
-
-	local,
-	external,
-
 	key_value_split,
 	is_event_name,
 	get_reorganized_event_name,
@@ -205,6 +140,5 @@ export {
 	my_origin,
 	my_default_security_level,
 
-	to_string,
-	void_string
+	to_string
 };

@@ -1,15 +1,17 @@
 import {
+	the_proxy,
+
 	//assign,
 	endline,
 	undefined,
-	the_proxy,
 
 	length,
-
+} from "../base/value_table.mjs";
+import {
 	key_value_split,
 	new_get_handler,
-	reg_test
-} from "../base.mjs";
+	reg_test,
+} from "../base/tools.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
 import new_object from "./info_object.mjs";
 

@@ -6,7 +6,9 @@ import {
 	entries,
 	length,
 	trivial_clone,
-} from "../base.mjs";
+} from "../base/value_table.mjs";
+import {
+} from "../base/tools.mjs";
 /**
  * 拓展object，提供一些简单且遍历的操作
  */

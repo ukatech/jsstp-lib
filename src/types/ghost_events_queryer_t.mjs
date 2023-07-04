@@ -13,7 +13,9 @@ import {
 
 	local,
 	external,
-} from "../base.mjs";
+} from "../base/value_table.mjs";
+import {
+} from "../base/tools.mjs";
 
 /**
  * ghost事件查询器

@@ -25,12 +25,12 @@ jobs:
           terser ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true,inline=2,computed_props=false" -m --mangle-props "regex=/^_.*_$/"
           terser ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true,inline=2,computed_props=false" -m --mangle-props "regex=/^_.*_$/" --module
 
-          uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
-          uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
+          uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true,properties=false" -m --mangle-props regex=/^#/
+          uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true,properties=false" -m --mangle-props regex=/^#/ --module
 
           # 为了消除${t=t}这种代码，你需要多调用几遍uglifyjs
-          uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true" -m --mangle-props regex=/^#/
-          uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true" -m --mangle-props regex=/^#/ --module
+          uglifyjs ./jsstp.min.js -o ./jsstp.min.js -c "unsafe=true,properties=false" -m --mangle-props regex=/^#/
+          uglifyjs ./jsstp.mjs -o ./jsstp.mjs -c "unsafe=true,properties=false" -m --mangle-props regex=/^#/ --module
 
           sed -i 's/var jsstp=function(){/var jsstp=(()=>{/g' jsstp.min.js
           sed -i 's/}();$/})()\n/g' jsstp.min.js

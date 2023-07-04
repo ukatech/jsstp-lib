@@ -3,12 +3,14 @@ import {
 	endline,
 	//undefined,
 
+	void_string,
+
 	length,
 	trivial_clone,
-
+} from "../base/value_table.mjs";
+import {
 	key_value_split,
-	void_string
-} from "../base.mjs";
+} from "../base/tools.mjs";
 import new_object from "./info_object.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
 

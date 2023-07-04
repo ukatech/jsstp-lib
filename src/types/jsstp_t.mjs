@@ -1,38 +1,39 @@
 //构建一个包装器与http://localhost:9801/api/sstp/v1通信。
 //发信方法：Content-Type: text/plain HTTP/1.1でPOST
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
-
 import {
+	the_proxy,
+
 	assign,
 	//endline,
 	undefined,
-	the_proxy,
+
+	void_string,
 
 	Get_Supported_Events,
 	Has_Event,
+	get_supported_events,
 	has_event,
 	get_simple_caller_of_event,
 	default_info,
-	get_supported_events,
 	default_security_level,
 	sstp_version_table,
+	proxy,
+	then,
 
 	local,
 	external,
-
+} from "../base/value_table.mjs";
+import {
 	is_event_name,
 	get_reorganized_event_name,
 	new_get_handler,
 	to_string,
 
-	proxy,
-	then,
-	void_string,
-
 	my_origin,
 	get_local_address,
-	my_default_security_level
-} from "../base.mjs";
+	my_default_security_level,
+} from "../base/tools.mjs";
 
 import fmo_info_t from "./fmo_info_t.mjs";
 import ghost_events_queryer_t from "./ghost_events_queryer_t.mjs";
