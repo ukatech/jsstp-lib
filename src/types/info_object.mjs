@@ -4,7 +4,8 @@ import {
 	undefined,
 
 	entries,
-	length
+	length,
+	trivial_clone,
 } from "../base.mjs";
 /**
  * 拓展object，提供一些简单且遍历的操作
@@ -21,11 +22,11 @@ class info_object {
 	/**
 	 * @description 获取所有key-value对的数组
 	 */
-	/*@__PURE__*/get entries() { return the_object[entries](this); }
+	/*@__PURE__*/get [entries]() { return the_object[entries](this); }
 	/**
 	 * @description 获取成员数量
 	 */
-	/*@__PURE__*/get length() { return this.keys[length]; }
+	/*@__PURE__*/get [length]() { return this.keys[length]; }
 	/**
 	 * @description 对每个key-value对执行某个函数
 	 * @param {(value,key?)} func 要执行的函数
@@ -39,7 +40,7 @@ class info_object {
 	 * @description 复制一个新的对象
 	 * @returns {info_object} 复制的对象
 	 */
-	/*@__PURE__*/get trivial_clone() {
+	/*@__PURE__*/get [trivial_clone]() {
 		return assign(new_object(), this);
 	}
 	/**

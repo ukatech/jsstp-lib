@@ -10,8 +10,10 @@ import {
 
 	Get_Supported_Events,
 	Has_Event,
+	has_event,
 	get_simple_caller_of_event,
 	default_info,
+	get_supported_events,
 	default_security_level,
 	sstp_version_table,
 
@@ -147,7 +149,7 @@ class jsstp_t {
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */
 	costom_text_send(sstphead, info) {
-		return this.row_send(new sstp_info_t(sstphead, { ...this.default_info, ...info }));
+		return this.row_send(new sstp_info_t(sstphead, { ...this[default_info], ...info }));
 	}
 	/**
 	 * 发送报文
@@ -189,7 +191,7 @@ class jsstp_t {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {(...args: any[]) => Promise<sstp_info_t>} 调用器
 	 */
-	/*@__PURE__*/get_simple_caller_of_event(event_name, method_name = default_method) {
+	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_method) {
 		return (...args) => {
 			let reference_num = 0;
 			let info = {};
@@ -239,7 +241,7 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name, security_level = this[default_security_level]) {
+	/*@__PURE__*/[has_event](event_name, security_level = this[default_security_level]) {
 		return this.event[Has_Event](event_name, security_level)[then](({ Result }) => Result == 1);
 	}
 	/**
@@ -284,7 +286,7 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Get_Supported_Events
 	 * }
 	 */
-	/*@__PURE__*/get_supported_events() {
+	/*@__PURE__*/[get_supported_events]() {
 		return this.event[Get_Supported_Events]()[then](({ [local]:local_evt, [external]:external_evt }) => (
 			{
 				[local]: (local_evt || void_string).split(","),
