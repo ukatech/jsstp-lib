@@ -16,10 +16,17 @@ var assign = the_object.assign;
 var endline = "\r\n";
 var undefined;// =undefined
 
+/**
+ * 将字符串转换为小写
+ * @param {String} str 要转换的字符串
+ * @returns {String} 转换后的字符串
+ */
+var to_lower_case = str => str.toLowerCase();
+
 var Get_Supported_Events = "Get_Supported_Events";
 var Has_Event = "Has_Event";
-var get_supported_events = "get_supported_events";
-var has_event = "has_event";
+var get_supported_events = to_lower_case(Get_Supported_Events);
+var has_event = to_lower_case(Has_Event);
 var get_simple_caller_of_event = "get_simple_caller_of_event";
 var trivial_clone = "trivial_clone";
 var default_info = "default_info";
@@ -32,6 +39,7 @@ var split = "split";
 var entries = "entries";
 var costom_text_send = "costom_text_send";
 var forEach = "forEach";
+var get_caller_of_method = "get_caller_of_method";
 var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
@@ -79,6 +87,7 @@ export {
 	costom_text_send,
 	forEach,
 	length,
+	get_caller_of_method,
 	entries,
 	proxy,
 	then,

@@ -21,6 +21,7 @@ import {
 	available,
 	forEach,
 	costom_text_send,
+	get_caller_of_method,
 	split,
 	proxy,
 	then,
@@ -106,7 +107,7 @@ class jsstp_t {
 			get: new_get_handler({
 				_string_key_handler_: (target, key) =>
 					(key in target[sstp_version_table]) ?
-						target.get_caller_of_method(key) :
+						target[get_caller_of_method](key) :
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
 					undefined
@@ -175,7 +176,7 @@ class jsstp_t {
 	 * 	get_raw(info: Object): Promise<String>
 	 * }} 调用器
 	 */
-	/*@__PURE__*/get_caller_of_method(method_name) {
+	/*@__PURE__*/[get_caller_of_method](method_name) {
 		let header = get_sstp_header(method_name,this[sstp_version_table]);
 		return assign((info) => this.costom_send(header, info), {
 			get_raw: (info) => this[costom_text_send](header, info)
