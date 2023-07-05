@@ -7,11 +7,15 @@ jsstp.then(async ()=>{
 	console.log((await jsstp.OnTest()).to_string());
 	console.log(await jsstp.has_event("OnTest"));
 
-	jsstp.On_ShioriEcho.GetName.then(caller=>
-		caller().then(({GhostName})=>
-			GhostName=="Taromati2"?
-				console.log("cool Taromati2!"):
-				console.log(GhostName)
-		)
-	).catch("ghost not support GhostTerminal");
-}).catch("none ghost was found");
+	jsstp.On_ShioriEcho.GetName.then(({GhostName})=>
+		GhostName=="Taromati2"?
+			console.log("cool Taromati2!"):
+			console.log(GhostName||"ghost not support On_ShioriEcho.GetName")
+	);
+
+	console.log(JSON.stringify(await jsstp.On_ShioriEcho('1000-7'),null,'\t'));
+}).catch((e)=>
+	e?
+		console.error(e):
+		console.log("none ghost was found")
+);

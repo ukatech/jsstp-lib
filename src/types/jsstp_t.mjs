@@ -155,8 +155,9 @@ class jsstp_t /*extends Function*/ {
 				})[then](response =>
 					response.status != 200 ?
 						reject(response.status) :
-						response.text()[then](resolve)
-				).catch(reject)
+						response.text()[then](resolve),
+					/*catch*/reject
+				)
 		);
 	}
 	/**
@@ -207,16 +208,12 @@ class jsstp_t /*extends Function*/ {
 	/*@__PURE__*/#warp_the_caller_of_event(event_name,method_name,value,caller_factory) {
 		return new the_proxy(value, {
 				get: (target, prop) => 
-				prop in target ?
-					target[prop] :
-				prop == then ?
-					(resolve, reject) => this[has_event](event_name).then(result =>
-						result ?
-							resolve(value) :
-							reject(_false_)
-					).catch(reject) :
-				//else
-					this[caller_factory](event_name+"."+prop, method_name)
+					prop in target ?
+						target[prop] :
+					prop == then ?
+						(resolve, reject) => target()[then](resolve, reject) :
+					//else
+						this[caller_factory](event_name+"."+prop, method_name)
 		});
 	}
 	/**
@@ -378,7 +375,7 @@ class jsstp_t /*extends Function*/ {
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
 	/*@__PURE__*/[available]() {
-		return this.get_fmo_infos()[then](fmo => fmo[available]).catch(() => _false_);
+		return this.get_fmo_infos()[then](fmo => fmo[available],/*catch*/() => _false_);
 	}
 	/**
 	 * 获取当前ghost是否可用
@@ -392,7 +389,8 @@ class jsstp_t /*extends Function*/ {
 	 */
 	/*@__PURE__*/[then](resolve, reject) {
 		return this[available]()[then](result => 
-			result ? resolve(this) : reject()
+			result ? resolve(this) : reject(),
+			/*catch*/reject
 		);
 	}
 	/**
