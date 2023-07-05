@@ -21,4 +21,15 @@ import jsstp_t from "./types/jsstp_t.d.ts";
  * @type {jsstp_t}
  * @global
  */
-export var jsstp: jsstp_t;
+var jsstp: jsstp_t;
+
+//导出
+export {
+	jsstp as default,
+	jsstp,
+	jsstp_t,
+	base_sstp_info_t,
+	sstp_info_t,
+	fmo_info_t,
+	ghost_events_queryer_t
+}

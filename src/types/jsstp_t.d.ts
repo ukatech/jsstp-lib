@@ -37,11 +37,11 @@ interface common_event_caller extends base_event_caller{
 };
 
 interface jsstp_types{
-	type: jsstp_t,
-	base_sstp_info_t: base_sstp_info_t,
-	sstp_info_t: sstp_info_t,
-	fmo_info_t: fmo_info_t,
-	ghost_events_queryer_t: ghost_events_queryer_t
+	type: class,
+	base_sstp_info_t: class,
+	sstp_info_t: class,
+	fmo_info_t: class,
+	ghost_events_queryer_t: class
 };
 interface jsstp_base_methods{
 	SEND: method_caller,
@@ -58,7 +58,21 @@ interface jsstp_base_methods{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-export class jsstp_t extends jsstp_types, jsstp_base_methods {
+class jsstp_t implements jsstp_types, jsstp_base_methods {
+	//interface jsstp_types
+	type=jsstp_t;
+	base_sstp_info_t=base_sstp_info_t;
+	sstp_info_t=sstp_info_t;
+	fmo_info_t=fmo_info_t;
+	ghost_events_queryer_t=ghost_events_queryer_t;
+
+	//interface jsstp_base_methods
+	SEND: method_caller;
+	NOTIFY: method_caller;
+	COMMUNICATE: method_caller;
+	EXECUTE: method_caller;
+	GIVE: method_caller;
+
 	/**
 	 * 对象与服务器交互时的发送者名称
 	 * @type {String}
@@ -279,3 +293,5 @@ export class jsstp_t extends jsstp_types, jsstp_base_methods {
 	 */
 	/*@__PURE__*/new_event_queryer(): Promise<ghost_events_queryer_t>;
 }
+
+export default jsstp_t;

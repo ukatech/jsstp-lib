@@ -17,7 +17,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-export class base_sstp_info_t extends info_object {
+class base_sstp_info_t extends info_object {
 	#head: String;
 	/**
 	 * 未知行的数组
@@ -73,3 +73,5 @@ export class base_sstp_info_t extends info_object {
 	 */
 	[key: string]: any|undefined;
 }
+
+export default base_sstp_info_t;

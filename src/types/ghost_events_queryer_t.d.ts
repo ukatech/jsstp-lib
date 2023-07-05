@@ -1,4 +1,5 @@
 import jsstp_t from "./jsstp_t.d.ts";
+
 /**
  * ghost事件查询器
  * @example
@@ -10,7 +11,7 @@ import jsstp_t from "./jsstp_t.d.ts";
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-export class ghost_events_queryer_t {
+class ghost_events_queryer_t {
 	/**
 	 * 基础{@link jsstp_t}对象
 	 * @type {jsstp_t}
@@ -102,3 +103,5 @@ export class ghost_events_queryer_t {
 	async init(): Promise<ghost_events_queryer_t>;
 	clear(): void;
 }
+
+export default ghost_events_queryer_t;
