@@ -27,10 +27,39 @@ interface base_event_caller{
 	then(resolve: (result: sstp_info_t)=>any, reject: (reason?: any)=>any): Promise<any>,
 	[key: event_body]: base_event_caller,//扩展事件名称
 };
+/**
+ * 简易事件调用器
+ * 直接调用以触发事件！
+ * @example
+ * let data=await jsstp.OnTest(123,"abc");
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ */
 interface simple_event_caller extends base_event_caller{
 	(...args: any[]): Promise<sstp_info_t>,
 	[key: event_body]: simple_event_caller,//扩展事件名称
 };
+/**
+ * 通用事件调用器
+ * 调用时传入一个对象以触发事件！
+ * @example
+ * let caller=jsstp.get_caller_of_event("OnTest");
+ * //...
+ * let data=await caller({
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ */
 interface common_event_caller extends base_event_caller{
 	(info: Object): Promise<sstp_info_t>,
 	[key: event_body]: common_event_caller,//扩展事件名称
@@ -72,6 +101,9 @@ class jsstp_t implements jsstp_types, jsstp_base_methods {
 	COMMUNICATE: method_caller;
 	EXECUTE: method_caller;
 	GIVE: method_caller;
+
+	//proxy
+	[key: event_name]: simple_event_caller;
 
 	/**
 	 * 对象与服务器交互时的发送者名称

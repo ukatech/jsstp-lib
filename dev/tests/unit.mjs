@@ -1,4 +1,4 @@
-import jsstp from "../src/jsstp.mjs";
+import jsstp from "jsstp";
 //
 jsstp.then(async ()=>{
 	console.log("jsstp test");
