@@ -1,7 +1,7 @@
 /**
  * 拓展object，提供一些简单且遍历的操作
  */
-declare class info_object$1 {
+declare class info_object {
 	/**
 	 * @description 获取所有key的数组
 	 */
@@ -27,7 +27,7 @@ declare class info_object$1 {
 	 * @description 复制一个新的对象
 	 * @returns {info_object} 复制的对象
 	 */
-	/*@__PURE__*/get trivial_clone(): info_object$1;
+	/*@__PURE__*/get trivial_clone(): info_object;
 	/**
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
@@ -62,7 +62,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t extends info_object$1 {
+declare class base_sstp_info_t extends info_object {
 	#head: String;
 	/**
 	 * 未知行的数组
