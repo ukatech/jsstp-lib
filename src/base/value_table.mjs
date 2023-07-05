@@ -42,6 +42,8 @@ var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
 var SEND = "SEND";
+var get_fmo_infos = "get_fmo_infos";
+var get_passthrough = "get_passthrough";
 
 var local = "local";
 var external = "external";
@@ -63,6 +65,9 @@ import{is_not_nan}from "./tools.mjs"
  * @ignore
  */
 var the_function = is_not_nan[constructor];
+
+var x_sstp_passthru_head = "X-SSTP-PassThru-";
+
 export {
 	the_object,
 	the_proxy,
@@ -90,6 +95,8 @@ export {
 	get_caller_of_method,
 	get_caller_of_event,
 	unknown_lines,
+	get_fmo_infos,
+	get_passthrough,
 	sendername,
 	entries,
 	proxy,
@@ -98,6 +105,7 @@ export {
 
 	local,
 	external,
+	x_sstp_passthru_head,
 
 	void_string,
 	_false_,

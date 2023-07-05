@@ -8,8 +8,9 @@
 	},
 	"scripts": {
 		"test": "npm run test:unit && npm run test:browser",
-		"test:unit": "node tests/unit.mjs",
-		"test:browser": "node tests/browser.mjs"
+		"test:unit": "node dev/tests/unit.mjs",
+		"test:browser": "node dev/tests/browser.mjs",
+		"build": "node dev/build/build.mjs"
 	},
 	"repository": {
 		"type": "git",
@@ -27,12 +28,11 @@
 	"homepage": "https://github.com/ukatech/jsstp-lib#readme",
 	"devDependencies": {
 		"rollup": "^3.25.1",
-		"terser": "^5.18.1",
+		"terser": "^5.18.2",
 		"uglify-js": "^3.17.4"
 	},
 	"files": [
 		"docs",
-		"src",
-		"tests"
+		"src"
 	]
 }

@@ -24,6 +24,7 @@ import {
 	get_caller_of_method,
 	get_caller_of_event,
 	sendername,
+	get_fmo_infos,
 	split,
 	proxy,
 	then,
@@ -59,7 +60,7 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
  */
 var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type]}`;
 
-var default_method = SEND;
+import{SEND as default_sstp_method}from"../base/value_table.mjs"
 
 //定义一个包装器
 /**
@@ -228,7 +229,7 @@ class jsstp_t /*extends Function*/ {
 	 * 	): Promise<any>
 	 * }} 调用器
 	 */
-	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_method) {
+	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(
 			event_name,
 			method_name,
@@ -242,7 +243,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {(...args: any[]) => Promise<sstp_info_t>} 调用器
 	 */
-	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_method) {
+	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(
 			event_name,
 			method_name,
@@ -358,7 +359,7 @@ class jsstp_t /*extends Function*/ {
 	 * if(fmo.available)
 	 * 	console.log(fmo);
 	 */
-	/*@__PURE__*/get_fmo_infos() {
+	/*@__PURE__*/[get_fmo_infos]() {
 		return this[proxy].EXECUTE.get_raw({
 			Command: "GetFMO"
 		})[then](
@@ -375,7 +376,7 @@ class jsstp_t /*extends Function*/ {
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
 	/*@__PURE__*/[available]() {
-		return this.get_fmo_infos()[then](fmo => fmo[available],/*catch*/() => _false_);
+		return this[get_fmo_infos]()[then](fmo => fmo[available],/*catch*/() => _false_);
 	}
 	/**
 	 * 获取当前ghost是否可用

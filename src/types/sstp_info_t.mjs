@@ -5,6 +5,8 @@ import {
 	endline,
 	undefined,
 
+	get_passthrough,
+
 	length,
 	split,
 } from "../base/value_table.mjs";
@@ -17,7 +19,7 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
 import new_object from "./info_object.mjs";
 
 //定义sstp报文类
-var x_sstp_passthru_head = "X-SSTP-PassThru-";
+import{x_sstp_passthru_head}from"../base/value_table.mjs"
 /*
 sstp报文格式：
 SEND SSTP/1.1
@@ -48,7 +50,7 @@ class sstp_info_t extends base_sstp_info_t {
 		super(info_head, info_body, unknown_lines);
 		return new the_proxy(this, {
 			get: new_get_handler({
-				_string_key_handler_: (target, key) => x_sstp_passthru_head + key in target ? target.get_passthrough(key) : undefined
+				_string_key_handler_: (target, key) => x_sstp_passthru_head + key in target ? target[get_passthrough](key) : undefined
 			})
 		});
 	}
@@ -84,7 +86,7 @@ class sstp_info_t extends base_sstp_info_t {
 	 * @param {String} key 获取的PassThru名称
 	 * @returns {String|undefined} PassThru的值
 	 */
-	/*@__PURE__*/get_passthrough(key) { return this[x_sstp_passthru_head + key]; }
+	/*@__PURE__*/[get_passthrough](key) { return this[x_sstp_passthru_head + key]; }
 	/**
 	 * 用于缓存所有的PassThru
 	 * @type {info_object}
