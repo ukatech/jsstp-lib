@@ -30,7 +30,7 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
 class fmo_info_t extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
-	 * @param {String} fmo_info
+	 * @param {String} fmo_text
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text) {

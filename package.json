@@ -3,6 +3,7 @@
 	"version": "2.1.7",
 	"description": "Use js to communicate with ukagaka in js to exchange information.",
 	"main": "src/jsstp.mjs",
+	"types": "src/jsstp.d.ts",
 	"directories": {
 		"doc": "docs"
 	},

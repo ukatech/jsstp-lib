@@ -141,7 +141,7 @@ class jsstp_t /*extends Function*/ {
 	/*@__PURE__*/get [sendername]() { return this[default_info].Sender; }
 	/**
 	 * 以文本发送报文并以文本接收返信
-	 * @param {String} info 报文体
+	 * @param {Any} info 报文体（文本）
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */
@@ -204,7 +204,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String|undefined} method_name 方法名称
 	 * @param {Function} value 调用器的值
 	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
-	 * @returns {Proxy<Function>} 调用器
+	 * @returns {base_event_caller} 调用器
 	 */
 	/*@__PURE__*/#warp_the_caller_of_event(event_name,method_name,value,caller_factory) {
 		return new the_proxy(value, {
@@ -241,7 +241,13 @@ class jsstp_t /*extends Function*/ {
 	 * 用于获取指定事件的简单调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {(...args: any[]) => Promise<sstp_info_t>} 调用器
+	 * @returns {{
+	 * 	(...args: any[]) => Promise<sstp_info_t>
+	 * 	then(
+	 * 		resolve: (Function) => any,
+	 * 		reject: (Boolean|any) => any
+	 * 	): Promise<any>
+	 * }} 调用器
 	 */
 	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(
