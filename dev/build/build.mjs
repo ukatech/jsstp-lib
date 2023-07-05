@@ -11,6 +11,7 @@ for(var i=0;i<rollup_config.length;i++){
 	await bundle.write(rollup_config[i].output[0]);
 }
 
+var name_caches={};
 function terser_minify(code,is_module){
 	var compress_options={
 		unsafe:true,
@@ -31,6 +32,7 @@ function terser_minify(code,is_module){
 		mangle:{
 			properties:{regex:/^_.*_$/}
 		},
+		nameCache: name_caches,
 		module:is_module
 	}).then(({code})=>code);
 }
@@ -48,9 +50,7 @@ function uglifyjs_minify(code,is_module){
 	return new Promise((resolve,reject)=>{
 		let result=uglifyjs(code,{
 			compress:compress_options,
-			mangle:{
-				properties:false
-			},
+			mangle:false,
 			module:is_module
 		});
 		if(result.error)
@@ -72,6 +72,15 @@ function jsstp_minify(code_path,is_module){
 				code=code.replace(/^var jsstp=function\(\){/,`var jsstp=(()=>{`);
 				code=code.replace(/}\(\);$/g,`})()\n`);
 			}
+			{
+				//一些小问题的修复
+				var unknown_lines_key=name_caches.vars.props["$unknown_lines"];
+				//`unknown_lines:`->`[unknown_lines_key]:`
+				code=code.replace(/unknown_lines\:/g,`[${unknown_lines_key}]:`);
+				var SEND_key=name_caches.vars.props["$SEND"];
+				//`SEND:`->`[SEND_key]:`
+				code=code.replace(/SEND\:/g,`[${SEND_key}]:`);
+			}
 			writeFileSync(code_path,code);
 		}).catch(e=>console.error(e));
 	}).catch(e=>console.error(e));
@@ -80,3 +89,10 @@ function jsstp_minify(code_path,is_module){
 //minify
 jsstp_minify("./dist/jsstp.min.js",false);
 jsstp_minify("./dist/jsstp.mjs",true);
+
+//修补d.ts
+var dts_code=readFileSync("./dist/jsstp.d.ts",'utf8');
+//`info_object$1`=>`info_object`
+dts_code=dts_code.replace(/info_object\$1/g,'info_object');
+
+writeFileSync("./dist/jsstp.d.ts",dts_code);
