@@ -1,4 +1,5 @@
-import jsstp from "jsstp";
+/// <reference path="../../src/jsstp.d.ts" />
+import jsstp from "../../src/jsstp.mjs";
 //
 jsstp.then(async ()=>{
 	console.log("jsstp test");

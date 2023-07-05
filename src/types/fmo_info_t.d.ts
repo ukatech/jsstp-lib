@@ -11,7 +11,7 @@ import base_sstp_info_t from "./base_sstp_info_t.d.ts";
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text

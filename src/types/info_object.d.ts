@@ -1,7 +1,7 @@
 /**
  * 拓展object，提供一些简单且遍历的操作
  */
-class info_object {
+declare class info_object {
 	/**
 	 * @description 获取所有key的数组
 	 */
@@ -49,5 +49,5 @@ class info_object {
  * @returns {info_object} 生成的对象
  * @ignore
  */
-var new_object: () => info_object;
+declare var new_object: () => info_object;
 export { new_object as default, info_object };

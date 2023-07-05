@@ -21,7 +21,7 @@ import jsstp_t from "./types/jsstp_t.d.ts";
  * @type {jsstp_t}
  * @global
  */
-var jsstp: jsstp_t;
+declare var jsstp: jsstp_t;
 
 //导出
 export {

@@ -87,7 +87,7 @@ interface jsstp_base_methods{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-class jsstp_t implements jsstp_types, jsstp_base_methods {
+declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	//interface jsstp_types
 	type=jsstp_t;
 	base_sstp_info_t=base_sstp_info_t;

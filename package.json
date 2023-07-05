@@ -29,6 +29,7 @@
 	"homepage": "https://github.com/ukatech/jsstp-lib#readme",
 	"devDependencies": {
 		"rollup": "^3.25.1",
+		"rollup-plugin-dts": "^5.3.0",
 		"terser": "^5.18.2",
 		"uglify-js": "^3.17.4"
 	},

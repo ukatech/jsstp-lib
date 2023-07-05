@@ -18,7 +18,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头

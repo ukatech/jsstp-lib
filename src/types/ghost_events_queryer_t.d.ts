@@ -11,7 +11,7 @@ import jsstp_t from "./jsstp_t.d.ts";
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-class ghost_events_queryer_t {
+declare class ghost_events_queryer_t {
 	/**
 	 * 基础{@link jsstp_t}对象
 	 * @type {jsstp_t}
