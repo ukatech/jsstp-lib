@@ -106,12 +106,6 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	[key: event_name]: simple_event_caller;
 
 	/**
-	 * 对象与服务器交互时的发送者名称
-	 * @type {String}
-	 */
-	#host: String;
-
-	/**
 	 * 在fecth时使用的header
 	 * @type {Object}
 	 */
@@ -265,7 +259,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/[has_event](event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
 	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询

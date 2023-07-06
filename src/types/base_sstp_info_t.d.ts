@@ -18,13 +18,6 @@ Option: notranslate
  * @alias jsstp.base_sstp_info_t
  */
 declare class base_sstp_info_t extends info_object {
-	#head: String;
-	/**
-	 * 未知行的数组
-	 * @type {Array<String>}
-	 */
-	#unknown_lines: Array<String>;
-
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头

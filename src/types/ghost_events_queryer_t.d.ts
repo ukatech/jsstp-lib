@@ -13,53 +13,6 @@ import jsstp_t from "./jsstp_t.d.ts";
  */
 declare class ghost_events_queryer_t {
 	/**
-	 * 基础{@link jsstp_t}对象
-	 * @type {jsstp_t}
-	 */
-	#base_jsstp: jsstp_t;
-	/**
-	 * 是否有`Has_Event`方法
-	 * @type {Boolean}
-	 */
-	#ghost_has_has_event: Boolean;
-	/**
-	 * 是否有`Get_Supported_Events`方法
-	 * @type {Boolean}
-	 */
-	#ghost_has_get_supported_events: Boolean;
-	/**
-	 * 自`Get_Supported_Events`获取的事件列表
-	 * @type {{local:Array<String>,external:Array<String>}}
-	 * @example 
-	 * {
-	 * 	local:["On_connect","On_disconnect"],
-	 * 	external:["On_connect"]
-	 * }
-	 */
-	#ghost_event_list: {
-		local: Array<String>,
-		external: Array<String>
-	};
-	/**
-	 * 自`Has_Event`获取的事件列表缓存
-	 * @type {{local:{String:Boolean},external:{String:Boolean}}}
-	 * @example 
-	 * {
-	 * 	local:{On_connect:true,On_disconnect:true},
-	 * 	external:{On_connect:true}
-	 * }
-	 * @description 仅当`#ghost_has_get_supported_events`为false时有效
-	 */
-	#ghost_event_list_cache: {
-		local: {
-			[String]: Boolean
-		},
-		external: {
-			[String]: Boolean
-		}
-	};
-
-	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp
 	 */

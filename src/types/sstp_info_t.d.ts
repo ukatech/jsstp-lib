@@ -48,12 +48,6 @@ declare class sstp_info_t extends base_sstp_info_t {
 	 */
 	[key: string]: String | undefined;
 	/**
-	 * 用于缓存所有的PassThru
-	 * @type {info_object}
-	 * @private
-	 */
-	#passthroughs?: info_object;
-	/**
 	 * 获取所有的PassThru
 	 * @returns {info_object} 所有的PassThru
 	 */
