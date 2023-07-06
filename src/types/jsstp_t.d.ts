@@ -112,6 +112,35 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	#host: String;
 
 	/**
+	 * 在fecth时使用的header
+	 * @type {Object}
+	 */
+	RequestHeader: Object;
+	/**
+	 * 默认的报文内容
+	 * @type {Object}
+	 */
+	default_info: Object;
+
+	/**
+	 * SSTP协议版本号列表
+	 */
+	sstp_version_table: {
+		[method: String]: Number
+	};
+	/**
+	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * @type {String}
+	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 */
+	default_security_level: String;
+
+	/**
+	 * 自身代理
+	 */
+	proxy: jsstp_t;
+
+	/**
 	 * 基础jsstp对象
 	 * @param {String} sender_name 对象与服务器交互时的发送者名称
 	 * @param {String} host 目标服务器地址

@@ -73,7 +73,7 @@ declare class ghost_events_queryer_t {
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/async check_event(event_name: String, security_level?: String): Boolean;
+	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
 	 * 检查是否能够检查事件
 	 * @returns {Promise<Boolean>}
@@ -100,7 +100,7 @@ declare class ghost_events_queryer_t {
 	/**
 	 * @returns {Promise<ghost_events_queryer_t>} this
 	 */
-	async init(): Promise<ghost_events_queryer_t>;
+	init(): Promise<ghost_events_queryer_t>;
 	clear(): void;
 }
 

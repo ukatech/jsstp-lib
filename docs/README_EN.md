@@ -11,6 +11,8 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka) & [SSTP](http://ssp.shilles
 
 ### 1. loading js
 
+#### npm
+
 If you use npm, you can use npm to install jsstp.
 
 ```shell
@@ -25,16 +27,41 @@ import jsstp from "jsstp";
 var jsstp=(await import("jsstp")).jsstp;
 ```
 
+#### cdn
+
 Or if you're a nostalgist, you can access jsstp's source code via cdn.
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.4/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.min.js"></script>
 ```
 
 Or load jsstp dynamically in js.
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.4/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.mjs").then(m=>m.jsstp);
+```
+
+##### type definition
+
+Even if you use cdn and write js code by hand, you can use jsstp's type definition file in ide to get code hints
+
+First make sure your ide has access to jsstp, you can probably install it globally to use it without disturbing the workspace file
+
+```shell
+npm i -g jsstp
+```
+
+Afterwards, add a type import to the head of the file using jsstp. According to the types convention, this declaration must precede any formal code
+
+```javascript
+/// <reference types="jsstp" />
+```
+
+Finally declare the type of jsstp before its declaration with a JSDoc comment
+
+```javascript
+/** @type {typeof import("jsstp").jsstp} */
+var jsstp;
 ```
 
 ### 2. Use

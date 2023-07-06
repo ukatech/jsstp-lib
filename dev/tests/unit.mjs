@@ -1,4 +1,4 @@
-/// <reference path="../../src/jsstp.d.ts" />
+/// <reference types="jsstp" />
 import jsstp from "../../src/jsstp.mjs";
 //
 jsstp.then(async ()=>{

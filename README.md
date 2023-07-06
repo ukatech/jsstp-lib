@@ -15,6 +15,8 @@
 
 ### 1. 引入js
 
+#### npm
+
 如果你使用npm，你可以使用npm安装jsstp
 
 ```shell
@@ -29,16 +31,41 @@ import jsstp from "jsstp";
 var jsstp=(await import("jsstp")).jsstp;
 ```
 
+#### cdn
+
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.4/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.min.js"></script>
 ```
 
 或者在js中动态载入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.4/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.mjs").then(m=>m.jsstp);
+```
+
+##### 类型定义
+
+即使使用cdn并手把手编写js代码，你也可以在ide中使用jsstp的类型定义文件以获得代码提示
+
+首先确保你的ide可以访问jsstp，你或许可以全局安装它来在不干扰工作区文件的情况下使用它
+
+```shell
+npm i -g jsstp
+```
+
+随后，在使用jsstp的文件头部添加类型导入，根据types约定，这个声明必须在任何正式代码之前
+
+```javascript
+/// <reference types="jsstp" />
+```
+
+最后在jsstp的声明前用JSDoc注释声明其类型
+
+```javascript
+/** @type {typeof import("jsstp").jsstp} */
+var jsstp;
 ```
 
 ### 2. 使用

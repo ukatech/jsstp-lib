@@ -11,6 +11,8 @@ Webページやnode.jsなどの環境で、ゴーストと通信して情報を�
 
 ### 1. jsの読み込み
 
+#### npm
+
 npmを使用している場合は、npmを使用してjsstpをインストールすることができます。
 
 ```shell
@@ -25,16 +27,41 @@ import jsstp from "jsstp";
 var jsstp=(await import("jsstp")).jsstp;
 ```
 
+#### cdn
+
 あるいは、古式ゆかしい方法で、cdn経由でjsstpのソースコードにアクセスすることができます。
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.4/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.min.js"></script>
 ```
 
 jsstpをjsで動的に読み込むこともできます。
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.1.4/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.mjs").then(m=>m.jsstp);
+```
+
+##### 型定義
+
+cdnを使って手書きでjsコードを書く場合でも、ideでjsstpの型定義ファイルを使ってコードのヒントを得ることができる。
+
+ワークスペース・ファイルを邪魔することなく使うには、おそらくグローバルにインストールできるだろう。
+
+```shell
+npm i -g jsstp
+```
+
+その後、jsstpを使用して、ファイルの先頭に型のインポートを追加する。 型の規約に従って、この宣言は正式なコードの前になければならない。
+
+```javascript
+/// <reference types="jsstp" />
+```
+
+最後に、jsstpの宣言の前にJSDocコメントで型を宣言します。
+
+```javascript
+/** @type {typeof import("jsstp").jsstp} */
+var jsstp;
 ```
 
 ### 2.使用する
