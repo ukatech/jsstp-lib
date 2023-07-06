@@ -65,13 +65,6 @@ Option: notranslate
  * @alias jsstp.base_sstp_info_t
  */
 declare class base_sstp_info_t extends info_object {
-	#head: String;
-	/**
-	 * 未知行的数组
-	 * @type {Array<String>}
-	 */
-	#unknown_lines: Array<String>;
-
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
@@ -168,12 +161,6 @@ declare class sstp_info_t extends base_sstp_info_t {
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;
-	/**
-	 * 用于缓存所有的PassThru
-	 * @type {info_object}
-	 * @private
-	 */
-	#passthroughs?: info_object;
 	/**
 	 * 获取所有的PassThru
 	 * @returns {info_object} 所有的PassThru
@@ -345,12 +332,6 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	[key: event_name]: simple_event_caller;
 
 	/**
-	 * 对象与服务器交互时的发送者名称
-	 * @type {String}
-	 */
-	#host: String;
-
-	/**
 	 * 在fecth时使用的header
 	 * @type {Object}
 	 */
@@ -504,7 +485,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/[has_event](event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
 	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
@@ -606,53 +587,6 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
  * @see {@link jsstp_t.new_event_queryer}
  */
 declare class ghost_events_queryer_t {
-	/**
-	 * 基础{@link jsstp_t}对象
-	 * @type {jsstp_t}
-	 */
-	#base_jsstp: jsstp_t;
-	/**
-	 * 是否有`Has_Event`方法
-	 * @type {Boolean}
-	 */
-	#ghost_has_has_event: Boolean;
-	/**
-	 * 是否有`Get_Supported_Events`方法
-	 * @type {Boolean}
-	 */
-	#ghost_has_get_supported_events: Boolean;
-	/**
-	 * 自`Get_Supported_Events`获取的事件列表
-	 * @type {{local:Array<String>,external:Array<String>}}
-	 * @example 
-	 * {
-	 * 	local:["On_connect","On_disconnect"],
-	 * 	external:["On_connect"]
-	 * }
-	 */
-	#ghost_event_list: {
-		local: Array<String>,
-		external: Array<String>
-	};
-	/**
-	 * 自`Has_Event`获取的事件列表缓存
-	 * @type {{local:{String:Boolean},external:{String:Boolean}}}
-	 * @example 
-	 * {
-	 * 	local:{On_connect:true,On_disconnect:true},
-	 * 	external:{On_connect:true}
-	 * }
-	 * @description 仅当`#ghost_has_get_supported_events`为false时有效
-	 */
-	#ghost_event_list_cache: {
-		local: {
-			[String]: Boolean
-		},
-		external: {
-			[String]: Boolean
-		}
-	};
-
 	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp
