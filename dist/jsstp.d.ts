@@ -1,3 +1,5 @@
+type object_key = string|number|symbol;
+
 /**
  * 拓展object，提供一些简单且遍历的操作
  */
@@ -5,7 +7,7 @@ declare class info_object {
 	/**
 	 * @description 获取所有key的数组
 	 */
-	/*@__PURE__*/get keys(): (string|number|symbol)[];
+	/*@__PURE__*/get keys(): object_key[];
 	/**
 	 * @description 获取所有value的数组
 	 */
@@ -13,7 +15,7 @@ declare class info_object {
 	/**
 	 * @description 获取所有key-value对的数组
 	 */
-	/*@__PURE__*/get entries(): [string|number|symbol, any][];
+	/*@__PURE__*/get entries(): [object_key, any][];
 	/**
 	 * @description 获取成员数量
 	 */
@@ -22,7 +24,7 @@ declare class info_object {
 	 * @description 对每个key-value对执行某个函数
 	 * @param {(value,key?)} func 要执行的函数
 	 */
-	/*@__PURE__*/forEach(func: (value: any, key?: string|number|symbol) => any): void;
+	/*@__PURE__*/forEach(func: (value: any, key?: object_key) => any): void;
 	/**
 	 * @description 复制一个新的对象
 	 * @returns {info_object} 复制的对象
@@ -32,17 +34,17 @@ declare class info_object {
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/flat_map(func: (...dimensions: (string|number|symbol)[], value: any) => any): any[];
+	/*@__PURE__*/flat_map(func: (...dimensions: object_key[], value: any) => any): any[];
 	/**
 	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
 	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/map(func: (value: any, key?: string|number|symbol) => any): any[];
+	/*@__PURE__*/map(func: (value: any, key?: object_key) => any): any[];
 	/**
 	 * @description 对自身按照数组追加元素
 	 * @param {[undefined|[String,Any]]} array 要追加的数组
 	 */
-	/*@__PURE__*/push(array: [undefined|[string|number|symbol, any]]): void;
+	/*@__PURE__*/push(array: [undefined|[object_key, any]]): void;
 }
 
 /*
@@ -349,6 +351,35 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	#host: String;
 
 	/**
+	 * 在fecth时使用的header
+	 * @type {Object}
+	 */
+	RequestHeader: Object;
+	/**
+	 * 默认的报文内容
+	 * @type {Object}
+	 */
+	default_info: Object;
+
+	/**
+	 * SSTP协议版本号列表
+	 */
+	sstp_version_table: {
+		[method: String]: Number
+	};
+	/**
+	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * @type {String}
+	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 */
+	default_security_level: String;
+
+	/**
+	 * 自身代理
+	 */
+	proxy: jsstp_t;
+
+	/**
 	 * 基础jsstp对象
 	 * @param {String} sender_name 对象与服务器交互时的发送者名称
 	 * @param {String} host 目标服务器地址
@@ -636,7 +667,7 @@ declare class ghost_events_queryer_t {
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/async check_event(event_name: String, security_level?: String): Boolean;
+	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
 	 * 检查是否能够检查事件
 	 * @returns {Promise<Boolean>}
@@ -663,7 +694,7 @@ declare class ghost_events_queryer_t {
 	/**
 	 * @returns {Promise<ghost_events_queryer_t>} this
 	 */
-	async init(): Promise<ghost_events_queryer_t>;
+	init(): Promise<ghost_events_queryer_t>;
 	clear(): void;
 }
 
