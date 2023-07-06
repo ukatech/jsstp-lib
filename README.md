@@ -2,15 +2,6 @@
 - [EN](docs/README_EN.md)  
 - [CN](docs/README_CN.md)  
 
-# jsstp  
-
-[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ukatech/jsstp-lib)](https://www.jsdelivr.com/package/gh/ukatech/jsstp-lib)
-[![npm下载量](https://img.shields.io/npm/dm/jsstp?label=npm%E4%B8%8B%E8%BD%BD%E9%87%8F)](https://www.npmjs.com/package/jsstp)
-[![npm bundle大小](https://img.shields.io/bundlephobia/min/jsstp?label=npm%20bundle%E5%A4%A7%E5%B0%8F)](./dist/jsstp.min.js)  
-
-用js在网页或node.js等环境中与伪春菜通信以实现信息交换。
-详情参考[伪春菜](https://zh.moegirl.org.cn/zh-hans/%E4%BC%AA%E6%98%A5%E8%8F%9C)与[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)。
-
 ## 用法
 
 ### 1. 引入js
@@ -23,12 +14,20 @@
 npm i jsstp
 ```
 
-之后在js中引入jsstp
+之后在js中使用`import`引入jsstp
 
 ```javascript
 import jsstp from "jsstp";
 //或者
 var jsstp=(await import("jsstp")).jsstp;
+```
+
+在CommonJS中，你也可以使用`require`引入jsstp  
+但是由于node的设计原因，你或许需要使用JSDoc注释来声明自`require`得到的jsstp的类型才能让ide的代码提示正常工作  
+
+```javascript
+/** @type {typeof import("jsstp").jsstp} */
+var jsstp=require('jsstp');
 ```
 
 #### cdn

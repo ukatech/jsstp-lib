@@ -27,8 +27,8 @@ import jsstp from "jsstp";
 var jsstp=(await import("jsstp")).jsstp;
 ```
 
-In CommonJS, you can also use `require` to introduce jsstp
-However, due to the design of node, you may need to use JSDoc comments to declare the type of jsstp you get from `require` in order to get the ide code hints to work properly
+In CommonJS, you can also use `require` to introduce jsstp  
+However, due to the design of node, you may need to use JSDoc comments to declare the type of jsstp you get from `require` in order to get the ide code hints to work properly  
 
 ```javascript
 /** @type {typeof import("jsstp").jsstp} */
