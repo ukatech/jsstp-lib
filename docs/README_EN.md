@@ -19,12 +19,20 @@ If you use npm, you can use npm to install jsstp.
 npm i jsstp
 ```
 
-After that, import jsstp in js.
+After that, use `import` to bring in jsstp in js
 
 ```javascript
 import jsstp from "jsstp";
 //or
 var jsstp=(await import("jsstp")).jsstp;
+```
+
+In CommonJS, you can also use `require` to introduce jsstp
+However, due to the design of node, you may need to use JSDoc comments to declare the type of jsstp you get from `require` in order to get the ide code hints to work properly
+
+```javascript
+/** @type {typeof import("jsstp").jsstp} */
+var jsstp=require('jsstp');
 ```
 
 #### cdn

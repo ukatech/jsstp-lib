@@ -19,12 +19,20 @@ npmを使用している場合は、npmを使用してjsstpをインストール
 npm i jsstp
 ```
 
-その後、jsstpをjsにインポートします。
+その後、`import` を使って js に jsstp を導入する。
 
 ```javascript
 import jsstp from "jsstp";
 //または
 var jsstp=(await import("jsstp")).jsstp;
+```
+
+CommonJS では、`require` を使用して jsstp を導入することもできます。
+しかし、nodeの設計上、ideコードヒントを正しく動作させるためには、JSDocコメントを使って `require` から取得したjsstpのタイプを宣言する必要があるかもしれません。
+
+```javascript
+/** @type {typeof import("jsstp").jsstp} */
+var jsstp=require('jsstp');
 ```
 
 #### cdn
