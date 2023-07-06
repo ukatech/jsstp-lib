@@ -1,7 +1,5 @@
 {
 	"files.exclude": {
-		"dist/jsstp.min.js": true,
-		"dist/jsstp.mjs": true,
-		"dist/jsstp.d.ts": true
+		"dist/**": true
 	}
 }

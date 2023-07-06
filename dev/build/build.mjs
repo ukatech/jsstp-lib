@@ -6,9 +6,10 @@ import { minify as uglifyjs } from 'uglify-js';
 
 //rollup -c ./.github/rollup.config.mjs
 var rollup_config=await import('./rollup.config.mjs').then(m=>m.default);
-for(var i=0;i<rollup_config.length;i++){
-	var bundle=await rollup(rollup_config[i]);
-	await bundle.write(rollup_config[i].output[0]);
+for(const config of rollup_config){
+	const bundle = await rollup(config);
+	for(const output of config.output)
+		await bundle.write(output);
 }
 
 var name_caches={};
@@ -66,8 +67,11 @@ import { readFileSync, writeFileSync } from 'fs';
 function jsstp_minify(code_path,is_module){
 	terser_minify(readFileSync(code_path,'utf8'),is_module).then(code=>{
 		uglifyjs_minify(code,is_module).then(code=>{
-			if(is_module)
-				code=code.replace(/};$/g,`}\n`);
+			if(is_module){
+				//`;i=new B;module.exports=i;`->`;module.exports=new B;`
+				code=code.replace(/;(\w+)=new (\w+);module.exports=\1;/g,`;module.exports=new $2;`);
+				code=code.replace(/;$/g,`\n`);
+			}
 			else{
 				code=code.replace(/^var jsstp=function\(\){/,`var jsstp=(()=>{`);
 				code=code.replace(/}\(\);$/g,`})()\n`);
@@ -89,6 +93,7 @@ function jsstp_minify(code_path,is_module){
 //minify
 jsstp_minify("./dist/jsstp.min.js",false);
 jsstp_minify("./dist/jsstp.mjs",true);
+jsstp_minify("./dist/jsstp.cjs",true);
 
 //修补d.ts
 var dts_code=readFileSync("./dist/jsstp.d.ts",'utf8');

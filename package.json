@@ -1,17 +1,30 @@
 {
 	"name": "jsstp",
-	"version": "2.1.7",
-	"description": "Use js to communicate with ukagaka in js to exchange information.",
-	"main": "src/jsstp.mjs",
-	"types": "src/jsstp.d.ts",
+	"version": "2.2.0",
+	"description": "Use js to communicate with ukagaka to exchange information.",
+	"main": "dist/jsstp.mjs",
+	"types": "dist/jsstp.d.ts",
 	"directories": {
 		"doc": "docs"
+	},
+	"exports": {
+		".": {
+			"require": "./dist/jsstp.cjs",
+			"import": "./dist/jsstp.mjs",
+			"types": "./dist/jsstp.d.ts"
+		},
+		"./dev": {
+			"require": null,
+			"import": "./src/jsstp.mjs",
+			"types": "./src/jsstp.d.ts"
+		}
 	},
 	"scripts": {
 		"test": "npm run test:unit && npm run test:browser",
 		"test:unit": "node dev/tests/unit.mjs",
 		"test:browser": "node dev/tests/browser.mjs",
-		"build": "node dev/build/build.mjs"
+		"build": "node dev/build/build.mjs",
+		"prepublish": "npm run build"
 	},
 	"repository": {
 		"type": "git",
@@ -35,6 +48,6 @@
 	},
 	"files": [
 		"docs",
-		"src"
+		"dist"
 	]
 }
