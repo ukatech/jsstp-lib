@@ -11,6 +11,15 @@ Script: \h\s0テストー。\u\s[10]テストやな。
 Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
+/**
+ * sstp报文类：类定义实现
+ * @see sstp_info_t
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
+ * console.log(info.Option);//notranslate
+ * @alias jsstp.sstp_info_t
+ */
 declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
@@ -63,9 +72,9 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	/*@__PURE__*/get entries(): [string, String][];
 	/**
 	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数
+	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => any): void;
+	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
 	/**
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中

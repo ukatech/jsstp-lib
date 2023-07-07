@@ -20,9 +20,9 @@ declare class info_object {
 	/*@__PURE__*/get length(): number;
 	/**
 	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数
+	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any): void;
+	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
 	/**
 	 * @description 复制一个新的对象
 	 * @returns {info_object} 复制的对象

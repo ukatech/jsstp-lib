@@ -1,5 +1,16 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
+/**
+ * fmo报文类：类定义实现
+ * @see fmo_info_t
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
+ * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @see {@link jsstp_t.get_fmo_infos}
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
 declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
@@ -65,9 +76,9 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
 	/**
 	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数
+	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => any): void;
+	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
 	/**
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中

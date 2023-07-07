@@ -14,9 +14,7 @@ interface method_caller{
 /**
  * 事件调用器
  */
-type base_event_caller={
-	then<result_T,reject_T>(resolve: (result: sstp_info_t)=>result_T, reject: (reason?: any)=>reject_T): Promise<result_T|reject_T>,
-}&{
+type base_event_caller=Promise<sstp_info_t>&{
 	[key: string]: base_event_caller,//扩展事件名称
 };
 /**
@@ -188,26 +186,14 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_me
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{
-	 * 	(info: Object) => Promise<sstp_info_t>
-	 * 	then<result_T,reject_T>(
-	 * 		resolve: (Function) => result_T,
-	 * 		reject: (Boolean|any) => reject_T
-	 * 	): Promise<result_T|reject_T>
-	 * }} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
 	/**
 	 * 用于获取指定事件的简单调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{
-	 * 	(...args: any[]) => Promise<sstp_info_t>
-	 * 	then<result_T,reject_T>(
-	 * 		resolve: (Function) => result_T,
-	 * 		reject: (Boolean|any) => reject_T
-	 * 	): Promise<result_T|reject_T>
-	 * }} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
 	/**
