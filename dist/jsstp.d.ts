@@ -20,9 +20,9 @@ declare class info_object {
 	/*@__PURE__*/get length(): number;
 	/**
 	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数
+	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any): void;
+	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
 	/**
 	 * @description 复制一个新的对象
 	 * @returns {info_object} 复制的对象
@@ -122,6 +122,15 @@ Script: \h\s0テストー。\u\s[10]テストやな。
 Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
+/**
+ * sstp报文类：类定义实现
+ * @see sstp_info_t
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
+ * console.log(info.Option);//notranslate
+ * @alias jsstp.sstp_info_t
+ */
 declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
@@ -174,9 +183,9 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	/*@__PURE__*/get entries(): [string, String][];
 	/**
 	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数
+	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => any): void;
+	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
 	/**
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
@@ -214,6 +223,17 @@ type sstp_info_t_members = {
 declare const sstp_info_t: typeof sstp_info_t_class_impl;
 type sstp_info_t = sstp_info_t_class_impl&sstp_info_t_members;
 
+/**
+ * fmo报文类：类定义实现
+ * @see fmo_info_t
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
+ * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @see {@link jsstp_t.get_fmo_infos}
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
 declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
@@ -279,9 +299,9 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
 	/**
 	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数
+	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => any): void;
+	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
 	/**
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
@@ -333,9 +353,7 @@ interface method_caller{
 /**
  * 事件调用器
  */
-type base_event_caller={
-	then<result_T,reject_T>(resolve: (result: sstp_info_t)=>result_T, reject: (reason?: any)=>reject_T): Promise<result_T|reject_T>,
-}&{
+type base_event_caller=Promise<sstp_info_t>&{
 	[key: string]: base_event_caller,//扩展事件名称
 };
 /**
@@ -507,26 +525,14 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_me
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{
-	 * 	(info: Object) => Promise<sstp_info_t>
-	 * 	then<result_T,reject_T>(
-	 * 		resolve: (Function) => result_T,
-	 * 		reject: (Boolean|any) => reject_T
-	 * 	): Promise<result_T|reject_T>
-	 * }} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
 	/**
 	 * 用于获取指定事件的简单调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{
-	 * 	(...args: any[]) => Promise<sstp_info_t>
-	 * 	then<result_T,reject_T>(
-	 * 		resolve: (Function) => result_T,
-	 * 		reject: (Boolean|any) => reject_T
-	 * 	): Promise<result_T|reject_T>
-	 * }} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
 	/**
