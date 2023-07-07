@@ -223,10 +223,10 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{
 	 * 	(info: Object) => Promise<sstp_info_t>
-	 * 	then(
-	 * 		resolve: (Function) => any,
-	 * 		reject: (Boolean|any) => any
-	 * 	): Promise<any>
+	 * 	then<result_T,reject_T>(
+	 * 		resolve: (Function) => result_T,
+	 * 		reject: (Boolean|any) => reject_T
+	 * 	): Promise<result_T|reject_T>
 	 * }} 调用器
 	 */
 	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_sstp_method) {
@@ -243,10 +243,10 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{
 	 * 	(...args: any[]) => Promise<sstp_info_t>
-	 * 	then(
-	 * 		resolve: (Function) => any,
-	 * 		reject: (Boolean|any) => any
-	 * 	): Promise<any>
+	 * 	then<result_T,reject_T>(
+	 * 		resolve: (Function) => result_T,
+	 * 		reject: (Boolean|any) => reject_T
+	 * 	): Promise<result_T|reject_T>
 	 * }} 调用器
 	 */
 	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_sstp_method) {

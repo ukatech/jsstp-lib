@@ -1,24 +1,6 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
-type fmo_info_t_members = {
-	/**
-	 * fmo成员
-	 * @type {base_sstp_info_t|undefined}
-	 */
-	[uuid: string]: base_sstp_info_t|undefined;
-};
-/**
- * fmo报文类
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
- * 	console.log(fmo[kikka_uuid].ghostpath);
- * @alias jsstp.fmo_info_t
- * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- */
-declare class fmo_info_t extends base_sstp_info_t implements fmo_info_t_members {
+declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text
@@ -66,6 +48,64 @@ declare class fmo_info_t extends base_sstp_info_t implements fmo_info_t_members 
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
+
+	//base_sstp_info_t的成员
+
+	/**
+	 * @description 获取所有key的数组
+	 */
+	/*@__PURE__*/get keys(): string[];
+	/**
+	 * @description 获取所有value的数组
+	 */
+	/*@__PURE__*/get values(): base_sstp_info_t[];
+	/**
+	 * @description 获取所有key-value对的数组
+	 */
+	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
+	/**
+	 * @description 对每个key-value对执行某个函数
+	 * @param {(value,key?)} func 要执行的函数
+	 */
+	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => any): void;
+	/**
+	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
+	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 */
+	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
+	/**
+	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
+	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 */
+	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
+	/**
+	 * @description 对自身按照数组追加元素
+	 * @param {[undefined|[String,any]]} array 要追加的数组
+	 */
+	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
 }
+/**
+ * 补充fmp报文类的默认成员
+ */
+type fmo_info_t_members = {
+	/**
+	 * fmo成员
+	 * @type {base_sstp_info_t|undefined}
+	 */
+	[uuid: string]: base_sstp_info_t|undefined;
+};
+/**
+ * fmo报文类
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
+ * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @alias jsstp.fmo_info_t
+ * @see {@link jsstp_t.get_fmo_infos}
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare const fmo_info_t: typeof fmo_info_t_class_impl;
+type fmo_info_t = fmo_info_t_class_impl&fmo_info_t_members;
 
 export default fmo_info_t;

@@ -15,7 +15,7 @@ interface method_caller{
  * 事件调用器
  */
 type base_event_caller={
-	then(resolve: (result: sstp_info_t)=>any, reject: (reason?: any)=>any): Promise<any>,
+	then<result_T,reject_T>(resolve: (result: sstp_info_t)=>result_T, reject: (reason?: any)=>reject_T): Promise<result_T|reject_T>,
 }&{
 	[key: string]: base_event_caller,//扩展事件名称
 };
@@ -190,10 +190,10 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_me
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{
 	 * 	(info: Object) => Promise<sstp_info_t>
-	 * 	then(
-	 * 		resolve: (Function) => any,
-	 * 		reject: (Boolean|any) => any
-	 * 	): Promise<any>
+	 * 	then<result_T,reject_T>(
+	 * 		resolve: (Function) => result_T,
+	 * 		reject: (Boolean|any) => reject_T
+	 * 	): Promise<result_T|reject_T>
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
@@ -203,10 +203,10 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_me
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{
 	 * 	(...args: any[]) => Promise<sstp_info_t>
-	 * 	then(
-	 * 		resolve: (Function) => any,
-	 * 		reject: (Boolean|any) => any
-	 * 	): Promise<any>
+	 * 	then<result_T,reject_T>(
+	 * 		resolve: (Function) => result_T,
+	 * 		reject: (Boolean|any) => reject_T
+	 * 	): Promise<result_T|reject_T>
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
@@ -324,7 +324,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_me
 	 * //or
 	 * await jsstp;
 	 */
-	/*@__PURE__*/then(resolve: (value?: jsstp_t) => any, reject?: (reason?: any) => any): Promise<any>;
+	/*@__PURE__*/then<result_T,reject_T>(resolve: (value?: jsstp_t) => result_T, reject?: (reason?: any) => reject_T): Promise<result_T|reject_T>;
 	/**
 	 * 获取一个用于查询ghost所支持事件的queryer
 	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer

@@ -11,23 +11,7 @@ Script: \h\s0テストー。\u\s[10]テストやな。
 Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
-
-type sstp_info_t_members = {
-	/**
-	 * 其他报文成员
-	 * @type {String|undefined}
-	 */
-	[key: string]: String | undefined;
-};
-/**
- * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
- */
-declare class sstp_info_t extends base_sstp_info_t implements sstp_info_t_members {
+declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
@@ -62,6 +46,61 @@ declare class sstp_info_t extends base_sstp_info_t implements sstp_info_t_member
 	 * @returns {sstp_info_t} 原始对象
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
+
+	//base_sstp_info_t的成员
+
+	/**
+	 * @description 获取所有key的数组
+	 */
+	/*@__PURE__*/get keys(): string[];
+	/**
+	 * @description 获取所有value的数组
+	 */
+	/*@__PURE__*/get values(): String[];
+	/**
+	 * @description 获取所有key-value对的数组
+	 */
+	/*@__PURE__*/get entries(): [string, String][];
+	/**
+	 * @description 对每个key-value对执行某个函数
+	 * @param {(value,key?)} func 要执行的函数
+	 */
+	/*@__PURE__*/forEach(func: (value: String, key?: string) => any): void;
+	/**
+	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
+	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 */
+	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
+	/**
+	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
+	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 */
+	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
+	/**
+	 * @description 对自身按照数组追加元素
+	 * @param {[undefined|[String,any]]} array 要追加的数组
+	 */
+	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
 }
+/**
+ * 补充sstp报文类的默认成员
+ */
+type sstp_info_t_members = {
+	/**
+	 * 其他报文成员
+	 * @type {String|undefined}
+	 */
+	[key: string]: String | undefined;
+};
+/**
+ * sstp报文类
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
+ * console.log(info.Option);//notranslate
+ * @alias jsstp.sstp_info_t
+ */
+declare const sstp_info_t: typeof sstp_info_t_class_impl;
+type sstp_info_t = sstp_info_t_class_impl&sstp_info_t_members;
 
 export default sstp_info_t;
