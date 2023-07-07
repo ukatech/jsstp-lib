@@ -34,7 +34,7 @@ declare class info_object {
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/flat_map(func: (...dimensions: object_key[], value: any) => any): any[];
+	/*@__PURE__*/flat_map(func: (...dimensions_with_value_in_last: [...object_key[],any]) => any): any[];
 	/**
 	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
 	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
@@ -42,7 +42,7 @@ declare class info_object {
 	/*@__PURE__*/map(func: (value: any, key?: object_key) => any): any[];
 	/**
 	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,Any]]} array 要追加的数组
+	 * @param {[undefined|[String,any]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array: [undefined|[object_key, any]]): void;
 }
@@ -109,7 +109,7 @@ declare class base_sstp_info_t extends info_object {
 	/*@__PURE__*/get status_code(): Number;
 	/**
 	 * 其他报文成员
-	 * @type {Any|undefined}
+	 * @type {any|undefined}
 	 */
 	[key: string]: any|undefined;
 }
@@ -124,6 +124,14 @@ Script: \h\s0テストー。\u\s[10]テストやな。
 Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
+
+type sstp_info_t_members = {
+	/**
+	 * 其他报文成员
+	 * @type {String|undefined}
+	 */
+	[key: string]: String | undefined;
+};
 /**
  * sstp报文类
  * @example
@@ -132,16 +140,17 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t implements sstp_info_t_members {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
 	 * @param {Object} info_body 对象格式的报文体
 	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
 	 * @see {@link sstp_info_t.from_string}
+	 * @returns {sstp_info_t}
 	 * @ignore
 	 */
-	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]): sstp_info_t;
+	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
 	 * 从字符串构造sstp_info_t
 	 * @param {String} str 字符串报文
@@ -157,11 +166,6 @@ declare class sstp_info_t extends base_sstp_info_t {
 	 */
 	/*@__PURE__*/get_passthrough(key: String): String | undefined;
 	/**
-	 * 其他报文成员
-	 * @type {String|undefined}
-	 */
-	[key: string]: String | undefined;
-	/**
 	 * 获取所有的PassThru
 	 * @returns {info_object} 所有的PassThru
 	 */
@@ -173,6 +177,13 @@ declare class sstp_info_t extends base_sstp_info_t {
 	/*@__PURE__*/get raw(): sstp_info_t;
 }
 
+type fmo_info_t_members = {
+	/**
+	 * fmo成员
+	 * @type {base_sstp_info_t|undefined}
+	 */
+	[uuid: string]: base_sstp_info_t|undefined;
+};
 /**
  * fmo报文类
  * @example
@@ -184,18 +195,14 @@ declare class sstp_info_t extends base_sstp_info_t {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t implements fmo_info_t_members {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text
+	 * @returns {void}
 	 * @ignore
 	 */
-	/*@__PURE__*/constructor(fmo_text: String): void;
-	/**
-	 * fmo成员
-	 * @type {base_sstp_info_t|undefined}
-	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	/*@__PURE__*/constructor(fmo_text: String);
 	/**
 	 * @param {String} name 要检查的属性名
 	 * @param {String} value 期望的属性值
@@ -249,10 +256,11 @@ interface method_caller{
 /**
  * 事件调用器
  */
-interface base_event_caller{
+type base_event_caller={
 	then(resolve: (result: sstp_info_t)=>any, reject: (reason?: any)=>any): Promise<any>,
-	[key: event_body]: base_event_caller,//扩展事件名称
-}
+}&{
+	[key: string]: base_event_caller,//扩展事件名称
+};
 /**
  * 简易事件调用器
  * 直接调用以触发事件！
@@ -265,10 +273,11 @@ interface base_event_caller{
  * 	"Reference1": "abc"
  * });
  */
-interface simple_event_caller extends base_event_caller{
+type simple_event_caller = {
 	(...args: any[]): Promise<sstp_info_t>,
-	[key: event_body]: simple_event_caller,//扩展事件名称
-}
+}&{
+	[key: string]: simple_event_caller,//扩展事件名称
+}&base_event_caller;
 /**
  * 通用事件调用器
  * 调用时传入一个对象以触发事件！
@@ -286,24 +295,29 @@ interface simple_event_caller extends base_event_caller{
  * 	"Reference1": "abc"
  * });
  */
-interface common_event_caller extends base_event_caller{
+type common_event_caller = {
 	(info: Object): Promise<sstp_info_t>,
-	[key: event_body]: common_event_caller,//扩展事件名称
-}
+}&{
+	[key: string]: common_event_caller,//扩展事件名称
+}&base_event_caller;
 
 interface jsstp_types{
-	type: class,
-	base_sstp_info_t: class,
-	sstp_info_t: class,
-	fmo_info_t: class,
-	ghost_events_queryer_t: class
+	type: typeof jsstp_t;
+	base_sstp_info_t: typeof base_sstp_info_t;
+	sstp_info_t: typeof sstp_info_t;
+	fmo_info_t: typeof fmo_info_t;
+	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 }
 interface jsstp_base_methods{
-	SEND: method_caller,
-	NOTIFY: method_caller,
-	COMMUNICATE: method_caller,
-	EXECUTE: method_caller,
-	GIVE: method_caller,
+	SEND: method_caller;
+	NOTIFY: method_caller;
+	COMMUNICATE: method_caller;
+	EXECUTE: method_caller;
+	GIVE: method_caller;
+}
+interface jsstp_event_members{
+	//proxy
+	[key: `On${string}`]: simple_event_caller;
 }
 //定义一个包装器
 /**
@@ -313,13 +327,13 @@ interface jsstp_base_methods{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-declare class jsstp_t implements jsstp_types, jsstp_base_methods {
+declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_members {
 	//interface jsstp_types
-	type=jsstp_t;
-	base_sstp_info_t=base_sstp_info_t;
-	sstp_info_t=sstp_info_t;
-	fmo_info_t=fmo_info_t;
-	ghost_events_queryer_t=ghost_events_queryer_t;
+	type: typeof jsstp_t;
+	base_sstp_info_t: typeof base_sstp_info_t;
+	sstp_info_t: typeof sstp_info_t;
+	fmo_info_t: typeof fmo_info_t;
+	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	//interface jsstp_base_methods
 	SEND: method_caller;
@@ -328,8 +342,9 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	EXECUTE: method_caller;
 	GIVE: method_caller;
 
+	//interface jsstp_event_members
 	//proxy
-	[key: event_name]: simple_event_caller;
+	[key: `On${string}`]: simple_event_caller;
 
 	/**
 	 * 在fecth时使用的header
@@ -346,7 +361,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * SSTP协议版本号列表
 	 */
 	sstp_version_table: {
-		[method: String]: Number
+		[method: string]: Number
 	};
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
@@ -364,27 +379,28 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * 基础jsstp对象
 	 * @param {String} sender_name 对象与服务器交互时的发送者名称
 	 * @param {String} host 目标服务器地址
+	 * @returns {jsstp_t}
 	 */
-	/*@__PURE__*/constructor(sender_name: String, host: String): jsstp_t;
+	/*@__PURE__*/constructor(sender_name: String, host: String);
 	/**
 	 * 修改host
 	 * @param {string} host
 	 */
-	set host(host: string): void;
+	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
 	 * 修改sendername
 	 * @param {String} sender_name
 	 */
-	set sendername(sender_name: String): void;
+	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
 	/**
 	 * 以文本发送报文并以文本接收返信
-	 * @param {Any} info 报文体（文本）
+	 * @param {any} info 报文体（文本）
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */
-	row_send(info: Any): Promise<String | undefined>;
+	row_send(info: any): Promise<String | undefined>;
 	/**
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
@@ -410,17 +426,6 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
-	/**
-	 * 对指定事件名的调用器进行适当的包装
-	 * 作用1：使得调用器可以像promise一样使用then方法
-	 * 作用2：使得调用器可以通过属性追加事件名来获取新的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @param {Function} value 调用器的值
-	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
-	 * @returns {base_event_caller} 调用器
-	 */
-	/*@__PURE__*/#warp_the_caller_of_event(event_name: String, method_name: String, value: Function, caller_factory: { [String]: (event_name: String, method_name: String) => any }): base_event_caller;
 	/**
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
@@ -454,7 +459,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * jsstp.event.OnTest("test");
 	 */
 	/*@__PURE__*/get event(): {
-		[event_name: String]: simple_event_caller
+		[event_name: string]: simple_event_caller
 	}
 	/**
 	 * 判断是否存在某个事件
@@ -590,8 +595,9 @@ declare class ghost_events_queryer_t {
 	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp
+	 * @returns {void}
 	 */
-	/*@__PURE__*/constructor(base_jsstp: jsstp_t): void;
+	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
