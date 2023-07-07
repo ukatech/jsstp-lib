@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+	},
+	"typedocOptions": {
+		"entryPoints": ["src/jsstp.d.ts"],
+		"out": ".github/pages/doc",
+	}
+}

@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: latest
       - run: npm install
-      - run: npm run build
+      - run: npm run build:all
 
       - name: add all
         run: git add -A
