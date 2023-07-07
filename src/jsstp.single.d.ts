@@ -1,3 +1,3 @@
-import jsstp from "./jsstp.d.ts";
+import type jsstp from "./jsstp.d.ts";
 
 export = jsstp;

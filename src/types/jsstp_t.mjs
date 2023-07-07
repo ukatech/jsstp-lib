@@ -141,7 +141,7 @@ class jsstp_t /*extends Function*/ {
 	/*@__PURE__*/get [sendername]() { return this[default_info].Sender; }
 	/**
 	 * 以文本发送报文并以文本接收返信
-	 * @param {Any} info 报文体（文本）
+	 * @param {any} info 报文体（文本）
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */

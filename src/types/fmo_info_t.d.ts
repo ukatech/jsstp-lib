@@ -1,5 +1,12 @@
-import base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
+type fmo_info_t_members = {
+	/**
+	 * fmo成员
+	 * @type {base_sstp_info_t|undefined}
+	 */
+	[uuid: string]: base_sstp_info_t|undefined;
+};
 /**
  * fmo报文类
  * @example
@@ -11,18 +18,14 @@ import base_sstp_info_t from "./base_sstp_info_t.d.ts";
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t implements fmo_info_t_members {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text
+	 * @returns {void}
 	 * @ignore
 	 */
-	/*@__PURE__*/constructor(fmo_text: String): void;
-	/**
-	 * fmo成员
-	 * @type {base_sstp_info_t|undefined}
-	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	/*@__PURE__*/constructor(fmo_text: String);
 	/**
 	 * @param {String} name 要检查的属性名
 	 * @param {String} value 期望的属性值

@@ -34,7 +34,7 @@ declare class info_object {
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/flat_map(func: (...dimensions: object_key[], value: any) => any): any[];
+	/*@__PURE__*/flat_map(func: (...dimensions_with_value_in_last: [...object_key[],any]) => any): any[];
 	/**
 	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
 	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
@@ -42,7 +42,7 @@ declare class info_object {
 	/*@__PURE__*/map(func: (value: any, key?: object_key) => any): any[];
 	/**
 	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,Any]]} array 要追加的数组
+	 * @param {[undefined|[String,any]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array: [undefined|[object_key, any]]): void;
 }

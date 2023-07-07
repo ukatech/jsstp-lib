@@ -70,7 +70,7 @@ class info_object {
 	}
 	/**
 	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,Any]]} array 要追加的数组
+	 * @param {[undefined|[String,any]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array) {
 		array[forEach]((pair) => pair ? this[pair[0]] = pair[1] : undefined);

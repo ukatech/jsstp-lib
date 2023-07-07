@@ -1,4 +1,4 @@
-import jsstp_t from "./jsstp_t.d.ts";
+import type jsstp_t from "./jsstp_t.d.ts";
 
 /**
  * ghost事件查询器
@@ -15,8 +15,9 @@ declare class ghost_events_queryer_t {
 	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp
+	 * @returns {void}
 	 */
-	/*@__PURE__*/constructor(base_jsstp: jsstp_t): void;
+	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name

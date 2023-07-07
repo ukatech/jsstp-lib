@@ -1,4 +1,5 @@
-import base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type { info_object } from "./info_object.d.ts";
 
 //定义sstp报文类
 /*
@@ -10,6 +11,14 @@ Script: \h\s0テストー。\u\s[10]テストやな。
 Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
+
+type sstp_info_t_members = {
+	/**
+	 * 其他报文成员
+	 * @type {String|undefined}
+	 */
+	[key: string]: String | undefined;
+};
 /**
  * sstp报文类
  * @example
@@ -18,16 +27,17 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t implements sstp_info_t_members {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
 	 * @param {Object} info_body 对象格式的报文体
 	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
 	 * @see {@link sstp_info_t.from_string}
+	 * @returns {sstp_info_t}
 	 * @ignore
 	 */
-	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]): sstp_info_t;
+	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
 	 * 从字符串构造sstp_info_t
 	 * @param {String} str 字符串报文
@@ -42,11 +52,6 @@ declare class sstp_info_t extends base_sstp_info_t {
 	 * @returns {String|undefined} PassThru的值
 	 */
 	/*@__PURE__*/get_passthrough(key: String): String | undefined;
-	/**
-	 * 其他报文成员
-	 * @type {String|undefined}
-	 */
-	[key: string]: String | undefined;
 	/**
 	 * 获取所有的PassThru
 	 * @returns {info_object} 所有的PassThru

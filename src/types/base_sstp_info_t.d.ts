@@ -1,4 +1,4 @@
-import { info_object } from "./info_object.d.ts";
+import type { info_object } from "./info_object.d.ts";
 
 /*
 sstp报文格式：
@@ -62,7 +62,7 @@ declare class base_sstp_info_t extends info_object {
 	/*@__PURE__*/get status_code(): Number;
 	/**
 	 * 其他报文成员
-	 * @type {Any|undefined}
+	 * @type {any|undefined}
 	 */
 	[key: string]: any|undefined;
 }

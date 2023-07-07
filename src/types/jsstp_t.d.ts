@@ -1,16 +1,7 @@
-import fmo_info_t from "./fmo_info_t.d.ts";
-import ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
-import sstp_info_t from "./sstp_info_t.d.ts";
-import base_sstp_info_t from "./base_sstp_info_t.d.ts";
-
-/**
- * 任何事件名称或其一部分！
- */
-type event_body=string;
-/**
- * 匹配事件名称
- */
-type event_name=`On${event_body}`;
+import type fmo_info_t from "./fmo_info_t.d.ts";
+import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
+import type sstp_info_t from "./sstp_info_t.d.ts";
+import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
 /**
  * sstp方法调用器
@@ -18,14 +9,15 @@ type event_name=`On${event_body}`;
 interface method_caller{
 	(info: Object): Promise<sstp_info_t>,
 	get_raw(info: Object): Promise<String>
-};
+}
 
 /**
  * 事件调用器
  */
-interface base_event_caller{
+type base_event_caller={
 	then(resolve: (result: sstp_info_t)=>any, reject: (reason?: any)=>any): Promise<any>,
-	[key: event_body]: base_event_caller,//扩展事件名称
+}&{
+	[key: string]: base_event_caller,//扩展事件名称
 };
 /**
  * 简易事件调用器
@@ -39,10 +31,11 @@ interface base_event_caller{
  * 	"Reference1": "abc"
  * });
  */
-interface simple_event_caller extends base_event_caller{
+type simple_event_caller = {
 	(...args: any[]): Promise<sstp_info_t>,
-	[key: event_body]: simple_event_caller,//扩展事件名称
-};
+}&{
+	[key: string]: simple_event_caller,//扩展事件名称
+}&base_event_caller;
 /**
  * 通用事件调用器
  * 调用时传入一个对象以触发事件！
@@ -60,25 +53,30 @@ interface simple_event_caller extends base_event_caller{
  * 	"Reference1": "abc"
  * });
  */
-interface common_event_caller extends base_event_caller{
+type common_event_caller = {
 	(info: Object): Promise<sstp_info_t>,
-	[key: event_body]: common_event_caller,//扩展事件名称
-};
+}&{
+	[key: string]: common_event_caller,//扩展事件名称
+}&base_event_caller;
 
 interface jsstp_types{
-	type: class,
-	base_sstp_info_t: class,
-	sstp_info_t: class,
-	fmo_info_t: class,
-	ghost_events_queryer_t: class
-};
+	type: typeof jsstp_t;
+	base_sstp_info_t: typeof base_sstp_info_t;
+	sstp_info_t: typeof sstp_info_t;
+	fmo_info_t: typeof fmo_info_t;
+	ghost_events_queryer_t: typeof ghost_events_queryer_t;
+}
 interface jsstp_base_methods{
-	SEND: method_caller,
-	NOTIFY: method_caller,
-	COMMUNICATE: method_caller,
-	EXECUTE: method_caller,
-	GIVE: method_caller,
-};
+	SEND: method_caller;
+	NOTIFY: method_caller;
+	COMMUNICATE: method_caller;
+	EXECUTE: method_caller;
+	GIVE: method_caller;
+}
+interface jsstp_event_members{
+	//proxy
+	[key: `On${string}`]: simple_event_caller;
+}
 //定义一个包装器
 /**
  * jsstp对象
@@ -87,13 +85,13 @@ interface jsstp_base_methods{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-declare class jsstp_t implements jsstp_types, jsstp_base_methods {
+declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_members {
 	//interface jsstp_types
-	type=jsstp_t;
-	base_sstp_info_t=base_sstp_info_t;
-	sstp_info_t=sstp_info_t;
-	fmo_info_t=fmo_info_t;
-	ghost_events_queryer_t=ghost_events_queryer_t;
+	type: typeof jsstp_t;
+	base_sstp_info_t: typeof base_sstp_info_t;
+	sstp_info_t: typeof sstp_info_t;
+	fmo_info_t: typeof fmo_info_t;
+	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	//interface jsstp_base_methods
 	SEND: method_caller;
@@ -102,8 +100,9 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	EXECUTE: method_caller;
 	GIVE: method_caller;
 
+	//interface jsstp_event_members
 	//proxy
-	[key: event_name]: simple_event_caller;
+	[key: `On${string}`]: simple_event_caller;
 
 	/**
 	 * 在fecth时使用的header
@@ -120,7 +119,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * SSTP协议版本号列表
 	 */
 	sstp_version_table: {
-		[method: String]: Number
+		[method: string]: Number
 	};
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
@@ -138,27 +137,28 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * 基础jsstp对象
 	 * @param {String} sender_name 对象与服务器交互时的发送者名称
 	 * @param {String} host 目标服务器地址
+	 * @returns {jsstp_t}
 	 */
-	/*@__PURE__*/constructor(sender_name: String, host: String): jsstp_t;
+	/*@__PURE__*/constructor(sender_name: String, host: String);
 	/**
 	 * 修改host
 	 * @param {string} host
 	 */
-	set host(host: string): void;
+	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
 	 * 修改sendername
 	 * @param {String} sender_name
 	 */
-	set sendername(sender_name: String): void;
+	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
 	/**
 	 * 以文本发送报文并以文本接收返信
-	 * @param {Any} info 报文体（文本）
+	 * @param {any} info 报文体（文本）
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 */
-	row_send(info: Any): Promise<String | undefined>;
+	row_send(info: any): Promise<String | undefined>;
 	/**
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
@@ -184,17 +184,6 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * }} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
-	/**
-	 * 对指定事件名的调用器进行适当的包装
-	 * 作用1：使得调用器可以像promise一样使用then方法
-	 * 作用2：使得调用器可以通过属性追加事件名来获取新的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @param {Function} value 调用器的值
-	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
-	 * @returns {base_event_caller} 调用器
-	 */
-	/*@__PURE__*/#warp_the_caller_of_event(event_name: String, method_name: String, value: Function, caller_factory: { [String]: (event_name: String, method_name: String) => any }): base_event_caller;
 	/**
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
@@ -228,7 +217,7 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods {
 	 * jsstp.event.OnTest("test");
 	 */
 	/*@__PURE__*/get event(): {
-		[event_name: String]: simple_event_caller
+		[event_name: string]: simple_event_caller
 	}
 	/**
 	 * 判断是否存在某个事件

@@ -2,12 +2,12 @@
 //发信方法：Content-Type: text/plain HTTP/1.1でPOST
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 
-import base_sstp_info_t from "./types/base_sstp_info_t.d.ts";
-import sstp_info_t from "./types/sstp_info_t.d.ts";
-import fmo_info_t from "./types/fmo_info_t.d.ts";
-import ghost_events_queryer_t from "./types/ghost_events_queryer_t.d.ts";
+import type base_sstp_info_t from "./types/base_sstp_info_t.d.ts";
+import type sstp_info_t from "./types/sstp_info_t.d.ts";
+import type fmo_info_t from "./types/fmo_info_t.d.ts";
+import type ghost_events_queryer_t from "./types/ghost_events_queryer_t.d.ts";
 
-import jsstp_t from "./types/jsstp_t.d.ts";
+import type jsstp_t from "./types/jsstp_t.d.ts";
 
 //定义一个包装器
 /**
