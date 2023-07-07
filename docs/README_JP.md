@@ -74,6 +74,11 @@ var jsstp;
 
 ### 2.使用する
 
+jsstpに専用のドキュメントページができました！  
+より専門的な情報については<https://ukatech.github.io/jsstp-lib/doc>をご覧ください。  
+
+____
+
 jsstp関連の操作の前に、ghostが利用可能かどうかを確認する必要があるかもしれません。
 
 ```javascript

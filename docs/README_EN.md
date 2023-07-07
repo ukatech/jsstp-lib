@@ -74,6 +74,11 @@ var jsstp;
 
 ### 2. Use
 
+jsstp now has a dedicated documentation page!  
+You can visit <https://ukatech.github.io/jsstp-lib/doc> for more specialist information  
+
+____
+
 You may need to check if the ghost is available before jsstp related operations.
 
 ```javascript
