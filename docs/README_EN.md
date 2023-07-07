@@ -19,7 +19,7 @@ If you use npm, you can use npm to install jsstp.
 npm i jsstp
 ```
 
-After that, use `import` to bring in jsstp in js
+After that, use `import` to bring in jsstp in js.
 
 ```javascript
 import jsstp from "jsstp";
@@ -27,17 +27,17 @@ import jsstp from "jsstp";
 var jsstp=(await import("jsstp")).jsstp;
 ```
 
-In CommonJS, you can also use `require` to introduce jsstp  
-However, due to the design of node, you may need to use JSDoc comments to declare the type of jsstp you get from `require` in order to get the ide code hints to work properly  
+In CommonJS, you can also use `require` to introduce jsstp.  
+However, due to the design of node, you may need to use JSDoc comments to declare the type of jsstp you get from `require` in order to get the IDE code hints to work properly.  
 
 ```javascript
 /** @type {typeof import("jsstp").jsstp} */
 var jsstp=require('jsstp');
 ```
 
-#### cdn
+#### CDN
 
-Or if you're a nostalgist, you can access jsstp's source code via cdn.
+If you're a nostalgist, you can access jsstp's source code via CDN.
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/dist/jsstp.min.js"></script>
@@ -51,21 +51,21 @@ var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/d
 
 ##### type definition
 
-Even if you use cdn and write js code by hand, you can use jsstp's type definition file in ide to get code hints
+Even if you use CDN and write js code by hand, you can use jsstp's type definition file in your IDE to get code hints.
 
-First make sure your ide has access to jsstp, you can probably install it globally to use it without disturbing the workspace file
+First make sure your IDE has access to jsstp. You can probably install it globally to use it without disturbing the workspace file.
 
 ```shell
 npm i -g jsstp
 ```
 
-Afterwards, add a type import to the head of the file using jsstp. According to the types convention, this declaration must precede any formal code
+Afterwards, add a type import to the head of the file using jsstp. According to the types convention, this declaration must precede any formal code.
 
 ```javascript
 /// <reference types="jsstp" />
 ```
 
-Finally declare the type of jsstp before its declaration with a JSDoc comment
+Finally, declare the type of jsstp before its declaration with a JSDoc comment.
 
 ```javascript
 /** @type {typeof import("jsstp").jsstp} */
@@ -75,7 +75,7 @@ var jsstp;
 ### 2. Use
 
 jsstp now has a dedicated documentation page!  
-You can visit <https://ukatech.github.io/jsstp-lib/doc> for more specialist information  
+You can visit <https://ukatech.github.io/jsstp-lib/doc> for more specialized information.  
 
 ____
 
