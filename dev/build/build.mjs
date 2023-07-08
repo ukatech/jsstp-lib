@@ -92,11 +92,8 @@ import { readFileSync, writeFileSync } from 'fs';
 function jsstp_minify(code_path,is_module){
 	terser_minify(readFileSync(code_path,'utf8'),is_module).then(code=>{
 		uglifyjs_minify(code,is_module).then(code=>{
-			if(is_module){
-				//`;i=new B;module.exports=i;`->`;module.exports=new B;`
-				code=code.replace(/;(\w+)=new (\w+);module.exports=\1;/g,`;module.exports=new $2;`);
+			if(is_module)
 				code=code.replace(/;$/g,`\n`);
-			}
 			else{
 				code=code.replace(/^var jsstp=function\(\){/,`var jsstp=(()=>{`);
 				code=code.replace(/}\(\);$/g,`})()\n`);
