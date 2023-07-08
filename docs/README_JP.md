@@ -19,7 +19,7 @@ npmを使用している場合は、npmを使用してjsstpをインストール
 npm i jsstp
 ```
 
-その後、`import` を使って js に jsstp を導入する。
+その後、`import` を使って js に jsstp を導入します。
 
 ```javascript
 import jsstp from "jsstp";
@@ -51,15 +51,15 @@ var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.0/d
 
 ##### 型定義
 
-cdnを使って手書きでjsコードを書く場合でも、ideでjsstpの型定義ファイルを使ってコードのヒントを得ることができる。
+cdnを使って手書きでjsコードを書く場合でも、ideでjsstpの型定義ファイルを使ってコードのヒントを得ることができます。
 
-ワークスペース・ファイルを邪魔することなく使うには、おそらくグローバルにインストールできるだろう。
+ワークスペース・ファイルを邪魔することなく使うには、おそらくグローバルにインストールできるでしょう。
 
 ```shell
 npm i -g jsstp
 ```
 
-その後、jsstpを使用して、ファイルの先頭に型のインポートを追加する。 型の規約に従って、この宣言は正式なコードの前になければならない。
+その後、jsstpを使用して、ファイルの先頭に型のインポートを追加します。 型の規約に従って、この宣言は正式なコードの前になければなりません。
 
 ```javascript
 /// <reference types="jsstp" />
