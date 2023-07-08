@@ -40,10 +40,8 @@ var {jsstp}=await import("jsstp");
 ```
 
 In CommonJS, you can also use `require` to introduce jsstp.  
-However, due to the design of node, you may need to use JSDoc comments to declare the type of jsstp you get from `require` in order to get the IDE code hints to work properly.  
 
 ```javascript
-/** @type {typeof import("jsstp").jsstp} */
 var jsstp=require('jsstp');
 ```
 

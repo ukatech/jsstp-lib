@@ -44,11 +44,9 @@ var {jsstp}=await import("jsstp");
 ```
 
 在CommonJS中，你也可以使用`require`引入jsstp  
-但是由于node的设计原因，你或许需要使用JSDoc注释来声明自`require`得到的jsstp的类型才能让ide的代码提示正常工作  
 
 ```javascript
-/** @type {typeof import("jsstp").jsstp} */
-var jsstp=require('jsstp');
+var {jsstp}=require('jsstp');
 ```
 
 #### cdn

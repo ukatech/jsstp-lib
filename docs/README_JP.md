@@ -40,11 +40,9 @@ var {jsstp}=await import("jsstp");
 ```
 
 CommonJS では、`require` を使用して jsstp を導入することもできます。  
-しかし、nodeの設計上、ideコードヒントを正しく動作させるためには、JSDocコメントを使って `require` から取得したjsstpのタイプを宣言する必要があるかもしれません。  
 
 ```javascript
-/** @type {typeof import("jsstp").jsstp} */
-var jsstp=require('jsstp');
+var {jsstp}=require('jsstp');
 ```
 
 #### cdn

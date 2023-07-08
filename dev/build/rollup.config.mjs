@@ -23,7 +23,7 @@ export default [
 			{
 				file: 'dist/jsstp.cjs',
 				format: 'cjs',
-				exports: 'default',
+				exports: 'named',
 				strict: false//jsstp在不在严格模式下都可以正常工作，去除以节省体积
 			}
 		]
