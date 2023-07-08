@@ -219,7 +219,7 @@ class jsstp_t /*extends Function*/ {
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
 	 */
 	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(
@@ -233,7 +233,7 @@ class jsstp_t /*extends Function*/ {
 	 * 用于获取指定事件的简单调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
 	 */
 	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(

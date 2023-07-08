@@ -55,24 +55,6 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
-interface jsstp_types{
-	type: typeof jsstp_t;
-	base_sstp_info_t: typeof base_sstp_info_t;
-	sstp_info_t: typeof sstp_info_t;
-	fmo_info_t: typeof fmo_info_t;
-	ghost_events_queryer_t: typeof ghost_events_queryer_t;
-}
-interface jsstp_base_methods{
-	SEND: method_caller;
-	NOTIFY: method_caller;
-	COMMUNICATE: method_caller;
-	EXECUTE: method_caller;
-	GIVE: method_caller;
-}
-interface jsstp_event_members{
-	//proxy
-	[key: `On${string}`]: simple_event_caller;
-}
 //定义一个包装器
 /**
  * jsstp对象
@@ -81,35 +63,69 @@ interface jsstp_event_members{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_members {
-	//interface jsstp_types
+declare class jsstp_t{
+	/**
+	 * @group jsstp_types
+	 */
 	type: typeof jsstp_t;
+	/**
+	 * @group jsstp_types
+	 */
 	base_sstp_info_t: typeof base_sstp_info_t;
+	/**
+	 * @group jsstp_types
+	 */
 	sstp_info_t: typeof sstp_info_t;
+	/**
+	 * @group jsstp_types
+	 */
 	fmo_info_t: typeof fmo_info_t;
+	/**
+	 * @group jsstp_types
+	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
-	//interface jsstp_base_methods
+	/**
+	 * @group jsstp_base_methods
+	*/
 	SEND: method_caller;
+	/**
+	 * @group jsstp_base_methods
+	*/
 	NOTIFY: method_caller;
+	/**
+	 * @group jsstp_base_methods
+	*/
 	COMMUNICATE: method_caller;
+	/**
+	 * @group jsstp_base_methods
+	*/
 	EXECUTE: method_caller;
+	/**
+	 * @group jsstp_base_methods
+	*/
 	GIVE: method_caller;
 
-	//interface jsstp_event_members
-	//proxy
+	/**
+	 * 匹配事件名称以产生简易调用器
+	 * @group jsstp_event_members
+	 * @example
+	 * let data=await jsstp.OnTest(123,"abc");
+	 */
 	[key: `On${string}`]: simple_event_caller;
 
 	/**
 	 * 在fecth时使用的header
-	 * @type {Object}
 	 */
-	RequestHeader: Object;
+	RequestHeader: {
+		[key: string]: string,
+	};
 	/**
 	 * 默认的报文内容
-	 * @type {Object}
 	 */
-	default_info: Object;
+	default_info: {
+		[key: string]: string,
+	};
 
 	/**
 	 * SSTP协议版本号列表
@@ -184,14 +200,14 @@ declare class jsstp_t implements jsstp_types, jsstp_base_methods, jsstp_event_me
 	 * 获取指定事件的调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
 	/**
 	 * 用于获取指定事件的简单调用器
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}&Promise<sstp_info_t>} 调用器
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
 	/**
