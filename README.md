@@ -15,6 +15,18 @@
 
 ### 1. 引入js
 
+#### 导入时的注意事项  
+
+在过去版本中我们曾推荐这样导入jsstp
+
+```javascript
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs").then(m=>m.jsstp);
+```
+
+在v2.0.2.0之后的版本中，使用`var jsstp=await import("jsstp").then(m=>m.jsstp)`会导致线程进入死循环，占用大量cpu，直到用户离开页面或关闭进程为止  
+其原因是从v2.0.2.0开始，jsstp可以像`Promise`一样被等待，其解析结果将是它自己，这导致`await jsstp`陷入死循环中。  
+让我们试试 `var {jsstp}=await import("jsstp");`！
+
 #### npm
 
 如果你使用npm，你可以使用npm安装jsstp
@@ -28,7 +40,7 @@ npm i jsstp
 ```javascript
 import jsstp from "jsstp";
 //或者
-var jsstp=(await import("jsstp")).jsstp;
+var {jsstp}=await import("jsstp");
 ```
 
 在CommonJS中，你也可以使用`require`引入jsstp  
@@ -50,7 +62,7 @@ var jsstp=require('jsstp');
 或者在js中动态载入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs").then(m=>m.jsstp);
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs");
 ```
 
 ##### 类型定义

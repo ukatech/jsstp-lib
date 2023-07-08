@@ -11,6 +11,18 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka) & [SSTP](http://ssp.shilles
 
 ### 1. loading js
 
+#### Notes on importing  
+
+In past versions we have recommended importing jsstp like this
+
+```javascript
+var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs").then(m=>m.jsstp).
+```
+
+In versions after v2.0.2.0, using `var jsstp=await import("jsstp").then(m=>m.jsstp)` causes threads to go into a dead loop, taking up a lot of cpu until the user leaves the page or closes the process  
+The reason for this is that from v2.0.2.0 onwards, jsstp can be waited on just like `Promise` and its parsed result will be itself, which causes `await jsstp` to get stuck in a dead loop.  
+Let's try `var {jsstp}=await import("jsstp");`!
+
 #### npm
 
 If you use npm, you can use npm to install jsstp.
@@ -24,7 +36,7 @@ After that, use `import` to bring in jsstp in js.
 ```javascript
 import jsstp from "jsstp";
 //or
-var jsstp=(await import("jsstp")).jsstp;
+var {jsstp}=await import("jsstp");
 ```
 
 In CommonJS, you can also use `require` to introduce jsstp.  
@@ -46,7 +58,7 @@ If you're a nostalgist, you can access jsstp's source code via CDN.
 Or load jsstp dynamically in js.
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs").then(m=>m.jsstp);
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs");
 ```
 
 ##### type definition
