@@ -130,12 +130,14 @@ class jsstp_t /*extends Function*/ {
 	/**
 	 * 修改host
 	 * @param {string} host
+	 * @group Properties
 	 */
 	set host(host) { this.#host = host || get_local_address()+"/api/sstp/v1"; }
 	/*@__PURE__*/get host() { return this.#host; }
 	/**
 	 * 修改sendername
 	 * @param {String} sender_name
+	 * @group Properties
 	 */
 	set [sendername](sender_name) { this[default_info].Sender = sender_name || "jsstp-client"; }
 	/*@__PURE__*/get [sendername]() { return this[default_info].Sender; }
@@ -144,6 +146,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {any} info 报文体（文本）
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @group Basic Send Methods
 	 */
 	row_send(info) {
 		//使用fetch发送数据
@@ -167,6 +170,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {Object} info 报文体
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @group Basic Send Methods
 	 */
 	[costom_text_send](sstphead, info) {
 		return this.row_send(new sstp_info_t(sstphead, { ...this[default_info], ...info }));
@@ -176,6 +180,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 * @group Basic Send Methods
 	 */
 	costom_send(sstphead, info) {
 		return this[costom_text_send](sstphead, info)[then](
@@ -189,6 +194,7 @@ class jsstp_t /*extends Function*/ {
 	 * 	(info: Object): Promise<sstp_info_t>,
 	 * 	get_raw(info: Object): Promise<String>
 	 * }} 调用器
+	* @group Caller Methods
 	 */
 	/*@__PURE__*/[get_caller_of_method](method_name) {
 		let header = get_sstp_header(method_name,this[sstp_version_table]);
@@ -205,6 +211,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {Function} value 调用器的值
 	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
 	 * @returns {Proxy<value>} 调用器
+	 * @group Caller Methods
 	 */
 	/*@__PURE__*/#warp_the_caller_of_event(event_name,method_name,value,caller_factory) {
 		return new the_proxy(value, {
@@ -220,6 +227,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * @group Caller Methods
 	 */
 	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(
@@ -234,6 +242,7 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * @group Caller Methods
 	 */
 	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_sstp_method) {
 		return this.#warp_the_caller_of_event(
@@ -255,6 +264,7 @@ class jsstp_t /*extends Function*/ {
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.event.OnTest("test");
+	 * @group Indexer Members
 	 */
 	/*@__PURE__*/get event() {
 		return new the_proxy({}, {
@@ -379,6 +389,7 @@ class jsstp_t /*extends Function*/ {
 	 * });
 	 * //or
 	 * await jsstp;
+	 * @group PromiseLike Methods
 	 */
 	/*@__PURE__*/[then](resolve, reject) {
 		return this[available]()[then](result => 
@@ -396,7 +407,7 @@ class jsstp_t /*extends Function*/ {
 	 * 	)
 	 * );
 	 */
-	/*@__PURE__*/new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }//省略await是合法的
+	/*@__PURE__*/new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }
 }
 //对定义中的所有类型补充到原型
 //纯为了压缩体积（不然每个类型都要写一遍`static`）
