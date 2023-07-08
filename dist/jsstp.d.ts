@@ -123,15 +123,14 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * sstp报文类：类定义实现
- * @see sstp_info_t
+ * sstp报文类
  * @example
  * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t_class_impl extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
@@ -201,40 +200,26 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	 * @param {[undefined|[String,any]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
-}
-/**
- * 补充sstp报文类的默认成员
- */
-type sstp_info_t_members = {
+
 	/**
 	 * 其他报文成员
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;
-};
-/**
- * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
- */
-declare const sstp_info_t: typeof sstp_info_t_class_impl;
-type sstp_info_t = sstp_info_t_class_impl&sstp_info_t_members;
+}
 
 /**
- * fmo报文类：类定义实现
- * @see fmo_info_t
+ * fmo报文类
  * @example
  * let fmo = jsstp.get_fmo_infos();
  * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
  * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t_class_impl extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text
@@ -317,30 +302,13 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	 * @param {[undefined|[String,any]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
-}
-/**
- * 补充fmp报文类的默认成员
- */
-type fmo_info_t_members = {
+
 	/**
 	 * fmo成员
 	 * @type {base_sstp_info_t|undefined}
 	 */
 	[uuid: string]: base_sstp_info_t|undefined;
-};
-/**
- * fmo报文类
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
- * 	console.log(fmo[kikka_uuid].ghostpath);
- * @alias jsstp.fmo_info_t
- * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- */
-declare const fmo_info_t: typeof fmo_info_t_class_impl;
-type fmo_info_t = fmo_info_t_class_impl&fmo_info_t_members;
+}
 
 /**
  * sstp方法调用器
