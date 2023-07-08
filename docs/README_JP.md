@@ -76,6 +76,7 @@ var jsstp;
 
 jsstpに専用のドキュメントページができました！  
 より専門的な情報については<https://ukatech.github.io/jsstp-lib/doc>をご覧ください。  
+ドキュメントを見ながら、[jsstp playground](https://playcode.io/1518761)でjsstpの様々な機能を試すことができる。  
 
 ____
 
