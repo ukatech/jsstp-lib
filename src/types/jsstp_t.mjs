@@ -204,19 +204,15 @@ class jsstp_t /*extends Function*/ {
 	 * @param {String|undefined} method_name 方法名称
 	 * @param {Function} value 调用器的值
 	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
-	 * @returns {typeof value & Promise<ReturnType<value>>} 调用器
+	 * @returns {Proxy<value>} 调用器
 	 */
 	/*@__PURE__*/#warp_the_caller_of_event(event_name,method_name,value,caller_factory) {
-		return new the_proxy(assign(value,{
-			[then]: (resolve, reject) => value()[then](resolve, reject),
-			catch: (reject) => value().catch(reject),
-			finally: (dofinally) => value().finally(dofinally),
-		}), {
-				get: (target, prop) => 
-					prop in target ?
-						target[prop] :
-					//else
-						this[caller_factory](event_name+"."+prop, method_name)
+		return new the_proxy(value, {
+			get: (target, prop) => 
+				prop in target ?
+					target[prop] :
+				//else
+					this[caller_factory](event_name+"."+prop, method_name)
 		});
 	}
 	/**

@@ -14,9 +14,9 @@ interface method_caller{
 /**
  * 事件调用器
  */
-type base_event_caller=Promise<sstp_info_t>&{
+interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
-};
+}
 /**
  * 简易事件调用器
  * 直接调用以触发事件！
@@ -29,11 +29,10 @@ type base_event_caller=Promise<sstp_info_t>&{
  * 	"Reference1": "abc"
  * });
  */
-type simple_event_caller = {
+interface simple_event_caller extends base_event_caller {
 	(...args: any[]): Promise<sstp_info_t>,
-}&{
 	[key: string]: simple_event_caller,//扩展事件名称
-}&base_event_caller;
+}
 /**
  * 通用事件调用器
  * 调用时传入一个对象以触发事件！
@@ -51,11 +50,10 @@ type simple_event_caller = {
  * 	"Reference1": "abc"
  * });
  */
-type common_event_caller = {
+interface common_event_caller extends base_event_caller{
 	(info: Object): Promise<sstp_info_t>,
-}&{
 	[key: string]: common_event_caller,//扩展事件名称
-}&base_event_caller;
+}
 
 interface jsstp_types{
 	type: typeof jsstp_t;
