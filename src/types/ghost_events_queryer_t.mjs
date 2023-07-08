@@ -18,6 +18,7 @@ import {
 	_false_,
 } from "../base/value_table.mjs";
 import {
+	ExtensibleFunction,
 } from "../base/tools.mjs";
 
 /**
@@ -31,7 +32,7 @@ import {
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-class ghost_events_queryer_t {
+class ghost_events_queryer_t extends ExtensibleFunction {
 	/**
 	 * 基础{@link jsstp_t}对象
 	 * @type {jsstp_t}
@@ -74,6 +75,20 @@ class ghost_events_queryer_t {
 	 * @param {jsstp_t} base_jsstp
 	 */
 	/*@__PURE__*/constructor(base_jsstp) {
+		super(
+			//初始化自身的调用器
+			/**
+			 * 调用声明
+			 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+			 * @param {String} event_name
+			 * @param {String|undefined} security_level
+			 * @returns {Promise<Boolean>}
+			 * @example
+			 * let result = await ghost_events_queryer("On_connect");
+			 * @see 基于 {@link ghost_events_queryer_t.check_event}
+			 */
+			(event_name, security_level = this[default_security_level])=>this.check_event(event_name, security_level)
+		);
 		this.#base_jsstp = base_jsstp;
 		/**
 		 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"

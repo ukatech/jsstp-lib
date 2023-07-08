@@ -124,5 +124,7 @@ jsstp_minify("./dist/jsstp.cjs",true);
 var dts_code=readFileSync("./dist/jsstp.d.ts",'utf8');
 //`info_object$1`=>`info_object`
 dts_code=dts_code.replace(/info_object\$1/g,'info_object');
+//remove all `//**remove from dist**//`
+dts_code=dts_code.replace(/\/\/\*\*remove from dist\*\*\/\/\n/g,'');
 
 writeFileSync("./dist/jsstp.d.ts",dts_code);

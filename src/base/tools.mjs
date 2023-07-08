@@ -101,6 +101,19 @@ var new_get_handler = /*@__PURE__*/(info) =>
 			return info._default_handler_(target, key)
 		return (result = target[key]) instanceof Function ? result.bind(target) : result;
 	}
+/**
+ * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
+ */
+class ExtensibleFunction extends Function {
+	/**
+	 * 自函数实例初始化
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	constructor(func) {
+		return the_object.setPrototypeOf(func, new.target.prototype);
+	}
+}
 
 /**
  * 是否在浏览器中
@@ -148,5 +161,6 @@ export {
 	my_origin,
 	my_default_security_level,
 
-	to_string
+	to_string,
+	ExtensibleFunction
 };
