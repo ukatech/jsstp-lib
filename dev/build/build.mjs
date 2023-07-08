@@ -4,12 +4,37 @@ import { rollup } from 'rollup';
 import { minify as terser } from 'terser';
 import { minify as uglifyjs } from 'uglify-js';
 
+//在调用rollup前，我们需要先做一件事：
+//将src/types/中的所有.s.ts文件重命名为.d.ts文件
+import { renameSync } from 'fs';
+import { join } from 'path';
+import { readdirSync } from 'fs';
+for(const file_name of readdirSync("./src/types")){
+	if(file_name.endsWith(".s.ts")){
+		//先将原有的同名.d.ts文件重命名到.d.ts.tmp
+		renameSync(join("./src/types",file_name.replace(/\.s\.ts$/,".d.ts")),join("./src/types",file_name.replace(/\.s\.ts$/,".d.ts.tmp")));
+		//再将.s.ts文件重命名为.d.ts文件
+		renameSync(join("./src/types",file_name),join("./src/types",file_name.replace(/\.s\.ts$/,".d.ts")));
+	}
+}
+
+
 //rollup -c ./.github/rollup.config.mjs
 var rollup_config=await import('./rollup.config.mjs').then(m=>m.default);
 for(const config of rollup_config){
 	const bundle = await rollup(config);
 	for(const output of config.output)
 		await bundle.write(output);
+}
+
+//回复.s.ts文件
+for(const file_name of readdirSync("./src/types")){
+	if(file_name.endsWith(".d.ts.tmp")){
+		//先将原有的同名.d.ts文件重命名到.s.ts
+		renameSync(join("./src/types",file_name.replace(/\.d\.ts\.tmp$/,".d.ts")),join("./src/types",file_name.replace(/\.d\.ts\.tmp$/,".s.ts")));
+		//再将.d.ts.tmp文件重命名为.d.ts文件
+		renameSync(join("./src/types",file_name),join("./src/types",file_name.replace(/\.d\.ts\.tmp$/,".d.ts")));
+	}
 }
 
 var name_caches={};

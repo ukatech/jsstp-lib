@@ -25,7 +25,7 @@
 		"test:browser": "node dev/tests/browser.mjs",
 		"build": "npm run build:dist",
 		"build:dist": "node dev/build/build.mjs",
-		"build:doc": "npx typedoc --plugin typedoc-plugin-missing-exports --excludeExternals",
+		"build:doc": "npx typedoc --plugin typedoc-plugin-missing-exports --excludeExternals --exclude \"**/*.s.ts\"",
 		"build:all": "npm run build:dist && npm run build:doc",
 		"prepublish": "npm run build"
 	},

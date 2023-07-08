@@ -1,6 +1,9 @@
+//jsstp is not a ts proj and this file is only used to run typedoc.
 {
+	"include": ["src/**/*"],
+	"exclude": ["src/**/*.s.ts"],
 	"compilerOptions": {
-		"target": "ESNext",
+		"target": "ESNext"
 	},
 	"typedocOptions": {
 		"entryPoints": ["src/jsstp.d.ts"],
