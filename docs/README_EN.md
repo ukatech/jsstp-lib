@@ -16,7 +16,7 @@ See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka) & [SSTP](http://ssp.shilles
 In past versions we have recommended importing jsstp like this
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs").then(m=>m.jsstp).
+var jsstp=await import("jsstp").then(m=>m.jsstp).
 ```
 
 In versions after v2.0.2.0, using `var jsstp=await import("jsstp").then(m=>m.jsstp)` causes threads to go into a dead loop, taking up a lot of cpu until the user leaves the page or closes the process  
@@ -50,13 +50,13 @@ var jsstp=require('jsstp');
 If you're a nostalgist, you can access jsstp's source code via CDN.
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.3.0/dist/jsstp.min.js"></script>
 ```
 
 Or load jsstp dynamically in js.
 
 ```javascript
-var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs");
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.3.0/dist/jsstp.mjs");
 ```
 
 ##### type definition

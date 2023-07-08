@@ -20,7 +20,7 @@
 在过去版本中我们曾推荐这样导入jsstp
 
 ```javascript
-var jsstp=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs").then(m=>m.jsstp);
+var jsstp=await import("jsstp").then(m=>m.jsstp);
 ```
 
 在v2.0.2.0之后的版本中，使用`var jsstp=await import("jsstp").then(m=>m.jsstp)`会导致线程进入死循环，占用大量cpu，直到用户离开页面或关闭进程为止  
@@ -54,13 +54,13 @@ var {jsstp}=require('jsstp');
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.3.0/dist/jsstp.min.js"></script>
 ```
 
 或者在js中动态载入jsstp
 
 ```javascript
-var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.2.1/dist/jsstp.mjs");
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.3.0/dist/jsstp.mjs");
 ```
 
 ##### 类型定义
