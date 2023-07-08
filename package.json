@@ -53,6 +53,7 @@
 	},
 	"files": [
 		"docs",
-		"dist"
+		"dist",
+		"!dist/jsstp.min.js"
 	]
 }
