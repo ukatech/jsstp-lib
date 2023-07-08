@@ -22,7 +22,7 @@
 <div class="tsd-comment tsd-typography">
 <h4>See</h4><p>sstp_info_t</p>
 
-<h4>Example</h4><pre><code class="language-ts"><span class="hl-6">let</span><span class="hl-1"> </span><span class="hl-4">info</span><span class="hl-1"> = </span><span class="hl-4">jsstp</span><span class="hl-1">.</span><span class="hl-4">sstp_info_t</span><span class="hl-1">.</span><span class="hl-0">from_string</span><span class="hl-1">(</span><span class="hl-2">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-2">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-2">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-2">Script: </span><span class="hl-13">\\</span><span class="hl-2">h</span><span class="hl-13">\\</span><span class="hl-2">s0テストー。</span><span class="hl-13">\\</span><span class="hl-2">u</span><span class="hl-13">\\</span><span class="hl-2">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-2">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-2">&quot;</span><span class="hl-1">);</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-4">info</span><span class="hl-1">.</span><span class="hl-4">head</span><span class="hl-1">);</span><span class="hl-5">//SSTP/1.4 200 OK</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-4">info</span><span class="hl-1">.</span><span class="hl-4">Option</span><span class="hl-1">);</span><span class="hl-5">//notranslate</span>
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">info</span><span class="hl-1"> = </span><span class="hl-2">jsstp</span><span class="hl-1">.</span><span class="hl-2">sstp_info_t</span><span class="hl-1">.</span><span class="hl-5">from_string</span><span class="hl-1">(</span><span class="hl-4">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-4">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-4">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-4">Script: </span><span class="hl-13">\\</span><span class="hl-4">h</span><span class="hl-13">\\</span><span class="hl-4">s0テストー。</span><span class="hl-13">\\</span><span class="hl-4">u</span><span class="hl-13">\\</span><span class="hl-4">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-4">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-4">&quot;</span><span class="hl-1">);</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">.</span><span class="hl-2">head</span><span class="hl-1">);</span><span class="hl-6">//SSTP/1.4 200 OK</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">.</span><span class="hl-2">Option</span><span class="hl-1">);</span><span class="hl-6">//notranslate</span>
 </code><button>Copy</button></pre>
 
 <h4>Alias</h4><p>jsstp.sstp_info_t</p>
@@ -34,7 +34,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">sstp_info_t_class_impl</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L23">types/sstp_info_t.d.ts:23</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L23">types/sstp_info_t.d.ts:23</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -76,7 +76,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides base_sstp_info_t.entries</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L72">types/sstp_info_t.d.ts:72</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L72">types/sstp_info_t.d.ts:72</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="head" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>head</span><a href="#head" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -89,7 +89,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from base_sstp_info_t.head</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/base_sstp_info_t.d.ts#L39">types/base_sstp_info_t.d.ts:39</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/base_sstp_info_t.d.ts#L39">types/base_sstp_info_t.d.ts:39</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="keys" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>keys</span><a href="#keys" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -101,7 +101,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides base_sstp_info_t.keys</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L64">types/sstp_info_t.d.ts:64</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L64">types/sstp_info_t.d.ts:64</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="length" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>length</span><a href="#length" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -113,7 +113,7 @@
 </div><aside class="tsd-sources">
 <p>Inherited from base_sstp_info_t.length</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/info_object.d.ts#L20">types/info_object.d.ts:20</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/info_object.d.ts#L20">types/info_object.d.ts:20</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="passthroughs" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>passthroughs</span><a href="#passthroughs" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -125,7 +125,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L52">types/sstp_info_t.d.ts:52</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L52">types/sstp_info_t.d.ts:52</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="raw" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>raw</span><a href="#raw" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -137,7 +137,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L57">types/sstp_info_t.d.ts:57</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L57">types/sstp_info_t.d.ts:57</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="status_code" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>status_<wbr/>code</span><a href="#status_code" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -150,7 +150,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from base_sstp_info_t.status_code</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/base_sstp_info_t.d.ts#L62">types/base_sstp_info_t.d.ts:62</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/base_sstp_info_t.d.ts#L62">types/base_sstp_info_t.d.ts:62</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="trivial_clone" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>trivial_<wbr/>clone</span><a href="#trivial_clone" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -163,7 +163,7 @@
 </div><aside class="tsd-sources">
 <p>Inherited from base_sstp_info_t.trivial_clone</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/info_object.d.ts#L30">types/info_object.d.ts:30</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/info_object.d.ts#L30">types/info_object.d.ts:30</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="unknown_lines" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unknown_<wbr/>lines</span><a href="#unknown_lines" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -176,7 +176,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from base_sstp_info_t.unknown_lines</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/base_sstp_info_t.d.ts#L34">types/base_sstp_info_t.d.ts:34</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/base_sstp_info_t.d.ts#L34">types/base_sstp_info_t.d.ts:34</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="values" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>values</span><a href="#values" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -188,7 +188,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides base_sstp_info_t.values</p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L68">types/sstp_info_t.d.ts:68</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L68">types/sstp_info_t.d.ts:68</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="flat_map" class="tsd-anchor"></a>
@@ -226,7 +226,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides <a href="base_sstp_info_t.html">base_sstp_info_t</a>.<a href="base_sstp_info_t.html#flat_map">flat_map</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L82">types/sstp_info_t.d.ts:82</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L82">types/sstp_info_t.d.ts:82</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="forEach" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>for<wbr/>Each</span><a href="#forEach" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -259,7 +259,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides <a href="base_sstp_info_t.html">base_sstp_info_t</a>.<a href="base_sstp_info_t.html#forEach">forEach</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L77">types/sstp_info_t.d.ts:77</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L77">types/sstp_info_t.d.ts:77</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="get_passthrough" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get_<wbr/>passthrough</span><a href="#get_passthrough" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -279,7 +279,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L47">types/sstp_info_t.d.ts:47</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L47">types/sstp_info_t.d.ts:47</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="map" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>map</span><a href="#map" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -317,7 +317,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides <a href="base_sstp_info_t.html">base_sstp_info_t</a>.<a href="base_sstp_info_t.html#map">map</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L87">types/sstp_info_t.d.ts:87</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L87">types/sstp_info_t.d.ts:87</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="push" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>push</span><a href="#push" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -337,7 +337,7 @@
 </div><aside class="tsd-sources">
 <p>Overrides <a href="base_sstp_info_t.html">base_sstp_info_t</a>.<a href="base_sstp_info_t.html#push">push</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L92">types/sstp_info_t.d.ts:92</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L92">types/sstp_info_t.d.ts:92</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="to_string" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>to_<wbr/>string</span><a href="#to_string" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -350,7 +350,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from <a href="base_sstp_info_t.html">base_sstp_info_t</a>.<a href="base_sstp_info_t.html#to_string">to_string</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/base_sstp_info_t.d.ts#L51">types/base_sstp_info_t.d.ts:51</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/base_sstp_info_t.d.ts#L51">types/base_sstp_info_t.d.ts:51</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="from_string" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>from_<wbr/>string</span><a href="#from_string" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -369,11 +369,11 @@
 <h4 class="tsd-returns-title">Returns <a href="../variables/sstp_info_t-1.html" class="tsd-signature-type tsd-kind-variable">sstp_info_t</a></h4><p>构造的sstp_info_t</p>
 
 <div class="tsd-comment tsd-typography">
-<h4>Example</h4><pre><code class="language-ts"><span class="hl-6">let</span><span class="hl-1"> </span><span class="hl-4">info</span><span class="hl-1"> = </span><span class="hl-4">sstp_info_t</span><span class="hl-1">.</span><span class="hl-0">from_string</span><span class="hl-1">(</span><span class="hl-2">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-2">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-2">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-2">Script: </span><span class="hl-13">\\</span><span class="hl-2">h</span><span class="hl-13">\\</span><span class="hl-2">s0テストー。</span><span class="hl-13">\\</span><span class="hl-2">u</span><span class="hl-13">\\</span><span class="hl-2">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-2">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-2">&quot;</span><span class="hl-1">);</span>
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">info</span><span class="hl-1"> = </span><span class="hl-2">sstp_info_t</span><span class="hl-1">.</span><span class="hl-5">from_string</span><span class="hl-1">(</span><span class="hl-4">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-4">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-4">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-4">Script: </span><span class="hl-13">\\</span><span class="hl-4">h</span><span class="hl-13">\\</span><span class="hl-4">s0テストー。</span><span class="hl-13">\\</span><span class="hl-4">u</span><span class="hl-13">\\</span><span class="hl-4">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-4">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-4">&quot;</span><span class="hl-1">);</span>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/d94adfb/src/types/sstp_info_t.d.ts#L41">types/sstp_info_t.d.ts:41</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/b47edf2/src/types/sstp_info_t.d.ts#L41">types/sstp_info_t.d.ts:41</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
