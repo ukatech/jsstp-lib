@@ -404,44 +404,44 @@ interface common_event_caller extends base_event_caller{
  */
 declare class jsstp_t{
 	/**
-	 * @group jsstp_types
+	 * @group Types
 	 */
 	type: typeof jsstp_t;
 	/**
-	 * @group jsstp_types
+	 * @group Types
 	 */
 	base_sstp_info_t: typeof base_sstp_info_t;
 	/**
-	 * @group jsstp_types
+	 * @group Types
 	 */
 	sstp_info_t: typeof sstp_info_t;
 	/**
-	 * @group jsstp_types
+	 * @group Types
 	 */
 	fmo_info_t: typeof fmo_info_t;
 	/**
-	 * @group jsstp_types
+	 * @group Types
 	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
-	 * @group jsstp_base_methods
+	 * @group SSTP Base Methods
 	*/
 	SEND: method_caller;
 	/**
-	 * @group jsstp_base_methods
+	 * @group SSTP Base Methods
 	*/
 	NOTIFY: method_caller;
 	/**
-	 * @group jsstp_base_methods
+	 * @group SSTP Base Methods
 	*/
 	COMMUNICATE: method_caller;
 	/**
-	 * @group jsstp_base_methods
+	 * @group SSTP Base Methods
 	*/
 	EXECUTE: method_caller;
 	/**
-	 * @group jsstp_base_methods
+	 * @group SSTP Base Methods
 	*/
 	GIVE: method_caller;
 
@@ -494,12 +494,14 @@ declare class jsstp_t{
 	/**
 	 * 修改host
 	 * @param {string} host
+	 * @group Properties
 	 */
 	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
 	 * 修改sendername
 	 * @param {String} sender_name
+	 * @group Properties
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
@@ -508,6 +510,7 @@ declare class jsstp_t{
 	 * @param {any} info 报文体（文本）
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String | undefined>;
 	/**
@@ -516,6 +519,7 @@ declare class jsstp_t{
 	 * @param {Object} info 报文体
 	 * @returns {Promise<String|undefined>} 返回一个promise  
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String | undefined>;
 	/**
@@ -523,6 +527,7 @@ declare class jsstp_t{
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 * @group Basic Send Methods
 	 */
 	costom_send(sstphead: String, info: Object): Promise<sstp_info_t>;
 	
@@ -533,6 +538,7 @@ declare class jsstp_t{
 	 * 	(info: Object): Promise<sstp_info_t>,
 	 * 	get_raw(info: Object): Promise<String>
 	 * }} 调用器
+	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
 	/**
@@ -540,6 +546,7 @@ declare class jsstp_t{
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
 	/**
@@ -547,6 +554,7 @@ declare class jsstp_t{
 	 * @param {String} event_name 事件名称
 	 * @param {String|undefined} method_name 方法名称
 	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
 	/**
@@ -554,6 +562,7 @@ declare class jsstp_t{
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.event.OnTest("test");
+	 * @group Indexer Members
 	 */
 	/*@__PURE__*/get event(): {
 		[event_name: string]: simple_event_caller
@@ -662,6 +671,7 @@ declare class jsstp_t{
 	 * });
 	 * //or
 	 * await jsstp;
+	 * @group PromiseLike Methods
 	 */
 	/*@__PURE__*/then<result_T,reject_T>(resolve: (value?: jsstp_t) => result_T, reject?: (reason?: any) => reject_T): Promise<result_T|reject_T>;
 	/**
