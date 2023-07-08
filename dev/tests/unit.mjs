@@ -20,3 +20,6 @@ jsstp.then(async ()=>{
 		console.error(e):
 		console.log("none ghost was found")
 );
+
+if(jsstp.default_security_level!="local")
+	console.error("jsstp.default_security_level!=local !!!!!!!");

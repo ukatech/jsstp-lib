@@ -6,10 +6,9 @@ import {
 	
 	substring,
 	length,
-
-	local,
-	external,
 } from "./value_table.mjs"
+
+import{local,external}from"./base_values.mjs";
 
 /**
  * 将字符串转换为小写

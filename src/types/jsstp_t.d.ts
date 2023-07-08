@@ -151,7 +151,7 @@ declare class jsstp_t{
 	 * @param {String} host 目标服务器地址
 	 * @returns {jsstp_t}
 	 */
-	/*@__PURE__*/constructor(sender_name: String, host: String);
+	/*@__PURE__*/constructor(sender_name?: String, host?: String);
 	/**
 	 * 修改host
 	 * @param {string} host

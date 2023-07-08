@@ -45,8 +45,7 @@ var SEND = "SEND";
 var get_fmo_infos = "get_fmo_infos";
 var get_passthrough = "get_passthrough";
 
-var local = "local";
-var external = "external";
+import{local,external}from"./base_values.mjs";
 
 var void_string = "";
 var _false_ = !1;
