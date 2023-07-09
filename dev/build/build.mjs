@@ -90,10 +90,29 @@ function uglifyjs_minify(code,is_module){
 import { readFileSync, writeFileSync } from 'fs';
 //minify
 function jsstp_minify(code_path,is_module){
-	terser_minify(readFileSync(code_path,'utf8'),is_module).then(code=>{
+	let code=readFileSync(code_path,'utf8');
+	if(code.startsWith("Object.defineProperty(exports, '__esModule', { value: true });")){
+		code=code.substring("Object.defineProperty(exports, '__esModule', { value: true });".length);
+		code+="exports.__esModule=true;\n"
+	}
+	terser_minify(code,is_module).then(code=>{
 		uglifyjs_minify(code,is_module).then(code=>{
-			if(is_module)
+			if(is_module){
+				{
+					let exports_str="";
+					let exports_reg=/exports\.([a-zA-Z0-9_$]+)\s*=\s*([a-zA-Z0-9_$!]+)[,;]/;
+					let match;
+					while(match=exports_reg.exec(code)){
+						exports_str+=`${match[1]}:${match[2]},`;
+						code=code.replace(match[0],"");
+					}
+					if(exports_str){
+						var assign=name_caches.vars.props["$assign"];
+						code+=assign+"(exports,{"+exports_str.replace(/,$/,"});");
+					}
+				}
 				code=code.replace(/;$/g,`\n`);
+			}
 			else{
 				code=code.replace(/^var jsstp=function\(\){/,`var jsstp=(()=>{`);
 				code=code.replace(/}\(\);$/g,`})()\n`);
