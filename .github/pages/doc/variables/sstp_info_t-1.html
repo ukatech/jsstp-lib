@@ -15,9 +15,37 @@
 <li><a href="../modules.html">jsstp</a></li>
 <li><a href="sstp_info_t-1.html">sstp_info_t</a></li></ul>
 <h1>Variable sstp_info_t<code class="tsd-tag ts-flagConst">Const</code> </h1></div>
-<div class="tsd-signature"><span class="tsd-kind-variable">sstp_<wbr/>info_<wbr/>t</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">typeof </span><a href="../classes/_internal_.sstp_info_t_class_impl.html" class="tsd-signature-type tsd-kind-class">sstp_info_t_class_impl</a></div>
+<div class="tsd-signature"><span class="tsd-kind-variable">sstp_<wbr/>info_<wbr/>t</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">typeof </span><a href="../classes/_internal_.sstp_info_t_class_impl.html" class="tsd-signature-type tsd-kind-class">sstp_info_t_class_impl</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-call-signature">from_string</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">str</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="sstp_info_t-1.html" class="tsd-signature-type tsd-kind-variable">sstp_info_t</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
 <div class="tsd-comment tsd-typography"><p>sstp报文类</p>
 </div>
+<div class="tsd-type-declaration">
+<h4>Type declaration</h4>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures"></ul></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-method">from_<wbr/>string</span><span class="tsd-signature-symbol">:</span>function</h5>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link"><span class="tsd-kind-call-signature">from_<wbr/>string</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">str</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="sstp_info_t-1.html" class="tsd-signature-type tsd-kind-variable">sstp_info_t</a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>从字符串构造sstp_info_t</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">str</span>: <span class="tsd-signature-type ">String</span></h5>
+<div class="tsd-comment tsd-typography"><p>字符串报文</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="sstp_info_t-1.html" class="tsd-signature-type tsd-kind-variable">sstp_info_t</a></h4><p>构造的sstp_info_t</p>
+
+<div class="tsd-comment tsd-typography">
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">info</span><span class="hl-1"> = </span><span class="hl-2">sstp_info_t</span><span class="hl-1">.</span><span class="hl-5">from_string</span><span class="hl-1">(</span><span class="hl-4">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-4">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-4">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-4">Script: </span><span class="hl-13">\\</span><span class="hl-4">h</span><span class="hl-13">\\</span><span class="hl-4">s0テストー。</span><span class="hl-13">\\</span><span class="hl-4">u</span><span class="hl-13">\\</span><span class="hl-4">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-4">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-4">&quot;</span><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/9d603bf/src/types/sstp_info_t.d.ts#L130">types/sstp_info_t.d.ts:130</a></li></ul></aside></li></ul></li></ul></div>
 <div class="tsd-comment tsd-typography">
 <h4>Example</h4><pre><code class="language-ts"><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">info</span><span class="hl-1"> = </span><span class="hl-2">jsstp</span><span class="hl-1">.</span><span class="hl-2">sstp_info_t</span><span class="hl-1">.</span><span class="hl-5">from_string</span><span class="hl-1">(</span><span class="hl-4">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-4">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-4">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-4">Script: </span><span class="hl-13">\\</span><span class="hl-4">h</span><span class="hl-13">\\</span><span class="hl-4">s0テストー。</span><span class="hl-13">\\</span><span class="hl-4">u</span><span class="hl-13">\\</span><span class="hl-4">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-4">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-4">&quot;</span><span class="hl-1">);</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">.</span><span class="hl-2">head</span><span class="hl-1">);</span><span class="hl-6">//SSTP/1.4 200 OK</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">.</span><span class="hl-2">Option</span><span class="hl-1">);</span><span class="hl-6">//notranslate</span>
 </code><button>Copy</button></pre>
@@ -25,8 +53,8 @@
 <h4>Alias</h4><p>jsstp.sstp_info_t</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/8941487/src/types/sstp_info_t.d.ts#L112">types/sstp_info_t.d.ts:112</a></li>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/8941487/src/types/sstp_info_t.d.ts#L113">types/sstp_info_t.d.ts:113</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/9d603bf/src/types/sstp_info_t.d.ts#L112">types/sstp_info_t.d.ts:112</a></li>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/9d603bf/src/types/sstp_info_t.d.ts#L140">types/sstp_info_t.d.ts:140</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

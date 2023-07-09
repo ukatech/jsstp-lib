@@ -15,10 +15,18 @@
 <li><a href="../modules.html">jsstp</a></li>
 <li><a href="sstp_info_t.html">sstp_info_t</a></li></ul>
 <h1>Type alias sstp_info_t</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">sstp_<wbr/>info_<wbr/>t</span><span class="tsd-signature-symbol">:</span> <a href="../classes/_internal_.sstp_info_t_class_impl.html" class="tsd-signature-type tsd-kind-class">sstp_info_t_class_impl</a><span class="tsd-signature-symbol"> &amp; </span><a href="_internal_.sstp_info_t_members.html" class="tsd-signature-type tsd-kind-type-alias">sstp_info_t_members</a></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-type-alias">sstp_<wbr/>info_<wbr/>t</span><span class="tsd-signature-symbol">:</span> <a href="../classes/_internal_.sstp_info_t_class_impl.html" class="tsd-signature-type tsd-kind-class">sstp_info_t_class_impl</a><span class="tsd-signature-symbol"> &amp; </span><a href="_internal_.sstp_info_t_members.html" class="tsd-signature-type tsd-kind-type-alias">sstp_info_t_members</a></div>
+<div class="tsd-comment tsd-typography"><p>sstp报文类</p>
+</div>
+<div class="tsd-comment tsd-typography">
+<h4>Example</h4><pre><code class="language-ts"><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">info</span><span class="hl-1"> = </span><span class="hl-2">jsstp</span><span class="hl-1">.</span><span class="hl-2">sstp_info_t</span><span class="hl-1">.</span><span class="hl-5">from_string</span><span class="hl-1">(</span><span class="hl-4">&quot;SSTP/1.4 200 OK</span><span class="hl-13">\r\n</span><span class="hl-4">Charset: UTF-8</span><span class="hl-13">\r\n</span><span class="hl-4">Sender: SSTPクライアント</span><span class="hl-13">\r\n</span><span class="hl-4">Script: </span><span class="hl-13">\\</span><span class="hl-4">h</span><span class="hl-13">\\</span><span class="hl-4">s0テストー。</span><span class="hl-13">\\</span><span class="hl-4">u</span><span class="hl-13">\\</span><span class="hl-4">s[10]テストやな。</span><span class="hl-13">\r\n</span><span class="hl-4">Option: notranslate</span><span class="hl-13">\r\n\r\n</span><span class="hl-4">&quot;</span><span class="hl-1">);</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">.</span><span class="hl-2">head</span><span class="hl-1">);</span><span class="hl-6">//SSTP/1.4 200 OK</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-5">log</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">.</span><span class="hl-2">Option</span><span class="hl-1">);</span><span class="hl-6">//notranslate</span>
+</code><button>Copy</button></pre>
+
+<h4>Alias</h4><p>jsstp.sstp_info_t</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/8941487/src/types/sstp_info_t.d.ts#L112">types/sstp_info_t.d.ts:112</a></li>
-<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/8941487/src/types/sstp_info_t.d.ts#L113">types/sstp_info_t.d.ts:113</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/9d603bf/src/types/sstp_info_t.d.ts#L112">types/sstp_info_t.d.ts:112</a></li>
+<li>Defined in <a href="https://github.com/ukatech/jsstp-lib/blob/9d603bf/src/types/sstp_info_t.d.ts#L140">types/sstp_info_t.d.ts:140</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
