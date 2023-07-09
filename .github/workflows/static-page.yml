@@ -9,6 +9,8 @@ on:
     paths:
       - "dist/**"
       - ".github/pages/**"
+      - "README.md"
+      # 省略掉src目录，因为src目录下的文件会触发build，进而更新dist目录
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,6 +39,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - run: npm install
+      - run: npm run build:doc
       - run: mv dist/* .github/pages
 
       - name: Upload artifact
