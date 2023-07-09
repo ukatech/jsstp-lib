@@ -689,17 +689,16 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
 }
 
 /**
- * ghost事件查询器
+ * ghost事件查询器：类定义实现
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
  * 	console.log("当前ghost不支持事件查询");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
- * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-declare class ghost_events_queryer_t extends ExtensibleFunction<string[],Promise<Boolean>> {
+declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp
@@ -722,17 +721,6 @@ declare class ghost_events_queryer_t extends ExtensibleFunction<string[],Promise
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
 	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
-	/**
-	 * 调用声明
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
-	 * @param {String} event_name
-	 * @param {String|undefined} security_level
-	 * @returns {Promise<Boolean>}
-	 * @example
-	 * let result = await ghost_events_queryer("On_connect");
-	 * @see 基于 {@link ghost_events_queryer_t.check_event}
-	 */
-	/*@__PURE__*///**remove from dist**//(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
 	 * 检查是否能够检查事件
 	 * @returns {Promise<Boolean>}
@@ -762,6 +750,33 @@ declare class ghost_events_queryer_t extends ExtensibleFunction<string[],Promise
 	init(): Promise<ghost_events_queryer_t>;
 	clear(): void;
 }
+type ghost_events_queryer_t_call_signature = {
+	/**
+	 * 调用声明
+	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * @param {String} event_name
+	 * @param {String|undefined} security_level
+	 * @returns {Promise<Boolean>}
+	 * @example
+	 * let result = await ghost_events_queryer("On_connect");
+	 * @see 基于 {@link ghost_events_queryer_t.check_event}
+	 */
+	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
+}
+
+/**
+ * ghost事件查询器
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("当前ghost不支持事件查询");
+ * if(ghost_events_queryer.has_event("OnBoom"))
+ * 	jsstp.OnBoom();
+ * @alias jsstp.ghost_events_queryer_t
+ * @see {@link jsstp_t.new_event_queryer}
+ */
+declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl;
+type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature;
 
 //构建一个包装器与http://localhost:9801/api/sstp/v1通信。
 //发信方法：Content-Type: text/plain HTTP/1.1でPOST
