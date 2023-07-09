@@ -109,7 +109,34 @@ type sstp_info_t_members = {
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare const sstp_info_t: typeof sstp_info_t_class_impl;
+declare const sstp_info_t: typeof sstp_info_t_class_impl & {
+	/**
+	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
+	 * @param {String} info_head 报文头
+	 * @param {Object} info_body 对象格式的报文体
+	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
+	 * @see {@link sstp_info_t.from_string}
+	 * @returns {sstp_info_t}
+	 * @ignore
+	 */
+	/*@__PURE__*/new(info_head: String, info_body: Object, unknown_lines?: String[]): sstp_info_t;
+	/**
+	 * 从字符串构造sstp_info_t
+	 * @param {String} str 字符串报文
+	 * @returns {sstp_info_t} 构造的sstp_info_t
+	 * @example
+	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 */
+	/*@__PURE__*/from_string(str: String): sstp_info_t;
+}
+/**
+ * sstp报文类
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
+ * console.log(info.Option);//notranslate
+ * @alias jsstp.sstp_info_t
+ */
 type sstp_info_t = sstp_info_t_class_impl&sstp_info_t_members;
 
 export default sstp_info_t;

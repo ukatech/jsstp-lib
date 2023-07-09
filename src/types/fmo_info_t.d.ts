@@ -116,7 +116,26 @@ type fmo_info_t_members = {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare const fmo_info_t: typeof fmo_info_t_class_impl;
+declare const fmo_info_t: typeof fmo_info_t_class_impl & {
+	/**
+	 * 自字符串构造fmo_info_t，不建议直接使用
+	 * @param {String} fmo_text
+	 * @returns {void}
+	 * @ignore
+	 */
+	/*@__PURE__*/new(fmo_text: String): fmo_info_t;
+}
+/**
+ * fmo报文类
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
+ * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @alias jsstp.fmo_info_t
+ * @see {@link jsstp_t.get_fmo_infos}
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
 type fmo_info_t = fmo_info_t_class_impl&fmo_info_t_members;
 
 export default fmo_info_t;

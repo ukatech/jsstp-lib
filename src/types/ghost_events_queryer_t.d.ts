@@ -76,7 +76,6 @@ type ghost_events_queryer_t_call_signature = {
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }
-
 /**
  * ghost事件查询器
  * @example
@@ -88,7 +87,25 @@ type ghost_events_queryer_t_call_signature = {
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl;
+declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & {
+	/**
+	 * 构造一个事件查询器
+	 * @param {jsstp_t} base_jsstp
+	 * @returns {void}
+	 */
+	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
+}
+/**
+ * ghost事件查询器
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("当前ghost不支持事件查询");
+ * if(ghost_events_queryer.has_event("OnBoom"))
+ * 	jsstp.OnBoom();
+ * @alias jsstp.ghost_events_queryer_t
+ * @see {@link jsstp_t.new_event_queryer}
+ */
 type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature;
 
 export default ghost_events_queryer_t;
