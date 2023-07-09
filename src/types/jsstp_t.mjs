@@ -28,6 +28,9 @@ import {
 	split,
 	proxy,
 	then,
+	prototype,
+	from_string,
+	RequestHeader,
 	SEND,
 
 	local,
@@ -84,7 +87,7 @@ class jsstp_t /*extends Function*/ {
 	 */
 	/*@__PURE__*/constructor(sender_name, host) {
 		//super();
-		this.RequestHeader = {
+		this[RequestHeader] = {
 			//"Content-Type": "text/plain",//省略Content-Type并不会导致sstp无法正常工作，还能压缩dist体积。
 			"Origin": my_origin
 		};
@@ -154,7 +157,7 @@ class jsstp_t /*extends Function*/ {
 			(resolve, reject) =>
 				fetch(this.#host, {
 					method: "POST",
-					headers: this.RequestHeader,
+					headers: this[RequestHeader],
 					body: /*@__INLINE__*/to_string(info)
 				})[then](response =>
 					response.status != 200 ?
@@ -184,7 +187,7 @@ class jsstp_t /*extends Function*/ {
 	 */
 	costom_send(sstphead, info) {
 		return this[costom_text_send](sstphead, info)[then](
-			result => sstp_info_t.from_string(result)
+			result => sstp_info_t[from_string](result)
 		);
 	}
 	/**
@@ -411,7 +414,7 @@ class jsstp_t /*extends Function*/ {
 }
 //对定义中的所有类型补充到原型
 //纯为了压缩体积（不然每个类型都要写一遍`static`）
-assign(jsstp_t.prototype, {
+assign(jsstp_t[prototype], {
 	type: jsstp_t,
 	base_sstp_info_t: base_sstp_info_t,
 	sstp_info_t: sstp_info_t,

@@ -15,6 +15,8 @@ import {
 	local,
 	external,
 
+	check_event,
+
 	_false_,
 } from "../base/value_table.mjs";
 import {
@@ -87,7 +89,7 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 			 * let result = await ghost_events_queryer("On_connect");
 			 * @see 基于 {@link ghost_events_queryer_t.check_event}
 			 */
-			(event_name, security_level = this[default_security_level])=>this.check_event(event_name, security_level)
+			(event_name, security_level = this[default_security_level])=>this[check_event](event_name, security_level)
 		);
 		this.#base_jsstp = base_jsstp;
 		/**
@@ -106,7 +108,7 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/async check_event(event_name, security_level = this[default_security_level]) {
+	/*@__PURE__*/async [check_event](event_name, security_level = this[default_security_level]) {
 		if (this.#ghost_has_get_supported_events)
 			return this.#ghost_event_list[security_level].includes(event_name);
 		else if (this.#ghost_has_has_event)

@@ -6,6 +6,7 @@ import {
 	
 	substring,
 	length,
+	prototype,
 } from "./value_table.mjs"
 
 import{local,external}from"./base_values.mjs";
@@ -110,7 +111,7 @@ class ExtensibleFunction extends Function {
 	 * @returns {ExtensibleFunction}
 	 */
 	constructor(func) {
-		return the_object.setPrototypeOf(func, new.target.prototype);
+		return the_object.setPrototypeOf(func, new.target[prototype]);
 	}
 }
 

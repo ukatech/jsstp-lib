@@ -7,6 +7,7 @@ import {
 	length,
 	forEach,
 	trivial_clone,
+	flat_map,
 } from "../base/value_table.mjs";
 import {
 } from "../base/tools.mjs";
@@ -50,12 +51,12 @@ class info_object {
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/flat_map(func) {
+	/*@__PURE__*/[flat_map](func) {
 		let result = [];
 		this[entries].map(([key, value]) => 
 			result.push(...(
 				value instanceof info_object?
-				value.flat_map(func.bind(func, key)):
+				value[flat_map](func.bind(func, key)):
 				[func(key, value)]//构建数组，因为外部有展开操作
 			))
 		);

@@ -41,9 +41,14 @@ var sendername = "sendername";
 var proxy = "proxy";
 var constructor = "constructor";
 var then = "then";
+var prototype = "prototype";
 var SEND = "SEND";
 var get_fmo_infos = "get_fmo_infos";
 var get_passthrough = "get_passthrough";
+var flat_map = "flat_map";
+var RequestHeader = "RequestHeader";
+var check_event = "check_event";
+var from_string = "from_string";
 
 import{local,external}from"./base_values.mjs";
 
@@ -99,8 +104,13 @@ export {
 	sendername,
 	entries,
 	proxy,
+	prototype,
 	then,
 	SEND,
+	flat_map,
+	from_string,
+	RequestHeader,
+	check_event,
 
 	local,
 	external,

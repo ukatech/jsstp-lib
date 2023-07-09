@@ -9,6 +9,7 @@ import {
 	split,
 	available,
 	trivial_clone,
+	flat_map,
 } from "../base/value_table.mjs";
 import {
 	key_value_split,
@@ -85,7 +86,7 @@ class fmo_info_t extends base_sstp_info_t {
 		return [
 			this.head,
 			void_string,
-			...this.flat_map((uuid, key, value) => uuid + "." + key + String.fromCharCode(1) + value),
+			...this[flat_map]((uuid, key, value) => uuid + "." + key + String.fromCharCode(1) + value),
 			void_string,void_string
 		].join(endline);
 	}

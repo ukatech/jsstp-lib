@@ -96,7 +96,7 @@ function jsstp_minify(code_path,is_module){
 		code+="exports.__esModule=true;\n"
 	}
 	terser_minify(code,is_module).then(code=>{
-		uglifyjs_minify(code,is_module).then(code=>{
+		uglifyjs_minify(code,is_module).then(async code=>{
 			if(is_module){
 				{
 					let exports_str="";
@@ -108,7 +108,9 @@ function jsstp_minify(code_path,is_module){
 					}
 					if(exports_str){
 						var assign=name_caches.vars.props["$assign"];
+						code=code.replace(/,$/,";");
 						code+=assign+"(exports,{"+exports_str.replace(/,$/,"});");
+						code=await uglifyjs_minify(code,is_module);
 					}
 				}
 				code=code.replace(/;$/g,`\n`);

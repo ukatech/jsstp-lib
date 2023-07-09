@@ -1,4 +1,5 @@
 import {
+	the_object,
 	the_proxy,
 
 	//assign,
@@ -9,6 +10,8 @@ import {
 
 	length,
 	split,
+	prototype,
+	from_string,
 } from "../base/value_table.mjs";
 import {
 	key_value_split,
@@ -50,7 +53,10 @@ class sstp_info_t extends base_sstp_info_t {
 		super(info_head, info_body, unknown_lines);
 		return new the_proxy(this, {
 			get: new_get_handler({
-				_string_key_handler_: (target, key) => x_sstp_passthru_head + key in target ? target[get_passthrough](key) : undefined
+				_string_key_handler_: (target, key) => 
+					x_sstp_passthru_head + key in target && !the_object.getOwnPropertyNames(sstp_info_t[prototype]).includes(key)?
+						target[get_passthrough](key) :
+					undefined
 			})
 		});
 	}
@@ -61,7 +67,7 @@ class sstp_info_t extends base_sstp_info_t {
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
-	/*@__PURE__*/static from_string(str) {
+	/*@__PURE__*/static [from_string](str) {
 		let [head, ...lines] = str[split](endline);
 		let body = {};
 		let unknown_lines = [];
