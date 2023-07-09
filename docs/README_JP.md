@@ -20,8 +20,8 @@ var jsstp=await import("jsstp").then(m=>m.jsstp).
 ```
 
 v2.0.2.0以降のバージョンでは、`var jsstp=await import("jsstp").then(m=>m.jsstp)` を使用するとスレッドがデッドループに入り、ユーザーがページを離れるかプロセスを閉じるまで多くのCPUを消費します。  
-この原因は、v2.0.2.0以降では、jsstpは`Promise`と同じように待つことができ、解析された結果はそれ自身になるため、`await jsstp`がデッドループに陥るからである。  
-試しに `var {jsstp}=await import("jsstp");`！
+この原因は、v2.0.2.0以降では、jsstpは`Promise`と同じように待つことができ、解析された結果はそれ自身になるため、`await jsstp`がデッドループに陥るからです。  
+代わりに `var {jsstp}=await import("jsstp");` をお試しください！
 
 #### npm
 
@@ -86,7 +86,7 @@ var jsstp;
 
 jsstpに専用のドキュメントページができました！  
 より専門的な情報については<https://ukatech.github.io/jsstp-lib/doc>をご覧ください。  
-ドキュメントを見ながら、[jsstp playground](https://playcode.io/1518761)でjsstpの様々な機能を試すことができる。  
+ドキュメントを見ながら、[jsstp playground](https://playcode.io/1518761)でjsstpの様々な機能を試すことができます。  
 
 ____
 
