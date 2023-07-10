@@ -3,6 +3,7 @@
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 import {
 	the_proxy,
+	the_object,
 
 	assign,
 	//endline,
@@ -116,7 +117,7 @@ class jsstp_t /*extends Function*/ {
 		return this[proxy] = new the_proxy(this, {
 			get: new_get_handler({
 				_string_key_handler_: (target, key) =>
-					(key in target[sstp_version_table]) ?
+					(the_object(target[sstp_version_table][key]) instanceof Number) ?
 						target[get_caller_of_method](key) :
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :

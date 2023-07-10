@@ -102,14 +102,9 @@ type sstp_info_t_members = {
 	[key: string]: String | undefined;
 };
 /**
- * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
+ * sstp报文类：构造器接口声明
  */
-declare const sstp_info_t: typeof sstp_info_t_class_impl & {
+type sstp_info_t_constructor = {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
@@ -128,7 +123,7 @@ declare const sstp_info_t: typeof sstp_info_t_class_impl & {
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
 	/*@__PURE__*/from_string(str: String): sstp_info_t;
-}
+};
 /**
  * sstp报文类
  * @example
@@ -137,6 +132,17 @@ declare const sstp_info_t: typeof sstp_info_t_class_impl & {
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-type sstp_info_t = sstp_info_t_class_impl&sstp_info_t_members;
+declare const sstp_info_t: typeof sstp_info_t_class_impl & sstp_info_t_constructor;
+/**
+ * sstp报文类
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
+ * console.log(info.Option);//notranslate
+ * @alias jsstp.sstp_info_t
+ */
+type sstp_info_t = sstp_info_t_class_impl & sstp_info_t_members & {
+	constructor: typeof sstp_info_t;
+}
 
 export default sstp_info_t;
