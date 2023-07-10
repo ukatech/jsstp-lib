@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Language Redirect</title>
+</head>
+<body>
+	<script>
+		var language = navigator.language || navigator.userLanguage;
+		switch (language) {
+			case 'zh':
+			case 'zh-CN':
+			case 'zh-TW':
+			case 'zh-HK':
+				window.location.href = './CN/index.html';
+				break;
+			case 'ja':
+				window.location.href = './JP/index.html';
+				break;
+			default:
+				window.location.href = './EN/index.html';
+				break;
+		}
+	</script>
+</body>
+</html>

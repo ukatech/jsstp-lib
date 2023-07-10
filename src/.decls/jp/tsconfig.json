@@ -1,0 +1,13 @@
+//jsstp is not a ts proj and this file is only used to run typedoc.
+{
+	"include": ["**/*"],
+	"exclude": ["**/*.s.ts"],
+	"compilerOptions": {
+		"target": "ESNext"
+	},
+	"typedocOptions": {
+		"entryPoints": ["jsstp.d.ts"],
+		"out": "../../../.github/pages/doc/JP",
+		"readme": "../../../docs/README_JP.md",
+	}
+}

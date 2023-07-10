@@ -8,6 +8,7 @@ on:
     # and only run when the following files are changed
     paths:
       - "dist/**"
+      - "docs/**"
       - ".github/pages/**"
       - "README.md"
       # 省略掉src目录，因为src目录下的文件会触发build，进而更新dist目录
