@@ -3,7 +3,7 @@
 	"version": "2.3.1",
 	"description": "Use js to communicate with ukagaka to exchange information.",
 	"main": "dist/jsstp.mjs",
-	"types": "dist/jsstp.d.ts",
+	"types": "dist/cn/jsstp.d.ts",
 	"directories": {
 		"doc": "docs"
 	},
@@ -11,12 +11,42 @@
 		".": {
 			"require": "./dist/jsstp.cjs",
 			"import": "./dist/jsstp.mjs",
-			"types": "./dist/jsstp.d.ts"
+			"types": "./dist/cn/jsstp.d.ts"
 		},
 		"./dev": {
 			"require": null,
 			"import": "./src/jsstp.mjs",
-			"types": "./src/jsstp.d.ts"
+			"types": "./src/cn/jsstp.d.ts"
+		},
+		"./cn": {
+			"require": "./dist/jsstp.cjs",
+			"import": "./dist/jsstp.mjs",
+			"types": "./dist/cn/jsstp.d.ts"
+		},
+		"./cn/dev": {
+			"require": null,
+			"import": "./src/jsstp.mjs",
+			"types": "./src/cn/jsstp.d.ts"
+		},
+		"./jp": {
+			"require": "./dist/jsstp.cjs",
+			"import": "./dist/jsstp.mjs",
+			"types": "./dist/jp/jsstp.d.ts"
+		},
+		"./jp/dev": {
+			"require": null,
+			"import": "./src/jsstp.mjs",
+			"types": "./src/jp/jsstp.d.ts"
+		},
+		"./en": {
+			"require": "./dist/jsstp.cjs",
+			"import": "./dist/jsstp.mjs",
+			"types": "./dist/en/jsstp.d.ts"
+		},
+		"./en/dev": {
+			"require": null,
+			"import": "./src/jsstp.mjs",
+			"types": "./src/en/jsstp.d.ts"
 		}
 	},
 	"scripts": {
