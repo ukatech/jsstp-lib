@@ -70,6 +70,14 @@ var is_not_nan = /*@__PURE__*/(num) => num == num;
  */
 /*@__INLINE__*/var to_string = /*@__PURE__*/(data) => void_string + data;
 /**
+ * 判断给定值是否为X类型
+ * @param {*} value 要判断的值
+ * @param {Function} X X类型
+ * @returns {Boolean} 是否为X类型
+ * @ignore
+ */
+var type_judge = /*@__PURE__*/(value, X) => the_object(value) instanceof X;
+/**
  * 对代理的get方法进行封装，使其定义更为简单
  * @param {{
  * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,
@@ -91,7 +99,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
 		if (info._blocker_ && info._blocker_(target, key))
 			return;
 		let result;
-		if (the_object(key) instanceof String)//string
+		if (type_judge(key, String))//string
 			result = info._string_key_handler_ && info._string_key_handler_(target, key);
 		else//symbol
 			result = info._symbol_key_handler_ && info._symbol_key_handler_(target, key);
@@ -99,7 +107,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
 			return result;
 		else if (info._default_handler_)
 			return info._default_handler_(target, key)
-		return (result = target[key]) instanceof Function ? result.bind(target) : result;
+		return type_judge(result = target[key], Function) ? result.bind(target) : result;
 	}
 /**
  * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
@@ -162,5 +170,6 @@ export {
 	my_default_security_level,
 
 	to_string,
+	type_judge,
 	ExtensibleFunction
 };

@@ -44,6 +44,7 @@ import {
 	get_reorganized_event_name,
 	new_get_handler,
 	to_string,
+	type_judge,
 
 	my_origin,
 	get_local_address,
@@ -117,7 +118,7 @@ class jsstp_t /*extends Function*/ {
 		return this[proxy] = new the_proxy(this, {
 			get: new_get_handler({
 				_string_key_handler_: (target, key) =>
-					(the_object(target[sstp_version_table][key]) instanceof Number) ?
+					type_judge(target[sstp_version_table][key], Number) ?
 						target[get_caller_of_method](key) :
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :

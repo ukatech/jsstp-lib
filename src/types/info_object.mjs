@@ -10,6 +10,7 @@ import {
 	flat_map,
 } from "../base/value_table.mjs";
 import {
+	type_judge,
 } from "../base/tools.mjs";
 /**
  * 拓展object，提供一些简单且遍历的操作
@@ -55,7 +56,7 @@ class info_object {
 		let result = [];
 		this[entries].map(([key, value]) => 
 			result.push(...(
-				value instanceof info_object?
+				type_judge(value, info_object)?
 				value[flat_map](func.bind(func, key)):
 				[func(key, value)]//构建数组，因为外部有展开操作
 			))
