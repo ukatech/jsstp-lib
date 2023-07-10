@@ -3,7 +3,6 @@
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 import {
 	the_proxy,
-	the_object,
 
 	assign,
 	//endline,
@@ -75,7 +74,7 @@ import{SEND as default_sstp_method}from"../base/value_table.mjs"
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-class jsstp_t /*extends Function*/ {
+class jsstp_t {
 	/**
 	 * 对象与服务器交互时的发送者名称
 	 * @type {String}
@@ -123,13 +122,7 @@ class jsstp_t /*extends Function*/ {
 					(is_event_name(key)) ?
 						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
 					undefined
-			}),
-			/*
-			//for useage like `new jsstp()`?
-			apply: (target, thisArg, args) => {
-				if(new.target) return new target.constructor(...args);
-			}
-			*/
+			})
 		});
 	}
 	/**
@@ -153,21 +146,16 @@ class jsstp_t /*extends Function*/ {
 	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
 	 * @group Basic Send Methods
 	 */
-	row_send(info) {
+	async row_send(info) {
 		//使用fetch发送数据
-		return new Promise(
-			(resolve, reject) =>
-				fetch(this.#host, {
-					method: "POST",
-					headers: this[RequestHeader],
-					body: /*@__INLINE__*/to_string(info)
-				})[then](response =>
-					response.status != 200 ?
-						reject(response.status) :
-						response.text()[then](resolve),
-					/*catch*/reject
-				)
-		);
+		let response=await fetch(this.#host, {
+			method: "POST",
+			headers: this[RequestHeader],
+			body: /*@__INLINE__*/to_string(info)
+		});
+		if(response.status != 200)
+			throw response.status;
+		return response.text();
 	}
 	/**
 	 * 发送报文，但是不对返回结果进行处理
