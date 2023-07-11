@@ -9,9 +9,9 @@ import type ghost_events_queryer_t from "./types/ghost_events_queryer_t.d.ts";
 
 import type jsstp_t from "./types/jsstp_t.d.ts";
 
-//定义一个包装器
+//Define a wrapper
 /**
- * sstp包装器
+ * sstp wrapper
  * @example
  * jsstp.SEND({
  *   Event: "OnTest",
