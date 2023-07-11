@@ -1,21 +1,21 @@
 /**
- * 拓展object，提供一些简单且遍历的操作
+ * Extend object to provide some simple and iterative operations.
  */
 declare class info_object {
 	/**
-	 * @description 获取所有key的数组
+	 * @description Get an array of all keys
 	 */
 	/*@__PURE__*/get keys(): PropertyKey[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description Get an array of all values
 	 */
 	/*@__PURE__*/get values(): any[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description Get an array of all key-value pairs.
 	 */
 	/*@__PURE__*/get entries(): [PropertyKey, any][];
 	/**
-	 * @description 获取成员数量
+	 * @description Get the number of members
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
@@ -24,23 +24,23 @@ declare class info_object {
 	 */
 	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
 	/**
-	 * @description 复制一个新的对象
-	 * @returns {info_object} 复制的对象
+	 * @description Copy a new object
+	 * @returns {info_object} Copied object
 	 */
 	/*@__PURE__*/get trivial_clone(): info_object;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
+	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...PropertyKey[],any]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description Traverses itself and returns a one-dimensional array of traversal results.
+	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
 	 */
 	/*@__PURE__*/map<T>(func: (value: any, key?: PropertyKey) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[PropertyKey,any]]} array 要追加的数组
+	 * @description Append elements to itself as an array.
+	 * @param {[undefined|[PropertyKey,any]]} array Array to append to.s
 	 */
 	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
 }
@@ -55,7 +55,7 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * 基础sstp报文类
+ * Base sstp message class
  * @example
  * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
@@ -64,45 +64,45 @@ Option: notranslate
  */
 declare class base_sstp_info_t extends info_object {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
+	 * Constructing sstp_info_t from split string or object messages, is not recommended.
+	 * @param {String} info_head The header of the message.
+	 * @param {Object} info_body The body of the message in object format.
+	 * @param {Array<String>|undefined} unknown_lines Array of unknown lines.
 	 * @see {@link sstp_info_t.from_string}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
-	 * 获取未知行的数组
-	 * @returns {Array<String>} 未知行的数组
+	 * Get array of unknown rows
+	 * @returns {Array<String>} array of unknown rows
 	 */
 	/*@__PURE__*/get unknown_lines(): Array<String>;
 	/**
-	 * 获取报文头
-	 * @returns {String} 报文头
+	 * Get the header of the message
+	 * @returns {String} message header
 	 */
 	/*@__PURE__*/get head(): String;
 	//注入toString方法便于使用
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * Getting a String Message
+	 * @returns {String} String message.
 	 * @ignore
 	 */
 	/*@__PURE__*/toString(): String;
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * Getting a String Message
+	 * @returns {String} String message.
 	 */
 	/*@__PURE__*/to_string(): String;
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * Get the object to use for `JSON.stringify`.
+	 * @returns {Object} The object to use for `JSON.stringify`.
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
 	/**
-	 * 获取报头返回码（若出现意外返回`NaN`）
-	 * @returns {Number} 报头返回码（若出现意外则为`NaN`）
+	 * Get header return code (`NaN` if unexpected)
+	 * @returns {Number} header return code (`NaN` if unexpected)
 	 */
 	/*@__PURE__*/get status_code(): Number;
 	/**
@@ -209,7 +209,7 @@ declare class sstp_info_t extends base_sstp_info_t {
 }
 
 /**
- * fmo报文类
+ * fmo message class
  * @example
  * let fmo = jsstp.get_fmo_infos();
  * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
@@ -221,49 +221,49 @@ declare class sstp_info_t extends base_sstp_info_t {
  */
 declare class fmo_info_t extends base_sstp_info_t {
 	/**
-	 * 自字符串构造fmo_info_t，不建议直接使用
+	 * Construct fmo_info_t from a string, not recommended for direct use
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
-	 * @param {String} name 要检查的属性名
-	 * @param {String} value 期望的属性值
-	 * @returns {String|undefined} 对应的uuid（如果有的话）
-	 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
+	 * @param {String} name The name of the property to be checked.
+	 * @param {String} value The value of the property to be checked.
+	 * @returns {String|undefined} corresponding uuid (if any)
+	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
 	 * @example 
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
-	 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
+	 * @description Equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description 获取所有指定属性的值
+	 * @description Gets the values of all the specified properties
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
-	 * @description 等价于`this.uuids.map(uuid => this[uuid][name])`
+	 * @description Equivalent to `this.uuids.map(uuid => this[uuid][name])`
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description 获取所有uuid
+	 * @description Get all uuids
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description 判断fmo是否有效
+	 * @description Determining whether fmo is valid
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	//注入toString方法便于使用
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * Getting a String Message
+	 * @returns {String} String message.
 	 * @ignore
 	 */
 	/*@__PURE__*/toString(): String;
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * Get the object to use for `JSON.stringify`.
+	 * @returns {Object} The object to use for `JSON.stringify`.
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
@@ -271,40 +271,40 @@ declare class fmo_info_t extends base_sstp_info_t {
 	//base_sstp_info_t的成员
 
 	/**
-	 * @description 获取所有key的数组
+	 * @description Get an array of all keys
 	 */
 	/*@__PURE__*/get keys(): string[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description Get an array of all values
 	 */
 	/*@__PURE__*/get values(): base_sstp_info_t[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description Get an array of all key-value pairs.
 	 */
 	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description Execute a function for each key-value pair.
+	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
 	 */
 	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
+	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description Traverses itself and returns a one-dimensional array of traversal results.
+	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
 	 */
 	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
+	 * @description Append an array to itself.
+	 * @param {[undefined|[String,any]]} array The array to append.
 	 */
 	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
 
 	/**
-	 * fmo成员
+	 * fmo members
 	 * @type {base_sstp_info_t|undefined}
 	 */
 	[uuid: string]: base_sstp_info_t|undefined;
@@ -656,88 +656,88 @@ declare class jsstp_t{
 }
 
 /**
- * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
+ * An extensible function type that can be initialised with a function for the more readable derived class function type
  */
 declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
 	/**
-	 * 自函数实例初始化
+	 * Initialising from a function instance
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */
 	constructor(func: (...args: args_T) => return_T);
 	/**
-	 * 调用函数，用指定的对象代替函数的this值，用指定的数组代替函数的参数。
-	 * @param thisArg 将被用作this对象的对象。
-	 * @param argArray 一组要传递给函数的参数。
+	 * Calls a function and replaces the function's this value with the specified object and the function's arguments with the specified array.
+	 * @param thisArg The object that will be used as the this object.
+	 * @param argArray A set of arguments to be passed to the function.
 	 */
 	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
 
 	/**
-	 * 调用一个对象的方法，用另一个对象代替当前对象。
-	 * @param thisArg 将被用作当前对象的对象。
-	 * @param argArray 要传递给方法的参数列表。
+	 * Calls a method on an object that replaces the current object with another object.
+	 * @param thisArg The object that will be used as the current object.
+	 * @param argArray The list of arguments to be passed to the method.
 	 */
 	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
 
 	/**
-	 * 对于一个给定的函数，创建一个绑定的函数，其主体与原函数相同。
-	 * 绑定函数的this对象与指定的对象相关联，并具有指定的初始参数。
-	 * @param thisArg 一个对象，this关键字可以在新函数中引用。
-	 * @param argArray 一个要传递给新函数的参数列表。
+	 * For a given function, creates a bound function with the same body as the original function.
+	 * The this object of the bound function is associated with the specified object and has the specified initial argument.
+	 * @param thisArg An object that the this keyword can refer to in the new function.
+	 * @param argArray A list of arguments to be passed to the new function.
 	 */
 	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
 }
 
 /**
- * ghost事件查询器：类定义实现
+ * ghost event finder: class definition implementation
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("Currently ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
-	 * 构造一个事件查询器
+	 * Constructing an Event Querier
 	 * @param {jsstp_t} base_jsstp
 	 * @returns {void}
 	 */
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
-	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
 	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
 	default_security_level: String;
 	/**
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * To check for the existence of events, ghost requires at least `Has_Event` event support and can be made more efficient by providing `Get_Supported_Events` events
 	 * @param {String} event_name
 	 * @param {String|undefined} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
-	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
+	 * @see base on {@link jsstp_t.has_event} and {@link jsstp_t.get_supported_events}
 	 */
 	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
-	 * 检查是否能够检查事件
+	 * Check if the event can be checked
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * if(!ghost_events_queryer.available)
-	 * 	console.error("无法检查事件");
+	 * 	console.error("Unable to check events");
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
-	 * 检查是否能够使用`Get_Supported_Events`快速获取支持的事件列表
+	 * Check if you can use `Get_Supported_Events` to quickly get a list of supported events
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * if(!ghost_events_queryer.fast_query_available)
-	 * 	console.info("无法快速获取支持的事件列表");
+	 * 	console.info("Unable to quickly fetch list of supported events");
 	 * else
-	 * 	console.info("好哦");
-	 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
+	 * 	console.info("Hell yeah");
+	 * @description If it's not supported it will just be slower, `check_event` will still work
 	 */
 	/*@__PURE__*/get fast_query_available(): Boolean;
 	/**
@@ -751,38 +751,38 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	clear(): void;
 }
 /**
- * ghost事件查询器：调用签名
+ * ghost event finder: call signatures
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
-	 * 调用声明
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * Call declarations
+	 * Check for the existence of events, ghost requires at least `Has_Event` event support and can be made more efficient by providing `Get_Supported_Events` events
 	 * @param {String} event_name
 	 * @param {String|undefined} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see 基于 {@link ghost_events_queryer_t.check_event}
+	 * @see based on {@link ghost_events_queryer_t.check_event}
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }
 /**
- * ghost事件查询器：构造器接口声明
+ * ghost event finder: constructor interface declaration
  */
 type ghost_events_queryer_t_constructor = {
 	/**
-	 * 构造一个事件查询器
+	 * Constructing an Event Querier
 	 * @param {jsstp_t} base_jsstp
 	 * @returns {void}
 	 */
 	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 }
 /**
- * ghost事件查询器
+ * ghost event finder
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("Currently ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -790,11 +790,11 @@ type ghost_events_queryer_t_constructor = {
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
- * ghost事件查询器
+ * ghost event finder
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("Currently ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -810,9 +810,9 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
 
 
 
-//定义一个包装器
+//Define a wrapper
 /**
- * sstp包装器
+ * sstp wrapper
  * @example
  * jsstp.SEND({
  *   Event: "OnTest",
