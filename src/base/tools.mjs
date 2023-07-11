@@ -96,13 +96,13 @@ var new_get_handler = /*@__PURE__*/(info) =>
 
 		the_function和the_string的相关定义会作为dead code被优化掉
 		*/
-		if (info._blocker_ && info._blocker_(target, key))
+		if (info._blocker_?.(target, key))
 			return;
 		let result;
 		if (type_judge(key, String))//string
-			result = info._string_key_handler_ && info._string_key_handler_(target, key);
+			result = info._string_key_handler_?.(target, key);
 		else//symbol
-			result = info._symbol_key_handler_ && info._symbol_key_handler_(target, key);
+			result = info._symbol_key_handler_?.(target, key);
 		if (result !== undefined)
 			return result;
 		else if (info._default_handler_)
