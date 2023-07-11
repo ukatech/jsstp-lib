@@ -55,7 +55,7 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * 基础sstp报文类
+ * ベースsstpメッセージクラス
  * @example
  * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
@@ -64,49 +64,49 @@ Option: notranslate
  */
 declare class base_sstp_info_t extends info_object {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
+	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
+	 * @param {String} info_head メッセージのヘッダー。
+	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
+	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
 	 * @see {@link sstp_info_t.from_string}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
-	 * 获取未知行的数组
-	 * @returns {Array<String>} 未知行的数组
+	 * 未知の行の配列を取得する
+	 * @returns {Array<String>} 未知の行の配列
 	 */
 	/*@__PURE__*/get unknown_lines(): Array<String>;
 	/**
-	 * 获取报文头
-	 * @returns {String} 报文头
+	 * メッセージのヘッダを取得する
+	 * @returns {String}メッセージヘッダ
 	 */
 	/*@__PURE__*/get head(): String;
 	//注入toString方法便于使用
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ。
 	 * @ignore
 	 */
 	/*@__PURE__*/toString(): String;
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ。
 	 */
 	/*@__PURE__*/to_string(): String;
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * JSON.stringify` で使用するオブジェクトを取得する。
+	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
 	/**
-	 * 获取报头返回码（若出现意外返回`NaN`）
-	 * @returns {Number} 报头返回码（若出现意外则为`NaN`）
+	 * ヘッダーのリターンコード (予期しない場合は `NaN`) を取得します。
+	 * @returns {Number} ヘッダのリターンコード (予期しない場合は `NaN`)
 	 */
 	/*@__PURE__*/get status_code(): Number;
 	/**
-	 * 其他报文成员
+	 * その他のメッセージメンバー
 	 * @type {any|undefined}
 	 */
 	[key: string]: any|undefined;
@@ -656,34 +656,34 @@ declare class jsstp_t{
 }
 
 /**
- * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
+ * より読みやすい派生クラスの関数型で初期化できる拡張可能な関数型。
  */
 declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
 	/**
-	 * 自函数实例初始化
+	 * 自己関数のインスタンス初期化
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */
 	constructor(func: (...args: args_T) => return_T);
 	/**
-	 * 调用函数，用指定的对象代替函数的this值，用指定的数组代替函数的参数。
-	 * @param thisArg 将被用作this对象的对象。
-	 * @param argArray 一组要传递给函数的参数。
+	 * 関数を呼び出し、関数の this 値を指定されたオブジェクトに、関数の引数を指定された配列に置き換えます。
+	 * @param thisArg thisオブジェクトとして使用されるオブジェクト。
+	 * @param argArray 関数に渡される引数のセット。
 	 */
 	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
 
 	/**
-	 * 调用一个对象的方法，用另一个对象代替当前对象。
-	 * @param thisArg 将被用作当前对象的对象。
-	 * @param argArray 要传递给方法的参数列表。
+	 * 現在のオブジェクトを別のオブジェクトに置き換えるオブジェクトのメソッドを呼び出します。
+	 * @param thisArg 現在のオブジェクトとして使用されるオブジェクト。
+	 * @param argArray メソッドに渡される引数のリスト。
 	 */
 	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
 
 	/**
-	 * 对于一个给定的函数，创建一个绑定的函数，其主体与原函数相同。
-	 * 绑定函数的this对象与指定的对象相关联，并具有指定的初始参数。
-	 * @param thisArg 一个对象，this关键字可以在新函数中引用。
-	 * @param argArray 一个要传递给新函数的参数列表。
+	 * 与えられた関数に対して、元の関数と同じボディを持つ束縛関数を作成します。
+	 * バインドされた関数の this オブジェクトは、指定されたオブジェクトに関連付けられ、指定された初期引数を持ちます。
+	 * @param thisArg 新しい関数内で this キーワードが参照できるオブジェクト。
+	 * @param argArray 新しい関数に渡される引数のリスト。
 	 */
 	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
 }
@@ -812,7 +812,7 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
 
 //定义一个包装器
 /**
- * sstp包装器
+ * sstpラッパー
  * @example
  * jsstp.SEND({
  *   Event: "OnTest",
