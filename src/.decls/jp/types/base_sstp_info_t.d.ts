@@ -10,7 +10,7 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * 基础sstp报文类
+ * ベースsstpメッセージクラス
  * @example
  * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
@@ -19,49 +19,49 @@ Option: notranslate
  */
 declare class base_sstp_info_t extends info_object {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
+	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
+	 * @param {String} info_head メッセージのヘッダー。
+	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
+	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
 	 * @see {@link sstp_info_t.from_string}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
-	 * 获取未知行的数组
-	 * @returns {Array<String>} 未知行的数组
+	 * 未知の行の配列を取得する
+	 * @returns {Array<String>} 未知の行の配列
 	 */
 	/*@__PURE__*/get unknown_lines(): Array<String>;
 	/**
-	 * 获取报文头
-	 * @returns {String} 报文头
+	 * メッセージのヘッダを取得する
+	 * @returns {String}メッセージヘッダ
 	 */
 	/*@__PURE__*/get head(): String;
 	//注入toString方法便于使用
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ。
 	 * @ignore
 	 */
 	/*@__PURE__*/toString(): String;
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ。
 	 */
 	/*@__PURE__*/to_string(): String;
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * JSON.stringify` で使用するオブジェクトを取得する。
+	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
 	/**
-	 * 获取报头返回码（若出现意外返回`NaN`）
-	 * @returns {Number} 报头返回码（若出现意外则为`NaN`）
+	 * ヘッダーのリターンコード (予期しない場合は `NaN`) を取得します。
+	 * @returns {Number} ヘッダのリターンコード (予期しない場合は `NaN`)
 	 */
 	/*@__PURE__*/get status_code(): Number;
 	/**
-	 * 其他报文成员
+	 * その他のメッセージメンバー
 	 * @type {any|undefined}
 	 */
 	[key: string]: any|undefined;

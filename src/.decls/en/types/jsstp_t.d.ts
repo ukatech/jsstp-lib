@@ -4,7 +4,7 @@ import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
 /**
- * sstp方法调用器
+ * sstp method caller
  */
 interface method_caller{
 	(info: Object): Promise<sstp_info_t>,
@@ -12,17 +12,17 @@ interface method_caller{
 }
 
 /**
- * 事件调用器
+ * event caller
  */
 interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
 }
 /**
- * 简易事件调用器
- * 直接调用以触发事件！
+ * Simple event caller
+ * Called directly to trigger an event!
  * @example
  * let data=await jsstp.OnTest(123,"abc");
- * //等价于
+ * //equivalent to
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -34,8 +34,8 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 通用事件调用器
- * 调用时传入一个对象以触发事件！
+ * Generic Event Caller
+ * Called by passing in an object to trigger an event!
  * @example
  * let caller=jsstp.get_caller_of_event("OnTest");
  * //...
@@ -43,7 +43,7 @@ interface simple_event_caller extends base_event_caller {
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
- * //等价于
+ * //equivalent to
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -57,7 +57,7 @@ interface common_event_caller extends base_event_caller{
 
 //定义一个包装器
 /**
- * jsstp对象
+ * jsstp object
  * @see {@link jsstp}
  * @alias jsstp.type
  * @example
@@ -107,7 +107,7 @@ declare class jsstp_t{
 	GIVE: method_caller;
 
 	/**
-	 * 匹配事件名称以产生简易调用器
+	 * Match event names to generate simple callers
 	 * @group jsstp_event_members
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
@@ -115,111 +115,111 @@ declare class jsstp_t{
 	[key: `On${string}`]: simple_event_caller;
 
 	/**
-	 * 在fecth时使用的header
+	 * The header used in fecth.
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
-	 * 默认的报文内容
+	 * Default Message Content
 	 */
 	default_info: {
 		[key: string]: string,
 	};
 
 	/**
-	 * SSTP协议版本号列表
+	 * SSTP protocol version number list
 	 */
 	sstp_version_table: {
 		[method: string]: Number
 	};
 	/**
-	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
 	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
 	default_security_level: String;
 
 	/**
-	 * 自身代理
+	 * Self Proxy
 	 */
 	proxy: jsstp_t;
 
 	/**
-	 * 基础jsstp对象
-	 * @param {String} sender_name 对象与服务器交互时的发送者名称
-	 * @param {String} host 目标服务器地址
+	 * Basic jsstp object
+	 * @param {String} sender_name The name of the sender when the object interacts with the server
+	 * @param {String} host Target server address
 	 * @returns {jsstp_t}
 	 */
 	/*@__PURE__*/constructor(sender_name?: String, host?: String);
 	/**
-	 * 修改host
+	 * Modify host
 	 * @param {string} host
 	 * @group Properties
 	 */
 	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
-	 * 修改sendername
+	 * Modify sendername
 	 * @param {String} sender_name
 	 * @group Properties
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
 	/**
-	 * 以文本发送报文并以文本接收返信
-	 * @param {any} info 报文体（文本）
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * Sends a message in text and receives it back in text
+	 * @param {any} info Message body (text)
+	 * @returns {Promise<String|undefined>} Returns a promise.  
+	 * If everything is fine the content is the value returned after sending, otherwise it is `undefined`.
 	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String | undefined>;
 	/**
-	 * 发送报文，但是不对返回结果进行处理
-	 * @param {String} sstphead 报文头
-	 * @param {Object} info 报文体
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * Sends the message, but does not process the returned results
+	 * @param {String} sstphead The header of the message.
+	 * @param {Object} info The body of the message.
+	 * @returns {Promise<String|undefined>} Returns a promise.  
+	 * If everything is OK it will be the value returned after sending, otherwise it will be `undefined`.
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String | undefined>;
 	/**
-	 * 发送报文
-	 * @param {String} sstphead 报文头
-	 * @param {Object} info 报文体
-	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 * Send message
+	 * @param {String} sstphead Message header
+	 * @param {Object} info The body of the message.
+	 * @returns {Promise<sstp_info_t>} returns a promise
 	 * @group Basic Send Methods
 	 */
 	costom_send(sstphead: String, info: Object): Promise<sstp_info_t>;
 	
 	/**
-	 * 获取指定方法的调用器
-	 * @param {String} method_name 方法名称
+	 * Get the caller of the specified method
+	 * @param {String} method_name method_name
 	 * @returns {{
 	 * 	(info: Object): Promise<sstp_info_t>,
 	 * 	get_raw(info: Object): Promise<String>
-	 * }} 调用器
+	 * }} caller
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
 	/**
-	 * 获取指定事件的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * Get the caller of the specified event
+	 * @param {String} event_name event_name
+	 * @param {String|undefined} method_name method_name
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} caller
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
 	/**
-	 * 用于获取指定事件的简单调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * Simple caller for getting the specified event
+	 * @param {String} event_name event_name
+	 * @param {String|undefined} method_name method_name
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} caller
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
 	/**
-	 * 用于获取指定事件的简单调用器的代理
+	 * Proxy for a simple caller to get a specified event
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.event.OnTest("test");
@@ -229,15 +229,15 @@ declare class jsstp_t{
 		[event_name: string]: simple_event_caller
 	}
 	/**
-	 * 判断是否存在某个事件
-	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
-	 * @param {String} event_name 事件名
-	 * @param {String} security_level 安全等级
-	 * @returns {Promise<Boolean>} 是否存在
+	 * Determine if an event exists
+	 * Use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query if it is likely to be called frequently
+	 * @param {String} event_name event_name
+	 * @param {String} security_level security_level
+	 * @returns {Promise<Boolean>} whether or not it exists
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
 	 * @example
-	 * //示例代码(AYA):
+	 * //sample code (AYA):
 	 * SHIORI_EV.On_Has_Event : void {
 	 * 	_event_name=reference.raw[0]
 	 * 	_SecurityLevel=reference.raw[1]
@@ -259,13 +259,13 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
-	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
-	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
-	 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
+	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events
+	 * If unsure of ghost support, use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query
+	 * @returns {Promise<{local:string[],external:string[]}>} Object containing both local and external arrays
 	 * @example
 	 * jsstp.get_supported_events().then(result => console.log(result));
 	 * @example
-	 * //示例代码(AYA):
+	 * //sample code (AYA):
 	 * SHIORI_EV.On_Get_Supported_Events: void {
 	 * 	_L=GETFUNCLIST('On')
 	 * 	_base_local_event_funcs=IARRAY
@@ -305,8 +305,8 @@ declare class jsstp_t{
 		external: string[]
 	}>;
 	/**
-	 * 获取fmo信息
-	 * @returns {Promise<fmo_info_t>} fmo信息
+	 * Getting fmo information
+	 * @returns {Promise<fmo_info_t>} fmo information
 	 * @example
 	 * let fmo=await jsstp.get_fmo_infos();
 	 * if(fmo.available)
@@ -314,18 +314,18 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/get_fmo_infos(): Promise<fmo_info_t>;
 	/**
-	 * 获取当前ghost是否可用
-	 * @returns {Promise<Boolean>} ghost是否可用
+	 * Get whether ghost is currently available
+	 * @returns {Promise<Boolean>} whether ghost is available or not
 	 * @example
 	 * if(await jsstp.available())
 	 * 	//do something
 	 * else
-	 * 	console.error("ghost不可用,请检查ghost是否启动");
+	 * 	console.error("Ghost is not available, please check if ghost is running.");
 	 */
 	/*@__PURE__*/available(): Promise<Boolean>;
 	/**
-	 * 获取当前ghost是否可用
-	 * @returns {Promise} ghost是否可用
+	 * Get whether ghost is currently available
+	 * @returns {Promise} whether ghost is available or not
 	 * @example
 	 * jsstp.then(() => {
 	 * 	//do something
@@ -336,8 +336,8 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/then<result_T,reject_T>(resolve: (value?: jsstp_t) => result_T, reject?: (reason?: any) => reject_T): Promise<result_T|reject_T>;
 	/**
-	 * 获取一个用于查询ghost所支持事件的queryer
-	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
+	 * Get a queryer for querying events supported by ghost
+	 * @returns {Promise<ghost_events_queryer_t>} Query the queryer for supported events.
 	 * @example
 	 * jsstp.new_event_queryer().then(queryer => 
 	 * 	queryer.check_event("OnTest").then(result =>

@@ -11,7 +11,7 @@ import type jsstp_t from "./types/jsstp_t.d.ts";
 
 //定义一个包装器
 /**
- * sstp包装器
+ * sstpラッパー
  * @example
  * jsstp.SEND({
  *   Event: "OnTest",

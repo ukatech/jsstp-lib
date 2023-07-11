@@ -19,8 +19,8 @@ declare class info_object {
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description Execute a function for each key-value pair.
+	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
 	 */
 	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
 	/**

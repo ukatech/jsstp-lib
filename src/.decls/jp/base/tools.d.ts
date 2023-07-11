@@ -1,32 +1,32 @@
 /**
- * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
+ * より読みやすい派生クラスの関数型で初期化できる拡張可能な関数型。
  */
 declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
 	/**
-	 * 自函数实例初始化
+	 * 自己関数のインスタンス初期化
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */
 	constructor(func: (...args: args_T) => return_T);
 	/**
-	 * 调用函数，用指定的对象代替函数的this值，用指定的数组代替函数的参数。
-	 * @param thisArg 将被用作this对象的对象。
-	 * @param argArray 一组要传递给函数的参数。
+	 * 関数を呼び出し、関数の this 値を指定されたオブジェクトに、関数の引数を指定された配列に置き換えます。
+	 * @param thisArg thisオブジェクトとして使用されるオブジェクト。
+	 * @param argArray 関数に渡される引数のセット。
 	 */
 	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
 
 	/**
-	 * 调用一个对象的方法，用另一个对象代替当前对象。
-	 * @param thisArg 将被用作当前对象的对象。
-	 * @param argArray 要传递给方法的参数列表。
+	 * 現在のオブジェクトを別のオブジェクトに置き換えるオブジェクトのメソッドを呼び出します。
+	 * @param thisArg 現在のオブジェクトとして使用されるオブジェクト。
+	 * @param argArray メソッドに渡される引数のリスト。
 	 */
 	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
 
 	/**
-	 * 对于一个给定的函数，创建一个绑定的函数，其主体与原函数相同。
-	 * 绑定函数的this对象与指定的对象相关联，并具有指定的初始参数。
-	 * @param thisArg 一个对象，this关键字可以在新函数中引用。
-	 * @param argArray 一个要传递给新函数的参数列表。
+	 * 与えられた関数に対して、元の関数と同じボディを持つ束縛関数を作成します。
+	 * バインドされた関数の this オブジェクトは、指定されたオブジェクトに関連付けられ、指定された初期引数を持ちます。
+	 * @param thisArg 新しい関数内で this キーワードが参照できるオブジェクト。
+	 * @param argArray 新しい関数に渡される引数のリスト。
 	 */
 	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
 }

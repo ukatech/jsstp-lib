@@ -96,7 +96,7 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
 }
 /**
- * 补充fmp报文类的默认成员
+ * 补充fmo报文类的默认成员
  */
 type fmo_info_t_members = {
 	/**

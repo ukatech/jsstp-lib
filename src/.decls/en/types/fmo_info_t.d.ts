@@ -96,7 +96,7 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
 }
 /**
- * Default members of the supplementary fmp message class
+ * Default members of the supplementary fmo message class
  */
 type fmo_info_t_members = {
 	/**

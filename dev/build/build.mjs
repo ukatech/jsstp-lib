@@ -150,12 +150,14 @@ function jsstp_minify(code_path,is_module){
 			}
 			{
 				//一些小问题的修复
-				var unknown_lines_key=name_caches.vars.props["$unknown_lines"];
-				//`unknown_lines:`->`[unknown_lines_key]:`
-				code=code.replace(/unknown_lines\:/g,`[${unknown_lines_key}]:`);
-				var SEND_key=name_caches.vars.props["$SEND"];
-				//`SEND:`->`[SEND_key]:`
-				code=code.replace(/SEND\:/g,`[${SEND_key}]:`);
+				var key_fix = (old_key) => {
+					var key=name_caches.vars.props["$"+old_key];
+					code=code.replace(new RegExp(`${old_key}\:`,"g"),`[${key}]:`);
+				}
+				key_fix("unknown_lines");
+				key_fix("SEND");
+				key_fix("local");
+				key_fix("external");
 			}
 			writeFileSync(code_path,code);
 		}).catch(e=>console.error(e));
