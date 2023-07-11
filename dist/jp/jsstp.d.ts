@@ -1,46 +1,46 @@
 /**
- * 拓展object，提供一些简单且遍历的操作
+ * オブジェクトを拡張して、いくつかの簡単な反復操作を提供する。
  */
 declare class info_object {
 	/**
-	 * @description 获取所有key的数组
+	 * @description すべてのキーの配列を取得する
 	 */
 	/*@__PURE__*/get keys(): PropertyKey[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description すべての値の配列を取得する
 	 */
 	/*@__PURE__*/get values(): any[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description すべてのキーと値のペアの配列を取得します。
 	 */
 	/*@__PURE__*/get entries(): [PropertyKey, any][];
 	/**
-	 * @description 获取成员数量
+	 * @description 会員数の取得
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description キーと値のペアごとに関数を実行する。
+	 * @param {(value,key?)} func 戻り値が未定義でない場合に、元の値を置き換えるために実行される関数。
 	 */
 	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
 	/**
-	 * @description 复制一个新的对象
-	 * @returns {info_object} 复制的对象
+	 * @description 新しいオブジェクトをコピーします。
+	 * @returns {info_object} コピーされたオブジェクト
 	 */
 	/*@__PURE__*/get trivial_clone(): info_object;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...PropertyKey[],any]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/map<T>(func: (value: any, key?: PropertyKey) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[PropertyKey,any]]} array 要追加的数组
+	 * @description 要素を配列として自分自身に追加する。
+	 * @param {[undefined|[PropertyKey,any]]} array 追加する配列。
 	 */
 	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
 }
@@ -123,7 +123,7 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * sstp报文类
+ * SSTPメッセージクラス
  * @example
  * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
@@ -132,84 +132,84 @@ Option: notranslate
  */
 declare class sstp_info_t extends base_sstp_info_t {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
+	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
+	 * @param {String} info_head メッセージのヘッダー。
+	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
+	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
 	 * @see {@link sstp_info_t.from_string}
 	 * @returns {sstp_info_t}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
-	 * 从字符串构造sstp_info_t
-	 * @param {String} str 字符串报文
-	 * @returns {sstp_info_t} 构造的sstp_info_t
+	 * 文字列から sstp_info_t を構築する
+	 * @param {String} str メッセージ文字列
+	 * @returns {sstp_info_t} 構築された sstp_info_t
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
 	/*@__PURE__*/static from_string(str: String): sstp_info_t;
 	/**
-	 * 获取PassThru的值
-	 * @param {String} key 获取的PassThru名称
-	 * @returns {String|undefined} PassThru的值
+	 * PassThruの値を取得する
+	 * @param {String} key 取得するPassThruの名前。
+	 * @returns {String|undefined} PassThruの値。
 	 */
 	/*@__PURE__*/get_passthrough(key: String): String | undefined;
 	/**
-	 * 获取所有的PassThru
-	 * @returns {info_object} 所有的PassThru
+	 * すべてのPassThruを取得する
+	 * @returns {info_object} すべてのパススルー
 	 */
 	/*@__PURE__*/get passthroughs(): info_object;
 	/**
-	 * 获取原始对象
-	 * @returns {sstp_info_t} 原始对象
+	 * 元のオブジェクトの取得
+	 * @returns {sstp_info_t} 原物
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
 
 	//base_sstp_info_t的成员
 
 	/**
-	 * @description 获取所有key的数组
+	 * @description すべてのキーの配列を取得する
 	 */
 	/*@__PURE__*/get keys(): string[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description すべての値の配列を取得する
 	 */
 	/*@__PURE__*/get values(): String[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description すべてのキーと値のペアの配列を取得します。
 	 */
 	/*@__PURE__*/get entries(): [string, String][];
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description キーと値のペアごとに関数を実行する。
+	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
 	 */
 	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
+	 * @description 配列をそれ自身に追加する。
+	 * @param {[undefined|[String,any]]} array 追加する配列。
 	 */
 	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
 
 	/**
-	 * 其他报文成员
+	 * その他のメッセージメンバー
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;
 }
 
 /**
- * fmo报文类
+ * FMOメッセージクラス
  * @example
  * let fmo = jsstp.get_fmo_infos();
  * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
@@ -221,49 +221,49 @@ declare class sstp_info_t extends base_sstp_info_t {
  */
 declare class fmo_info_t extends base_sstp_info_t {
 	/**
-	 * 自字符串构造fmo_info_t，不建议直接使用
+	 * 自己文字列構造 fmo_info_t, 直接の使用は推奨されない。
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
-	 * @param {String} name 要检查的属性名
-	 * @param {String} value 期望的属性值
-	 * @returns {String|undefined} 对应的uuid（如果有的话）
-	 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
+	 * @param {String} name チェックするプロパティの名前
+	 * @param {String} value 望ましい属性値
+	 * @returns {String|undefined} 対応するuuid（もしあれば）
+	 * @description 指定された属性を持ち、その属性の値が指定された値であるfmoのuuidを取得する。
 	 * @example 
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
-	 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
+	 * @description this.uuids.find(uuid => this[uuid][name] == value)`に相当する。
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description 获取所有指定属性的值
+	 * @description 指定されたすべてのプロパティの値を取得する
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
-	 * @description 等价于`this.uuids.map(uuid => this[uuid][name])`
+	 * @description this.uuids.map(uuid=>this[uuid][name])`に相当する。
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description 获取所有uuid
+	 * @description すべてのuuidsを取得する
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description 判断fmo是否有效
+	 * @description fmoが有効かどうかの判断
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	//注入toString方法便于使用
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ。
 	 * @ignore
 	 */
 	/*@__PURE__*/toString(): String;
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * `JSON.stringify`用オブジェクトの取得
+	 * @returns {Object} `JSON.stringify` 用のオブジェクト。
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
@@ -271,47 +271,47 @@ declare class fmo_info_t extends base_sstp_info_t {
 	//base_sstp_info_t的成员
 
 	/**
-	 * @description 获取所有key的数组
+	 * @description すべてのキーの配列を取得する
 	 */
 	/*@__PURE__*/get keys(): string[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description すべての値の配列を取得する
 	 */
 	/*@__PURE__*/get values(): base_sstp_info_t[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description すべてのキーと値のペアの配列を取得します。
 	 */
 	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description キーと値のペアごとに関数を実行する。
+	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
 	 */
 	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(dimensions[...],value):any} func 実行する関数。 value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
+	 * @description 配列をそれ自身に追加する。
+	 * @param {[undefined|[String,any]]} array 追加する配列。
 	 */
 	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
 
 	/**
-	 * fmo成员
+	 * fmoメンバー
 	 * @type {base_sstp_info_t|undefined}
 	 */
 	[uuid: string]: base_sstp_info_t|undefined;
 }
 
 /**
- * sstp方法调用器
+ * sstp メソッド呼び出し元
  */
 interface method_caller{
 	(info: Object): Promise<sstp_info_t>,
@@ -319,17 +319,17 @@ interface method_caller{
 }
 
 /**
- * 事件调用器
+ * イベント呼び出し元
  */
 interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
 }
 /**
- * 简易事件调用器
- * 直接调用以触发事件！
+ * シンプルなイベント・コーラー
+ * イベントをトリガーするために直接呼び出される！
  * @example
  * let data=await jsstp.OnTest(123,"abc");
- * //等价于
+ * //に相当する。
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -341,8 +341,8 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 通用事件调用器
- * 调用时传入一个对象以触发事件！
+ * 汎用イベント・コーラー
+ * イベントをトリガーするオブジェクトを渡すことで呼び出される！
  * @example
  * let caller=jsstp.get_caller_of_event("OnTest");
  * //...
@@ -350,7 +350,7 @@ interface simple_event_caller extends base_event_caller {
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
- * //等价于
+ * //に相当する。
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -364,7 +364,7 @@ interface common_event_caller extends base_event_caller{
 
 //定义一个包装器
 /**
- * jsstp对象
+ * jsstpオブジェクト
  * @see {@link jsstp}
  * @alias jsstp.type
  * @example
@@ -414,7 +414,7 @@ declare class jsstp_t{
 	GIVE: method_caller;
 
 	/**
-	 * 匹配事件名称以产生简易调用器
+	 * イベント名をマッチさせて単純な呼び出し元を生成する
 	 * @group jsstp_event_members
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
@@ -422,111 +422,111 @@ declare class jsstp_t{
 	[key: `On${string}`]: simple_event_caller;
 
 	/**
-	 * 在fecth时使用的header
+	 * fecth のヘッダ
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
-	 * 默认的报文内容
+	 * デフォルトのメッセージ内容
 	 */
 	default_info: {
 		[key: string]: string,
 	};
 
 	/**
-	 * SSTP协议版本号列表
+	 * SSTP プロトコルバージョン番号リスト
 	 */
 	sstp_version_table: {
 		[method: string]: Number
 	};
 	/**
-	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external "です。
 	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
 	default_security_level: String;
 
 	/**
-	 * 自身代理
+	 * 自己弁護
 	 */
 	proxy: jsstp_t;
 
 	/**
-	 * 基础jsstp对象
-	 * @param {String} sender_name 对象与服务器交互时的发送者名称
-	 * @param {String} host 目标服务器地址
+	 * 基本的なjsstpオブジェクト
+	 * @param {String} sender_name オブジェクトがサーバーとやりとりする際の送信者名
+	 * @param {String} host 宛先サーバーアドレス
 	 * @returns {jsstp_t}
 	 */
 	/*@__PURE__*/constructor(sender_name?: String, host?: String);
 	/**
-	 * 修改host
+	 * ホストの変更
 	 * @param {string} host
 	 * @group Properties
 	 */
 	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
-	 * 修改sendername
+	 * 送信者名を変更する
 	 * @param {String} sender_name
 	 * @group Properties
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
 	/**
-	 * 以文本发送报文并以文本接收返信
-	 * @param {any} info 报文体（文本）
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * テキストでメッセージを送信し、テキストでそれを受信する
+	 * @param {any} info メッセージ本文 (テキスト)
+	 * @returns {Promise<String|undefined>} プロミスを返します。  
+	 * 何も問題がなければ、その内容は送信後の戻り値となり、そうでなければ `undefined` となる。
 	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String | undefined>;
 	/**
-	 * 发送报文，但是不对返回结果进行处理
-	 * @param {String} sstphead 报文头
-	 * @param {Object} info 报文体
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * メッセージを送信するが、返された結果は処理しない。
+	 * メッセージのヘッダー。
+	 * @param {Object} info メッセージのボディ。
+	 * @returns {Promise<String|undefined>} プロミスを返します。 
+	 * 何も問題がなければ、その内容は送信後の戻り値となり、そうでなければ `undefined` となる。
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String | undefined>;
 	/**
-	 * 发送报文
-	 * @param {String} sstphead 报文头
-	 * @param {Object} info 报文体
-	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 * メッセージの送信
+	 * @param {String} sstphead メッセージヘッダ
+	 * @param {Object} info メッセージ本文
+	 * @returns {Promise<sstp_info_t>} プロミスを返します。
 	 * @group Basic Send Methods
 	 */
 	costom_send(sstphead: String, info: Object): Promise<sstp_info_t>;
 	
 	/**
-	 * 获取指定方法的调用器
-	 * @param {String} method_name 方法名称
+	 * 指定したメソッドの呼び出し元を取得する
+	 * @param {String} method_name メソッド名
 	 * @returns {{
 	 * 	(info: Object): Promise<sstp_info_t>,
 	 * 	get_raw(info: Object): Promise<String>
-	 * }} 调用器
+	 * }} 呼び出し側
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
 	/**
-	 * 获取指定事件的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * 指定されたイベントの呼び出し元を取得する
+	 * @param {String} event_name イベント名
+	 * @param {String|undefined} method_name メソッド名
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 呼び出し元
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
 	/**
-	 * 用于获取指定事件的简单调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * 指定されたイベントを取得するためのシンプルな呼び出し元
+	 * @param {String} event_name イベント名
+	 * @param {String|undefined} method_name メソッド名
+	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 呼び出し元
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
 	/**
-	 * 用于获取指定事件的简单调用器的代理
+	 * 単純な呼び出し元が指定されたイベントを取得するためのプロキシ
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.event.OnTest("test");
@@ -536,11 +536,11 @@ declare class jsstp_t{
 		[event_name: string]: simple_event_caller
 	}
 	/**
-	 * 判断是否存在某个事件
-	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
-	 * @param {String} event_name 事件名
-	 * @param {String} security_level 安全等级
-	 * @returns {Promise<Boolean>} 是否存在
+	 * イベントが存在するかどうかを判断する
+	 * {@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使って、頻繁に呼び出されそうかどうかを問い合わせる。
+	 * @param {String} event_name イベント名
+	 * @param {String} security_level セキュリティレベル
+	 * @returns {Promise<Boolean>} 存在するかどうかを返します。
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
 	 * @example
@@ -566,9 +566,9 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
-	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
-	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
-	 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
+	 * サポートされているイベントを合意された構造で取得するには、ゴーストが `Get_Supported_Events` イベントをサポートしている必要があります。
+	 * ゴーストのサポートが不明な場合は、{@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使用してクエリを実行する。
+	 * @returns {Promise<{local:string[],external:string[]}>}ローカル配列と外部配列を含むオブジェクト。
 	 * @example
 	 * jsstp.get_supported_events().then(result => console.log(result));
 	 * @example
@@ -612,8 +612,8 @@ declare class jsstp_t{
 		external: string[]
 	}>;
 	/**
-	 * 获取fmo信息
-	 * @returns {Promise<fmo_info_t>} fmo信息
+	 * fmo情報を入手
+	 * @returns {Promise<fmo_info_t>} fmoインフォメーション
 	 * @example
 	 * let fmo=await jsstp.get_fmo_infos();
 	 * if(fmo.available)
@@ -621,30 +621,28 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/get_fmo_infos(): Promise<fmo_info_t>;
 	/**
-	 * 获取当前ghost是否可用
-	 * @returns {Promise<Boolean>} ghost是否可用
+	 * 現在のホストの稼働状況を取得する
+	 * @returns {Promise<Boolean>} ゴーストが利用可能かどうかのステータス
 	 * @example
 	 * if(await jsstp.available())
 	 * 	//do something
 	 * else
-	 * 	console.error("ghost不可用,请检查ghost是否启动");
+	 * 	console.error("ゴーストが利用できません。ゴーストが起動しているか確認してください。");
 	 */
 	/*@__PURE__*/available(): Promise<Boolean>;
 	/**
-	 * 获取当前ghost是否可用
-	 * @returns {Promise} ghost是否可用
+	 * 現在のホストの稼働状況を取得する
+	 * @returns {Promise} ゴーストはいますか
 	 * @example
 	 * jsstp.then(() => {
 	 * 	//do something
 	 * });
-	 * //or
-	 * await jsstp;
 	 * @group PromiseLike Methods
 	 */
 	/*@__PURE__*/then<result_T,reject_T>(resolve: (value?: jsstp_t) => result_T, reject?: (reason?: any) => reject_T): Promise<result_T|reject_T>;
 	/**
-	 * 获取一个用于查询ghost所支持事件的queryer
-	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
+	 * ghostがサポートするイベントのクエリーを取得する
+	 * @returns {Promise<ghost_events_queryer_t>} イベントをサポートするクエリへの問い合わせ
 	 * @example
 	 * jsstp.new_event_queryer().then(queryer => 
 	 * 	queryer.check_event("OnTest").then(result =>
@@ -689,55 +687,55 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
 }
 
 /**
- * ghost事件查询器：类定义实现
+ * ゴースト・イベント・ファインダー：クラス定義の実装
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
-	 * 构造一个事件查询器
+	 * イベントクエリアの構築
 	 * @param {jsstp_t} base_jsstp
 	 * @returns {void}
 	 */
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
-	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external"です。
 	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
 	default_security_level: String;
 	/**
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * イベントの存在をチェックするには、ゴーストは少なくとも `Has_Event` イベントをサポートしている必要があり、`Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
 	 * @param {String|undefined} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
-	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
+	 * @see {@link jsstp_t.has_event} と {@link jsstp_t.get_supported_events} に基づいています。
 	 */
 	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
-	 * 检查是否能够检查事件
+	 * イベントをチェックできるかどうかを確認する
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * if(!ghost_events_queryer.available)
-	 * 	console.error("无法检查事件");
+	 * 	console.error("イベントをチェックできない");
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
-	 * 检查是否能够使用`Get_Supported_Events`快速获取支持的事件列表
+	 * `Get_Supported_Events`を使用して、サポートされているイベントのリストを素早く取得できるかどうかを確認する。
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * if(!ghost_events_queryer.fast_query_available)
-	 * 	console.info("无法快速获取支持的事件列表");
+	 * 	console.info("サポートされているイベントのリストを素早く取得できない");
 	 * else
-	 * 	console.info("好哦");
-	 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
+	 * 	console.info("そうだね！");
+	 * @description サポートされていない場合は、動作が遅くなるだけで、`check_event`はまだ機能する。
 	 */
 	/*@__PURE__*/get fast_query_available(): Boolean;
 	/**
@@ -751,38 +749,38 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	clear(): void;
 }
 /**
- * ghost事件查询器：调用签名
+ * ゴースト・イベント・ファインダー：コール・シグネチャー
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
-	 * 调用声明
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * 宣言の呼び出し
+	 * ゴーストには少なくとも `Has_Event` イベントサポートが必要で、 `Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
 	 * @param {String|undefined} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see 基于 {@link ghost_events_queryer_t.check_event}
+	 * @see {@link ghost_events_queryer_t.check_event} に基づく。
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }
 /**
- * ghost事件查询器：构造器接口声明
+ * ゴースト・イベント・ファインダー: コンストラクタのインターフェイス宣言
  */
 type ghost_events_queryer_t_constructor = {
 	/**
-	 * 构造一个事件查询器
+	 * イベントクエリアの構築
 	 * @param {jsstp_t} base_jsstp
 	 * @returns {void}
 	 */
 	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 }
 /**
- * ghost事件查询器
+ * ゴースト・イベント・ファインダー
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -790,11 +788,11 @@ type ghost_events_queryer_t_constructor = {
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
- * ghost事件查询器
+ * ゴースト・イベント・ファインダー
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
