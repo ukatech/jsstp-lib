@@ -12,7 +12,7 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * sstp报文类
+ * SSTPメッセージクラス
  * @example
  * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
@@ -21,77 +21,77 @@ Option: notranslate
  */
 declare class sstp_info_t extends base_sstp_info_t {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
+	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
+	 * @param {String} info_head メッセージのヘッダー。
+	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
+	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
 	 * @see {@link sstp_info_t.from_string}
 	 * @returns {sstp_info_t}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
 	/**
-	 * 从字符串构造sstp_info_t
-	 * @param {String} str 字符串报文
-	 * @returns {sstp_info_t} 构造的sstp_info_t
+	 * 文字列から sstp_info_t を構築する
+	 * @param {String} str メッセージ文字列
+	 * @returns {sstp_info_t} 構築された sstp_info_t
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
 	/*@__PURE__*/static from_string(str: String): sstp_info_t;
 	/**
-	 * 获取PassThru的值
-	 * @param {String} key 获取的PassThru名称
-	 * @returns {String|undefined} PassThru的值
+	 * PassThruの値を取得する
+	 * @param {String} key 取得するPassThruの名前。
+	 * @returns {String|undefined} PassThruの値。
 	 */
 	/*@__PURE__*/get_passthrough(key: String): String | undefined;
 	/**
-	 * 获取所有的PassThru
-	 * @returns {info_object} 所有的PassThru
+	 * すべてのPassThruを取得する
+	 * @returns {info_object} すべてのパススルー
 	 */
 	/*@__PURE__*/get passthroughs(): info_object;
 	/**
-	 * 获取原始对象
-	 * @returns {sstp_info_t} 原始对象
+	 * 元のオブジェクトの取得
+	 * @returns {sstp_info_t} 原物
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
 
 	//base_sstp_info_t的成员
 
 	/**
-	 * @description 获取所有key的数组
+	 * @description すべてのキーの配列を取得する
 	 */
 	/*@__PURE__*/get keys(): string[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description すべての値の配列を取得する
 	 */
 	/*@__PURE__*/get values(): String[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description すべてのキーと値のペアの配列を取得します。
 	 */
 	/*@__PURE__*/get entries(): [string, String][];
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description キーと値のペアごとに関数を実行する。
+	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
 	 */
 	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
+	 * @description 配列をそれ自身に追加する。
+	 * @param {[undefined|[String,any]]} array 追加する配列。
 	 */
 	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
 
 	/**
-	 * 其他报文成员
+	 * その他のメッセージメンバー
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;

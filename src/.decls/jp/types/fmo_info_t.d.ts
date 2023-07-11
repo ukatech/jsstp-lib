@@ -100,7 +100,7 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
  */
 type fmo_info_t_members = {
 	/**
-	 * fmo成员
+	 * fmoメンバー
 	 * @type {base_sstp_info_t|undefined}
 	 */
 	[uuid: string]: base_sstp_info_t|undefined;

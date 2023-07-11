@@ -380,8 +380,6 @@ class jsstp_t {
 	 * jsstp.then(() => {
 	 * 	//do something
 	 * });
-	 * //or
-	 * await jsstp;
 	 * @group PromiseLike Methods
 	 */
 	/*@__PURE__*/[then](resolve, reject) {

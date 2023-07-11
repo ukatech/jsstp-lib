@@ -2,55 +2,55 @@ import type jsstp_t from "./jsstp_t.d.ts";
 import type { ExtensibleFunction } from "../base/tools.d.ts"
 
 /**
- * ghost事件查询器：类定义实现
+ * ゴースト・イベント・ファインダー：クラス定義の実装
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
-	 * 构造一个事件查询器
+	 * イベントクエリアの構築
 	 * @param {jsstp_t} base_jsstp
 	 * @returns {void}
 	 */
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
-	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
+	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external"です。
 	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
 	default_security_level: String;
 	/**
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * イベントの存在をチェックするには、ゴーストは少なくとも `Has_Event` イベントをサポートしている必要があり、`Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
 	 * @param {String|undefined} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
-	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
+	 * @see {@link jsstp_t.has_event} と {@link jsstp_t.get_supported_events} に基づいています。
 	 */
 	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
 	/**
-	 * 检查是否能够检查事件
+	 * イベントをチェックできるかどうかを確認する
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * if(!ghost_events_queryer.available)
-	 * 	console.error("无法检查事件");
+	 * 	console.error("イベントをチェックできない");
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
-	 * 检查是否能够使用`Get_Supported_Events`快速获取支持的事件列表
+	 * `Get_Supported_Events`を使用して、サポートされているイベントのリストを素早く取得できるかどうかを確認する。
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * if(!ghost_events_queryer.fast_query_available)
-	 * 	console.info("无法快速获取支持的事件列表");
+	 * 	console.info("サポートされているイベントのリストを素早く取得できない");
 	 * else
-	 * 	console.info("好哦");
-	 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
+	 * 	console.info("そうだね！");
+	 * @description サポートされていない場合は、動作が遅くなるだけで、`check_event`はまだ機能する。
 	 */
 	/*@__PURE__*/get fast_query_available(): Boolean;
 	/**
@@ -64,38 +64,38 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	clear(): void;
 }
 /**
- * ghost事件查询器：调用签名
+ * ゴースト・イベント・ファインダー：コール・シグネチャー
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
-	 * 调用声明
-	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
+	 * 宣言の呼び出し
+	 * ゴーストには少なくとも `Has_Event` イベントサポートが必要で、 `Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
 	 * @param {String|undefined} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see 基于 {@link ghost_events_queryer_t.check_event}
+	 * @see {@link ghost_events_queryer_t.check_event} に基づく。
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }
 /**
- * ghost事件查询器：构造器接口声明
+ * ゴースト・イベント・ファインダー: コンストラクタのインターフェイス宣言
  */
 type ghost_events_queryer_t_constructor = {
 	/**
-	 * 构造一个事件查询器
+	 * イベントクエリアの構築
 	 * @param {jsstp_t} base_jsstp
 	 * @returns {void}
 	 */
 	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 }
 /**
- * ghost事件查询器
+ * ゴースト・イベント・ファインダー
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -103,11 +103,11 @@ type ghost_events_queryer_t_constructor = {
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
- * ghost事件查询器
+ * ゴースト・イベント・ファインダー
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t

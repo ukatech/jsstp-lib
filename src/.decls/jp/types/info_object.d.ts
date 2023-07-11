@@ -1,52 +1,52 @@
 /**
- * 拓展object，提供一些简单且遍历的操作
+ * オブジェクトを拡張して、いくつかの簡単な反復操作を提供する。
  */
 declare class info_object {
 	/**
-	 * @description 获取所有key的数组
+	 * @description すべてのキーの配列を取得する
 	 */
 	/*@__PURE__*/get keys(): PropertyKey[];
 	/**
-	 * @description 获取所有value的数组
+	 * @description すべての値の配列を取得する
 	 */
 	/*@__PURE__*/get values(): any[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * @description すべてのキーと値のペアの配列を取得します。
 	 */
 	/*@__PURE__*/get entries(): [PropertyKey, any][];
 	/**
-	 * @description 获取成员数量
+	 * @description 会員数の取得
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
+	 * @description キーと値のペアごとに関数を実行する。
+	 * @param {(value,key?)} func 戻り値が未定義でない場合に、元の値を置き換えるために実行される関数。
 	 */
 	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
 	/**
-	 * @description 复制一个新的对象
-	 * @returns {info_object} 复制的对象
+	 * @description 新しいオブジェクトをコピーします。
+	 * @returns {info_object} コピーされたオブジェクト
 	 */
 	/*@__PURE__*/get trivial_clone(): info_object;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...PropertyKey[],any]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
+	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
+	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/map<T>(func: (value: any, key?: PropertyKey) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[PropertyKey,any]]} array 要追加的数组
+	 * @description 要素を配列として自分自身に追加する。
+	 * @param {[undefined|[PropertyKey,any]]} array 追加する配列。
 	 */
 	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
 }
 /**
- * 生成一个新的info_object
- * @returns {info_object} 生成的对象
+ * 新しい info_object を生成する
+ * @returns {info_object} 生成されたオブジェクト
  * @ignore
  */
 declare var new_object: () => info_object;

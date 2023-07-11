@@ -330,8 +330,6 @@ declare class jsstp_t{
 	 * jsstp.then(() => {
 	 * 	//do something
 	 * });
-	 * //or
-	 * await jsstp;
 	 * @group PromiseLike Methods
 	 */
 	/*@__PURE__*/then<result_T,reject_T>(resolve: (value?: jsstp_t) => result_T, reject?: (reason?: any) => reject_T): Promise<result_T|reject_T>;
