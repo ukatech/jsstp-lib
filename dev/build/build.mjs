@@ -51,6 +51,38 @@ async function build_dts_file(lang){
 	//remove all `//**remove from dist**//`
 	dts_code=dts_code.replace(/\/\/\*\*remove from dist\*\*\/\/\n/g,'');
 
+	{
+		var dts_code_array=dts_code.split("\n");
+		//remove all single line comments
+		dts_code_array=dts_code_array.filter(line=>!/^[ \t]*\/\//.test(line));
+		//remove all multi line comments
+		var in_comment=false;
+		dts_code_array=dts_code_array.filter(line=>{
+			if(/[ \t]*\/\*(?![\*@])/.test(line))
+				in_comment=true;
+			if(in_comment && /\*\/$/.test(line)){
+				in_comment=false;
+				return false;
+			}
+			if(!in_comment)
+				return true;
+			return false;
+		});
+		//remove all multi empty lines to single empty line
+		var last_line_is_empty=false;
+		dts_code_array=dts_code_array.filter(line=>{
+			if(line.length==0){
+				if(last_line_is_empty)
+					return false;
+				else
+					last_line_is_empty=true;
+			}else
+				last_line_is_empty=false;
+			return true;
+		});
+		dts_code=dts_code_array.join("\n");
+	}
+
 	writeFileSync(`dist/${lang}/jsstp.d.ts`,dts_code);
 }
 //对于每个在src/.decls/中的文件夹，我们都需要调用一次build_dts_file
