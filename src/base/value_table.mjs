@@ -62,13 +62,12 @@ var _false_ = !1;
  */
 var the_string = void_string[constructor];
 
-import{is_not_nan}from "./tools.mjs"
 /**
  * @typename the_function
  * @type {FunctionConstructor}
  * @ignore
  */
-var the_function = is_not_nan[constructor];
+var the_function = to_lower_case[constructor];
 
 var x_sstp_passthru_head = "X-SSTP-PassThru-";
 
