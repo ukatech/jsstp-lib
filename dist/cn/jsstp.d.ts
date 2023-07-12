@@ -45,15 +45,6 @@ declare class info_object {
 	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
 }
 
-/*
-sstp报文格式：
-SEND SSTP/1.1
-Charset: UTF-8
-Sender: SSTPクライアント
-Script: \h\s0テストー。\u\s[10]テストやな。
-Option: notranslate
-由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
-*/
 /**
  * 基础sstp报文类
  * @example
@@ -82,7 +73,6 @@ declare class base_sstp_info_t extends info_object {
 	 * @returns {String} 报文头
 	 */
 	/*@__PURE__*/get head(): String;
-	//注入toString方法便于使用
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
@@ -112,16 +102,6 @@ declare class base_sstp_info_t extends info_object {
 	[key: string]: any|undefined;
 }
 
-//定义sstp报文类
-/*
-sstp报文格式：
-SEND SSTP/1.1
-Charset: UTF-8
-Sender: SSTPクライアント
-Script: \h\s0テストー。\u\s[10]テストやな。
-Option: notranslate
-由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
-*/
 /**
  * sstp报文类
  * @example
@@ -165,8 +145,6 @@ declare class sstp_info_t extends base_sstp_info_t {
 	 * @returns {sstp_info_t} 原始对象
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
-
-	//base_sstp_info_t的成员
 
 	/**
 	 * @description 获取所有key的数组
@@ -254,7 +232,6 @@ declare class fmo_info_t extends base_sstp_info_t {
 	 * @description 判断fmo是否有效
 	 */
 	/*@__PURE__*/get available(): Boolean;
-	//注入toString方法便于使用
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
@@ -267,8 +244,6 @@ declare class fmo_info_t extends base_sstp_info_t {
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
-
-	//base_sstp_info_t的成员
 
 	/**
 	 * @description 获取所有key的数组
@@ -362,7 +337,6 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
-//定义一个包装器
 /**
  * jsstp对象
  * @see {@link jsstp}
@@ -802,13 +776,6 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
 	constructor: typeof ghost_events_queryer_t;
 }
 
-//构建一个包装器与http://localhost:9801/api/sstp/v1通信。
-//发信方法：Content-Type: text/plain HTTP/1.1でPOST
-//收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
-
-
-
-//定义一个包装器
 /**
  * sstp包装器
  * @example
