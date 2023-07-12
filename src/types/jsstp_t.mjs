@@ -383,9 +383,9 @@ class jsstp_t {
 	 * @group PromiseLike Methods
 	 */
 	/*@__PURE__*/[then](resolve, reject) {
+		//available不会有任何异常风险，所以我们不需要catch
 		return this[available]()[then](result => 
-			result ? resolve(this) : reject(),
-			/*catch*/reject
+			result ? resolve(this) : reject()
 		);
 	}
 	/**
