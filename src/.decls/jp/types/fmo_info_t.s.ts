@@ -13,7 +13,7 @@ import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
  */
 declare class fmo_info_t extends base_sstp_info_t {
 	/**
-	 * 自己文字列構造 fmo_info_t, 直接の使用は推奨されない。
+	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する，直接の使用は推奨されない。
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore

@@ -21,7 +21,7 @@ Option: notranslate
  */
 declare class sstp_info_t extends base_sstp_info_t {
 	/**
-	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
+	 * 分割された文字列メッセージまたはオブジェクト・メッセージから sstp_info_t を構築する，直接の使用は推奨されない。
 	 * @param {String} info_head メッセージのヘッダー。
 	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
 	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
