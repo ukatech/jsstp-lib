@@ -26,13 +26,14 @@ async function main() {
 		// 设置一个定时器，每隔一段时间就向ghost发送一次请求
 		setInterval(async() => {
 			let info=await jsstp.OnBrowserActionRequest(location.href, document.title);
+			let base_ActionResponse=[info.id, info.action];
 			switch(info.action) {
 				case 'get_element':{
 					let element=document.querySelector(info.selector);
 					if(element){
 						let html=element.innerHTML;
 						html=html.replace(/\r\n[ \t]*/g, '');
-						await jsstp.OnBrowserActionResponse(info.action, element.innerHTML);
+						await jsstp.OnBrowserActionResponse(...base_ActionResponse, element.innerHTML);
 					}
 					break;
 				}
@@ -45,7 +46,7 @@ async function main() {
 							html=html.replace(/\r\n[ \t]*/g, '');
 							htmls.push(html);
 						}
-						await jsstp.OnBrowserActionResponse(info.action, ...htmls);
+						await jsstp.OnBrowserActionResponse(...base_ActionResponse, ...htmls);
 					}
 					break;
 				}
@@ -53,18 +54,18 @@ async function main() {
 					let element=document.querySelector(info.selector);
 					if(element){
 						element.innerHTML=info.html;
-						await jsstp.OnBrowserActionResponse(info.action, true);
+						await jsstp.OnBrowserActionResponse(...base_ActionResponse, true);
 					}
 					break;
 				}
 				case 'exec':{
 					let result=Function(info.code)(jsstp);
-					await jsstp.OnBrowserActionResponse(info.action, result);
+					await jsstp.OnBrowserActionResponse(...base_ActionResponse, result);
 					break;
 				}
 				case 'set_url':{
 					location.href=info.url;
-					await jsstp.OnBrowserActionResponse(info.action, true);
+					await jsstp.OnBrowserActionResponse(...base_ActionResponse, true);
 					break;
 				}
 			}
