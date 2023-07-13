@@ -58,7 +58,7 @@ async function main() {
 					break;
 				}
 				case 'exec':{
-					let result=Function(info.code)();
+					let result=Function(info.code)(jsstp);
 					await jsstp.OnBrowserActionResponse(info.action, result);
 					break;
 				}
