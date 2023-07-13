@@ -10,6 +10,8 @@
 // @grant			window.onurlchange
 // ==/UserScript==
 
+jsstp.sendername = 'web_ukagaka';
+
 async function main() {
 	const url = location.href;
 	const title = document.title;
