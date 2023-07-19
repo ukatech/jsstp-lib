@@ -20,7 +20,7 @@ var jsstp;
 jsstp.sendername = 'web_ukagaka';
 
 
-var IntervalNumber=NaN;
+var IntervalNumbers=[];
 var TrustGhosts={};
 var DiscardedGhosts=[];
 
@@ -109,8 +109,6 @@ async function OnBrowserPageLoad(ghostname,hwnd){
 	const title = document.title;
 	let info=await jsstp.OnBrowserPageLoad(url, title);
 
-	if(IntervalNumber!=NaN)
-		clearInterval(IntervalNumber);
 	if(info.EnableActionRequest==1) {
 		if(!IsTrustGhost(ghostname)){
 			if(!DiscardedGhosts.includes(ghostname)){
@@ -120,11 +118,15 @@ async function OnBrowserPageLoad(ghostname,hwnd){
 			}
 		}
 		// 设置一个定时器，每隔一段时间就向ghost发送一次请求
-		IntervalNumber=setInterval(()=>OnBrowserActionRequest(hwnd), 1000);
+		IntervalNumbers.push(setInterval(()=>OnBrowserActionRequest(hwnd), 1000));
 	}
 }
 
 function RunOnBrowserPageLoad(){
+	for(let IntervalNumber in IntervalNumbers)
+		clearInterval(IntervalNumber);
+	IntervalNumbers=[];
+
 	jsstp.get_fmo_infos().then(fmo_infos=>{
 		fmo_infos.forEach((info)=>{
 			OnBrowserPageLoad(info.name,info.hwnd);
