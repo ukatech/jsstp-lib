@@ -4,7 +4,7 @@
 // @version			0.0.0.0
 // @description		try to take over the world!
 // @author			steve02081504
-// @match			*
+// @match			*://*/*
 // @icon			https://www.google.com/s2/favicons?sz=64&domain=shillest.net
 // @require			https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.3.2/dist/jsstp.min.js
 // @grant			window.onurlchange
