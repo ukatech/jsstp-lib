@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Web Ukagaka
 // @namespace		https://github.com/ukatech/jsstp-lib
-// @version			0.0.0.0
+// @version			0.0.0.1
 // @description		try to take over the world!
 // @author			steve02081504
 // @match			*://*/*
@@ -10,6 +10,9 @@
 // @grant			window.onurlchange
 // @grant			GM.setValue
 // @grant			GM.getValue
+// @updateURL		https://raw.githubusercontent.com/ukatech/jsstp-lib/master/userscripts/web_ukagaka.js
+// @downloadURL		https://raw.githubusercontent.com/ukatech/jsstp-lib/master/userscripts/web_ukagaka.js
+// @supportURL		https://github.com/ukatech/jsstp-lib/issues
 // ==/UserScript==
 
 /// <reference types="jsstp" />
