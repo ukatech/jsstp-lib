@@ -11,8 +11,25 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/dev/tests/unit.mjs",
-			// "preLaunchTask": "npm run build"
+			"program": "${workspaceFolder}/dev/tests/unit.mjs"
+		},
+		{
+			"command": "npm run test:repl",
+			"name": "启动REPL",
+			"request": "launch",
+			"type": "node-terminal"
+		},
+		{
+			"command": "npm run build:dist",
+			"name": "构建dist",
+			"request": "launch",
+			"type": "node-terminal"
+		},
+		{
+			"command": "npm run build:doc",
+			"name": "构建doc",
+			"request": "launch",
+			"type": "node-terminal"
 		}
 	]
 }

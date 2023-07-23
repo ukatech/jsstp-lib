@@ -53,6 +53,7 @@
 		"test": "npm run test:unit && npm run test:browser",
 		"test:unit": "node dev/tests/unit.mjs",
 		"test:browser": "node dev/tests/browser.mjs",
+		"test:repl": "node dev/tests/repl.mjs",
 
 		"build": "npm run build:dist",
 		"build:dist": "node dev/build/build.mjs",
