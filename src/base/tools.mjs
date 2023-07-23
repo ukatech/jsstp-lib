@@ -163,15 +163,6 @@ var index_by_keys = /*@__PURE__*/(obj, ...keys) => {
  * 扔出一个错误
  */
 var throw_error = /*@__PURE__*/(error) => { throw error; }
-/**
- * 是否在浏览器中
- * @type {Boolean}
- * @ignore
- */
-var in_browser = !!globalThis.window;//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
-//但是为了避免node今后实现self，我们使用window
-//node大概率不会实现window，因为多数代码都在使用windows判断是否在浏览器中
-//这样做还能兼容html4！...大概？
 
 /**
  * 根据端口返回本地地址
@@ -186,7 +177,11 @@ var get_local_address = /*@__PURE__*/(port) => `http://localhost:${port??9801}`;
  * @type {String}
  * @ignore
  */
-var my_origin = in_browser ? location.origin : get_local_address(process.env.PORT);
+var my_origin = globalThis.window ? location.origin : get_local_address(process.env.PORT);//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
+//但是为了避免node今后实现self，我们使用window
+//node大概率不会实现window，因为多数代码都在使用windows判断是否在浏览器中
+//这样做还能兼容html4！...大概？
+
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
  * @type {String}
@@ -207,7 +202,6 @@ export {
 	index_by_keys,
 	throw_error,
 
-	in_browser,
 	get_local_address,
 	my_origin,
 	my_default_security_level,

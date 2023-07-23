@@ -388,7 +388,7 @@ class jsstp_t {
 	/*@__PURE__*/[then](resolve, reject) {
 		//available不会有任何异常风险，所以我们不需要catch
 		return this[available]()[then](result => 
-			result ? resolve?.(this) : reject?reject():throw_error(result)
+			result ? resolve?.(this) : (reject??throw_error)(result)
 		);
 	}
 	/**

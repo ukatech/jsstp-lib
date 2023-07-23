@@ -1,6 +1,5 @@
 import {
 	the_object,
-	the_proxy,
 
 	//assign,
 	endline,
