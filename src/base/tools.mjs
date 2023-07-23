@@ -1,5 +1,8 @@
 import { 
 	the_object,
+	the_proxy,
+	the_string,
+	the_function,
 	undefined,
 
 	void_string,
@@ -7,16 +10,11 @@ import {
 	substring,
 	length,
 	prototype,
+	assign,
 } from "./value_table.mjs"
 
 import{local,external}from"./base_values.mjs";
 
-/**
- * 将字符串转换为小写
- * @param {String} str 要转换的字符串
- * @returns {String} 转换后的字符串
- */
-var to_lower_case = str => str.toLowerCase();
 /**
  * 以spliter分割字符串str，只对第一个匹配的分隔符做分割
  * @param {String} str 需要分割的字符串
@@ -99,7 +97,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
 		if (info._blocker_?.(target, key))
 			return;
 		let result;
-		if (type_judge(key, String))//string
+		if (type_judge(key, the_string))
 			result = info._string_key_handler_?.(target, key);
 		else//symbol
 			result = info._symbol_key_handler_?.(target, key);
@@ -107,12 +105,38 @@ var new_get_handler = /*@__PURE__*/(info) =>
 			return result;
 		else if (info._default_handler_)
 			return info._default_handler_(target, key)
-		return type_judge(result = target[key], Function) ? result.bind(target) : result;
+		return type_judge(result = target[key], the_function) ? result.bind(target) : result;
 	}
+/**
+ * 更合适的默认代理setter
+ * @param {Object} target 要代理的对象
+ * @param {String|Symbol} key 要代理的键
+ * @param {*} value 要代理的值
+ * @returns {Number} 1
+ * @ignore
+ */
+var default_setter = (target, key, value)=>((target[key] = value),1);
+/**
+ * 根据getter信息创建一个代理
+ * @param {Object} target 要代理的对象
+ * @param {{
+ * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,
+ * 	_string_key_handler_:undefined|(target,key:String) =>any|undefined,
+ * 	_symbol_key_handler_:undefined|(target,key:Symbol) =>any|undefined,
+ * 	_default_handler_:undefined|(target,key:String|Symbol) =>any|undefined
+ * }} getter_info 代理的get方法的信息
+ * @param {Object} other_info 其他信息
+ * @returns {Proxy} 代理
+ * @ignore
+ */
+var new_getter_proxy = (target, getter_info, other_info) => new the_proxy(target,assign({
+	get: new_get_handler(getter_info),
+	set: default_setter
+},other_info));
 /**
  * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
  */
-class ExtensibleFunction extends Function {
+class ExtensibleFunction extends the_function {
 	/**
 	 * 自函数实例初始化
 	 * @param {Function} func
@@ -123,6 +147,22 @@ class ExtensibleFunction extends Function {
 	}
 }
 
+/**
+ * 以给定的多个索引索引某个对象
+ * @param {Object} obj 要索引的对象
+ * @param  {Array<String|Symbol>} keys 索引
+ * @returns {*} 索引后的对象
+ * @ignore
+ */
+var index_by_keys = /*@__PURE__*/(obj, ...keys) => {
+	for (let key of keys)
+		obj = obj[key];
+	return obj;
+}
+/**
+ * 扔出一个错误
+ */
+var throw_error = /*@__PURE__*/(error) => { throw error; }
 /**
  * 是否在浏览器中
  * @type {Boolean}
@@ -156,13 +196,16 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
 var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
 
 export {
-	to_lower_case,
 	key_value_split,
 	is_event_name,
 	get_reorganized_event_name,
 	is_not_nan,
 	new_get_handler,
+	default_setter,
+	new_getter_proxy,
 	reg_test,
+	index_by_keys,
+	throw_error,
 
 	in_browser,
 	get_local_address,

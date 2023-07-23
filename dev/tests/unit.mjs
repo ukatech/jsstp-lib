@@ -7,6 +7,7 @@ jsstp.then(async ()=>{
 
 	console.log((await jsstp.OnTest()).to_string());
 	console.log(await jsstp.has_event("OnTest"));
+	console.log(jsstp.clone);
 
 	jsstp.On_ShioriEcho.GetName.then(({GhostName})=>
 		GhostName=="Taromati2"?

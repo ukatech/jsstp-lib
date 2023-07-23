@@ -16,7 +16,12 @@ var assign = the_object.assign;
 var endline = "\r\n";
 var undefined;// =undefined
 
-import{to_lower_case}from"./tools.mjs";
+/**
+ * 将字符串转换为小写
+ * @param {String} str 要转换的字符串
+ * @returns {String} 转换后的字符串
+ */
+var to_lower_case = str => str.toLowerCase();
 
 var Get_Supported_Events = "Get_Supported_Events";
 var Has_Event = "Has_Event";
@@ -69,6 +74,13 @@ var the_string = void_string[constructor];
  */
 var the_function = to_lower_case[constructor];
 
+/**
+ * @typename the_number
+ * @type {NumberConstructor}
+ * @ignore
+ */
+var the_number = 0[constructor];
+
 var x_sstp_passthru_head = "X-SSTP-PassThru-";
 
 export {
@@ -76,6 +88,7 @@ export {
 	the_proxy,
 	the_function,
 	the_string,
+	the_number,
 	assign,
 	endline,
 	undefined,

@@ -37,23 +37,28 @@ import {
 	external,
 
 	_false_,
+	the_function,
+	the_number,
 } from "../base/value_table.mjs";
 import {
 	is_event_name,
 	get_reorganized_event_name,
-	new_get_handler,
+	new_getter_proxy,
 	to_string,
 	type_judge,
 
 	my_origin,
 	get_local_address,
 	my_default_security_level,
+	index_by_keys,
+	throw_error,
 } from "../base/tools.mjs";
 
 import fmo_info_t from "./fmo_info_t.mjs";
 import ghost_events_queryer_t from "./ghost_events_queryer_t.mjs";
 import sstp_info_t from "./sstp_info_t.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
+import new_object from "./info_object.mjs"
 
 /**
  * 根据方法名称获取SSTP协议头
@@ -114,15 +119,13 @@ class jsstp_t {
 		 */
 		this[default_security_level] = my_default_security_level;
 
-		return this[proxy] = new the_proxy(this, {
-			get: new_get_handler({
-				_string_key_handler_: (target, key) =>
-					type_judge(target[sstp_version_table][key], Number) ?
-						target[get_caller_of_method](key) :
-					(is_event_name(key)) ?
-						target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
-					undefined
-			})
+		return this[proxy] = new_getter_proxy(this,{
+			_string_key_handler_: (target, key) =>
+				type_judge(target[sstp_version_table][key], the_number) ?
+					target[get_caller_of_method](key) :
+				is_event_name(key) ?
+					target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
+				undefined
 		});
 	}
 	/**
@@ -154,7 +157,7 @@ class jsstp_t {
 			body: /*@__INLINE__*/to_string(info)
 		});
 		if(response.status != 200)
-			throw response.status;
+			throw_error(response.status);
 		return response.text();
 	}
 	/**
@@ -385,7 +388,7 @@ class jsstp_t {
 	/*@__PURE__*/[then](resolve, reject) {
 		//available不会有任何异常风险，所以我们不需要catch
 		return this[available]()[then](result => 
-			result ? resolve(this) : reject()
+			result ? resolve?.(this) : reject?reject():throw_error(result)
 		);
 	}
 	/**

@@ -15,7 +15,7 @@ import {
 } from "../base/value_table.mjs";
 import {
 	key_value_split,
-	new_get_handler,
+	new_getter_proxy,
 	reg_test,
 } from "../base/tools.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
@@ -51,13 +51,11 @@ class sstp_info_t extends base_sstp_info_t {
 	 */
 	/*@__PURE__*/constructor(info_head, info_body, unknown_lines = {}) {
 		super(info_head, info_body, unknown_lines);
-		return new the_proxy(this, {
-			get: new_get_handler({
-				_string_key_handler_: (target, key) => 
-					x_sstp_passthru_head + key in target && !the_object.getOwnPropertyNames(sstp_info_t[prototype]).includes(key)?
-						target[get_passthrough](key) :
-					undefined
-			})
+		return new_getter_proxy(this, {
+			_string_key_handler_: (target, key) => 
+				x_sstp_passthru_head + key in target && !the_object.getOwnPropertyNames(sstp_info_t[prototype]).includes(key)?
+					target[get_passthrough](key) :
+				undefined
 		});
 	}
 	/**
