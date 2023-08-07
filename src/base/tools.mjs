@@ -173,14 +173,21 @@ var throw_error = /*@__PURE__*/(error) => { throw error; }
 var get_local_address = /*@__PURE__*/(port) => `http://localhost:${port??9801}`;
 
 /**
+ * 是否在浏览器中
+ * @type {Boolean}
+ * @ignore
+ */
+var in_browser = !!globalThis.window;//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
+//但是为了避免node今后实现self，我们使用window
+//node大概率不会实现window，因为多数代码都在使用windows判断是否在浏览器中
+//这样做还能兼容html4！...大概？
+
+/**
  * 默认的origin，在nodejs中为`http://localhost: env.PORT?? 9801`，在浏览器中为location.origin
  * @type {String}
  * @ignore
  */
-var my_origin = globalThis.window ? location.origin : get_local_address(process.env.PORT);//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
-//但是为了避免node今后实现self，我们使用window
-//node大概率不会实现window，因为多数代码都在使用windows判断是否在浏览器中
-//这样做还能兼容html4！...大概？
+var my_origin = in_browser ? location.origin : get_local_address(process.env.PORT);
 
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
@@ -189,6 +196,19 @@ var my_origin = globalThis.window ? location.origin : get_local_address(process.
  * @ignore
  */
 var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
+
+/**
+ * 自身的代码内容
+ * @type {String|undefined}
+ * @ignore
+ */
+var my_code = /*@__PURE__*/(()=>{
+	let my_url = import.meta.url;
+	if(my_url[substring](0,5) == "file:" && !in_browser)
+		import("fs").then(fs=>fs.readFileSync(my_url[substring](8))).then(buffer=>my_code=buffer.toString());
+	else
+		fetch(my_url).then(res=>res.text()).then(text=>my_code=text);
+})();
 
 export {
 	key_value_split,
@@ -208,5 +228,7 @@ export {
 
 	to_string,
 	type_judge,
-	ExtensibleFunction
+	ExtensibleFunction,
+
+	my_code,
 };

@@ -129,6 +129,29 @@ class jsstp_t {
 		});
 	}
 	/**
+	 * 复制一个新的jsstp对象
+	 * @group Clone Methods
+	 */
+	get clone() {
+		let self=this;
+		return assign(new jsstp_t(), {
+			[RequestHeader]: self[RequestHeader],
+			[default_info]: self[default_info],
+			[default_security_level]: self[default_security_level],
+			[sstp_version_table]: self[sstp_version_table],
+			//[sendername]: self[sendername], //不需要：default_info已经包含了sendername
+			host: self.host
+		});
+	}
+	/**
+	 * 复制一个新的jsstp对象对于给定的hwnd
+	 * @param hwnd 目标ghost的hwnd
+	 * @returns {jsstp_t} 新的指向目标ghost的jsstp对象
+	 */
+	by_hwnd(hwnd){
+		return assign(this.clone,{ReceiverGhostHWnd:hwnd});
+	}
+	/**
 	 * 修改host
 	 * @param {string} host
 	 * @group Properties
@@ -402,6 +425,19 @@ class jsstp_t {
 	 * );
 	 */
 	/*@__PURE__*/new_event_queryer() { return (new ghost_events_queryer_t(this)).init(); }
+	/**
+	 * 基础类型转换
+	 */
+	/*@__PURE__**[Symbol.toPrimitive](hint) { 
+		switch(hint){
+			case "String":
+				return my_code;
+			case "Number":
+			default:
+				return 72;
+		}
+	}
+	//*/
 }
 //对定义中的所有类型补充到原型
 //纯为了压缩体积（不然每个类型都要写一遍`static`）

@@ -180,6 +180,7 @@ function jsstp_minify(code_path,is_module){
 				code=code.replace(/^var jsstp=function\(\){/,`var jsstp=(()=>{`);
 				code=code.replace(/}\(\);$/g,`})()\n`);
 			}
+			code = code.replace("document.currentScript&&document.currentScript.src","document.currentScript?.src");
 			{
 				//一些小问题的修复
 				var key_fix = (old_key) => {

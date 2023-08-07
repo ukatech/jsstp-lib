@@ -81,6 +81,13 @@ var the_function = to_lower_case[constructor];
  */
 var the_number = 0[constructor];
 
+/**
+ * @typename the_array
+ * @type {ArrayConstructor}
+ * @ignore
+ */
+var the_array = [][constructor];
+
 var x_sstp_passthru_head = "X-SSTP-PassThru-";
 
 export {
@@ -89,6 +96,7 @@ export {
 	the_function,
 	the_string,
 	the_number,
+	the_array,
 	assign,
 	endline,
 	undefined,

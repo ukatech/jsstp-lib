@@ -1,0 +1,45 @@
+import { type_judge } from "../base/tools.mjs";
+import {
+	//assign,
+	//endline,
+	//undefined,
+
+	//void_string,
+
+	the_proxy,
+	the_object,
+} from "../base/value_table.mjs";
+import new_object, { info_object } from "./info_object.mjs";
+
+class smart_array_object extends info_object {
+	static #build_new_with_result_base(result_base, default_value){
+		console.log(result_base);
+		//若每个值都是undefined，则返回target[key]
+		if(result_base.every(([_key,value])=>value===undefined))
+			return default_value;
+		//若每个值都是promise，则返回一个promise
+		if(result_base.every(([_key,value])=>type_judge(value, Promise)))
+			return (async()=> {
+				let result = new smart_array_object();
+				for(let [key,value] of result_base)
+					result[key] = await value;
+				return result;
+			})();
+		return new smart_array_object(the_object.fromEntries(result_base));
+	}
+
+	constructor(value) {
+		return new the_proxy(new_object(value), {
+			get: (target, key) => {
+				//对于每个在数组中的值，以key为索引，构建一个新的smart_array
+				return smart_array_object.#build_new_with_result_base(target.map((value,the_key) => [the_key,value[key]]), target[key]);
+			},
+			apply: (target, thisArg, argumentsList) => {
+				//对于每个在数组中的值，以key为索引，以argumentsList为参数，用调用结果构建一个新的smart_array
+				return smart_array_object.#build_new_with_result_base(target.map((value,the_key) => [the_key,value(...argumentsList)]));
+			},
+		});
+	}
+}
+
+export default smart_array_object;

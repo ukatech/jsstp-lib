@@ -78,6 +78,13 @@ class info_object {
 		array[forEach]((pair) => pair ? this[pair[0]] = pair[1] : undefined);
 		return this;
 	}
+	/**
+	 * @description 每一个key-value对都满足条件则返回true
+	 * @param {(value,key?):boolean} func 要执行的函数
+	 */
+	/*@__PURE__*/every(func) {
+		return this[entries].every(([key, value]) => func(value, key));
+	}
 }
 /**
  * 生成一个新的info_object
