@@ -37,7 +37,6 @@ import {
 	external,
 
 	_false_,
-	the_function,
 	the_number,
 } from "../base/value_table.mjs";
 import {
@@ -50,7 +49,6 @@ import {
 	my_origin,
 	get_local_address,
 	my_default_security_level,
-	index_by_keys,
 	throw_error,
 } from "../base/tools.mjs";
 
@@ -58,7 +56,6 @@ import fmo_info_t from "./fmo_info_t.mjs";
 import ghost_events_queryer_t from "./ghost_events_queryer_t.mjs";
 import sstp_info_t from "./sstp_info_t.mjs";
 import base_sstp_info_t from "./base_sstp_info_t.mjs";
-import new_object from "./info_object.mjs"
 
 /**
  * 根据方法名称获取SSTP协议头
@@ -70,6 +67,7 @@ import new_object from "./info_object.mjs"
 var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type]}`;
 
 import{SEND as default_sstp_method}from"../base/value_table.mjs"
+import smart_array_object from "./smart_array_object.mjs";
 
 //定义一个包装器
 /**
@@ -150,6 +148,17 @@ class jsstp_t {
 	 */
 	by_hwnd(hwnd){
 		return assign(this.clone,{ReceiverGhostHWnd:hwnd});
+	}
+	/**
+	 * 对于所有ghost进行操作
+	 */
+	get for_all_ghosts(){
+		let result = new smart_array_object();
+		return this.get_fmo_infos().then(fmo_infos=>{
+			for(let uuid in fmo_infos)
+				result[uuid] = this.by_hwnd(fmo_infos[uuid].hwnd);
+			return result;
+		});
 	}
 	/**
 	 * 修改host
@@ -411,7 +420,7 @@ class jsstp_t {
 	/*@__PURE__*/[then](resolve, reject) {
 		//available不会有任何异常风险，所以我们不需要catch
 		return this[available]()[then](result => 
-			result ? resolve?.(this) : (reject??throw_error)(result)
+			result ? resolve?.(this[proxy]) : (reject??throw_error)(result)
 		);
 	}
 	/**

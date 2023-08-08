@@ -15,6 +15,8 @@ jsstp.then(async ()=>{
 			console.log(GhostName||"ghost not support On_ShioriEcho.GetName")
 	);
 
+	jsstp.for_all_ghosts.then(jsstp => jsstp.OnTest().then(console.log));
+
 	console.log(JSON.stringify(await jsstp.On_ShioriEcho('1000-7'),null,'\t'));
 }).catch((e)=>
 	e?

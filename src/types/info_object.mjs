@@ -17,6 +17,13 @@ import {
  */
 class info_object {
 	/**
+	 * @description 构造函数
+	 * @param {Object} base_value 
+	 */
+	constructor(base_value) {
+		assign(this, base_value);
+	}
+	/**
 	 * @description 获取所有key的数组
 	 */
 	/*@__PURE__*/get keys() { return the_object.keys(this); }
@@ -91,5 +98,5 @@ class info_object {
  * @returns {info_object} 生成的对象
  * @ignore
  */
-var new_object = () => new info_object();
+var new_object = (value) => new info_object(value);
 export { new_object as default, info_object };
