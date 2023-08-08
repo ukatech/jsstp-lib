@@ -2,7 +2,7 @@ import { throw_error, type_judge } from "../base/tools.mjs";
 import {
 	//assign,
 	//endline,
-	//undefined,
+	undefined,
 
 	//void_string,
 
@@ -17,14 +17,6 @@ class smart_array_object extends info_object {
 		//若每个值都是undefined，则返回target[key]
 		if(result_base.every(([_key,value])=>value===undefined))
 			return default_value;
-		//若每个值都是promise，则返回一个promise
-		if(result_base.every(([_key,value])=>type_judge(value, Promise)))
-			return (async()=> {
-				let result = new smart_array_object();
-				for(let [key,value] of result_base)
-					result[key] = await value;
-				return result;
-			})();
 		return new smart_array_object(the_object.fromEntries(result_base));
 	}
 

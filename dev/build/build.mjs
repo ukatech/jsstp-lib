@@ -191,6 +191,10 @@ function jsstp_minify(code_path,is_module){
 				key_fix("SEND");
 				key_fix("local");
 				key_fix("external");
+				key_fix("RequestHeader");
+				key_fix("default_info");
+				key_fix("default_security_level");
+				key_fix("sstp_version_table");
 			}
 			writeFileSync(code_path,code);
 		}).catch(e=>console.error(e));
