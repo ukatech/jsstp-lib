@@ -142,23 +142,27 @@ class jsstp_t {
 		});
 	}
 	/**
-	 * 复制一个新的jsstp对象对于给定的hwnd
-	 * @param hwnd 目标ghost的hwnd
+	 * 复制一个新的jsstp对象对于给定的fmo_info
+	 * @param fmo_info 目标ghost的fmo_info
 	 * @returns {jsstp_t} 新的指向目标ghost的jsstp对象
 	 */
-	by_hwnd(hwnd){
-		return assign(this.clone,{ReceiverGhostHWnd:hwnd});
+	by_fmo_info(fmo_info){
+		let result=this.clone;
+		result.ghost_info=fmo_info,
+		result[default_info].ReceiverGhostHWnd=fmo_info.hwnd;
+		return result;
 	}
 	/**
 	 * 对于所有ghost进行操作
+	 * @param {Function|undefined} operation 操作函数
 	 */
-	get for_all_ghosts(){
+	for_all_ghosts(operation){
 		let result = new smart_array_object();
 		return this.get_fmo_infos().then(fmo_infos=>{
 			for(let uuid in fmo_infos)
-				result[uuid] = this.by_hwnd(fmo_infos[uuid].hwnd);
+				result[uuid] = this.by_fmo_info(fmo_infos[uuid]);
 			return result;
-		});
+		}).then(operation||(x=>x));
 	}
 	/**
 	 * 修改host
