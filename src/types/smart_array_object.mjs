@@ -1,4 +1,4 @@
-import { throw_error, type_judge } from "../base/tools.mjs";
+import { throw_error } from "../base/tools.mjs";
 import {
 	//assign,
 	//endline,
