@@ -7,6 +7,7 @@ import { security_level_t } from "../base/tools.js";
 
 /**
  * sstp method caller
+ * @group callers
  */
 interface method_caller{
 	(info: Object): Promise<sstp_info_t>,
@@ -15,6 +16,7 @@ interface method_caller{
 
 /**
  * event caller
+ * @group callers
  */
 interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
@@ -30,6 +32,7 @@ interface base_event_caller{
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
+ * @group callers
  */
 interface simple_event_caller extends base_event_caller {
 	(...args: any[]): Promise<sstp_info_t>,
@@ -51,12 +54,17 @@ interface simple_event_caller extends base_event_caller {
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
+ * @group callers
  */
 interface common_event_caller extends base_event_caller{
 	(info: Object): Promise<sstp_info_t>,
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+/**
+ * One more ghost_info attribute than {@link jsstp_t}
+ * @see {@link jsstp_with_ghost_info_t.ghost_info}
+ */
 interface jsstp_with_ghost_info_t extends jsstp_t{
 	ghost_info: single_fmo_info_t
 }

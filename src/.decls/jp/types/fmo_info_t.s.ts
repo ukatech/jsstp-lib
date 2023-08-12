@@ -20,7 +20,7 @@ import type { info_object } from "./info_object.d.ts";
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends info_object<string,string> {
+declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description 実行中のベースソフトのルートフォルダへのフルパス
 	 * @example E:\ssp\
