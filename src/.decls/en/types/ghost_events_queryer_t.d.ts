@@ -3,11 +3,11 @@ import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
 
 /**
  * ghost event finder: class definition implementation
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("Currently ghost does not support event queries");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
@@ -94,11 +94,11 @@ type ghost_events_queryer_t_constructor = {
 }
 /**
  * ghost event finder
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("Currently ghost does not support event queries");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -107,11 +107,11 @@ type ghost_events_queryer_t_constructor = {
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
  * ghost event finder
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("Currently ghost does not support event queries");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}

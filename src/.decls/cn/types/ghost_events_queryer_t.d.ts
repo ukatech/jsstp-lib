@@ -3,11 +3,11 @@ import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
 
 /**
  * ghost事件查询器：类定义实现
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("当前ghost不支持事件查询");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
@@ -94,11 +94,11 @@ type ghost_events_queryer_t_constructor = {
 }
 /**
  * ghost事件查询器
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("当前ghost不支持事件查询");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -107,11 +107,11 @@ type ghost_events_queryer_t_constructor = {
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
  * ghost事件查询器
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("当前ghost不支持事件查询");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("当前ghost不支持事件查询");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}

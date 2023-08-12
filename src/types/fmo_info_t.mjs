@@ -19,10 +19,10 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
 
 /**
  * fmo报文类
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
+ * @example  
+ * let fmo = jsstp.get_fmo_infos();  
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
+ * if(kikka_uuid)  
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}

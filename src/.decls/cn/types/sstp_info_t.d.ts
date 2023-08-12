@@ -14,9 +14,9 @@ Option: notranslate
 /**
  * sstp报文类：类定义实现
  * @see sstp_info_t
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
+ * @example  
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
+ * console.log(info.head);//SSTP/1.4 200 OK  
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  * @group sstp_info_t implementations
@@ -94,9 +94,9 @@ type sstp_info_t_constructor = {
 };
 /**
  * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
+ * @example  
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
+ * console.log(info.head);//SSTP/1.4 200 OK  
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  * @group sstp_info_t implementations
@@ -104,9 +104,9 @@ type sstp_info_t_constructor = {
 declare const sstp_info_t: typeof sstp_info_t_class_impl & sstp_info_t_constructor;
 /**
  * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
+ * @example  
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
+ * console.log(info.head);//SSTP/1.4 200 OK  
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  * @group sstp_info_t implementations

@@ -20,7 +20,7 @@ import{local,external}from"./base_values.mjs";
  * @param {String} str 需要分割的字符串
  * @param {String} spliter 分隔符
  * @returns {[String,String]} 分割后的字符串数组
- * @example
+ * @example  
  * var [key,value] = key_value_split("key: value",": ");
  * @ignore
  */
@@ -77,11 +77,11 @@ var is_not_nan = /*@__PURE__*/(num) => num == num;
 var type_judge = /*@__PURE__*/(value, X) => the_object(value) instanceof X;
 /**
  * 对代理的get方法进行封装，使其定义更为简单
- * @param {{
- * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,
- * 	_string_key_handler_:undefined|(target,key:String) =>any|undefined,
- * 	_symbol_key_handler_:undefined|(target,key:Symbol) =>any|undefined,
- * 	_default_handler_:undefined|(target,key:String|Symbol) =>any|undefined
+ * @param {{  
+ * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,  
+ * 	_string_key_handler_:undefined|(target,key:String) =>any|undefined,  
+ * 	_symbol_key_handler_:undefined|(target,key:Symbol) =>any|undefined,  
+ * 	_default_handler_:undefined|(target,key:String|Symbol) =>any|undefined  
  * }} info 代理的get方法的信息
  * @returns {(target, key:String|Symbol)=>any|undefined} 代理的get方法
  * @ignore
@@ -119,11 +119,11 @@ var default_setter = (target, key, value)=>((target[key] = value),1);
 /**
  * 根据getter信息创建一个代理
  * @param {Object} target 要代理的对象
- * @param {{
- * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,
- * 	_string_key_handler_:undefined|(target,key:String) =>any|undefined,
- * 	_symbol_key_handler_:undefined|(target,key:Symbol) =>any|undefined,
- * 	_default_handler_:undefined|(target,key:String|Symbol) =>any|undefined
+ * @param {{  
+ * 	_blocker_: undefined|(target,key:String|Symbol) =>Boolean,  
+ * 	_string_key_handler_:undefined|(target,key:String) =>any|undefined,  
+ * 	_symbol_key_handler_:undefined|(target,key:Symbol) =>any|undefined,  
+ * 	_default_handler_:undefined|(target,key:String|Symbol) =>any|undefined  
  * }} getter_info 代理的get方法的信息
  * @param {Object} other_info 其他信息
  * @returns {Proxy} 代理
