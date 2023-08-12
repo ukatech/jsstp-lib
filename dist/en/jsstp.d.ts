@@ -1,19 +1,19 @@
 /**
  * Extend object to provide some simple and iterative operations.
  */
-declare class info_object {
+declare class info_object<key_T=PropertyKey,value_T=any> {
 	/**
 	 * @description Get an array of all keys
 	 */
-	/*@__PURE__*/get keys(): PropertyKey[];
+	/*@__PURE__*/get keys(): key_T[];
 	/**
 	 * @description Get an array of all values
 	 */
-	/*@__PURE__*/get values(): any[];
+	/*@__PURE__*/get values(): value_T[];
 	/**
 	 * @description Get an array of all key-value pairs.
 	 */
-	/*@__PURE__*/get entries(): [PropertyKey, any][];
+	/*@__PURE__*/get entries(): [key_T, value_T][];
 	/**
 	 * @description Get the number of members
 	 */
@@ -22,27 +22,27 @@ declare class info_object {
 	 * @description Execute a function for each key-value pair.
 	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
 	 */
-	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
+	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T|undefined): void;
 	/**
 	 * @description Copy a new object
 	 * @returns {info_object} Copied object
 	 */
-	/*@__PURE__*/get trivial_clone(): info_object;
+	/*@__PURE__*/get trivial_clone(): info_object<key_T,value_T>;
 	/**
 	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
 	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
 	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...PropertyKey[],any]) => T): T[];
+	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[],value_T]) => T): T[];
 	/**
 	 * @description Traverses itself and returns a one-dimensional array of traversal results.
 	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
 	 */
-	/*@__PURE__*/map<T>(func: (value: any, key?: PropertyKey) => T): T[];
+	/*@__PURE__*/map<T>(func: (value: value_T, key?: key_T) => T): T[];
 	/**
 	 * @description Append elements to itself as an array.
-	 * @param {[undefined|[PropertyKey,any]]} array Array to append to.s
+	 * @param {[undefined|[key_T,value_T]]} array Array to append to.
 	 */
-	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
+	/*@__PURE__*/push(array: [undefined|[key_T, value_T]]): void;
 }
 
 /**
@@ -53,7 +53,7 @@ declare class info_object {
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t extends info_object {
+declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_object<key_T,value_T> {
 	/**
 	 * Constructing sstp_info_t from split string or object messages, is not recommended.
 	 * @param {String} info_head The header of the message.
@@ -110,7 +110,7 @@ declare class base_sstp_info_t extends info_object {
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
 	 * Construct sstp_info_t from split string or object messages, not recommended to use directly
 	 * @param {String} info_head The header of the message.
@@ -147,45 +147,73 @@ declare class sstp_info_t extends base_sstp_info_t {
 	/*@__PURE__*/get raw(): sstp_info_t;
 
 	/**
-	 * @description Get an array of all keys
-	 */
-	/*@__PURE__*/ get keys(): string[];
-	/**
-	 * @description Get an array of all values.
-	 */
-	/*@__PURE__*/ get values(): String[];
-	/**
-	 * @description Get an array of all key-value pairs.
-	 */
-	/*@__PURE__*/get entries(): [string, String][];
-	/**
-	 * @description Execute some function on each key-value pair.
-	 * @param {(value,key?)} func The function to execute, replacing the original value if the return value is not undefined.
-	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
-	/**
-	 * @description Iterates over itself and its children and returns a one-dimensional array of the results of the iteration.
-	 * @param {(dimensions[...] ,value):any} func Function to be executed, the return value will be added to the array
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
-	/**
-	 * @description Traverses itself and returns a one-dimensional array consisting of the results of the traversal.
-	 * @param {(value,key?):any} func The function to be executed, the return value will be added to the array
-	 */
-	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
-	/**
-	 * @description Append elements to itself according to array
-	 * @param {[undefined|[String,any]]} array Array to append to.
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
-
-	/**
 	 * Other message members
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;
 }
 
+/**
+ * fmo message class: single fmo message class
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+	/**
+	 * @description Full path to the root folder of the running base software
+	 * @example E:\ssp\
+	 */
+	path: string;
+	/**
+	 * @description Window handle of the main window
+	 * @example 918820
+	 */
+	hwnd: string;
+	/**
+	 * @description descript.txt's sakura.name
+	 * @example 橘花
+	 */
+	name: string;
+	/**
+	 * @description descript.txt's kero.name
+	 * @example 斗和
+	 */
+	keroname: string;
+	/**
+	 * @description Surface ID currently displayed on side \0
+	 * @example 0
+	 */
+	"sakura.surface": string;
+	/**
+	 * @description Surface ID currently displayed on the \1 side
+	 * @example 10
+	 */
+	"kero.surface": string;
+	/**
+	 * @description Window handle of the \1 side window
+	 * @example 67008
+	 */
+	kerohwnd: string;
+	/**
+	 * @description Comma-separated list of currently used window handles
+	 * @example 918820,67008
+	 */
+	hwndlist: string;
+	/**
+	 * @description Full path to the running ghost
+	 * @example E:\ssp\ghost\Taromati2\
+	 */
+	ghostpath: string;
+	/**
+	 * @description Name in the running ghost's descript.txt
+	 * @example Taromati2
+	 */
+	fullname: string;
+	/**
+	 * @description Module status of the running ghost
+	 * @example shiori:running,makoto-ghost:running
+	 */
+	modulestate: string;
+}
 /**
  * fmo message class
  * @example
@@ -197,7 +225,7 @@ declare class sstp_info_t extends base_sstp_info_t {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
 	 * Construct fmo_info_t from a string, not recommended for direct use
 	 * @param {String} fmo_text
@@ -246,43 +274,10 @@ declare class fmo_info_t extends base_sstp_info_t {
 	/*@__PURE__*/toJSON(): Object;
 
 	/**
-	 * @description Get an array of all keys
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description Get an array of all values
-	 */
-	/*@__PURE__*/get values(): base_sstp_info_t[];
-	/**
-	 * @description Get an array of all key-value pairs.
-	 */
-	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
-	/**
-	 * @description Execute a function for each key-value pair.
-	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
-	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
-	/**
-	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
-	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
-	/**
-	 * @description Traverses itself and returns a one-dimensional array of traversal results.
-	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
-	 */
-	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
-	/**
-	 * @description Append an array to itself.
-	 * @param {[undefined|[String,any]]} array The array to append.
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
-
-	/**
 	 * fmo members
-	 * @type {base_sstp_info_t|undefined}
+	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	[uuid: string]: single_fmo_info_t|undefined;
 }
 
 /**
@@ -337,6 +332,9 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+interface jsstp_with_ghost_info_t extends jsstp_t{
+	ghost_info: single_fmo_info_t
+}
 /**
  * jsstp object
  * @see {@link jsstp}
@@ -447,6 +445,27 @@ declare class jsstp_t{
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
+
+	/**
+	 * Copy a new jsstp object
+	 * @group Clone Methods
+	 */
+	get clone(): jsstp_t;
+
+	/**
+	 * Copy a new jsstp object for the given fmo_info
+	 * @param fmo_info fmo_info of target ghost
+	 * @returns {jsstp_t} New jsstp object pointing to target ghost
+	 * @group Clone Methods
+	 */
+	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
+
+	/**
+	 * For all ghost operations
+	 * @param {Function|undefined} operation operator function
+	 */
+	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+
 	/**
 	 * Sends a message in text and receives it back in text
 	 * @param {any} info Message body (text)
@@ -734,7 +753,7 @@ type ghost_events_queryer_t_call_signature = {
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see based on {@link ghost_events_queryer_t.check_event}
+	 * @see based on {@link ghost_events_queryer_t_class_impl.check_event}
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }

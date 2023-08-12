@@ -1,19 +1,19 @@
 /**
  * 拓展object，提供一些简单且遍历的操作
  */
-declare class info_object {
+declare class info_object<key_T=PropertyKey,value_T=any> {
 	/**
 	 * @description 获取所有key的数组
 	 */
-	/*@__PURE__*/get keys(): PropertyKey[];
+	/*@__PURE__*/get keys(): key_T[];
 	/**
 	 * @description 获取所有value的数组
 	 */
-	/*@__PURE__*/get values(): any[];
+	/*@__PURE__*/get values(): value_T[];
 	/**
 	 * @description 获取所有key-value对的数组
 	 */
-	/*@__PURE__*/get entries(): [PropertyKey, any][];
+	/*@__PURE__*/get entries(): [key_T, value_T][];
 	/**
 	 * @description 获取成员数量
 	 */
@@ -22,27 +22,27 @@ declare class info_object {
 	 * @description 对每个key-value对执行某个函数
 	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
-	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
+	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T|undefined): void;
 	/**
 	 * @description 复制一个新的对象
 	 * @returns {info_object} 复制的对象
 	 */
-	/*@__PURE__*/get trivial_clone(): info_object;
+	/*@__PURE__*/get trivial_clone(): info_object<key_T,value_T>;
 	/**
 	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...PropertyKey[],any]) => T): T[];
+	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[],value_T]) => T): T[];
 	/**
 	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
 	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
 	 */
-	/*@__PURE__*/map<T>(func: (value: any, key?: PropertyKey) => T): T[];
+	/*@__PURE__*/map<T>(func: (value: value_T, key?: key_T) => T): T[];
 	/**
 	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[PropertyKey,any]]} array 要追加的数组
+	 * @param {[undefined|[key_T,value_T]]} array 要追加的数组
 	 */
-	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
+	/*@__PURE__*/push(array: [undefined|[key_T, value_T]]): void;
 }
 
 /**
@@ -53,7 +53,7 @@ declare class info_object {
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t extends info_object {
+declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_object<key_T,value_T> {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
@@ -110,7 +110,7 @@ declare class base_sstp_info_t extends info_object {
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
 	 * @param {String} info_head 报文头
@@ -147,45 +147,73 @@ declare class sstp_info_t extends base_sstp_info_t {
 	/*@__PURE__*/get raw(): sstp_info_t;
 
 	/**
-	 * @description 获取所有key的数组
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description 获取所有value的数组
-	 */
-	/*@__PURE__*/get values(): String[];
-	/**
-	 * @description 获取所有key-value对的数组
-	 */
-	/*@__PURE__*/get entries(): [string, String][];
-	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
-	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
-	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
-	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
-	 */
-	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
-	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
-
-	/**
 	 * 其他报文成员
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;
 }
 
+/**
+ * fmo报文类：单个fmo信息类
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+	/**
+	 * @description 正在运行的基础软件根文件夹的完整路径
+	 * @example E:\ssp\
+	 */
+	path: string;
+	/**
+	 * @description 主窗口的窗口句柄
+	 * @example 918820
+	 */
+	hwnd: string;
+	/**
+	 * @description descript.txt的sakura.name
+	 * @example 橘花
+	 */
+	name: string;
+	/**
+	 * @description descript.txt的kero.name
+	 * @example 斗和
+	 */
+	keroname: string;
+	/**
+	 * @description \0侧当前显示的surface ID
+	 * @example 0
+	 */
+	"sakura.surface": string;
+	/**
+	 * @description \1侧当前显示的surface ID
+	 * @example 10
+	 */
+	"kero.surface": string;
+	/**
+	 * @description \1侧窗口的窗口句柄
+	 * @example 67008
+	 */
+	kerohwnd: string;
+	/**
+	 * @description 当前使用的窗口句柄的逗号分隔列表
+	 * @example 918820,67008
+	 */
+	hwndlist: string;
+	/**
+	 * @description 正在运行的ghost的完整路径
+	 * @example E:\ssp\ghost\Taromati2\
+	 */
+	ghostpath: string;
+	/**
+	 * @description 正在运行的ghost的descript.txt的name
+	 * @example Taromati2
+	 */
+	fullname: string;
+	/**
+	 * @description 正在运行的ghost的模块状态
+	 * @example shiori:running,makoto-ghost:running
+	 */
+	modulestate: string;
+}
 /**
  * fmo报文类
  * @example
@@ -197,7 +225,7 @@ declare class sstp_info_t extends base_sstp_info_t {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text
@@ -244,45 +272,11 @@ declare class fmo_info_t extends base_sstp_info_t {
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
-
-	/**
-	 * @description 获取所有key的数组
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description 获取所有value的数组
-	 */
-	/*@__PURE__*/get values(): base_sstp_info_t[];
-	/**
-	 * @description 获取所有key-value对的数组
-	 */
-	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
-	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
-	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
-	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
-	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
-	 */
-	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
-	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
-
 	/**
 	 * fmo成员
-	 * @type {base_sstp_info_t|undefined}
+	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	[uuid: string]: single_fmo_info_t|undefined;
 }
 
 /**
@@ -337,6 +331,9 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+interface jsstp_with_ghost_info_t extends jsstp_t{
+	ghost_info: single_fmo_info_t
+}
 /**
  * jsstp对象
  * @see {@link jsstp}
@@ -447,6 +444,27 @@ declare class jsstp_t{
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
+
+	/**
+	 * 复制一个新的jsstp对象
+	 * @group Clone Methods
+	 */
+	get clone(): jsstp_t;
+
+	/**
+	 * 复制一个新的jsstp对象对于给定的fmo_info
+	 * @param fmo_info 目标ghost的fmo_info
+	 * @returns {jsstp_t} 新的指向目标ghost的jsstp对象
+	 * @group Clone Methods
+	 */
+	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
+
+	/**
+	 * 对于所有ghost进行操作
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+
 	/**
 	 * 以文本发送报文并以文本接收返信
 	 * @param {any} info 报文体（文本）
@@ -734,7 +752,7 @@ type ghost_events_queryer_t_call_signature = {
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see 基于 {@link ghost_events_queryer_t.check_event}
+	 * @see 基于 {@link ghost_events_queryer_t_class_impl.check_event}
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }

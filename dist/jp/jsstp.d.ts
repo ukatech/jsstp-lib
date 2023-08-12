@@ -1,19 +1,19 @@
 /**
  * オブジェクトを拡張して、いくつかの簡単な反復操作を提供する。
  */
-declare class info_object {
+declare class info_object<key_T=PropertyKey,value_T=any> {
 	/**
 	 * @description すべてのキーの配列を取得する
 	 */
-	/*@__PURE__*/get keys(): PropertyKey[];
+	/*@__PURE__*/get keys(): key_T[];
 	/**
 	 * @description すべての値の配列を取得する
 	 */
-	/*@__PURE__*/get values(): any[];
+	/*@__PURE__*/get values(): value_T[];
 	/**
 	 * @description すべてのキーと値のペアの配列を取得します。
 	 */
-	/*@__PURE__*/get entries(): [PropertyKey, any][];
+	/*@__PURE__*/get entries(): [key_T, value_T][];
 	/**
 	 * @description 会員数の取得
 	 */
@@ -22,27 +22,27 @@ declare class info_object {
 	 * @description キーと値のペアごとに関数を実行する。
 	 * @param {(value,key?)} func 戻り値が未定義でない場合に、元の値を置き換えるために実行される関数。
 	 */
-	/*@__PURE__*/forEach(func: (value: any, key?: PropertyKey) => any|undefined): void;
+	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T|undefined): void;
 	/**
 	 * @description 新しいオブジェクトをコピーします。
 	 * @returns {info_object} コピーされたオブジェクト
 	 */
-	/*@__PURE__*/get trivial_clone(): info_object;
+	/*@__PURE__*/get trivial_clone(): info_object<key_T,value_T>;
 	/**
 	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
 	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...PropertyKey[],any]) => T): T[];
+	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[],value_T]) => T): T[];
 	/**
 	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
 	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
-	/*@__PURE__*/map<T>(func: (value: any, key?: PropertyKey) => T): T[];
+	/*@__PURE__*/map<T>(func: (value: value_T, key?: key_T) => T): T[];
 	/**
 	 * @description 要素を配列として自分自身に追加する。
-	 * @param {[undefined|[PropertyKey,any]]} array 追加する配列。
+	 * @param {[undefined|[key_T,value_T]]} array 追加する配列。
 	 */
-	/*@__PURE__*/push(array: [undefined|[PropertyKey, any]]): void;
+	/*@__PURE__*/push(array: [undefined|[key_T, value_T]]): void;
 }
 
 /**
@@ -53,7 +53,7 @@ declare class info_object {
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t extends info_object {
+declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_object<key_T,value_T> {
 	/**
 	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
 	 * @param {String} info_head メッセージのヘッダー。
@@ -110,7 +110,7 @@ declare class base_sstp_info_t extends info_object {
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
 	 * 分割された文字列メッセージまたはオブジェクト・メッセージから sstp_info_t を構築する，直接の使用は推奨されない。
 	 * @param {String} info_head メッセージのヘッダー。
@@ -147,45 +147,73 @@ declare class sstp_info_t extends base_sstp_info_t {
 	/*@__PURE__*/get raw(): sstp_info_t;
 
 	/**
-	 * @description すべてのキーの配列を取得する
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description すべての値の配列を取得する
-	 */
-	/*@__PURE__*/get values(): String[];
-	/**
-	 * @description すべてのキーと値のペアの配列を取得します。
-	 */
-	/*@__PURE__*/get entries(): [string, String][];
-	/**
-	 * @description キーと値のペアごとに関数を実行する。
-	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
-	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
-	/**
-	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
-	/**
-	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
-	/**
-	 * @description 配列をそれ自身に追加する。
-	 * @param {[undefined|[String,any]]} array 追加する配列。
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
-
-	/**
 	 * その他のメッセージメンバー
 	 * @type {String|undefined}
 	 */
 	[key: string]: String | undefined;
 }
 
+/**
+ * fmoメッセージクラス：単一のfmoメッセージクラス
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+	/**
+	 * @description 実行中のベースソフトのルートフォルダへのフルパス
+	 * @example E:\ssp\
+	 */
+	path: string;
+	/**
+	 * @description メインウィンドウのウィンドウハンドル
+	 * @example 918820
+	 */
+	hwnd: string;
+	/**
+	 * @description ディスクリプタ.txtのsakura.name
+	 * @example 橘花
+	 */
+	name: string;
+	/**
+	 * @description descript.txtのkero.name
+	 * @example 斗和
+	 */
+	keroname: string;
+	/**
+	 * @description 現在サイドに表示されているサーフェスID
+	 * @example 0
+	 */
+	"sakura.surface": string;
+	/**
+	 * @description 現在表示されているサーフェスID
+	 * @example 10
+	 */
+	"kero.surface": string;
+	/**
+	 * @description サイドウィンドウのハンドル
+	 * @example 67008
+	 */
+	kerohwnd: string;
+	/**
+	 * @description 現在使用されているウィンドウハンドルのカンマ区切りリスト
+	 * @example 918820,67008
+	 */
+	hwndlist: string;
+	/**
+	 * @description 実行中のゴーストへのフルパス
+	 * @example E:\ssp\ghost\Taromati2\
+	 */
+	ghostpath: string;
+	/**
+	 * @description 実行中のゴーストのdescript.txtの名前
+	 * @example Taromati2
+	 */
+	fullname: string;
+	/**
+	 * @description 実行中のゴーストのモジュール状態
+	 * @example shiori:running,makoto-ghost:running
+	 */
+	modulestate: string;
+}
 /**
  * FMOメッセージクラス
  * @example
@@ -197,7 +225,7 @@ declare class sstp_info_t extends base_sstp_info_t {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
 	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する，直接の使用は推奨されない。
 	 * @param {String} fmo_text
@@ -246,43 +274,10 @@ declare class fmo_info_t extends base_sstp_info_t {
 	/*@__PURE__*/toJSON(): Object;
 
 	/**
-	 * @description すべてのキーの配列を取得する
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description すべての値の配列を取得する
-	 */
-	/*@__PURE__*/get values(): base_sstp_info_t[];
-	/**
-	 * @description すべてのキーと値のペアの配列を取得します。
-	 */
-	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
-	/**
-	 * @description キーと値のペアごとに関数を実行する。
-	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
-	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
-	/**
-	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(dimensions[...],value):any} func 実行する関数。 value):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
-	/**
-	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
-	/**
-	 * @description 配列をそれ自身に追加する。
-	 * @param {[undefined|[String,any]]} array 追加する配列。
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
-
-	/**
 	 * fmoメンバー
-	 * @type {base_sstp_info_t|undefined}
+	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	[uuid: string]: single_fmo_info_t|undefined;
 }
 
 /**
@@ -337,6 +332,9 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+interface jsstp_with_ghost_info_t extends jsstp_t{
+	ghost_info: single_fmo_info_t
+}
 /**
  * jsstpオブジェクト
  * @see {@link jsstp}
@@ -447,6 +445,27 @@ declare class jsstp_t{
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
+
+	/**
+	 * 新しいjsstpオブジェクトをコピーする
+	 * @group Clone Methods
+	 */
+	get clone(): jsstp_t;
+
+	/**
+	 * 与えられたfmo_infoに対して新しいjsstpオブジェクトをコピーする。
+	 * @param fmo_info ターゲットゴーストのfm_info
+	 * @returns {jsstp_t} ターゲットゴーストを指す新しいjsstpオブジェクト
+	 * @group Clone Methods
+	 */
+	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
+
+	/**
+	 * すべてのゴースト操作に対して
+	 * @param {Function|undefined} operation 演算子
+	 */
+	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+
 	/**
 	 * テキストでメッセージを送信し、テキストでそれを受信する
 	 * @param {any} info メッセージ本文 (テキスト)
@@ -734,7 +753,7 @@ type ghost_events_queryer_t_call_signature = {
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see {@link ghost_events_queryer_t.check_event} に基づく。
+	 * @see {@link ghost_events_queryer_t_class_impl.check_event} に基づく。
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }
