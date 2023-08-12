@@ -154,10 +154,25 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 }
 
 /**
- * fmoメッセージクラス：単一のfmoメッセージクラス
+ * fmoメッセージクラス：単一のfmo情報クラス
+ * 単一のゴーストの全てのfmo情報を記録します。
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
+ * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+declare class single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description 実行中のベースソフトのルートフォルダへのフルパス
 	 * @example E:\ssp\
@@ -279,6 +294,58 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 */
 	[uuid: string]: single_fmo_info_t|undefined;
 }
+
+/**
+ * より読みやすい派生クラスの関数型で初期化できる拡張可能な関数型。
+ */
+declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+	/**
+	 * 自己関数のインスタンス初期化
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	constructor(func: (...args: args_T) => return_T);
+	/**
+	 * 関数を呼び出し、関数の this 値を指定されたオブジェクトに、関数の引数を指定された配列に置き換えます。  
+	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
+	 * @param thisArg thisオブジェクトとして使用されるオブジェクト。
+	 * @param argArray 関数に渡される引数のセット。
+	 */
+	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
+
+	/**
+	 * 現在のオブジェクトを別のオブジェクトに置き換えるオブジェクトのメソッドを呼び出します。  
+	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
+	 * @param thisArg 現在のオブジェクトとして使用されるオブジェクト。
+	 * @param argArray メソッドに渡される引数のリスト。
+	 */
+	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
+
+	/**
+	 * 与えられた関数に対して、元の関数と同じボディを持つ束縛関数を作成します。  
+	 * バインドされた関数の this オブジェクトは、指定されたオブジェクトに関連付けられ、指定された初期引数を持ちます。  
+	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
+	 * @param thisArg 新しい関数内で this キーワードが参照できるオブジェクト。
+	 * @param argArray 新しい関数に渡される引数のリスト。
+	 */
+	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
+
+	/**
+	 * 関数の名前
+	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
+	 */
+	readonly name: string;
+
+	/**
+	 * 関数の引数の数
+	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
+	 */
+	readonly length: number;
+}
+/**
+ * ghost交互中的安全等级
+ */
+type security_level_t = "local" | "external";
 
 /**
  * sstp メソッド呼び出し元
@@ -414,10 +481,9 @@ declare class jsstp_t{
 	};
 	/**
 	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external "です。
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 
 	/**
 	 * 自己弁護
@@ -461,10 +527,15 @@ declare class jsstp_t{
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
 	/**
-	 * すべてのゴースト操作に対して
-	 * @param {Function|undefined} operation 演算子
+	 * すべてのゴーストのfmoinfoを処理する
+	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	/**
+	 * すべてのゴースト・オペレーション
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
 	/**
 	 * テキストでメッセージを送信し、テキストでそれを受信する
@@ -647,39 +718,6 @@ declare class jsstp_t{
 }
 
 /**
- * より読みやすい派生クラスの関数型で初期化できる拡張可能な関数型。
- */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
-	/**
-	 * 自己関数のインスタンス初期化
-	 * @param {Function} func
-	 * @returns {ExtensibleFunction}
-	 */
-	constructor(func: (...args: args_T) => return_T);
-	/**
-	 * 関数を呼び出し、関数の this 値を指定されたオブジェクトに、関数の引数を指定された配列に置き換えます。
-	 * @param thisArg thisオブジェクトとして使用されるオブジェクト。
-	 * @param argArray 関数に渡される引数のセット。
-	 */
-	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
-
-	/**
-	 * 現在のオブジェクトを別のオブジェクトに置き換えるオブジェクトのメソッドを呼び出します。
-	 * @param thisArg 現在のオブジェクトとして使用されるオブジェクト。
-	 * @param argArray メソッドに渡される引数のリスト。
-	 */
-	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
-
-	/**
-	 * 与えられた関数に対して、元の関数と同じボディを持つ束縛関数を作成します。
-	 * バインドされた関数の this オブジェクトは、指定されたオブジェクトに関連付けられ、指定された初期引数を持ちます。
-	 * @param thisArg 新しい関数内で this キーワードが参照できるオブジェクト。
-	 * @param argArray 新しい関数に渡される引数のリスト。
-	 */
-	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
-}
-
-/**
  * ゴースト・イベント・ファインダー：クラス定義の実装
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
@@ -688,6 +726,7 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
@@ -698,10 +737,9 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
 	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external"です。
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 	/**
 	 * イベントの存在をチェックするには、ゴーストは少なくとも `Has_Event` イベントをサポートしている必要があり、`Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
@@ -743,6 +781,7 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 }
 /**
  * ゴースト・イベント・ファインダー：コール・シグネチャー
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
@@ -759,6 +798,7 @@ type ghost_events_queryer_t_call_signature = {
 }
 /**
  * ゴースト・イベント・ファインダー: コンストラクタのインターフェイス宣言
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_constructor = {
 	/**
@@ -778,6 +818,7 @@ type ghost_events_queryer_t_constructor = {
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
@@ -790,6 +831,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
 	constructor: typeof ghost_events_queryer_t;

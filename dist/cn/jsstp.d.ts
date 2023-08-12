@@ -155,9 +155,24 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 
 /**
  * fmo报文类：单个fmo信息类
+ * 记录单个ghost所有的fmo信息
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
+ * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+declare class single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description 正在运行的基础软件根文件夹的完整路径
 	 * @example E:\ssp\
@@ -278,6 +293,58 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 */
 	[uuid: string]: single_fmo_info_t|undefined;
 }
+
+/**
+ * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
+ */
+declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+	/**
+	 * 自函数实例初始化
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	constructor(func: (...args: args_T) => return_T);
+	/**
+	 * 调用函数，用指定的对象代替函数的this值，用指定的数组代替函数的参数。  
+	 * [MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
+	 * @param thisArg 将被用作this对象的对象。
+	 * @param argArray 一组要传递给函数的参数。
+	 */
+	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
+
+	/**
+	 * 调用一个对象的方法，用另一个对象代替当前对象。  
+	 * [MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
+	 * @param thisArg 将被用作当前对象的对象。
+	 * @param argArray 要传递给方法的参数列表。
+	 */
+	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
+
+	/**
+	 * 对于一个给定的函数，创建一个绑定的函数，其主体与原函数相同。  
+	 * 绑定函数的this对象与指定的对象相关联，并具有指定的初始参数。  
+	 * [MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
+	 * @param thisArg 一个对象，this关键字可以在新函数中引用。
+	 * @param argArray 一个要传递给新函数的参数列表。
+	 */
+	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
+
+	/**
+	 * 函数的显示名称。  
+	 * [MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
+	 */
+	readonly name: string;
+
+	/**
+	 * 函数所接受的命名参数的数量。  
+	 * [MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
+	 */
+	readonly length: number;
+}
+/**
+ * ghost交互中的安全等级
+ */
+type security_level_t = "local" | "external";
 
 /**
  * sstp方法调用器
@@ -413,10 +480,9 @@ declare class jsstp_t{
 	};
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 
 	/**
 	 * 自身代理
@@ -460,10 +526,15 @@ declare class jsstp_t{
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
 	/**
+	 * 对于所有ghost的fmoinfo进行处理
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	/**
 	 * 对于所有ghost进行操作
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
 	/**
 	 * 以文本发送报文并以文本接收返信
@@ -646,39 +717,6 @@ declare class jsstp_t{
 }
 
 /**
- * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
- */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
-	/**
-	 * 自函数实例初始化
-	 * @param {Function} func
-	 * @returns {ExtensibleFunction}
-	 */
-	constructor(func: (...args: args_T) => return_T);
-	/**
-	 * 调用函数，用指定的对象代替函数的this值，用指定的数组代替函数的参数。
-	 * @param thisArg 将被用作this对象的对象。
-	 * @param argArray 一组要传递给函数的参数。
-	 */
-	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
-
-	/**
-	 * 调用一个对象的方法，用另一个对象代替当前对象。
-	 * @param thisArg 将被用作当前对象的对象。
-	 * @param argArray 要传递给方法的参数列表。
-	 */
-	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
-
-	/**
-	 * 对于一个给定的函数，创建一个绑定的函数，其主体与原函数相同。
-	 * 绑定函数的this对象与指定的对象相关联，并具有指定的初始参数。
-	 * @param thisArg 一个对象，this关键字可以在新函数中引用。
-	 * @param argArray 一个要传递给新函数的参数列表。
-	 */
-	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
-}
-
-/**
  * ghost事件查询器：类定义实现
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
@@ -687,6 +725,7 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
@@ -697,10 +736,9 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
@@ -742,6 +780,7 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 }
 /**
  * ghost事件查询器：调用签名
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
@@ -758,6 +797,7 @@ type ghost_events_queryer_t_call_signature = {
 }
 /**
  * ghost事件查询器：构造器接口声明
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_constructor = {
 	/**
@@ -777,6 +817,7 @@ type ghost_events_queryer_t_constructor = {
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
@@ -789,6 +830,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
 	constructor: typeof ghost_events_queryer_t;

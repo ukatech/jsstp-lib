@@ -154,10 +154,25 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 }
 
 /**
- * fmo message class: single fmo message class
+ * fmo message class: single fmo information class
+ * Record all fmo info of a single ghost.
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
+ * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+declare class single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description Full path to the root folder of the running base software
 	 * @example E:\ssp\
@@ -279,6 +294,59 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 */
 	[uuid: string]: single_fmo_info_t|undefined;
 }
+
+/**
+ * An extensible function type that can be initialised with a function for the more readable derived class function type
+ */
+declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+	/**
+	 * Initialising from a function instance  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	constructor(func: (...args: args_T) => return_T);
+	/**
+	 * Calls a function and replaces the function's this value with the specified object and the function's arguments with the specified array.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
+	 * @param thisArg The object that will be used as the this object.
+	 * @param argArray A set of arguments to be passed to the function.
+	 */
+	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
+
+	/**
+	 * Calls a method on an object that replaces the current object with another object.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
+	 * @param thisArg The object that will be used as the current object.
+	 * @param argArray The list of arguments to be passed to the method.
+	 */
+	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
+
+	/**
+	 * For a given function, creates a bound function with the same body as the original function.  
+	 * The this object of the bound function is associated with the specified object and has the specified initial argument.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
+	 * @param thisArg An object that the this keyword can refer to in the new function.
+	 * @param argArray A list of arguments to be passed to the new function.
+	 */
+	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
+
+	/**
+	 * Function's name.
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
+	 */
+	readonly name: string;
+
+	/**
+	 * The number of arguments expected by the function.
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
+	 */
+	readonly length: number;
+}
+/**
+ * Security levels in ghost interactions
+ */
+type security_level_t = "local" | "external";
 
 /**
  * sstp method caller
@@ -414,10 +482,9 @@ declare class jsstp_t{
 	};
 	/**
 	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 
 	/**
 	 * Self Proxy
@@ -461,10 +528,15 @@ declare class jsstp_t{
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
 	/**
-	 * For all ghost operations
-	 * @param {Function|undefined} operation operator function
+	 * Processing of fmoinfo for all ghosts
+	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	/**
+	 * Operate on all ghosts
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
 	/**
 	 * Sends a message in text and receives it back in text
@@ -647,39 +719,6 @@ declare class jsstp_t{
 }
 
 /**
- * An extensible function type that can be initialised with a function for the more readable derived class function type
- */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
-	/**
-	 * Initialising from a function instance
-	 * @param {Function} func
-	 * @returns {ExtensibleFunction}
-	 */
-	constructor(func: (...args: args_T) => return_T);
-	/**
-	 * Calls a function and replaces the function's this value with the specified object and the function's arguments with the specified array.
-	 * @param thisArg The object that will be used as the this object.
-	 * @param argArray A set of arguments to be passed to the function.
-	 */
-	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
-
-	/**
-	 * Calls a method on an object that replaces the current object with another object.
-	 * @param thisArg The object that will be used as the current object.
-	 * @param argArray The list of arguments to be passed to the method.
-	 */
-	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
-
-	/**
-	 * For a given function, creates a bound function with the same body as the original function.
-	 * The this object of the bound function is associated with the specified object and has the specified initial argument.
-	 * @param thisArg An object that the this keyword can refer to in the new function.
-	 * @param argArray A list of arguments to be passed to the new function.
-	 */
-	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
-}
-
-/**
  * ghost event finder: class definition implementation
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
@@ -688,6 +727,7 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
@@ -698,10 +738,9 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
 	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 	/**
 	 * To check for the existence of events, ghost requires at least `Has_Event` event support and can be made more efficient by providing `Get_Supported_Events` events
 	 * @param {String} event_name
@@ -743,6 +782,7 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 }
 /**
  * ghost event finder: call signatures
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
@@ -759,6 +799,7 @@ type ghost_events_queryer_t_call_signature = {
 }
 /**
  * ghost event finder: constructor interface declaration
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_constructor = {
 	/**
@@ -778,6 +819,7 @@ type ghost_events_queryer_t_constructor = {
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
@@ -790,6 +832,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
 	constructor: typeof ghost_events_queryer_t;
