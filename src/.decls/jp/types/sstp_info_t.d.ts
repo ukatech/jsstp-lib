@@ -20,7 +20,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t_class_impl extends base_sstp_info_t {
+declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 	/**
 	 * 分割された文字列メッセージまたはオブジェクト・メッセージから sstp_info_t を構築する，直接の使用は推奨されない。
 	 * @param {String} info_head メッセージのヘッダー。
@@ -55,41 +55,6 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t {
 	 * @returns {sstp_info_t} 原物
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
-
-	//base_sstp_info_t的成员
-
-	/**
-	 * @description すべてのキーの配列を取得する
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description すべての値の配列を取得する
-	 */
-	/*@__PURE__*/get values(): String[];
-	/**
-	 * @description すべてのキーと値のペアの配列を取得します。
-	 */
-	/*@__PURE__*/get entries(): [string, String][];
-	/**
-	 * @description キーと値のペアごとに関数を実行する。
-	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
-	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
-	/**
-	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
-	/**
-	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
-	/**
-	 * @description 配列をそれ自身に追加する。
-	 * @param {[undefined|[String,any]]} array 追加する配列。
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
 }
 /**
  * 補足sstpメッセージ・クラスのデフォルト・メンバー

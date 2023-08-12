@@ -1,7 +1,8 @@
-import type fmo_info_t from "./fmo_info_t.d.ts";
+import type { single_fmo_info_t , fmo_info_t } from "./fmo_info_t.d.ts";
 import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type { info_object } from "./info_object.d.ts";
 
 /**
  * sstp メソッド呼び出し元
@@ -55,6 +56,9 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+interface jsstp_with_ghost_info_t extends jsstp_t{
+	ghost_info: single_fmo_info_t
+}
 //定义一个包装器
 /**
  * jsstpオブジェクト
@@ -166,6 +170,27 @@ declare class jsstp_t{
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
+
+	/**
+	 * 新しいjsstpオブジェクトをコピーする
+	 * @group Clone Methods
+	 */
+	get clone(): jsstp_t;
+
+	/**
+	 * 与えられたfmo_infoに対して新しいjsstpオブジェクトをコピーする。
+	 * @param fmo_info ターゲットゴーストのfm_info
+	 * @returns {jsstp_t} ターゲットゴーストを指す新しいjsstpオブジェクト
+	 * @group Clone Methods
+	 */
+	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
+
+	/**
+	 * すべてのゴースト操作に対して
+	 * @param {Function|undefined} operation 演算子
+	 */
+	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+
 	/**
 	 * テキストでメッセージを送信し、テキストでそれを受信する
 	 * @param {any} info メッセージ本文 (テキスト)

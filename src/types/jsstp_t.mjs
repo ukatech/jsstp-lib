@@ -67,7 +67,7 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
 var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type]}`;
 
 import{SEND as default_sstp_method}from"../base/value_table.mjs"
-import smart_array_object from "./smart_array_object.mjs";
+import new_object from "./info_object.mjs";
 
 //定义一个包装器
 /**
@@ -156,13 +156,13 @@ class jsstp_t {
 	 * 对于所有ghost进行操作
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts(operation){
-		let result = new smart_array_object();
+	for_all_ghosts(operation=(x=>x)){
+		let result = new_object();
 		return this.get_fmo_infos().then(fmo_infos=>{
 			for(let uuid in fmo_infos)
-				result[uuid] = this.by_fmo_info(fmo_infos[uuid]);
+				result[uuid] = operation?.(this.by_fmo_info(fmo_infos[uuid]));
 			return result;
-		}).then(operation||(x=>x));
+		});
 	}
 	/**
 	 * 修改host

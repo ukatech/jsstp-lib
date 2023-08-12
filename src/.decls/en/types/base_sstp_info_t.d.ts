@@ -17,7 +17,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t extends info_object {
+declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_object<key_T,value_T> {
 	/**
 	 * Constructing sstp_info_t from split string or object messages, is not recommended.
 	 * @param {String} info_head The header of the message.

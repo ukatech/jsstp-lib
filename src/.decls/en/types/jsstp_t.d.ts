@@ -1,7 +1,8 @@
-import type fmo_info_t from "./fmo_info_t.d.ts";
+import type { single_fmo_info_t , fmo_info_t } from "./fmo_info_t.d.ts";
 import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type { info_object } from "./info_object.d.ts";
 
 /**
  * sstp method caller
@@ -55,6 +56,9 @@ interface common_event_caller extends base_event_caller{
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+interface jsstp_with_ghost_info_t extends jsstp_t{
+	ghost_info: single_fmo_info_t
+}
 //定义一个包装器
 /**
  * jsstp object
@@ -166,6 +170,27 @@ declare class jsstp_t{
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
+
+	/**
+	 * Copy a new jsstp object
+	 * @group Clone Methods
+	 */
+	get clone(): jsstp_t;
+
+	/**
+	 * Copy a new jsstp object for the given fmo_info
+	 * @param fmo_info fmo_info of target ghost
+	 * @returns {jsstp_t} New jsstp object pointing to target ghost
+	 * @group Clone Methods
+	 */
+	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
+
+	/**
+	 * For all ghost operations
+	 * @param {Function|undefined} operation operator function
+	 */
+	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+
 	/**
 	 * Sends a message in text and receives it back in text
 	 * @param {any} info Message body (text)

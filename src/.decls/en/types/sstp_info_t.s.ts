@@ -19,7 +19,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t {
+declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
 	 * Construct sstp_info_t from split string or object messages, not recommended to use directly
 	 * @param {String} info_head The header of the message.
@@ -54,41 +54,6 @@ declare class sstp_info_t extends base_sstp_info_t {
 	 * @returns {sstp_info_t} raw object
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
-
-	//base_sstp_info_t的成员
-
-	/**
-	 * @description Get an array of all keys
-	 */
-	/*@__PURE__*/ get keys(): string[];
-	/**
-	 * @description Get an array of all values.
-	 */
-	/*@__PURE__*/ get values(): String[];
-	/**
-	 * @description Get an array of all key-value pairs.
-	 */
-	/*@__PURE__*/get entries(): [string, String][];
-	/**
-	 * @description Execute some function on each key-value pair.
-	 * @param {(value,key?)} func The function to execute, replacing the original value if the return value is not undefined.
-	 */
-	/*@__PURE__*/forEach(func: (value: String, key?: string) => String|undefined): void;
-	/**
-	 * @description Iterates over itself and its children and returns a one-dimensional array of the results of the iteration.
-	 * @param {(dimensions[...] ,value):any} func Function to be executed, the return value will be added to the array
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],String]) => T): T[];
-	/**
-	 * @description Traverses itself and returns a one-dimensional array consisting of the results of the traversal.
-	 * @param {(value,key?):any} func The function to be executed, the return value will be added to the array
-	 */
-	/*@__PURE__*/map<T>(func: (value: String, key?: string) => T): T[];
-	/**
-	 * @description Append elements to itself according to array
-	 * @param {[undefined|[String,any]]} array Array to append to.
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, String]]): void;
 
 	/**
 	 * Other message members

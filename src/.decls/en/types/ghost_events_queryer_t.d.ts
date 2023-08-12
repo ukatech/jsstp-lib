@@ -75,7 +75,7 @@ type ghost_events_queryer_t_call_signature = {
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see based on {@link ghost_events_queryer_t.check_event}
+	 * @see based on {@link ghost_events_queryer_t_class_impl.check_event}
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
 }

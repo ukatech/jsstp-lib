@@ -1,6 +1,67 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
 /**
+ * fmoメッセージクラス：単一のfmoメッセージクラス
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+	/**
+	 * @description 実行中のベースソフトのルートフォルダへのフルパス
+	 * @example E:\ssp\
+	 */
+	path: string;
+	/**
+	 * @description メインウィンドウのウィンドウハンドル
+	 * @example 918820
+	 */
+	hwnd: string;
+	/**
+	 * @description ディスクリプタ.txtのsakura.name
+	 * @example 橘花
+	 */
+	name: string;
+	/**
+	 * @description descript.txtのkero.name
+	 * @example 斗和
+	 */
+	keroname: string;
+	/**
+	 * @description 現在サイドに表示されているサーフェスID
+	 * @example 0
+	 */
+	"sakura.surface": string;
+	/**
+	 * @description 現在表示されているサーフェスID
+	 * @example 10
+	 */
+	"kero.surface": string;
+	/**
+	 * @description サイドウィンドウのハンドル
+	 * @example 67008
+	 */
+	kerohwnd: string;
+	/**
+	 * @description 現在使用されているウィンドウハンドルのカンマ区切りリスト
+	 * @example 918820,67008
+	 */
+	hwndlist: string;
+	/**
+	 * @description 実行中のゴーストへのフルパス
+	 * @example E:\ssp\ghost\Taromati2\
+	 */
+	ghostpath: string;
+	/**
+	 * @description 実行中のゴーストのdescript.txtの名前
+	 * @example Taromati2
+	 */
+	fullname: string;
+	/**
+	 * @description 実行中のゴーストのモジュール状態
+	 * @example shiori:running,makoto-ghost:running
+	 */
+	modulestate: string;
+}
+/**
  * fmoメッセージクラス：クラス定義の実装
  * @see fmo_info_t
  * @example
@@ -11,7 +72,7 @@ import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t_class_impl extends base_sstp_info_t {
+declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
 	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する，直接の使用は推奨されない。
 	 * @param {String} fmo_text
@@ -59,41 +120,6 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
-
-	//base_sstp_info_t的成员
-
-	/**
-	 * @description すべてのキーの配列を取得する
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description すべての値の配列を取得する
-	 */
-	/*@__PURE__*/get values(): base_sstp_info_t[];
-	/**
-	 * @description すべてのキーと値のペアの配列を取得します。
-	 */
-	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
-	/**
-	 * @description キーと値のペアごとに関数を実行する。
-	 * @param {(value,key?)} func 返り値がundefinedでない場合にvalueを置き換える関数を実行する。
-	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
-	/**
-	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
-	/**
-	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
-	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
-	 */
-	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
-	/**
-	 * @description 配列をそれ自身に追加する。
-	 * @param {[undefined|[String,any]]} array 追加する配列。
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
 }
 /**
  * 補足fmoメッセージ・クラスのデフォルト・メンバー
@@ -101,9 +127,9 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t {
 type fmo_info_t_members = {
 	/**
 	 * fmoメンバー
-	 * @type {base_sstp_info_t|undefined}
+	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	[uuid: string]: single_fmo_info_t|undefined;
 };
 /**
  * fmoメッセージ・クラス：コンストラクタ・インターフェース宣言
@@ -144,4 +170,8 @@ type fmo_info_t = fmo_info_t_class_impl & fmo_info_t_members & {
 	constructor: typeof fmo_info_t;
 }
 
-export default fmo_info_t;
+export {
+	single_fmo_info_t,
+	fmo_info_t,
+	fmo_info_t as default,
+};

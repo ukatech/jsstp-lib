@@ -1,6 +1,67 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
 /**
+ * fmo报文类：单个fmo信息类
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+	/**
+	 * @description 正在运行的基础软件根文件夹的完整路径
+	 * @example E:\ssp\
+	 */
+	path: string;
+	/**
+	 * @description 主窗口的窗口句柄
+	 * @example 918820
+	 */
+	hwnd: string;
+	/**
+	 * @description descript.txt的sakura.name
+	 * @example 橘花
+	 */
+	name: string;
+	/**
+	 * @description descript.txt的kero.name
+	 * @example 斗和
+	 */
+	keroname: string;
+	/**
+	 * @description \0侧当前显示的surface ID
+	 * @example 0
+	 */
+	"sakura.surface": string;
+	/**
+	 * @description \1侧当前显示的surface ID
+	 * @example 10
+	 */
+	"kero.surface": string;
+	/**
+	 * @description \1侧窗口的窗口句柄
+	 * @example 67008
+	 */
+	kerohwnd: string;
+	/**
+	 * @description 当前使用的窗口句柄的逗号分隔列表
+	 * @example 918820,67008
+	 */
+	hwndlist: string;
+	/**
+	 * @description 正在运行的ghost的完整路径
+	 * @example E:\ssp\ghost\Taromati2\
+	 */
+	ghostpath: string;
+	/**
+	 * @description 正在运行的ghost的descript.txt的name
+	 * @example Taromati2
+	 */
+	fullname: string;
+	/**
+	 * @description 正在运行的ghost的模块状态
+	 * @example shiori:running,makoto-ghost:running
+	 */
+	modulestate: string;
+};
+/**
  * fmo报文类
  * @example
  * let fmo = jsstp.get_fmo_infos();
@@ -11,7 +72,7 @@ import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
 	 * 自字符串构造fmo_info_t，不建议直接使用
 	 * @param {String} fmo_text
@@ -59,47 +120,15 @@ declare class fmo_info_t extends base_sstp_info_t {
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
-
-	//base_sstp_info_t的成员
-
-	/**
-	 * @description 获取所有key的数组
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description 获取所有value的数组
-	 */
-	/*@__PURE__*/get values(): base_sstp_info_t[];
-	/**
-	 * @description 获取所有key-value对的数组
-	 */
-	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
-	/**
-	 * @description 对每个key-value对执行某个函数
-	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
-	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
-	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
-	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
-	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
-	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
-	 */
-	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
-	/**
-	 * @description 对自身按照数组追加元素
-	 * @param {[undefined|[String,any]]} array 要追加的数组
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
-
 	/**
 	 * fmo成员
-	 * @type {base_sstp_info_t|undefined}
+	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	[uuid: string]: single_fmo_info_t|undefined;
 };
 
-export default fmo_info_t;
+export {
+	single_fmo_info_t,
+	fmo_info_t,
+	fmo_info_t as default,
+};

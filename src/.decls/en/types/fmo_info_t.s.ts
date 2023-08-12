@@ -1,6 +1,67 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
 /**
+ * fmo message class: single fmo message class
+ * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ */
+declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+	/**
+	 * @description Full path to the root folder of the running base software
+	 * @example E:\ssp\
+	 */
+	path: string;
+	/**
+	 * @description Window handle of the main window
+	 * @example 918820
+	 */
+	hwnd: string;
+	/**
+	 * @description descript.txt's sakura.name
+	 * @example 橘花
+	 */
+	name: string;
+	/**
+	 * @description descript.txt's kero.name
+	 * @example 斗和
+	 */
+	keroname: string;
+	/**
+	 * @description Surface ID currently displayed on side \0
+	 * @example 0
+	 */
+	"sakura.surface": string;
+	/**
+	 * @description Surface ID currently displayed on the \1 side
+	 * @example 10
+	 */
+	"kero.surface": string;
+	/**
+	 * @description Window handle of the \1 side window
+	 * @example 67008
+	 */
+	kerohwnd: string;
+	/**
+	 * @description Comma-separated list of currently used window handles
+	 * @example 918820,67008
+	 */
+	hwndlist: string;
+	/**
+	 * @description Full path to the running ghost
+	 * @example E:\ssp\ghost\Taromati2\
+	 */
+	ghostpath: string;
+	/**
+	 * @description Name in the running ghost's descript.txt
+	 * @example Taromati2
+	 */
+	fullname: string;
+	/**
+	 * @description Module status of the running ghost
+	 * @example shiori:running,makoto-ghost:running
+	 */
+	modulestate: string;
+}
+/**
  * fmo message class
  * @example
  * let fmo = jsstp.get_fmo_infos();
@@ -11,7 +72,7 @@ import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
 	 * Construct fmo_info_t from a string, not recommended for direct use
 	 * @param {String} fmo_text
@@ -60,46 +121,15 @@ declare class fmo_info_t extends base_sstp_info_t {
 	 */
 	/*@__PURE__*/toJSON(): Object;
 
-	//base_sstp_info_t的成员
-
-	/**
-	 * @description Get an array of all keys
-	 */
-	/*@__PURE__*/get keys(): string[];
-	/**
-	 * @description Get an array of all values
-	 */
-	/*@__PURE__*/get values(): base_sstp_info_t[];
-	/**
-	 * @description Get an array of all key-value pairs.
-	 */
-	/*@__PURE__*/get entries(): [string, base_sstp_info_t][];
-	/**
-	 * @description Execute a function for each key-value pair.
-	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
-	 */
-	/*@__PURE__*/forEach(func: (value: base_sstp_info_t, key?: string) => base_sstp_info_t|undefined): void;
-	/**
-	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
-	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
-	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...string[],base_sstp_info_t]) => T): T[];
-	/**
-	 * @description Traverses itself and returns a one-dimensional array of traversal results.
-	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
-	 */
-	/*@__PURE__*/map<T>(func: (value: base_sstp_info_t, key?: string) => T): T[];
-	/**
-	 * @description Append an array to itself.
-	 * @param {[undefined|[String,any]]} array The array to append.
-	 */
-	/*@__PURE__*/push(array: [undefined|[string, base_sstp_info_t]]): void;
-
 	/**
 	 * fmo members
-	 * @type {base_sstp_info_t|undefined}
+	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: base_sstp_info_t|undefined;
+	[uuid: string]: single_fmo_info_t|undefined;
 };
 
-export default fmo_info_t;
+export {
+	single_fmo_info_t,
+	fmo_info_t,
+	fmo_info_t as default,
+};
