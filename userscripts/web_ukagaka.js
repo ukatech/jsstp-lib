@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name			Web Ukagaka
 // @namespace		https://github.com/ukatech/jsstp-lib
-// @version			0.0.0.1
+// @version			0.0.0.2
 // @description		try to take over the world!
 // @author			steve02081504
 // @match			*://*/*
 // @icon			https://www.google.com/s2/favicons?sz=64&domain=shillest.net
-// @require			https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.3.2/dist/jsstp.min.js
+// @require			https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.4.0/dist/jsstp.min.js
 // @grant			window.onurlchange
 // @grant			GM.setValue
 // @grant			GM.getValue
@@ -106,8 +106,7 @@ async function InitValue(){
 	DiscardedGhosts=await GM.getValue('DiscardedGhosts', []);
 }
 
-async function OnBrowserPageLoad(ghostname,hwnd){
-	jsstp.default_info.ReceiverGhostHWnd = hwnd;
+async function OnBrowserPageLoad(ghostname,jsstp){
 	const url = location.href;
 	const title = document.title;
 	let info=await jsstp.OnBrowserPageLoad(url, title);
@@ -121,7 +120,7 @@ async function OnBrowserPageLoad(ghostname,hwnd){
 			}
 		}
 		// 设置一个定时器，每隔一段时间就向ghost发送一次请求
-		IntervalNumbers.push(setInterval(()=>OnBrowserActionRequest(hwnd), 1000));
+		IntervalNumbers.push(setInterval(()=>OnBrowserActionRequest(jsstp), 1000));
 	}
 }
 
@@ -130,15 +129,10 @@ function RunOnBrowserPageLoad(){
 		clearInterval(IntervalNumber);
 	IntervalNumbers=[];
 
-	jsstp.get_fmo_infos().then(fmo_infos=>{
-		fmo_infos.forEach((info)=>{
-			OnBrowserPageLoad(info.name,info.hwnd);
-		});
-	});
+	jsstp.for_all_ghosts(jsstp => OnBrowserPageLoad(jsstp.ghost_info.name,jsstp));
 }
 
-async function OnBrowserActionRequest(hwnd){
-	jsstp.default_info.ReceiverGhostHWnd = hwnd;
+async function OnBrowserActionRequest(jsstp){
 	let info=await jsstp.OnBrowserActionRequest(location.href, document.title);
 	let base_ActionResponse=[info.id, info.action];
 	switch(info.action) {
