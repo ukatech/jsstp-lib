@@ -172,7 +172,7 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends info_object<string,string> {
+declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description 実行中のベースソフトのルートフォルダへのフルパス
 	 * @example E:\ssp\
@@ -349,6 +349,7 @@ type security_level_t = "local" | "external";
 
 /**
  * sstp メソッド呼び出し元
+ * @group callers
  */
 interface method_caller{
 	(info: Object): Promise<sstp_info_t>,
@@ -357,6 +358,7 @@ interface method_caller{
 
 /**
  * イベント呼び出し元
+ * @group callers
  */
 interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
@@ -372,6 +374,7 @@ interface base_event_caller{
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
+ * @group callers
  */
 interface simple_event_caller extends base_event_caller {
 	(...args: any[]): Promise<sstp_info_t>,
@@ -393,12 +396,17 @@ interface simple_event_caller extends base_event_caller {
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
+ * @group callers
  */
 interface common_event_caller extends base_event_caller{
 	(info: Object): Promise<sstp_info_t>,
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+/**
+ * {@link jsstp_t}よりもghost_info属性が1つ多い。
+ * @see {@link jsstp_with_ghost_info_t.ghost_info}
+ */
 interface jsstp_with_ghost_info_t extends jsstp_t{
 	ghost_info: single_fmo_info_t
 }

@@ -172,7 +172,7 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends info_object<string,string> {
+declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description 正在运行的基础软件根文件夹的完整路径
 	 * @example E:\ssp\
@@ -348,6 +348,7 @@ type security_level_t = "local" | "external";
 
 /**
  * sstp方法调用器
+ * @group callers
  */
 interface method_caller{
 	(info: Object): Promise<sstp_info_t>,
@@ -356,6 +357,7 @@ interface method_caller{
 
 /**
  * 事件调用器
+ * @group callers
  */
 interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
@@ -371,6 +373,7 @@ interface base_event_caller{
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
+ * @group callers
  */
 interface simple_event_caller extends base_event_caller {
 	(...args: any[]): Promise<sstp_info_t>,
@@ -392,12 +395,17 @@ interface simple_event_caller extends base_event_caller {
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
+ * @group callers
  */
 interface common_event_caller extends base_event_caller{
 	(info: Object): Promise<sstp_info_t>,
 	[key: string]: common_event_caller,//扩展事件名称
 }
 
+/**
+ * 比{@link jsstp_t}多了一个ghost_info属性
+ * @see {@link jsstp_with_ghost_info_t.ghost_info}
+ */
 interface jsstp_with_ghost_info_t extends jsstp_t{
 	ghost_info: single_fmo_info_t
 }
