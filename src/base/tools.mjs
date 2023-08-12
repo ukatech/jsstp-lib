@@ -191,7 +191,7 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
 
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
- * @type {String}
+ * @type {"local"|"external"}
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  * @ignore
  */
@@ -210,6 +210,11 @@ var my_code = /*@__PURE__*/(()=>{
 		fetch(my_url).then(res=>res.text()).then(text=>my_code=text);
 })();
 
+/**
+ * clone一个对象
+ */
+var clone = /*@__PURE__*/(obj) => assign({}, obj);
+
 export {
 	key_value_split,
 	is_event_name,
@@ -219,6 +224,7 @@ export {
 	default_setter,
 	new_getter_proxy,
 	reg_test,
+	clone,
 	index_by_keys,
 	throw_error,
 

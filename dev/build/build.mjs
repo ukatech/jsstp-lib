@@ -195,6 +195,7 @@ function jsstp_minify(code_path,is_module){
 				key_fix("default_info");
 				key_fix("default_security_level");
 				key_fix("sstp_version_table");
+				key_fix("ghost_info");
 			}
 			writeFileSync(code_path,code);
 		}).catch(e=>console.error(e));

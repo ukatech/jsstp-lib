@@ -1,5 +1,5 @@
 import type jsstp_t from "./jsstp_t.d.ts";
-import type { ExtensibleFunction } from "../base/tools.d.ts"
+import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
 
 /**
  * ゴースト・イベント・ファインダー：クラス定義の実装
@@ -10,6 +10,7 @@ import type { ExtensibleFunction } from "../base/tools.d.ts"
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
 	/**
@@ -20,10 +21,9 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
 	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external"です。
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 	/**
 	 * イベントの存在をチェックするには、ゴーストは少なくとも `Has_Event` イベントをサポートしている必要があり、`Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
@@ -65,6 +65,7 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<strin
 }
 /**
  * ゴースト・イベント・ファインダー：コール・シグネチャー
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_call_signature = {
 	/**
@@ -81,6 +82,7 @@ type ghost_events_queryer_t_call_signature = {
 }
 /**
  * ゴースト・イベント・ファインダー: コンストラクタのインターフェイス宣言
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t_constructor = {
 	/**
@@ -100,6 +102,7 @@ type ghost_events_queryer_t_constructor = {
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
@@ -112,6 +115,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
+ * @group ghost_events_queryer_t implementations
  */
 type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
 	constructor: typeof ghost_events_queryer_t;

@@ -3,6 +3,7 @@ import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 import type { info_object } from "./info_object.d.ts";
+import { security_level_t } from "../base/tools.js";
 
 /**
  * sstp method caller
@@ -139,10 +140,9 @@ declare class jsstp_t{
 	};
 	/**
 	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 
 	/**
 	 * Self Proxy
@@ -186,10 +186,15 @@ declare class jsstp_t{
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
 	/**
-	 * For all ghost operations
-	 * @param {Function|undefined} operation operator function
+	 * Processing of fmoinfo for all ghosts
+	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	/**
+	 * Operate on all ghosts
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
 	/**
 	 * Sends a message in text and receives it back in text

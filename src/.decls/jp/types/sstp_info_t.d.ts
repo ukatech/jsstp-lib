@@ -19,6 +19,7 @@ Option: notranslate
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
+ * @group sstp_info_t implementations
  */
 declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 	/**
@@ -58,6 +59,7 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 }
 /**
  * 補足sstpメッセージ・クラスのデフォルト・メンバー
+ * @group sstp_info_t implementations
  */
 type sstp_info_t_members = {
 	/**
@@ -68,6 +70,7 @@ type sstp_info_t_members = {
 };
 /**
  * sstp メッセージクラス: コンストラクタ インタフェース宣言
+ * @group sstp_info_t implementations
  */
 type sstp_info_t_constructor = {
 	/**
@@ -96,6 +99,7 @@ type sstp_info_t_constructor = {
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
+ * @group sstp_info_t implementations
  */
 declare const sstp_info_t: typeof sstp_info_t_class_impl & sstp_info_t_constructor;
 /**
@@ -105,6 +109,7 @@ declare const sstp_info_t: typeof sstp_info_t_class_impl & sstp_info_t_construct
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
+ * @group sstp_info_t implementations
  */
 type sstp_info_t = sstp_info_t_class_impl & sstp_info_t_members & {
 	constructor: typeof sstp_info_t;

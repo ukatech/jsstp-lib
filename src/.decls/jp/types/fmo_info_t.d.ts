@@ -1,10 +1,26 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type { info_object } from "./info_object.d.ts";
 
 /**
- * fmoメッセージクラス：単一のfmoメッセージクラス
+ * fmoメッセージクラス：単一のfmo情報クラス
+ * 単一のゴーストの全てのfmo情報を記録します。
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
+ * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+declare class single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description 実行中のベースソフトのルートフォルダへのフルパス
 	 * @example E:\ssp\
@@ -71,6 +87,7 @@ declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ * @group fmo_info_t implementations
  */
 declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
@@ -123,6 +140,7 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_i
 }
 /**
  * 補足fmoメッセージ・クラスのデフォルト・メンバー
+ * @group fmo_info_t implementations
  */
 type fmo_info_t_members = {
 	/**
@@ -133,6 +151,7 @@ type fmo_info_t_members = {
 };
 /**
  * fmoメッセージ・クラス：コンストラクタ・インターフェース宣言
+ * @group fmo_info_t implementations
  */
 type fmo_info_t_constructor = {
 	/**
@@ -153,6 +172,7 @@ type fmo_info_t_constructor = {
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ * @group fmo_info_t implementations
  */
 declare const fmo_info_t: typeof fmo_info_t_class_impl & fmo_info_t_constructor;
 /**
@@ -165,6 +185,7 @@ declare const fmo_info_t: typeof fmo_info_t_class_impl & fmo_info_t_constructor;
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ * @group fmo_info_t implementations
  */
 type fmo_info_t = fmo_info_t_class_impl & fmo_info_t_members & {
 	constructor: typeof fmo_info_t;

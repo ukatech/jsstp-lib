@@ -54,6 +54,7 @@ var flat_map = "flat_map";
 var RequestHeader = "RequestHeader";
 var check_event = "check_event";
 var from_string = "from_string";
+var ghost_info = "ghost_info";
 
 import{local,external}from"./base_values.mjs";
 
@@ -131,6 +132,7 @@ export {
 	from_string,
 	RequestHeader,
 	check_event,
+	ghost_info,
 
 	local,
 	external,

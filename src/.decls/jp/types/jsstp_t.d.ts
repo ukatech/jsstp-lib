@@ -3,6 +3,7 @@ import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 import type { info_object } from "./info_object.d.ts";
+import { security_level_t } from "../base/tools.js";
 
 /**
  * sstp メソッド呼び出し元
@@ -139,10 +140,9 @@ declare class jsstp_t{
 	};
 	/**
 	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external "です。
-	 * @type {String}
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 	 */
-	default_security_level: String;
+	default_security_level: security_level_t;
 
 	/**
 	 * 自己弁護
@@ -186,10 +186,15 @@ declare class jsstp_t{
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
 	/**
-	 * すべてのゴースト操作に対して
-	 * @param {Function|undefined} operation 演算子
+	 * すべてのゴーストのfmoinfoを処理する
+	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts<result_T=jsstp_with_ghost_info_t>(operation?: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	/**
+	 * すべてのゴースト・オペレーション
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
 	/**
 	 * テキストでメッセージを送信し、テキストでそれを受信する

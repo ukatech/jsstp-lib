@@ -1,10 +1,26 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type { info_object } from "./info_object.d.ts";
 
 /**
- * fmo message class: single fmo message class
+ * fmo message class: single fmo information class
+ * Record all fmo info of a single ghost.
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
+ * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class single_fmo_info_t extends base_sstp_info_t<string,string> {
+declare class single_fmo_info_t extends info_object<string,string> {
 	/**
 	 * @description Full path to the root folder of the running base software
 	 * @example E:\ssp\

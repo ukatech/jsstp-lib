@@ -32,6 +32,7 @@ import {
 	from_string,
 	RequestHeader,
 	SEND,
+	ghost_info,
 
 	local,
 	external,
@@ -45,6 +46,7 @@ import {
 	new_getter_proxy,
 	to_string,
 	type_judge,
+	clone,
 
 	my_origin,
 	get_local_address,
@@ -112,7 +114,7 @@ class jsstp_t {
 		};
 		/**
 		 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
-		 * @type {String}
+		 * @type {"local"|"external"}
 		 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 		 */
 		this[default_security_level] = my_default_security_level;
@@ -133,36 +135,45 @@ class jsstp_t {
 	get clone() {
 		let self=this;
 		return assign(new jsstp_t(), {
-			[RequestHeader]: self[RequestHeader],
-			[default_info]: self[default_info],
+			[RequestHeader]: clone(self[RequestHeader]),
+			[default_info]: clone(self[default_info]),
 			[default_security_level]: self[default_security_level],
-			[sstp_version_table]: self[sstp_version_table],
+			[sstp_version_table]: clone(self[sstp_version_table]),
 			//[sendername]: self[sendername], //不需要：default_info已经包含了sendername
-			host: self.host
+			host: self.host,
+			[ghost_info]: self[ghost_info],
 		});
 	}
 	/**
 	 * 复制一个新的jsstp对象对于给定的fmo_info
 	 * @param fmo_info 目标ghost的fmo_info
 	 * @returns {jsstp_t} 新的指向目标ghost的jsstp对象
+	 * @group Clone Methods
 	 */
 	by_fmo_info(fmo_info){
 		let result=this.clone;
-		result.ghost_info=fmo_info,
+		result[ghost_info]=fmo_info,
 		result[default_info].ReceiverGhostHWnd=fmo_info.hwnd;
 		return result;
+	}
+	/**
+	 * 对于所有ghost的fmoinfo进行处理
+	 * @param {Function|undefined} operation 操作函数
+	 */
+	for_all_ghost_infos(operation){
+		let result = new_object();
+		return this.get_fmo_infos().then(fmo_infos=>{
+			for(let uuid in fmo_infos)
+				result[uuid] = operation?.(fmo_infos[uuid]);
+			return result;
+		});
 	}
 	/**
 	 * 对于所有ghost进行操作
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts(operation=(x=>x)){
-		let result = new_object();
-		return this.get_fmo_infos().then(fmo_infos=>{
-			for(let uuid in fmo_infos)
-				result[uuid] = operation?.(this.by_fmo_info(fmo_infos[uuid]));
-			return result;
-		});
+	for_all_ghosts(operation){
+		return this.for_all_ghost_infos(fmo_info=>operation?.(this.by_fmo_info(fmo_info)));
 	}
 	/**
 	 * 修改host
