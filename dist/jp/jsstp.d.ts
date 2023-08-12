@@ -47,9 +47,9 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 
 /**
  * ベースsstpメッセージクラス
- * @example
- * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
+ * @example  
+ * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
+ * console.log(info.head);//SSTP/1.4 200 OK  
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
@@ -104,9 +104,9 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 
 /**
  * SSTPメッセージクラス
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
+ * @example  
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
+ * console.log(info.head);//SSTP/1.4 200 OK  
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
@@ -154,21 +154,21 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 }
 
 /**
- * fmoメッセージクラス：単一のfmo情報クラス
+ * fmoメッセージクラス：単一のfmo情報クラス  
  * 単一のゴーストの全てのfmo情報を記録します。
- * @example
- * info_object {
- * 	path: 'E:\\ssp\\',
- * 	hwnd: '918820',
- * 	name: '橘花',
- * 	keroname: '斗和',
- * 	'sakura.surface': '-1',
- * 	'kero.surface': '-1',
- * 	kerohwnd: '67008',
- * 	hwndlist: '918820,67008',
- * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
- * 	fullname: 'Taromati2',
- * 	modulestate: 'shiori:running'
+ * @example  
+ * info_object {  
+ * 	path: 'E:\\ssp\\',  
+ * 	hwnd: '918820',  
+ * 	name: '橘花',  
+ * 	keroname: '斗和',  
+ * 	'sakura.surface': '-1',  
+ * 	'kero.surface': '-1',  
+ * 	kerohwnd: '67008',  
+ * 	hwndlist: '918820,67008',  
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',  
+ * 	fullname: 'Taromati2',  
+ * 	modulestate: 'shiori:running'  
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
@@ -231,10 +231,10 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 }
 /**
  * FMOメッセージクラス
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
+ * @example  
+ * let fmo = jsstp.get_fmo_infos();  
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
+ * if(kikka_uuid)  
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
@@ -364,15 +364,15 @@ interface base_event_caller{
 	[key: string]: base_event_caller,//扩展事件名称
 }
 /**
- * シンプルなイベント・コーラー
+ * シンプルなイベント・コーラー  
  * イベントをトリガーするために直接呼び出される！
- * @example
- * let data=await jsstp.OnTest(123,"abc");
- * //に相当する。
- * let data = await jsstp.SEND({
- * 	"Event": "OnTest",
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
+ * @example  
+ * let data=await jsstp.OnTest(123,"abc");  
+ * //に相当する。  
+ * let data = await jsstp.SEND({  
+ * 	"Event": "OnTest",  
+ * 	"Reference0": 123,  
+ * 	"Reference1": "abc"  
  * });
  * @group callers
  */
@@ -381,20 +381,20 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 汎用イベント・コーラー
+ * 汎用イベント・コーラー  
  * イベントをトリガーするオブジェクトを渡すことで呼び出される！
- * @example
- * let caller=jsstp.get_caller_of_event("OnTest");
- * //...
- * let data=await caller({
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
- * });
- * //に相当する。
- * let data = await jsstp.SEND({
- * 	"Event": "OnTest",
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
+ * @example  
+ * let caller=jsstp.get_caller_of_event("OnTest");  
+ * //...  
+ * let data=await caller({  
+ * 	"Reference0": 123,  
+ * 	"Reference1": "abc"  
+ * });  
+ * //に相当する。  
+ * let data = await jsstp.SEND({  
+ * 	"Event": "OnTest",  
+ * 	"Reference0": 123,  
+ * 	"Reference1": "abc"  
  * });
  * @group callers
  */
@@ -414,7 +414,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * jsstpオブジェクト
  * @see {@link jsstp}
  * @alias jsstp.type
- * @example
+ * @example  
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
 declare class jsstp_t{
@@ -727,11 +727,11 @@ declare class jsstp_t{
 
 /**
  * ゴースト・イベント・ファインダー：クラス定義の実装
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
@@ -818,11 +818,11 @@ type ghost_events_queryer_t_constructor = {
 }
 /**
  * ゴースト・イベント・ファインダー
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -831,11 +831,11 @@ type ghost_events_queryer_t_constructor = {
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
  * ゴースト・イベント・ファインダー
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
- * if(ghost_events_queryer.has_event("OnBoom"))
+ * @example  
+ * let ghost_events_queryer = jsstp.new_event_queryer();  
+ * if(!ghost_events_queryer.available)  
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");  
+ * if(ghost_events_queryer.has_event("OnBoom"))  
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -847,10 +847,10 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
 
 /**
  * sstpラッパー
- * @example
- * jsstp.SEND({
- *   Event: "OnTest",
- *   Script: "\\s[0]Hell Wold!\\e"
+ * @example  
+ * jsstp.SEND({  
+ * 	Event: "OnTest",  
+ * 	Script: "\\s[0]Hell Wold!\\e"  
  * });
  * @var jsstp
  * @type {jsstp_t}
