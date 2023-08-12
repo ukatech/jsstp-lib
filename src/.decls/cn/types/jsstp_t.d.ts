@@ -39,7 +39,7 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 通用事件调用器
+ * 通用事件调用器  
  * 调用时传入一个对象以触发事件！
  * @example
  * let caller=jsstp.get_caller_of_event("OnTest");
@@ -62,10 +62,14 @@ interface common_event_caller extends base_event_caller{
 }
 
 /**
- * 比{@link jsstp_t}多了一个ghost_info属性
+ * 比{@link jsstp_t}多了一个ghost_info属性  
+ * 依赖{@link jsstp_t.default_info}中的`ReceiverGhostHWnd`定向给特定的ghost发送信息
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
 interface jsstp_with_ghost_info_t extends jsstp_t{
+	/**
+	 * 该jsstp_t实例所指向的ghost的信息
+	 */
 	ghost_info: single_fmo_info_t
 }
 //定义一个包装器
