@@ -152,6 +152,7 @@ function uglifyjs_minify(code,is_module){
 import { readFileSync, writeFileSync } from 'fs';
 //minify
 async function jsstp_minify(code_path,is_module){
+	console.log(`minifing ${code_path}`);
 	let code=readFileSync(code_path,'utf8');
 	if(code.startsWith("Object.defineProperty(exports, '__esModule', { value: true });")){
 		code=code.substring("Object.defineProperty(exports, '__esModule', { value: true });".length);
@@ -190,21 +191,23 @@ async function jsstp_minify(code_path,is_module){
 				//一些小问题的修复
 				var key_fix = (old_key) => {
 					var key=name_caches.vars.props["$"+old_key];
+					//尝试使用正则表达式找到key
+					//匹配: key="old_key"
+					var reg=new RegExp(`\\s*([a-zA-Z0-9_$]+)\\s*=\\s*["']${old_key}["']\\s*`);
+					var match=reg.exec(code)?.[1];
+					if(match)
+						if(!key){
+							console.warn(`name_caches not working, use regex to find key ${old_key} = ${match}`);
+							key = match;
+						}
+						else if(key!=match){
+							console.warn(`name_caches may not right(${old_key} = ${key}), use regex to find key ${old_key} = ${match}`);
+							key = match;
+						}
 					if(key)
 						code=code.replace(new RegExp(`${old_key}\:`,"g"),`[${key}]:`);
-					else{
-						//尝试使用正则表达式找到key
-						//匹配: key="old_key"
-						var reg=new RegExp(`\\s*([a-zA-Z0-9_$]+)\\s*=\\s*["']${old_key}["']\\s*`);
-						var match=reg.exec(code);
-						if(match){
-							var key=match[1];
-							code=code.replace(new RegExp(`${old_key}\:`,"g"),`[${key}]:`);
-							console.warn(`name_caches not working, use regex to find key ${old_key} = ${key}`);
-						}
-						else
-							console.error(`key ${old_key} not found`)
-					}
+					else
+						console.error(`key ${old_key} not found`)
 				}
 				key_fix("unknown_lines");
 				key_fix("SEND");
