@@ -47,9 +47,9 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 
 /**
  * Base sstp message class
- * @example  
- * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
- * console.log(info.head);//SSTP/1.4 200 OK  
+ * @example
+ * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
@@ -104,9 +104,9 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 
 /**
  * sstp message class
- * @example  
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
- * console.log(info.head);//SSTP/1.4 200 OK  
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
@@ -156,19 +156,19 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 /**
  * fmo message class: single fmo information class  
  * Record all fmo info of a single ghost.
- * @example  
- * info_object {  
- * 	path: 'E:\\ssp\\',  
- * 	hwnd: '918820',  
- * 	name: '橘花',  
- * 	keroname: '斗和',  
- * 	'sakura.surface': '-1',  
- * 	'kero.surface': '-1',  
- * 	kerohwnd: '67008',  
- * 	hwndlist: '918820,67008',  
- * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',  
- * 	fullname: 'Taromati2',  
- * 	modulestate: 'shiori:running'  
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
@@ -231,10 +231,10 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 }
 /**
  * fmo message class
- * @example  
- * let fmo = jsstp.get_fmo_infos();  
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
- * if(kikka_uuid)  
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
@@ -367,13 +367,13 @@ interface base_event_caller{
 /**
  * Simple event caller  
  * Called directly to trigger an event!
- * @example  
- * let data=await jsstp.OnTest(123,"abc");  
- * //equivalent to  
- * let data = await jsstp.SEND({  
- * 	"Event": "OnTest",  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
+ * @example
+ * let data=await jsstp.OnTest(123,"abc");
+ * //equivalent to
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
  * });
  * @group callers
  */
@@ -382,20 +382,20 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * Generic Event Caller  
+ * Generic Event Caller
  * Called by passing in an object to trigger an event!
- * @example  
- * let caller=jsstp.get_caller_of_event("OnTest");  
- * //...  
- * let data=await caller({  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
- * });  
- * //equivalent to  
- * let data = await jsstp.SEND({  
- * 	"Event": "OnTest",  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
+ * @example
+ * let caller=jsstp.get_caller_of_event("OnTest");
+ * //...
+ * let data=await caller({
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ * //equivalent to
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
  * });
  * @group callers
  */
@@ -415,7 +415,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * jsstp object
  * @see {@link jsstp}
  * @alias jsstp.type
- * @example  
+ * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
 declare class jsstp_t{
@@ -728,11 +728,11 @@ declare class jsstp_t{
 
 /**
  * ghost event finder: class definition implementation
- * @example  
- * let ghost_events_queryer = jsstp.new_event_queryer();  
- * if(!ghost_events_queryer.available)  
- * 	console.log("Currently ghost does not support event queries");  
- * if(ghost_events_queryer.has_event("OnBoom"))  
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("Currently ghost does not support event queries");
+ * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
@@ -819,11 +819,11 @@ type ghost_events_queryer_t_constructor = {
 }
 /**
  * ghost event finder
- * @example  
- * let ghost_events_queryer = jsstp.new_event_queryer();  
- * if(!ghost_events_queryer.available)  
- * 	console.log("Currently ghost does not support event queries");  
- * if(ghost_events_queryer.has_event("OnBoom"))  
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("Currently ghost does not support event queries");
+ * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -832,11 +832,11 @@ type ghost_events_queryer_t_constructor = {
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
  * ghost event finder
- * @example  
- * let ghost_events_queryer = jsstp.new_event_queryer();  
- * if(!ghost_events_queryer.available)  
- * 	console.log("Currently ghost does not support event queries");  
- * if(ghost_events_queryer.has_event("OnBoom"))  
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("Currently ghost does not support event queries");
+ * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -848,10 +848,10 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
 
 /**
  * sstp wrapper
- * @example  
- * jsstp.SEND({  
- * 	Event: "OnTest",  
- * 	Script: "\\s[0]Hell Wold!\\e"  
+ * @example
+ * jsstp.SEND({
+ * 	Event: "OnTest",
+ * 	Script: "\\s[0]Hell Wold!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}

@@ -47,9 +47,9 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 
 /**
  * 基础sstp报文类
- * @example  
- * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
- * console.log(info.head);//SSTP/1.4 200 OK  
+ * @example
+ * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
@@ -104,9 +104,9 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 
 /**
  * sstp报文类
- * @example  
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");  
- * console.log(info.head);//SSTP/1.4 200 OK  
+ * @example
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
@@ -156,19 +156,19 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 /**
  * fmo报文类：单个fmo信息类  
  * 记录单个ghost所有的fmo信息
- * @example  
- * info_object {  
- * 	path: 'E:\\ssp\\',  
- * 	hwnd: '918820',  
- * 	name: '橘花',  
- * 	keroname: '斗和',  
- * 	'sakura.surface': '-1',  
- * 	'kero.surface': '-1',  
- * 	kerohwnd: '67008',  
- * 	hwndlist: '918820,67008',  
- * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',  
- * 	fullname: 'Taromati2',  
- * 	modulestate: 'shiori:running'  
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
@@ -231,10 +231,10 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 }
 /**
  * fmo报文类
- * @example  
- * let fmo = jsstp.get_fmo_infos();  
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
- * if(kikka_uuid)  
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
@@ -365,13 +365,13 @@ interface base_event_caller{
 /**
  * 简易事件调用器  
  * 直接调用以触发事件！
- * @example  
- * let data=await jsstp.OnTest(123,"abc");  
- * //等价于  
- * let data = await jsstp.SEND({  
- * 	"Event": "OnTest",  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
+ * @example
+ * let data=await jsstp.OnTest(123,"abc");
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
  * });
  * @group callers
  */
@@ -380,20 +380,20 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 通用事件调用器  
+ * 通用事件调用器
  * 调用时传入一个对象以触发事件！
- * @example  
- * let caller=jsstp.get_caller_of_event("OnTest");  
- * //...  
- * let data=await caller({  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
- * });  
- * //等价于  
- * let data = await jsstp.SEND({  
- * 	"Event": "OnTest",  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
+ * @example
+ * let caller=jsstp.get_caller_of_event("OnTest");
+ * //...
+ * let data=await caller({
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
  * });
  * @group callers
  */
@@ -413,7 +413,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * jsstp对象
  * @see {@link jsstp}
  * @alias jsstp.type
- * @example  
+ * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
 declare class jsstp_t{
@@ -726,11 +726,11 @@ declare class jsstp_t{
 
 /**
  * ghost事件查询器：类定义实现
- * @example  
- * let ghost_events_queryer = jsstp.new_event_queryer();  
- * if(!ghost_events_queryer.available)  
- * 	console.log("当前ghost不支持事件查询");  
- * if(ghost_events_queryer.has_event("OnBoom"))  
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("当前ghost不支持事件查询");
+ * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
@@ -817,11 +817,11 @@ type ghost_events_queryer_t_constructor = {
 }
 /**
  * ghost事件查询器
- * @example  
- * let ghost_events_queryer = jsstp.new_event_queryer();  
- * if(!ghost_events_queryer.available)  
- * 	console.log("当前ghost不支持事件查询");  
- * if(ghost_events_queryer.has_event("OnBoom"))  
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("当前ghost不支持事件查询");
+ * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -830,11 +830,11 @@ type ghost_events_queryer_t_constructor = {
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
  * ghost事件查询器
- * @example  
- * let ghost_events_queryer = jsstp.new_event_queryer();  
- * if(!ghost_events_queryer.available)  
- * 	console.log("当前ghost不支持事件查询");  
- * if(ghost_events_queryer.has_event("OnBoom"))  
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("当前ghost不支持事件查询");
+ * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
@@ -846,10 +846,10 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
 
 /**
  * sstp包装器
- * @example  
- * jsstp.SEND({  
- * 	Event: "OnTest",  
- * 	Script: "\\s[0]Hell Wold!\\e"  
+ * @example
+ * jsstp.SEND({
+ * 	Event: "OnTest",
+ * 	Script: "\\s[0]Hell Wold!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}
