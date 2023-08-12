@@ -381,7 +381,7 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 汎用イベント・コーラー
+ * 汎用イベント・コーラー  
  * イベントをトリガーするオブジェクトを渡すことで呼び出される！
  * @example
  * let caller=jsstp.get_caller_of_event("OnTest");
@@ -404,10 +404,14 @@ interface common_event_caller extends base_event_caller{
 }
 
 /**
- * {@link jsstp_t}よりもghost_info属性が1つ多い。
+ * link jsstp_t} よりも ghost_info 属性が1つ多い。  
+ * 特定のゴーストにメッセージを送るには {@link jsstp_t.default_info} の `ReceiverGhostHWnd` に依存する。
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
 interface jsstp_with_ghost_info_t extends jsstp_t{
+	/**
+	 * このjsstp_tのインスタンスが指すゴーストに関する情報
+	 */
 	ghost_info: single_fmo_info_t
 }
 /**
