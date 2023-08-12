@@ -12,10 +12,10 @@ import type jsstp_t from "./types/jsstp_t.d.ts";
 //Define a wrapper
 /**
  * sstp wrapper
- * @example  
- * jsstp.SEND({  
- * 	Event: "OnTest",  
- * 	Script: "\\s[0]Hell Wold!\\e"  
+ * @example
+ * jsstp.SEND({
+ * 	Event: "OnTest",
+ * 	Script: "\\s[0]Hell Wold!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}

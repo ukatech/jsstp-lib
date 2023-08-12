@@ -4,19 +4,19 @@ import type { info_object } from "./info_object.d.ts";
 /**
  * fmo报文类：单个fmo信息类  
  * 记录单个ghost所有的fmo信息
- * @example  
- * info_object {  
- * 	path: 'E:\\ssp\\',  
- * 	hwnd: '918820',  
- * 	name: '橘花',  
- * 	keroname: '斗和',  
- * 	'sakura.surface': '-1',  
- * 	'kero.surface': '-1',  
- * 	kerohwnd: '67008',  
- * 	hwndlist: '918820,67008',  
- * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',  
- * 	fullname: 'Taromati2',  
- * 	modulestate: 'shiori:running'  
+ * @example
+ * info_object {
+ * 	path: 'E:\\ssp\\',
+ * 	hwnd: '918820',
+ * 	name: '橘花',
+ * 	keroname: '斗和',
+ * 	'sakura.surface': '-1',
+ * 	'kero.surface': '-1',
+ * 	kerohwnd: '67008',
+ * 	hwndlist: '918820,67008',
+ * 	ghostpath: 'E:\\ssp\\ghost\\Taromati2\\',
+ * 	fullname: 'Taromati2',
+ * 	modulestate: 'shiori:running'
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
@@ -80,10 +80,10 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 /**
  * fmo报文类：类定义实现
  * @see fmo_info_t
- * @example  
- * let fmo = jsstp.get_fmo_infos();  
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
- * if(kikka_uuid)  
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
@@ -164,10 +164,10 @@ type fmo_info_t_constructor = {
 };
 /**
  * fmo报文类
- * @example  
- * let fmo = jsstp.get_fmo_infos();  
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
- * if(kikka_uuid)  
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
@@ -177,10 +177,10 @@ type fmo_info_t_constructor = {
 declare const fmo_info_t: typeof fmo_info_t_class_impl & fmo_info_t_constructor;
 /**
  * fmo报文类
- * @example  
- * let fmo = jsstp.get_fmo_infos();  
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");  
- * if(kikka_uuid)  
+ * @example
+ * let fmo = jsstp.get_fmo_infos();
+ * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+ * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}

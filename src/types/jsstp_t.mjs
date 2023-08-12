@@ -76,7 +76,7 @@ import new_object from "./info_object.mjs";
  * jsstp对象
  * @see {@link jsstp}
  * @alias jsstp.type
- * @example  
+ * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
 class jsstp_t {

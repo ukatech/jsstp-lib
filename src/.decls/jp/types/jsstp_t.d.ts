@@ -24,13 +24,13 @@ interface base_event_caller{
 /**
  * シンプルなイベント・コーラー  
  * イベントをトリガーするために直接呼び出される！
- * @example  
- * let data=await jsstp.OnTest(123,"abc");  
- * //に相当する。  
- * let data = await jsstp.SEND({  
- * 	"Event": "OnTest",  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
+ * @example
+ * let data=await jsstp.OnTest(123,"abc");
+ * //に相当する。
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
  * });
  * @group callers
  */
@@ -39,20 +39,20 @@ interface simple_event_caller extends base_event_caller {
 	[key: string]: simple_event_caller,//扩展事件名称
 }
 /**
- * 汎用イベント・コーラー  
+ * 汎用イベント・コーラー
  * イベントをトリガーするオブジェクトを渡すことで呼び出される！
- * @example  
- * let caller=jsstp.get_caller_of_event("OnTest");  
- * //...  
- * let data=await caller({  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
- * });  
- * //に相当する。  
- * let data = await jsstp.SEND({  
- * 	"Event": "OnTest",  
- * 	"Reference0": 123,  
- * 	"Reference1": "abc"  
+ * @example
+ * let caller=jsstp.get_caller_of_event("OnTest");
+ * //...
+ * let data=await caller({
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ * //に相当する。
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
  * });
  * @group callers
  */
@@ -73,7 +73,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * jsstpオブジェクト
  * @see {@link jsstp}
  * @alias jsstp.type
- * @example  
+ * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
 declare class jsstp_t{
