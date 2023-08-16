@@ -187,27 +187,37 @@ async function jsstp_minify(code_path,is_module){
 				code=code.replace(/}\(\);$/g,`})()\n`);
 			}
 			code = code.replace("document.currentScript&&document.currentScript.src","document.currentScript?.src");
+			code = code.replace(
+				"K=(e,s,r)=>{return new i(e,n({get:(h=s,(e,s)=>{var r;if(!h.t?.(e,s))return(r=z(s,X)?h.i?.(e,s):h.h?.(e,s))!==t?r:h.o?h.o(e,s):z(r=e[s],A)?r.bind(e):r}),set:B},r));var h}",
+				"K=(e,s,r)=>{return new i(e,n({get:(e,a)=>{var r;if(!s.t?.(e,a))return(r=z(a,X)?s.i?.(e,a):s.h?.(e,a))!==t?r:s.o?s.o(e,a):z(r=e[a],A)?r.bind(e):r},set:B},r))}"
+			);
+			code = code.replace("var t,r=Object","var t,e=\"local\",s=\"external\",r=Object");
 			{
-				//一些小问题的修复
-				var key_fix = (old_key) => {
-					var key=name_caches.vars.props["$"+old_key];
+				var get_key= (old_key) => {
+					var key = name_caches.vars.props["$" + old_key];
 					//尝试使用正则表达式找到key
 					//匹配: key="old_key"
-					var reg=new RegExp(`\\s*([a-zA-Z0-9_$]+)\\s*=\\s*["']${old_key}["']\\s*`);
-					var match=reg.exec(code)?.[1];
-					if(match)
-						if(!key){
+					var reg = new RegExp(`\\s*([a-zA-Z0-9_$]+)\\s*=\\s*["']${old_key}["']\\s*`);
+					var match = reg.exec(code)?.[1];
+					if (match)
+						if (!key) {
 							console.warn(`name_caches not working, use regex to find key ${old_key} = ${match}`);
 							key = match;
 						}
-						else if(key!=match){
+						else if (key != match) {
 							console.warn(`name_caches may not right(${old_key} = ${key}), use regex to find key ${old_key} = ${match}`);
 							key = match;
 						}
+					return key;
+				}
+				//一些小问题的修复
+				var key_fix = (old_key) => {
+					var key = get_key(old_key);
 					if(key)
 						code=code.replace(new RegExp(`${old_key}\:`,"g"),`[${key}]:`);
 					else
 						console.error(`key ${old_key} not found`)
+
 				}
 				key_fix("unknown_lines");
 				key_fix("SEND");
@@ -218,6 +228,10 @@ async function jsstp_minify(code_path,is_module){
 				key_fix("default_security_level");
 				key_fix("sstp_version_table");
 				key_fix("ghost_info");
+				let local=get_key("local");
+				let external=get_key("external");
+				if(local && external)
+					code=code.replace("\"local\":\"external\"",`${local}:${external}`);
 			}
 			writeFileSync(code_path,code);
 		}).catch(e=>console.error(e));

@@ -50,10 +50,14 @@
 		}
 	},
 	"scripts": {
-		"test": "npm run test:unit && npm run test:browser",
-		"test:unit": "node dev/tests/unit.mjs",
-		"test:browser": "node dev/tests/browser.mjs",
-		"test:repl": "node dev/tests/repl.mjs",
+		"test": "npm run test:dev",
+		"test:dev": "npm run test:dev:unit && npm run test:dev:browser",
+		"test:dev:unit": "node dev/tests/unit.mjs",
+		"test:dev:browser": "node dev/tests/browser.mjs",
+		"test:dev:repl": "node dev/tests/repl.mjs",
+		"test:dist:mjs": "node dev/tests/dist_test.mjs",
+		"test:dist:cjs": "node dev/tests/dist_test.cjs",
+		"test:dist": "npm run test:dist:mjs && npm run test:dist:cjs",
 
 		"build": "npm run build:dist",
 		"build:dist": "node dev/build/build.mjs",

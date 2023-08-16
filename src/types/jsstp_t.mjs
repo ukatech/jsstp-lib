@@ -162,7 +162,7 @@ class jsstp_t {
 	 */
 	for_all_ghost_infos(operation){
 		let result = new_object();
-		return this.get_fmo_infos().then(fmo_infos=>{
+		return this.get_fmo_infos()[then](fmo_infos=>{
 			for(let uuid in fmo_infos)
 				result[uuid] = operation?.(fmo_infos[uuid]);
 			return result;

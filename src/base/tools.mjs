@@ -88,12 +88,6 @@ var type_judge = /*@__PURE__*/(value, X) => the_object(value) instanceof X;
  */
 var new_get_handler = /*@__PURE__*/(info) =>
 	(target, key) => {
-		/*
-		the_function和the_string是为了节省压缩后字数而存在的，但是目前来说Function和String这两个东西只在这个函数有用到
-		反而，引入这两个变量会导致压缩后的代码变大，所以在这个函数中我们仍然使用Function和String
-
-		the_function和the_string的相关定义会作为dead code被优化掉
-		*/
 		if (info._blocker_?.(target, key))
 			return;
 		let result;
