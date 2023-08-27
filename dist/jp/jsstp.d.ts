@@ -709,7 +709,7 @@ declare class jsstp_t{
 	/**
 	 * 現在のホストの稼働状況を取得する
 	 * @param {(jsstp:jsstp_t)=>any} resolve ゴーストがいるときに実行される機能
-	 * @returns {Promise<jsstp_t|any>} ゴーストが利用可能ならjsstpで解決し、そうでなければ拒否する。
+	 * @returns {Promise<any>} ゴーストが利用可能ならjsstpで解決し、そうでなければ拒否する。
 	 * @example
 	 * jsstp.if_available(() => {
 	 * 	//do something
@@ -720,7 +720,7 @@ declare class jsstp_t{
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/if_available<result_T=jsstp_t>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
+	/*@__PURE__*/if_available<result_T=undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
 	 * ghostがサポートするイベントのクエリーを取得する
 	 * @returns {Promise<ghost_events_queryer_t>} イベントをサポートするクエリへの問い合わせ
