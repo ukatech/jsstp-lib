@@ -707,14 +707,19 @@ declare class jsstp_t{
 	/*@__PURE__*/available(): Promise<Boolean>;
 	/**
 	 * 获取当前ghost是否可用
-	 * @returns {Promise} ghost是否可用
+	 * @param {(jsstp:jsstp_t)=>any} resolve ghost可用时执行的函数
+	 * @returns {Promise<jsstp_t|any>} ghost是否可用，若可用则以jsstp为参数执行resolve，否则执行reject
 	 * @example
-	 * jsstp.then(() => {
+	 * jsstp.if_available(() => {
+	 * 	//do something
+	 * });
+	 * @example
+	 * xxx.then(v => jsstp.if_available()).then(() => {
 	 * 	//do something
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/then<result_T,reject_T>(resolve: (value?: jsstp_t) => result_T, reject?: (reason?: any) => reject_T): Promise<result_T|reject_T>;
+	/*@__PURE__*/if_available<result_T=jsstp_t>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
 	 * 获取一个用于查询ghost所支持事件的queryer
 	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
