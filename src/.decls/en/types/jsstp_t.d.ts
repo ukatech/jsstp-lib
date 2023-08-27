@@ -368,7 +368,7 @@ declare class jsstp_t{
 	/**
 	 * Get whether ghost is currently available
 	 * @param {(jsstp:jsstp_t)=>any} resolve Functions executed when ghost is available
-	 * @returns {Promise<jsstp_t|any>} whether ghost is available, if so, resolve with jsstp, otherwise reject.
+	 * @returns {Promise<any>} whether ghost is available, if so, resolve with jsstp, otherwise reject.
 	 * @example
 	 * jsstp.if_available(() => {
 	 * 	//do something
@@ -379,7 +379,7 @@ declare class jsstp_t{
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/if_available<result_T=jsstp_t>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
+	/*@__PURE__*/if_available<result_T=undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
 	 * Get a queryer for querying events supported by ghost
 	 * @returns {Promise<ghost_events_queryer_t>} Query the queryer for supported events.

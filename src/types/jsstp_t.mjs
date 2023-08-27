@@ -426,7 +426,7 @@ class jsstp_t {
 	/**
 	 * 获取当前ghost是否可用
 	 * @param {(jsstp:jsstp_t)=>any} resolve ghost可用时执行的函数
-	 * @returns {Promise<jsstp_t|any>} ghost是否可用，若可用则以jsstp为参数执行resolve，否则执行reject
+	 * @returns {Promise<any>} ghost是否可用，若可用则以jsstp为参数执行resolve，否则执行reject
 	 * @example
 	 * jsstp.if_available(() => {
 	 * 	//do something
