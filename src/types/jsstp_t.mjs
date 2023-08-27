@@ -425,17 +425,22 @@ class jsstp_t {
 	}
 	/**
 	 * 获取当前ghost是否可用
-	 * @returns {Promise} ghost是否可用
+	 * @param {(jsstp:jsstp_t)=>any} resolve ghost可用时执行的函数
+	 * @returns {Promise<jsstp_t|any>} ghost是否可用，若可用则以jsstp为参数执行resolve，否则执行reject
 	 * @example
-	 * jsstp.then(() => {
+	 * jsstp.if_available(() => {
+	 * 	//do something
+	 * });
+	 * @example
+	 * xxx.then(v => jsstp.if_available()).then(() => {
 	 * 	//do something
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/[then](resolve, reject) {
+	/*@__PURE__*/if_available(resolve) {
 		//available不会有任何异常风险，所以我们不需要catch
 		return this[available]()[then](result => 
-			result ? resolve?.(this[proxy]) : (reject??throw_error)(result)
+			result ? resolve?.(this[proxy]) : throw_error()
 		);
 	}
 	/**

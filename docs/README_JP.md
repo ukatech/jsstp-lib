@@ -11,18 +11,6 @@ Webページやnode.jsなどの環境で、ゴーストと通信して情報を�
 
 ### 1. jsの読み込み
 
-#### インポートに関する注意事項  
-
-過去のバージョンでは、以下のようにjsstpをインポートすることを推奨していました。
-
-```javascript
-var jsstp=await import("jsstp").then(m=>m.jsstp).
-```
-
-v2.0.2.0以降のバージョンでは、`var jsstp=await import("jsstp").then(m=>m.jsstp)` を使用するとスレッドがデッドループに入り、ユーザーがページを離れるかプロセスを閉じるまで多くのCPUを消費します。  
-この原因は、v2.0.2.0以降では、jsstpは`Promise`と同じように待つことができ、解析された結果はそれ自身になるため、`await jsstp`がデッドループに陥るからです。  
-代わりに `var {jsstp}=await import("jsstp");` をお試しください！
-
 #### npm
 
 npmを使用している場合は、npmを使用してjsstpをインストールすることができます。
@@ -50,13 +38,13 @@ var {jsstp}=require('jsstp');
 あるいは、古式ゆかしい方法で、cdn経由でjsstpのソースコードにアクセスすることができます。
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.4.2/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.0/dist/jsstp.min.js"></script>
 ```
 
 jsstpをjsで動的に読み込むこともできます。
 
 ```javascript
-var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v2.0.4.2/dist/jsstp.mjs");
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.0/dist/jsstp.mjs");
 ```
 
 ##### 型定義

@@ -4,7 +4,7 @@ var base_jsstp_test = (
 	/** @type {typeof import("jsstp").jsstp} */
 	jsstp
 )=>{
-	jsstp.then(async ()=>{
+	jsstp.if_available(async ()=>{
 		console.log("jsstp test");
 		console.log((await jsstp.get_fmo_infos()).to_string());
 
@@ -12,7 +12,7 @@ var base_jsstp_test = (
 		console.log(await jsstp.has_event("OnTest"));
 		console.log(jsstp.clone);
 
-		jsstp.On_ShioriEcho.GetName.then(({GhostName})=>
+		jsstp.On_ShioriEcho.GetName().then(({GhostName})=>
 			GhostName=="Taromati2"?
 				console.log("cool Taromati2!"):
 				console.log(GhostName||"ghost not support On_ShioriEcho.GetName")
