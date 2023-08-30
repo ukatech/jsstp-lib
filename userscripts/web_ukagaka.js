@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Web Ukagaka
 // @namespace		https://github.com/ukatech/jsstp-lib
-// @version			0.0.0.5
+// @version			0.0.0.6
 // @description		try to take over the world!
 // @author			steve02081504
 // @match			*://*/*
@@ -106,7 +106,8 @@ async function InitValue(){
 	DiscardedGhosts=await GM.getValue('DiscardedGhosts', []);
 }
 
-async function OnBrowserPageLoad(ghostname,jsstp){
+async function OnBrowserPageLoad(jsstp){
+	const ghostname = jsstp.ghost_info.name;
 	const url = location.href;
 	const title = document.title;
 	let info=await jsstp.OnBrowserPageLoad(url, title);
@@ -124,12 +125,13 @@ async function OnBrowserPageLoad(ghostname,jsstp){
 	}
 }
 
-function RunOnBrowserPageLoad(){
+async function RunOnBrowserPageLoad(){
 	for(let IntervalNumber in IntervalNumbers)
 		clearInterval(IntervalNumber);
 	IntervalNumbers=[];
 
-	jsstp.for_all_ghosts(jsstp => OnBrowserPageLoad(jsstp.ghost_info.name,jsstp));
+	if(await jsstp.available())
+		jsstp.for_all_ghosts(OnBrowserPageLoad);
 }
 
 async function OnBrowserActionRequest(jsstp){
