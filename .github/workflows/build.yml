@@ -15,13 +15,13 @@ jobs:
         uses: steve02081504/disable-autocrlf@v1
         with:
           fuck-auto-CRLF: true
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: latest
       - run: npm install
-      - run: npm run build:dist
+      #install 过程中dist就已经被构建好了
 
       - name: add all
         run: git add -A

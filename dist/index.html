@@ -22,6 +22,9 @@
 			return jsstp[gettype()](getjson()).then((result) => {
 				// 设置回显框的值
 				document.getElementById("result").value = JSON.stringify(result, null, "\t");
+			}).catch((e) => {
+				// 弹窗报错
+				alert(e);
 			});
 		}
 		// 解析并处理url参数
@@ -85,6 +88,10 @@
 	<a href="https://github.com/ukatech/jsstp-lib">github: jsstp-lib</a>
 	<br>
 	made by <a href="https://github.com/ukatech/">ukatecher</a> with (buggy) love.
+	<!-- docs -->
+	<a href="https://ukatech.github.io/jsstp-lib/doc">Documentation</a>
+	<!-- palyground -->
+	<a href="https://ukatech.github.io/jsstp-lib/playground">Playground</a>
 </body>
 
 </html>

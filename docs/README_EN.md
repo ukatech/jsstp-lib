@@ -70,11 +70,31 @@ Finally, declare the type of jsstp before its declaration with a JSDoc comment.
 var jsstp;
 ```
 
+###### Type Definition: i18n
+
+The type definition of jsstp provides support for Chinese, Japanese and English. Normally you can specify the loaded language like this
+
+```javascript
+/// <reference types="jsstp/cn" />
+// or
+/// <reference types="jsstp/jp" />
+// or
+/// <reference types="jsstp/en" />
+```
+
+However, if your IDE bugs when used this way (or you don't want to specify the language every time), you might consider manually modifying the `types` field in `package.json` to specify the default language
+
+```json
+{
+	"types": "dist/en/jsstp.d.ts"
+}
+```
+
 ### 2. Use
 
 jsstp now has a dedicated documentation page!  
 You can visit <https://ukatech.github.io/jsstp-lib/doc> for more specialized information.  
-While looking the documentation, you can try out the various features of jsstp in the [jsstp playground](https://playcode.io/1518761)  
+While looking the documentation, you can try out the various features of jsstp in the [jsstp playground](https://ukatech.github.io/jsstp-lib/playground)  
 
 ____
 

@@ -70,11 +70,31 @@ npm i -g jsstp
 var jsstp;
 ```
 
+###### 型定義: i18n
+
+jsstpの型定義は、中国語、日本語、英語の3つの言語に対応しております。通常は、以下のように読み込む言語を指定します。
+
+```javascript
+/// <reference types="jsstp/cn" />
+// or
+/// <reference types="jsstp/jp" />
+// or
+/// <reference types="jsstp/en" />
+```
+
+しかし、この方法ではIDEが誤って判断する場合や、毎回言語を指定するのが煩わしい場合があります。その場合は、`package.json`の`types`フィールドを手動で修正し、デフォルトの言語を指定することができます。
+
+```json
+{
+	"types": "dist/jp/jsstp.d.ts"
+}
+```
+
 ### 2.使用する
 
 jsstpに専用のドキュメントページができました！  
 より専門的な情報については<https://ukatech.github.io/jsstp-lib/doc>をご覧ください。  
-ドキュメントを見ながら、[jsstp playground](https://playcode.io/1518761)でjsstpの様々な機能を試すことができます。  
+ドキュメントを見ながら、[jsstp playground](https://ukatech.github.io/jsstp-lib/playground)でjsstpの様々な機能を試すことができます。  
 
 ____
 

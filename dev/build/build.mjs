@@ -4,9 +4,10 @@ import { rollup } from 'rollup';
 import { minify as terser } from 'terser';
 import { minify as uglifyjs } from 'uglify-js';
 
-import { renameSync } from 'fs';
+import { renameSync,readdirSync } from 'fs';
 import { join } from 'path';
-import { readdirSync } from 'fs';
+//file io
+import { readFileSync, writeFileSync } from 'fs';
 
 import dts from "rollup-plugin-dts";
 async function build_dts_file(lang){
@@ -148,8 +149,6 @@ function uglifyjs_minify(code,is_module){
 	});
 }
 
-//file io
-import { readFileSync, writeFileSync } from 'fs';
 //minify
 async function jsstp_minify(code_path,is_module){
 	console.log(`minifing ${code_path}`);
@@ -189,7 +188,7 @@ async function jsstp_minify(code_path,is_module){
 			code = code.replace("document.currentScript&&document.currentScript.src","document.currentScript?.src");
 			code = code.replace(
 				"K=(e,s,r)=>{return new i(e,n({get:(h=s,(e,s)=>{var r;if(!h.t?.(e,s))return(r=z(s,X)?h.i?.(e,s):h.h?.(e,s))!==t?r:h.o?h.o(e,s):z(r=e[s],A)?r.bind(e):r}),set:B},r));var h}",
-				"K=(e,s,r)=>{return new i(e,n({get:(e,a)=>{var r;if(!s.t?.(e,a))return(r=z(a,X)?s.i?.(e,a):s.h?.(e,a))!==t?r:s.o?s.o(e,a):z(r=e[a],A)?r.bind(e):r},set:B},r))}"
+				"K=(e,r,o)=>new i(e,n({get:(e,i)=>{var n;if(!r.t?.(e,i))return(n=z(i,X)?r.i?.(e,i):r.h?.(e,i))!==t?n:r.o?r.o(e,i):z(n=e[i],A)?n.bind(e):n},set:B},o))"
 			);
 			code = code.replace("var t,r=Object","var t,e=\"local\",s=\"external\",r=Object");
 			{

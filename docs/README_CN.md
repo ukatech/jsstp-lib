@@ -70,11 +70,31 @@ npm i -g jsstp
 var jsstp;
 ```
 
+###### 类型定义：i18n
+
+jsstp的类型定义提供了中日英三语的支持，正常情况下你可以这样指定加载的语言
+
+```javascript
+/// <reference types="jsstp/cn" />
+// or
+/// <reference types="jsstp/jp" />
+// or
+/// <reference types="jsstp/en" />
+```
+
+不过如果你的ide在这样使用时出了错（或者你懒得每次都指定语言），你可以考虑手动修改`package.json`中的`types`字段来指定默认的语言
+
+```json
+{
+	"types": "dist/cn/jsstp.d.ts"
+}
+```
+
 ### 2. 使用
 
 jsstp现在有专门的文档页面了！  
 你可以访问<https://ukatech.github.io/jsstp-lib/doc>来获取更专业的信息  
-在观看文档的过程中，你可以在[jsstp playground](https://playcode.io/1518761)中尝试jsstp的各种功能  
+在观看文档的过程中，你可以在[jsstp playground](https://ukatech.github.io/jsstp-lib/playground)中尝试jsstp的各种功能  
 
 ____
 
