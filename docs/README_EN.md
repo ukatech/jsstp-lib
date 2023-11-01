@@ -38,13 +38,13 @@ var jsstp=require('jsstp');
 If you're a nostalgist, you can access jsstp's source code via CDN.
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.0/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.1/dist/jsstp.min.js"></script>
 ```
 
 Or load jsstp dynamically in js.
 
 ```javascript
-var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.0/dist/jsstp.mjs");
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.1/dist/jsstp.mjs");
 ```
 
 ##### type definition

@@ -20,8 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: latest
-      - run: npm install
-      #install 过程中dist就已经被构建好了
+      - run: npm install #install 过程中dist就已经被构建好了
 
       - name: add all
         run: git add -A
