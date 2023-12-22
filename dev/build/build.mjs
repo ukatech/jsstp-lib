@@ -190,6 +190,7 @@ async function jsstp_minify(code_path,is_module){
 				"K=(e,s,r)=>{return new i(e,n({get:(h=s,(e,s)=>{var r;if(!h.t?.(e,s))return(r=z(s,X)?h.i?.(e,s):h.h?.(e,s))!==t?r:h.o?h.o(e,s):z(r=e[s],A)?r.bind(e):r}),set:B},r));var h}",
 				"K=(e,r,o)=>new i(e,n({get:(e,i)=>{var n;if(!r.t?.(e,i))return(n=z(i,X)?r.i?.(e,i):r.h?.(e,i))!==t?n:r.o?r.o(e,i):z(n=e[i],A)?n.bind(e):n},set:B},o))"
 			);
+			code = code.replace("t=>{return(t=+t)==t}","t=>+t==t");
 			code = code.replace("var t,r=Object","var t,e=\"local\",s=\"external\",r=Object");
 			{
 				var get_key= (old_key) => {
