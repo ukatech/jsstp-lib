@@ -62,9 +62,9 @@
 		"build": "npm run build:dist",
 		"build:dist": "node dev/build/build.mjs",
 
-		"build:doc:cn": "npx typedoc --plugin typedoc-plugin-missing-exports --excludeExternals --tsconfig \"./src/.decls/cn/tsconfig.json\"",
-		"build:doc:en": "npx typedoc --plugin typedoc-plugin-missing-exports --excludeExternals --tsconfig \"./src/.decls/en/tsconfig.json\"",
-		"build:doc:jp": "npx typedoc --plugin typedoc-plugin-missing-exports --excludeExternals --tsconfig \"./src/.decls/jp/tsconfig.json\"",
+		"build:doc:cn": "npx typedoc --plugin typedoc-plugin-missing-exports --plugin ./docs/languages.mjs --excludeExternals --tsconfig \"./src/.decls/cn/tsconfig.json\"",
+		"build:doc:en": "npx typedoc --plugin typedoc-plugin-missing-exports --plugin ./docs/languages.mjs --excludeExternals --tsconfig \"./src/.decls/en/tsconfig.json\"",
+		"build:doc:jp": "npx typedoc --plugin typedoc-plugin-missing-exports --plugin ./docs/languages.mjs --excludeExternals --tsconfig \"./src/.decls/jp/tsconfig.json\"",
 		"build:doc": "npm run build:doc:cn && npm run build:doc:en && npm run build:doc:jp",
 
 		"build:all": "npm run build:dist && npm run build:doc",
