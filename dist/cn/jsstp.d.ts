@@ -78,12 +78,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * @returns {String} 字符串报文
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
-	 */
-	/*@__PURE__*/to_string(): String;
+	/*@__PURE__*/TextContent(): String;
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
@@ -112,23 +107,13 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
  */
 declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
-	 * @see {@link sstp_info_t.from_string}
-	 * @returns {sstp_info_t}
-	 * @ignore
-	 */
-	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
-	/**
 	 * 从字符串构造sstp_info_t
 	 * @param {String} str 字符串报文
 	 * @returns {sstp_info_t} 构造的sstp_info_t
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
-	/*@__PURE__*/static from_string(str: String): sstp_info_t;
+	/*@__PURE__*/constructor(str: String);
 	/**
 	 * 获取PassThru的值
 	 * @param {String} key 获取的PassThru名称
@@ -145,7 +130,6 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	 * @returns {sstp_info_t} 原始对象
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
-
 	/**
 	 * 其他报文成员
 	 * @type {String|undefined}
@@ -242,7 +226,7 @@ declare interface single_fmo_info_t extends info_object<string,string> {
  */
 declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
-	 * 自字符串构造fmo_info_t，不建议直接使用
+	 * 自字符串构造fmo_info_t
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore
@@ -276,22 +260,50 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
+	 * fmo成员
+	 * @type {single_fmo_info_t|undefined}
+	 */
+	[uuid: string]: single_fmo_info_t|undefined;
+}
+
+/**
+ * list报文对象
+ * @example
+ * let list = jsstp.GetNames();
+ * for(let name of list)
+ * 	console.log(name);
+ * @alias jsstp.list_info_t
+ */
+declare class list_info_t extends base_sstp_info_t<number,string> {
+	/**
+	 * 自字符串构造list_info_t
+	 * @param {String} list_text
+	 * @ignore
+	 */
+	/*@__PURE__*/constructor(list_text: String)
+	/*@__PURE__*/toString(): String
+	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
+	/*@__PURE__*/TextContent(): String
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
 	 * @ignore
 	 */
-	/*@__PURE__*/toJSON(): Object;
+	/*@__PURE__*/toJSON(): Object
 	/**
-	 * fmo成员
-	 * @type {single_fmo_info_t|undefined}
+	 * 获取迭代器
+	 * @returns {Iterator<Array<String>>} 迭代器
 	 */
-	[uuid: string]: single_fmo_info_t|undefined;
+	/*@__PURE__*/[Symbol.iterator](): Iterator<Array<String>>
+	/**
+	 * 数组成员
+	 * @type {string|undefined}
+	 */
+	[uuid: number]: string|undefined;
 }
 
 /**
@@ -350,18 +362,28 @@ type security_level_t = "local" | "external";
  * sstp方法调用器
  * @group callers
  */
-interface method_caller{
-	(info: Object): Promise<sstp_info_t>,
-	get_raw(info: Object): Promise<String>
+interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
+	(...args: Rest): Promise<T>;
+	get_raw(...args: Rest): Promise<String>;
+	with_type<nT>(result_type: new (str:string) => nT): method_caller<nT, Rest>;
+	bind_args_processor<nRest extends any[]>(processor: (...args: Rest) => Object): method_caller<T, nRest>;
 }
 
 /**
- * 事件调用器
+ * 可以通过成员访问扩充指定key值的拓展调用器
  * @group callers
  */
-interface base_event_caller{
-	[key: string]: base_event_caller,//扩展事件名称
+interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: string]: base_keyed_method_caller<T, Rest>
 }
+/**
+ * 对调用参数进行简易处理的可扩展调用器
+ * @group callers
+ */
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
 /**
  * 简易事件调用器  
  * 直接调用以触发事件！
@@ -375,32 +397,31 @@ interface base_event_caller{
  * });
  * @group callers
  */
-interface simple_event_caller extends base_event_caller {
-	(...args: any[]): Promise<sstp_info_t>,
-	[key: string]: simple_event_caller,//扩展事件名称
-}
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
 /**
- * 通用事件调用器  
- * 调用时传入一个对象以触发事件！
+ * 简易命令调用器
  * @example
- * let caller=jsstp.get_caller_of_event("OnTest");
- * //...
- * let data=await caller({
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
- * });
+ * let data=await jsstp.SetCookie("abc","def");
  * //等价于
  * let data = await jsstp.SEND({
- * 	"Event": "OnTest",
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
+ * 	"Command": "SetCookie",
+ * 	"Reference0": "abc",
+ * 	"Reference1": "def"
  * });
  * @group callers
  */
-interface common_event_caller extends base_event_caller{
-	(info: Object): Promise<sstp_info_t>,
-	[key: string]: common_event_caller,//扩展事件名称
-}
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
+/**
+ * 对参数进行简易处理的列表返值命令执行器
+ * @example
+ * let data=await jsstp.GetNames();
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Command": "GetNames"
+ * });
+ * @group callers
+ */
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {}
 
 /**
  * 比{@link jsstp_t}多了一个ghost_info属性  
@@ -440,6 +461,10 @@ declare class jsstp_t{
 	/**
 	 * @group Types
 	 */
+	list_info_t: typeof list_info_t;
+	/**
+	 * @group Types
+	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
@@ -465,11 +490,25 @@ declare class jsstp_t{
 
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group jsstp_event_members
+	 * @group Index reflactions
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
+	/**
+	 * 匹配事件名称以产生简易调用器
+	 * @group Index reflactions
+	 * @example
+	 * let data=await jsstp.GetNames();
+	 */
+	[key: `Get${string}`]: simple_list_command_caller;
+	/**
+	 * 匹配事件名称以产生简易调用器
+	 * @group Index reflactions
+	 * @example
+	 * let data=await jsstp.SetCookie("abc","def");
+	 */
+	[key: `Set${string}`]: simple_command_caller;
 
 	/**
 	 * 在fecth时使用的header
@@ -551,55 +590,66 @@ declare class jsstp_t{
 	/**
 	 * 以文本发送报文并以文本接收返信
 	 * @param {any} info 报文体（文本）
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @returns {Promise<String>} 返回一个promise  
 	 * @group Basic Send Methods
 	 */
-	row_send(info: any): Promise<String | undefined>;
+	row_send(info: any): Promise<String>;
 	/**
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @returns {Promise<String>} 返回一个promise  
 	 * @group Basic Send Methods
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String | undefined>;
+	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * 发送报文
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
+	 * @param {new (info: String)=> result_type} result_type 返回结果的类型，默认为sstp_info_t
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
-	costom_send(sstphead: String, info: Object): Promise<sstp_info_t>;
-	
+	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+
 	/**
 	 * 获取指定方法的调用器
 	 * @param {String} method_name 方法名称
-	 * @returns {{
-	 * 	(info: Object): Promise<sstp_info_t>,
-	 * 	get_raw(info: Object): Promise<String>
-	 * }} 调用器
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
+	 * @param {Function} [args_processor=info => info] 参数处理器，默认直接返回输入参数
+	 * @returns {method_caller} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
+	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
+	): method_caller<T,Rest>;
 	/**
-	 * 获取指定事件的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * 获取指定key的调用器
+	 * @param {String} key_name 键名
+	 * @param {String} value_name 键值
+	 * @param {Function} method_caller 方法调用器
+	 * @param {Function} args_processor 参数处理器
+	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
+	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+		key_name: String, value_name: String,
+		method_caller?: method_caller<T,[Res]>,
+		args_processor?: (...args: Rest) => Res
+	): base_keyed_method_caller<T,Rest>;
+
 	/**
-	 * 用于获取指定事件的简单调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
+	 * 用于获取指定key的简单调用器
+	 * @param {String} key_name 键名
+	 * @param {String} value_name 键值
+	 * @param {Function} method_caller 方法调用器
+	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
+	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
+		key_name: String, value_name: String,
+		method_caller?: method_caller<T,[Object]>,
+	): simple_keyed_method_caller<T>;
 	/**
 	 * 用于获取指定事件的简单调用器的代理
 	 * @returns {Proxy}
@@ -609,6 +659,16 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/get event(): {
 		[event_name: string]: simple_event_caller
+	}
+	/**
+	 * 用于获取指定命令的执行器的代理
+	 * @returns {Proxy}
+	 * @example
+	 * jsstp.command.GetFMO();
+	 * @group Indexer Members
+	 */
+	/*@__PURE__*/get command(): {
+		[command_name: string]: simple_command_caller
 	}
 	/**
 	 * 判断是否存在某个事件
@@ -866,4 +926,4 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
  */
 declare var jsstp: jsstp_t;
 
-export { base_sstp_info_t, jsstp as default, fmo_info_t, ghost_events_queryer_t, jsstp, jsstp_t, sstp_info_t };
+export { base_sstp_info_t, jsstp as default, fmo_info_t, ghost_events_queryer_t, jsstp, jsstp_t, list_info_t, sstp_info_t };
