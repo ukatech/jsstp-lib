@@ -12,26 +12,14 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * sstp报文类：类定义实现
- * @see sstp_info_t
+ * sstp报文类
  * @example
  * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
- * @group sstp_info_t implementations
  */
-declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
-	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
-	 * @see {@link sstp_info_t.from_string}
-	 * @returns {sstp_info_t}
-	 * @ignore
-	 */
-	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
+declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
 	 * 从字符串构造sstp_info_t
 	 * @param {String} str 字符串报文
@@ -39,7 +27,7 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
-	/*@__PURE__*/static from_string(str: String): sstp_info_t;
+	/*@__PURE__*/constructor(str: String);
 	/**
 	 * 获取PassThru的值
 	 * @param {String} key 获取的PassThru名称
@@ -56,63 +44,11 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 	 * @returns {sstp_info_t} 原始对象
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
-}
-/**
- * 补充sstp报文类的默认成员
- * @group sstp_info_t implementations
- */
-type sstp_info_t_members = {
 	/**
 	 * 其他报文成员
 	 * @type {String|undefined}
 	 */
-	[key: string]: String | undefined;
-};
-/**
- * sstp报文类：构造器接口声明
- * @group sstp_info_t implementations
- */
-type sstp_info_t_constructor = {
-	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
-	 * @see {@link sstp_info_t.from_string}
-	 * @returns {sstp_info_t}
-	 * @ignore
-	 */
-	/*@__PURE__*/new(info_head: String, info_body: Object, unknown_lines?: String[]): sstp_info_t;
-	/**
-	 * 从字符串构造sstp_info_t
-	 * @param {String} str 字符串报文
-	 * @returns {sstp_info_t} 构造的sstp_info_t
-	 * @example
-	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
-	 */
-	/*@__PURE__*/from_string(str: String): sstp_info_t;
-};
-/**
- * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
- * @group sstp_info_t implementations
- */
-declare const sstp_info_t: typeof sstp_info_t_class_impl & sstp_info_t_constructor;
-/**
- * sstp报文类
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
- * @group sstp_info_t implementations
- */
-type sstp_info_t = sstp_info_t_class_impl & sstp_info_t_members & {
-	constructor: typeof sstp_info_t;
+	[key: `some ${string}`]: String | undefined;
 }
 
 export default sstp_info_t;

@@ -4,12 +4,6 @@ import {
 	//undefined,
 
 	void_string,
-
-	entries,
-	length,
-	split,
-	trivial_clone,
-	unknown_lines,
 } from "../base/value_table.mjs";
 import {
 	is_not_nan,
@@ -50,42 +44,34 @@ class base_sstp_info_t extends info_object {
 	 * @see {@link sstp_info_t.from_string}
 	 * @ignore
 	 */
-	/*@__PURE__*/constructor(info_head, info_body, unknown_lines = {}) {
-		super();
-		this.#head = /*@__INLINE__*/to_string(info_head);
-		if (unknown_lines[length])
-			this.#unknown_lines = unknown_lines;
-		assign(this, info_body);
+	/*@__PURE__*/constructor(info_head, info_body, unknown_lines) {
+		super(info_body);
+		this.#head = info_head;
+		this.#unknown_lines = unknown_lines || [];
 	}
 	/**
 	 * 获取未知行的数组
 	 * @returns {Array<String>} 未知行的数组
 	 */
-	/*@__PURE__*/get [unknown_lines]() { return this.#unknown_lines || []; }
+	/*@__PURE__*/get unknown_lines() { return this.#unknown_lines || []; }
 	/**
 	 * 获取报文头
 	 * @returns {String} 报文头
 	 */
 	/*@__PURE__*/get head() { return this.#head; }
-	//注入toString方法便于使用
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
 	 * @ignore
 	 */
-	/*@__PURE__*/toString() {
+	/*@__PURE__*/TextContent() {
 		return [
 			this.#head,
-			...this[unknown_lines],
-			...this[entries].map(([key, value]) => `${key}: ${value}`),
+			...this.#unknown_lines,
+			...this.entries.map(([key, value]) => `${key}: ${value}`),
 			void_string,void_string//空行结尾
 		].join(endline);
 	}
-	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
-	 */
-	/*@__PURE__*/to_string() { return /*@__INLINE__*/to_string(this); }//兼容命名
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
@@ -94,8 +80,8 @@ class base_sstp_info_t extends info_object {
 	/*@__PURE__*/toJSON() {
 		return {
 			head: this.#head,
-			[unknown_lines]: this.#unknown_lines,
-			body: this[trivial_clone]
+			unknown_lines: this.#unknown_lines,
+			body: this.trivial_clone
 		};
 	}
 	/**
@@ -104,8 +90,23 @@ class base_sstp_info_t extends info_object {
 	 */
 	/*@__PURE__*/get status_code() {
 		//比如：SSTP/1.4 200 OK，返回200
-		return +this.#head[split](" ").find(value => is_not_nan(+value));
+		return +this.#head.split(" ").find(value => is_not_nan(+value));
 	}
 }
+/**
+ * 从字符串分割出报文头和报文体
+ * @param {String} info_text 字符串报文
+ * @returns {Array<String>} [报文头, ...报文体]
+ */
+/*@__PURE__*/function split_sstp_text(info_text) {
+	let result = info_text.split(endline);
+	//去掉最后的空行*2
+	result.length -= 2;
+	return result;
+}
 
-export default base_sstp_info_t;
+export {
+	base_sstp_info_t as default,
+	base_sstp_info_t,
+	split_sstp_text,
+};

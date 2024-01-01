@@ -3,7 +3,7 @@ import td from "typedoc";
 import path from "path";
 
 const template = `
-<select onchange="location.href = event.target.selectedOptions[0].dataset.url">
+<select onchange="location.href = event.target.selectedOptions[0].dataset.url + location.hash;">
   <option data-url="{ROOT}/JP/{PAGE}" lang="ja">日本語</option>
   <option data-url="{ROOT}/EN/{PAGE}" lang="en">English</option>
   <option data-url="{ROOT}/CN/{PAGE}" lang="zh-CN">中文 (简体)</option>

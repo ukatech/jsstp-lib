@@ -8,6 +8,7 @@ import type fmo_info_t from "./types/fmo_info_t.d.ts";
 import type ghost_events_queryer_t from "./types/ghost_events_queryer_t.d.ts";
 
 import type jsstp_t from "./types/jsstp_t.d.ts";
+import type list_info_t from "./types/list_info_t.d.js";
 
 //定义一个包装器
 /**
@@ -31,5 +32,6 @@ export {
 	base_sstp_info_t,
 	sstp_info_t,
 	fmo_info_t,
+	list_info_t,
 	ghost_events_queryer_t
 }

@@ -12,26 +12,14 @@ Option: notranslate
 由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
 */
 /**
- * sstpメッセージクラス：クラス定義の実装
- * @see sstp_info_t
+ * SSTPメッセージクラス
  * @example
  * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
- * @group sstp_info_t implementations
  */
-declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
-	/**
-	 * 分割された文字列メッセージまたはオブジェクト・メッセージから sstp_info_t を構築する，直接の使用は推奨されない。
-	 * @param {String} info_head メッセージのヘッダー。
-	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
-	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
-	 * @see {@link sstp_info_t.from_string}
-	 * @returns {sstp_info_t}
-	 * @ignore
-	 */
-	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
+declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
 	 * 文字列から sstp_info_t を構築する
 	 * @param {String} str メッセージ文字列
@@ -39,7 +27,7 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
-	/*@__PURE__*/static from_string(str: String): sstp_info_t;
+	/*@__PURE__*/constructor(str: String);
 	/**
 	 * PassThruの値を取得する
 	 * @param {String} key 取得するPassThruの名前。
@@ -56,63 +44,12 @@ declare class sstp_info_t_class_impl extends base_sstp_info_t<string,string> {
 	 * @returns {sstp_info_t} 原物
 	 */
 	/*@__PURE__*/get raw(): sstp_info_t;
-}
-/**
- * 補足sstpメッセージ・クラスのデフォルト・メンバー
- * @group sstp_info_t implementations
- */
-type sstp_info_t_members = {
+
 	/**
-	 * 其他报文成员
+	 * その他のメッセージメンバー
 	 * @type {String|undefined}
 	 */
-	[key: string]: String | undefined;
-};
-/**
- * sstp メッセージクラス: コンストラクタ インタフェース宣言
- * @group sstp_info_t implementations
- */
-type sstp_info_t_constructor = {
-	/**
-	 * 分割された文字列メッセージまたはオブジェクト・メッセージから sstp_info_t を構築する，直接の使用は推奨されない。
-	 * @param {String} info_head メッセージのヘッダー。
-	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
-	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
-	 * @see {@link sstp_info_t.from_string}
-	 * @returns {sstp_info_t}
-	 * @ignore
-	 */
-	/*@__PURE__*/new(info_head: String, info_body: Object, unknown_lines?: String[]): sstp_info_t;
-	/**
-	 * 文字列から sstp_info_t を構築する
-	 * @param {String} str メッセージ文字列
-	 * @returns {sstp_info_t} 構築された sstp_info_t
-	 * @example
-	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
-	 */
-	/*@__PURE__*/from_string(str: String): sstp_info_t;
-};
-/**
- * SSTPメッセージクラス
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
- * @group sstp_info_t implementations
- */
-declare const sstp_info_t: typeof sstp_info_t_class_impl & sstp_info_t_constructor;
-/**
- * SSTPメッセージクラス
- * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
- * console.log(info.head);//SSTP/1.4 200 OK
- * console.log(info.Option);//notranslate
- * @alias jsstp.sstp_info_t
- * @group sstp_info_t implementations
- */
-type sstp_info_t = sstp_info_t_class_impl & sstp_info_t_members & {
-	constructor: typeof sstp_info_t;
+	[key: `some ${string}`]: String | undefined;
 }
 
 export default sstp_info_t;

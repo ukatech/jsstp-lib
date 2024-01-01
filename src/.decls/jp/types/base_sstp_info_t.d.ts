@@ -37,18 +37,12 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * @returns {String}メッセージヘッダ
 	 */
 	/*@__PURE__*/get head(): String;
-	//注入toString方法便于使用
 	/**
 	 * 文字列メッセージの取得
 	 * @returns {String} 文字列メッセージ。
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * 文字列メッセージの取得
-	 * @returns {String} 文字列メッセージ。
-	 */
-	/*@__PURE__*/to_string(): String;
+	/*@__PURE__*/TextContent(): String;
 	/**
 	 * JSON.stringify` で使用するオブジェクトを取得する。
 	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
