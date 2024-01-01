@@ -19,7 +19,7 @@ interface method_caller{
  * @group callers
  */
 interface base_event_caller{
-	[key: string]: base_event_caller,//扩展事件名称
+	[key: string]: base_event_caller,//Extended event name
 }
 /**
  * Simple event caller  
@@ -36,7 +36,7 @@ interface base_event_caller{
  */
 interface simple_event_caller extends base_event_caller {
 	(...args: any[]): Promise<sstp_info_t>,
-	[key: string]: simple_event_caller,//扩展事件名称
+	[key: string]: simple_event_caller,//Extended event name
 }
 /**
  * Generic Event Caller  
@@ -58,7 +58,7 @@ interface simple_event_caller extends base_event_caller {
  */
 interface common_event_caller extends base_event_caller{
 	(info: Object): Promise<sstp_info_t>,
-	[key: string]: common_event_caller,//扩展事件名称
+	[key: string]: common_event_caller,//Extended event name
 }
 
 /**
@@ -72,7 +72,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
 	 */
 	ghost_info: single_fmo_info_t
 }
-//定义一个包装器
+//Define a wrapper
 /**
  * jsstp object
  * @see {@link jsstp}
@@ -199,12 +199,12 @@ declare class jsstp_t{
 
 	/**
 	 * Processing of fmoinfo for all ghosts
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation Operator function
 	 */
 	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
 	/**
 	 * Operate on all ghosts
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation Operator function
 	 */
 	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 

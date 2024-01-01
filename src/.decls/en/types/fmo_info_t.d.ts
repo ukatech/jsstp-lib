@@ -22,7 +22,7 @@ import type { info_object } from "./info_object.d.ts";
  */
 declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
-	 * @description Full path to the root folder of the running base software
+	 * @description Full path to the root folder of the running baseware
 	 * @example E:\ssp\
 	 */
 	path: string;
@@ -32,17 +32,17 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	 */
 	hwnd: string;
 	/**
-	 * @description descript.txt's sakura.name
+	 * @description sakura.name in descript.txt
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description descript.txt's kero.name
+	 * @description kero.name in descript.txt
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description Surface ID currently displayed on side \0
+	 * @description Surface ID currently displayed on the \0 side
 	 * @example 0
 	 */
 	"sakura.surface": string;
@@ -124,7 +124,7 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_i
 	 * @description Determining whether fmo is valid
 	 */
 	/*@__PURE__*/get available(): Boolean;
-	//注入toString方法便于使用
+	//Inject the toString method for ease of use
 	/**
 	 * Getting a String Message
 	 * @returns {String} String message.

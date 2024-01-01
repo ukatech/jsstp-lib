@@ -42,7 +42,7 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	 */
 	keroname: string;
 	/**
-	 * @description Surface ID currently displayed on side \0
+	 * @description Surface ID currently displayed on the \0 side
 	 * @example 0
 	 */
 	"sakura.surface": string;
@@ -123,7 +123,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 * @description Determining whether fmo is valid
 	 */
 	/*@__PURE__*/get available(): Boolean;
-	//注入toString方法便于使用
+	//Inject the toString mesthod for ease of use
 	/**
 	 * Getting a String Message
 	 * @returns {String} String message.

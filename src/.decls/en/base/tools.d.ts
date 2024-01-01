@@ -1,5 +1,5 @@
 /**
- * An extensible function type that can be initialised with a function for the more readable derived class function type
+ * An extensible function type that can be initialised with a function for a more readable derived class function type
  */
 declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
 	/**

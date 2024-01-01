@@ -97,7 +97,7 @@ type ghost_events_queryer_t_constructor = {
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
+ * 	console.log("Current ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -110,7 +110,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
+ * 	console.log("Current ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
