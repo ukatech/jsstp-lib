@@ -6,9 +6,9 @@ var base_jsstp_test = (
 )=>{
 	jsstp.if_available(async ()=>{
 		console.log("jsstp test");
-		console.log((await jsstp.get_fmo_infos()).to_string());
+		console.log((await jsstp.get_fmo_infos()).TextContent());
 
-		console.log((await jsstp.OnTest()).to_string());
+		console.log((await jsstp.OnTest()).TextContent());
 		console.log(await jsstp.has_event("OnTest"));
 		console.log(jsstp.clone);
 

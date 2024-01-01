@@ -1,19 +1,9 @@
-import { 
-	the_object,
-	the_proxy,
-	the_string,
-	the_function,
+import {
+	assign,
 	undefined,
 
 	void_string,
-	
-	substring,
-	length,
-	prototype,
-	assign,
 } from "./value_table.mjs"
-
-import{local,external}from"./base_values.mjs";
 
 /**
  * 以spliter分割字符串str，只对第一个匹配的分隔符做分割
@@ -26,7 +16,7 @@ import{local,external}from"./base_values.mjs";
  */
 var key_value_split = /*@__PURE__*/(str, spliter) => {
 	let index = str.indexOf(spliter);
-	return [str[substring](0, index), str[substring](index + spliter[length])];
+	return [str.substring(0, index), str.substring(index + spliter.length)];
 }
 /**
  * 判断某一string是否符合给定的正则表达式
@@ -50,7 +40,7 @@ var is_event_name = /*@__PURE__*/(str) => /*@__INLINE__*/reg_test(/^On/, str);
  * @returns {String} 重整后的事件名
  * @ignore
  */
-var get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str[substring](3) : str;
+var get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str.substring(3) : str;
 /**
  * 判断一个数是否不是NaN
  * @param {Number} num 要判断的数
@@ -74,7 +64,7 @@ var is_not_nan = /*@__PURE__*/(num) => num == num;
  * @returns {Boolean} 是否为X类型
  * @ignore
  */
-var type_judge = /*@__PURE__*/(value, X) => the_object(value) instanceof X;
+var type_judge = /*@__PURE__*/(value, X) => Object(value) instanceof X;
 /**
  * 对代理的get方法进行封装，使其定义更为简单
  * @param {{
@@ -91,7 +81,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
 		if (info._blocker_?.(target, key))
 			return;
 		let result;
-		if (type_judge(key, the_string))
+		if (type_judge(key, String))
 			result = info._string_key_handler_?.(target, key);
 		else//symbol
 			result = info._symbol_key_handler_?.(target, key);
@@ -99,7 +89,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
 			return result;
 		else if (info._default_handler_)
 			return info._default_handler_(target, key)
-		return type_judge(result = target[key], the_function) ? result.bind(target) : result;
+		return type_judge(result = target[key], Function) ? result.bind(target) : result;
 	}
 /**
  * 更合适的默认代理setter
@@ -123,21 +113,21 @@ var default_setter = (target, key, value)=>((target[key] = value),1);
  * @returns {Proxy} 代理
  * @ignore
  */
-var new_getter_proxy = (target, getter_info, other_info) => new the_proxy(target,assign({
+var new_getter_proxy = (target, getter_info, other_info) => new Proxy(target,assign({
 	get: new_get_handler(getter_info),
 	set: default_setter
 },other_info));
 /**
  * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
  */
-class ExtensibleFunction extends the_function {
+class ExtensibleFunction extends Function {
 	/**
 	 * 自函数实例初始化
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */
 	constructor(func) {
-		return the_object.setPrototypeOf(func, new.target[prototype]);
+		return Object.setPrototypeOf(func, new.target.prototype);
 	}
 }
 
@@ -173,7 +163,7 @@ var get_local_address = /*@__PURE__*/(port) => `http://localhost:${port??9801}`;
  */
 var in_browser = !!globalThis.window;//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
 //但是为了避免node今后实现self，我们使用window
-//node大概率不会实现window，因为多数代码都在使用windows判断是否在浏览器中
+//node大概率不会实现window，因为多数代码都在使用window判断是否在浏览器中
 //这样做还能兼容html4！...大概？
 
 /**
@@ -189,7 +179,7 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  * @ignore
  */
-var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? local : external;
+var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? "local" : "external";
 
 /**
  * 自身的代码内容
@@ -198,8 +188,8 @@ var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my
  */
 var my_code = /*@__PURE__*/(()=>{
 	let my_url = import.meta.url;
-	if(my_url[substring](0,5) == "file:" && !in_browser)
-		import("fs").then(fs=>fs.readFileSync(my_url[substring](8))).then(buffer=>my_code=buffer.toString());
+	if(my_url.substring(0,5) == "file:" && !in_browser)
+		import("fs").then(fs=>fs.readFileSync(my_url.substring(8))).then(buffer=>my_code=to_string(buffer));
 	else
 		fetch(my_url).then(res=>res.text()).then(text=>my_code=text);
 })();

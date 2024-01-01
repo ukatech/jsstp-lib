@@ -2,49 +2,18 @@
 //发信方法：Content-Type: text/plain HTTP/1.1でPOST
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 import {
-	the_proxy,
-
 	assign,
 	//endline,
 	undefined,
 
 	void_string,
 
-	Get_Supported_Events,
-	Has_Event,
-	get_supported_events,
-	has_event,
-	get_simple_caller_of_event,
-	default_info,
-	default_security_level,
-	sstp_version_table,
-	available,
-	forEach,
-	costom_text_send,
-	get_caller_of_method,
-	get_caller_of_event,
-	sendername,
-	get_fmo_infos,
-	split,
-	proxy,
-	then,
-	prototype,
-	from_string,
-	RequestHeader,
-	SEND,
-	ghost_info,
-
-	local,
-	external,
-
 	_false_,
-	the_number,
 } from "../base/value_table.mjs";
 import {
 	is_event_name,
 	get_reorganized_event_name,
 	new_getter_proxy,
-	to_string,
 	type_judge,
 	clone,
 
@@ -70,6 +39,7 @@ var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type
 
 import{SEND as default_sstp_method}from"../base/value_table.mjs"
 import new_object from "./info_object.mjs";
+import list_info_t from "./list_info_t.mjs";
 
 //定义一个包装器
 /**
@@ -93,20 +63,20 @@ class jsstp_t {
 	 */
 	/*@__PURE__*/constructor(sender_name, host) {
 		//super();
-		this[RequestHeader] = {
+		this.RequestHeader = {
 			//"Content-Type": "text/plain",//省略Content-Type并不会导致sstp无法正常工作，还能压缩dist体积。
 			"Origin": my_origin
 		};
-		this[default_info] = { Charset: "UTF-8" };//指定字符集，否则ssp会以本地字符集解码
+		this.default_info = { Charset: "UTF-8" };//指定字符集，否则ssp会以本地字符集解码
 
 		this.host = host;
-		this[sendername] = sender_name;
+		this.sendername = sender_name;
 
 		/**
 		 * SSTP协议版本号列表
 		 */
-		this[sstp_version_table] = {
-			[SEND]: 1.4,
+		this.sstp_version_table = {
+			SEND: 1.4,
 			NOTIFY: 1.1,
 			COMMUNICATE: 1.1,
 			EXECUTE: 1.2,
@@ -117,14 +87,18 @@ class jsstp_t {
 		 * @type {"local"|"external"}
 		 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 		 */
-		this[default_security_level] = my_default_security_level;
+		this.default_security_level = my_default_security_level;
 
-		return this[proxy] = new_getter_proxy(this,{
+		return this.proxy = new_getter_proxy(this,{
 			_string_key_handler_: (target, key) =>
-				type_judge(target[sstp_version_table][key], the_number) ?
-					target[get_caller_of_method](key) :
+				type_judge(target.sstp_version_table[key], Number) ?
+					target.get_caller_of_method(key) :
 				is_event_name(key) ?
-					target[get_simple_caller_of_event](get_reorganized_event_name(key)) :
+					target.event[get_reorganized_event_name(key)] :
+				key.startsWith("Get") ?
+					target.command[key].with_type(list_info_t) :
+				key.startsWith("Set") ?
+					target.command[key] :
 				undefined
 		});
 	}
@@ -133,15 +107,14 @@ class jsstp_t {
 	 * @group Clone Methods
 	 */
 	get clone() {
-		let self=this;
 		return assign(new jsstp_t(), {
-			[RequestHeader]: clone(self[RequestHeader]),
-			[default_info]: clone(self[default_info]),
-			[default_security_level]: self[default_security_level],
-			[sstp_version_table]: clone(self[sstp_version_table]),
+			RequestHeader: clone(this.RequestHeader),
+			default_info: clone(this.default_info),
+			default_security_level: this.default_security_level,
+			sstp_version_table: clone(this.sstp_version_table),
 			//[sendername]: self[sendername], //不需要：default_info已经包含了sendername
-			host: self.host,
-			[ghost_info]: self[ghost_info],
+			host: this.host,
+			ghost_info: this.ghost_info,
 		});
 	}
 	/**
@@ -152,8 +125,8 @@ class jsstp_t {
 	 */
 	by_fmo_info(fmo_info){
 		let result=this.clone;
-		result[ghost_info]=fmo_info,
-		result[default_info].ReceiverGhostHWnd=fmo_info.hwnd;
+		result.ghost_info=fmo_info,
+		result.default_info.ReceiverGhostHWnd=fmo_info.hwnd;
 		return result;
 	}
 	/**
@@ -162,7 +135,7 @@ class jsstp_t {
 	 */
 	for_all_ghost_infos(operation){
 		let result = new_object();
-		return this.get_fmo_infos()[then](fmo_infos=>{
+		return this.get_fmo_infos().then(fmo_infos=>{
 			for(let uuid in fmo_infos)
 				result[uuid] = operation?.(fmo_infos[uuid]);
 			return result;
@@ -187,21 +160,20 @@ class jsstp_t {
 	 * @param {String} sender_name
 	 * @group Properties
 	 */
-	set [sendername](sender_name) { this[default_info].Sender = sender_name || "jsstp-client"; }
-	/*@__PURE__*/get [sendername]() { return this[default_info].Sender; }
+	set sendername(sender_name) { this.default_info.Sender = sender_name || "jsstp-client"; }
+	/*@__PURE__*/get sendername() { return this.default_info.Sender; }
 	/**
 	 * 以文本发送报文并以文本接收返信
 	 * @param {any} info 报文体（文本）
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @returns {Promise<String>} 返回一个promise  
 	 * @group Basic Send Methods
 	 */
 	async row_send(info) {
 		//使用fetch发送数据
 		let response=await fetch(this.#host, {
 			method: "POST",
-			headers: this[RequestHeader],
-			body: /*@__INLINE__*/to_string(info)
+			headers: this.RequestHeader,
+			body: info
 		});
 		if(response.status != 200)
 			throw_error(response.status);
@@ -211,95 +183,86 @@ class jsstp_t {
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
-	 * @returns {Promise<String|undefined>} 返回一个promise  
-	 * 若一切正常其内容为发送后得到的返回值，否则为`undefined`
+	 * @returns {Promise<String>} 返回一个promise  
 	 * @group Basic Send Methods
 	 */
-	[costom_text_send](sstphead, info) {
-		return this.row_send(new sstp_info_t(sstphead, { ...this[default_info], ...info }));
+	costom_text_send(sstphead, info) {
+		return this.row_send((new base_sstp_info_t(sstphead, { ...this.default_info, ...info })).TextContent());
 	}
 	/**
 	 * 发送报文
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
-	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
+	 * @returns {Promise<result_type>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
-	costom_send(sstphead, info) {
-		return this[costom_text_send](sstphead, info)[then](
-			result => sstp_info_t[from_string](result)
+	costom_send(sstphead, info, result_type = sstp_info_t) {
+		return this.costom_text_send(sstphead, info).then(
+			result => new result_type(result)
 		);
 	}
 	/**
 	 * 获取指定方法的调用器
 	 * @param {String} method_name 方法名称
-	 * @returns {{
-	 * 	(info: Object): Promise<sstp_info_t>,
-	 * 	get_raw(info: Object): Promise<String>
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
+	 * @param {Function} [args_processor=info => info] 参数处理器，默认直接返回输入参数
+	 * @returns {this={
+	 * 	(info: Object): Promise<result_type>,
+	 * 	get_raw(info: Object): Promise<String>,
+	 *  with_type(result_type: Function): Function,
+	 *  bind_args_processor(processor: Function): Function
 	 * }} 调用器
-	* @group Caller Methods
+	 * @group Caller Methods
 	 */
-	/*@__PURE__*/[get_caller_of_method](method_name) {
-		let header = get_sstp_header(method_name,this[sstp_version_table]);
-		return assign((info) => this.costom_send(header, info), {
-			get_raw: (info) => this[costom_text_send](header, info)
+	/*@__PURE__*/get_caller_of_method(method_name, result_type = sstp_info_t, args_processor = info => info) {
+		let header = get_sstp_header(method_name,this.sstp_version_table);
+		return assign((...args) => this.costom_send(header, args_processor(...args), result_type), {
+			get_raw: (...args) => this.costom_text_send(header, args_processor(...args)),
+			with_type: (result_type) => this.get_caller_of_method(method_name, result_type, args_processor),
+			bind_args_processor: (processor) => this.get_caller_of_method(method_name, result_type, processor)
 		});
 	}
 	/**
-	 * 对指定事件名的调用器进行适当的包装
-	 * 作用1：使得调用器可以像promise一样使用then方法
-	 * 作用2：使得调用器可以通过属性追加事件名来获取新的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @param {Function} value 调用器的值
-	 * @param {{[String]:(event_name: String, method_name: String)}} caller_factory 调用器工厂
+	 * 用于获取指定key的调用器
+	 * @param {String} key_name 键名
+	 * @param {String} value_name 键值
+	 * @param {Function} method_caller 方法调用器
+	 * @param {Function} args_processor 参数处理器
 	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/#warp_the_caller_of_event(event_name,method_name,value,caller_factory) {
-		return new the_proxy(value, {
-			get: (target, prop) => 
-				prop in target ?
-					target[prop] :
+	/*@__PURE__*/get_caller_of_key(key_name,value_name,
+		method_caller = this.get_caller_of_method(default_sstp_method), args_processor=info=>info
+	) {
+		return new Proxy(method_caller.bind_args_processor(
+			(...args) => assign({ [key_name]: value_name }, args_processor(...args))
+		), {
+			get: (target, prop) =>
+				prop in target?
+					target[prop]:
 				//else
-					this[caller_factory](event_name+"."+prop, method_name)
+					this.get_caller_of_key(key_name,value_name+"."+prop, method_caller, args_processor)
 		});
 	}
 	/**
-	 * 获取指定事件的调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
+	 * 用于获取指定key的简单调用器
+	 * @param {String} key_name 键名
+	 * @param {String} value_name 键值
+	 * @param {Function} method_caller 方法调用器
 	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/[get_caller_of_event](event_name, method_name = default_sstp_method) {
-		return this.#warp_the_caller_of_event(
-			event_name,
-			method_name,
-			(info) => this[proxy][method_name](assign({ Event: event_name }, info)),
-			get_caller_of_event
-		);
-	}
-	/**
-	 * 用于获取指定事件的简单调用器
-	 * @param {String} event_name 事件名称
-	 * @param {String|undefined} method_name 方法名称
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 调用器
-	 * @group Caller Methods
-	 */
-	/*@__PURE__*/[get_simple_caller_of_event](event_name, method_name = default_sstp_method) {
-		return this.#warp_the_caller_of_event(
-			event_name,
-			method_name,
+	/*@__PURE__*/get_simple_caller_of_key(key_name, value_name, method_caller = this.get_caller_of_method(default_sstp_method)) {
+		return this.get_caller_of_key(key_name, value_name, method_caller,
 			(...args) => {
-				let reference_num = 0;
-				let info = {};
-				args[forEach]((arg) =>
+				let reference_num = 0
+				let info = {}
+				args.forEach((arg) =>
 					info[`Reference${reference_num++}`] = arg
-				);
-				return this[get_caller_of_event](event_name, method_name)(info);
-			},
-			get_simple_caller_of_event
+				)
+				return info
+			}
 		);
 	}
 	/**
@@ -310,8 +273,20 @@ class jsstp_t {
 	 * @group Indexer Members
 	 */
 	/*@__PURE__*/get event() {
-		return new the_proxy({}, {
-			get: (_target, prop) => this[get_simple_caller_of_event](prop)
+		return new Proxy({}, {
+			get: (_target, prop) => this.get_simple_caller_of_key("Event", prop)
+		});
+	}
+	/**
+	 * 用于获取指定命令的执行器的代理
+	 * @returns {Proxy}
+	 * @example
+	 * jsstp.command.GetFMO();
+	 * @group Indexer Members
+	 */
+	/*@__PURE__*/get command() {
+		return new Proxy({}, {
+			get: (_target, prop) => this.get_simple_caller_of_key("Command", prop, this.get_caller_of_method("EXECUTE"))
 		});
 	}
 	/**
@@ -343,8 +318,8 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/[has_event](event_name, security_level = this[default_security_level]) {
-		return this.event[Has_Event](event_name, security_level)[then](({ Result }) => Result == 1);
+	/*@__PURE__*/has_event(event_name, security_level = this.default_security_level) {
+		return this.event.Has_Event(event_name, security_level).then(({ Result }) => Result == 1);
 	}
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
@@ -388,11 +363,11 @@ class jsstp_t {
 	 * 	SHIORI_EV.On_Get_Supported_Events
 	 * }
 	 */
-	/*@__PURE__*/[get_supported_events]() {
-		return this.event[Get_Supported_Events]()[then](({ [local]:local_evt, [external]:external_evt }) => (
+	/*@__PURE__*/get_supported_events() {
+		return this.event.Get_Supported_Events().then(({ local:local_evt, external:external_evt }) => (
 			{
-				[local]: (local_evt || void_string)[split](","),
-				[external]: (external_evt || void_string)[split](",")
+				local: (local_evt || void_string).split(","),
+				external: (external_evt || void_string).split(",")
 			}
 		));
 	}
@@ -404,12 +379,8 @@ class jsstp_t {
 	 * if(fmo.available)
 	 * 	console.log(fmo);
 	 */
-	/*@__PURE__*/[get_fmo_infos]() {
-		return this[proxy].EXECUTE.get_raw({
-			Command: "GetFMO"
-		})[then](
-			fmo_text => new fmo_info_t(fmo_text)
-		);
+	/*@__PURE__*/get_fmo_infos() {
+		return this.proxy.GetFMO.with_type(fmo_info_t)()
 	}
 	/**
 	 * 获取当前ghost是否可用
@@ -420,8 +391,8 @@ class jsstp_t {
 	 * else
 	 * 	console.error("ghost不可用,请检查ghost是否启动");
 	 */
-	/*@__PURE__*/[available]() {
-		return this[get_fmo_infos]()[then](fmo => fmo[available],/*catch*/() => _false_);
+	/*@__PURE__*/available() {
+		return this.get_fmo_infos().then(fmo => fmo.available,/*catch*/_ => _false_);
 	}
 	/**
 	 * 获取当前ghost是否可用
@@ -439,8 +410,8 @@ class jsstp_t {
 	 */
 	/*@__PURE__*/if_available(resolve) {
 		//available不会有任何异常风险，所以我们不需要catch
-		return this[available]()[then](result => 
-			result ? resolve?.(this[proxy]) : throw_error()
+		return this.available().then(result => 
+			result ? resolve?.(this.proxy) : throw_error()
 		);
 	}
 	/**
@@ -470,10 +441,11 @@ class jsstp_t {
 }
 //对定义中的所有类型补充到原型
 //纯为了压缩体积（不然每个类型都要写一遍`static`）
-assign(jsstp_t[prototype], {
+assign(jsstp_t.prototype, {
 	type: jsstp_t,
 	base_sstp_info_t: base_sstp_info_t,
 	sstp_info_t: sstp_info_t,
+	list_info_t: list_info_t,
 	fmo_info_t: fmo_info_t,
 	ghost_events_queryer_t: ghost_events_queryer_t
 });

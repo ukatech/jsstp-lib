@@ -48,7 +48,7 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 /**
  * ベースsstpメッセージクラス
  * @example
- * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
@@ -78,12 +78,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * @returns {String} 文字列メッセージ。
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * 文字列メッセージの取得
-	 * @returns {String} 文字列メッセージ。
-	 */
-	/*@__PURE__*/to_string(): String;
+	/*@__PURE__*/TextContent(): String;
 	/**
 	 * JSON.stringify` で使用するオブジェクトを取得する。
 	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
@@ -105,30 +100,20 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 /**
  * SSTPメッセージクラス
  * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
 declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
-	 * 分割された文字列メッセージまたはオブジェクト・メッセージから sstp_info_t を構築する，直接の使用は推奨されない。
-	 * @param {String} info_head メッセージのヘッダー。
-	 * @param {Object} info_body オブジェクト形式のメッセージ本文。
-	 * @param {Array<String>|undefined} unknown_lines 未知の行の配列。
-	 * @see {@link sstp_info_t.from_string}
-	 * @returns {sstp_info_t}
-	 * @ignore
-	 */
-	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
-	/**
 	 * 文字列から sstp_info_t を構築する
 	 * @param {String} str メッセージ文字列
 	 * @returns {sstp_info_t} 構築された sstp_info_t
 	 * @example
-	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
-	/*@__PURE__*/static from_string(str: String): sstp_info_t;
+	/*@__PURE__*/constructor(str: String);
 	/**
 	 * PassThruの値を取得する
 	 * @param {String} key 取得するPassThruの名前。
@@ -174,17 +159,17 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
  */
 declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
-	 * @description 実行中のベースソフトのルートフォルダへのフルパス
+	 * @description 実行中のベースウェアのルートフォルダへのフルパス
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description メインウィンドウのウィンドウハンドル
+	 * @description \0側のウィンドウハンドル
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description ディスクリプタ.txtのsakura.name
+	 * @description descript.txtのsakura.name
 	 * @example 橘花
 	 */
 	name: string;
@@ -194,17 +179,17 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	 */
 	keroname: string;
 	/**
-	 * @description 現在サイドに表示されているサーフェスID
+	 * @description \0側に表示されているサーフェスID
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description 現在表示されているサーフェスID
+	 * @description \1側に表示されているサーフェスID
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description サイドウィンドウのハンドル
+	 * @description \1側のウィンドウのハンドル
 	 * @example 67008
 	 */
 	kerohwnd: string;
@@ -242,7 +227,7 @@ declare interface single_fmo_info_t extends info_object<string,string> {
  */
 declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
-	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する，直接の使用は推奨されない。
+	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore
@@ -255,7 +240,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 * @description 指定された属性を持ち、その属性の値が指定された値であるfmoのuuidを取得する。
 	 * @example 
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
-	 * @description this.uuids.find(uuid => this[uuid][name] == value)`に相当する。
+	 * @description `this.uuids.find(uuid => this[uuid][name] == value)`に相当する。
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
@@ -264,7 +249,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 * @description 指定されたすべてのプロパティの値を取得する
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
-	 * @description this.uuids.map(uuid=>this[uuid][name])`に相当する。
+	 * @description `this.uuids.map(uuid=>this[uuid][name])`に相当する。
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
@@ -276,23 +261,50 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
-	 * 文字列メッセージの取得
-	 * @returns {String} 文字列メッセージ。
+	 * fmoメンバー
+	 * @type {single_fmo_info_t|undefined}
+	 */
+	[uuid: string]: single_fmo_info_t|undefined;
+}
+
+/**
+ * listメッセージオブジェクト
+ * @example
+ * let list = jsstp.GetNames();
+ * for(let name of list)
+ * 	console.log(name);
+ * @alias jsstp.list_info_t
+ */
+declare class list_info_t extends base_sstp_info_t<number,string> {
+	/**
+	 * 自己文字列構造 list_info_t
+	 * @param {String} list_text
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
+	/*@__PURE__*/constructor(list_text: String)
+	/*@__PURE__*/toString(): String
+	/**
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ
+	 * @ignore
+	 */
+	/*@__PURE__*/TextContent(): String
 	/**
 	 * `JSON.stringify`用オブジェクトの取得
 	 * @returns {Object} `JSON.stringify` 用のオブジェクト。
 	 * @ignore
 	 */
-	/*@__PURE__*/toJSON(): Object;
-
+	/*@__PURE__*/toJSON(): Object
 	/**
-	 * fmoメンバー
-	 * @type {single_fmo_info_t|undefined}
+	 * イテレータ取得
+	 * @returns {Iterator<Array<String>>} イテレータ
 	 */
-	[uuid: string]: single_fmo_info_t|undefined;
+	/*@__PURE__*/[Symbol.iterator](): Iterator<Array<String>>
+	/**
+	 * 配列メンバ
+	 * @type {string|undefined}
+	 */
+	[uuid: number]: string|undefined;
 }
 
 /**
@@ -343,7 +355,7 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
 	readonly length: number;
 }
 /**
- * ghost交互中的安全等级
+ * ghostとの通信におけるセキュリティレベル
  */
 type security_level_t = "local" | "external";
 
@@ -351,24 +363,34 @@ type security_level_t = "local" | "external";
  * sstp メソッド呼び出し元
  * @group callers
  */
-interface method_caller{
-	(info: Object): Promise<sstp_info_t>,
-	get_raw(info: Object): Promise<String>
+interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
+	(...args: Rest): Promise<T>;
+	get_raw(...args: Rest): Promise<String>;
+	with_type<nT>(result_type: new (str:string) => nT): method_caller<nT, Rest>;
+	bind_args_processor<nRest extends any[]>(processor: (...args: Rest) => Object): method_caller<T, nRest>;
 }
 
 /**
- * イベント呼び出し元
+ * 指定されたキー値へのメンバーアクセスによって拡張できる拡張呼び出し元
  * @group callers
  */
-interface base_event_caller{
-	[key: string]: base_event_caller,//扩展事件名称
+interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: string]: base_keyed_method_caller<T, Rest>
 }
 /**
- * シンプルなイベント・コーラー  
+ * 呼び出しパラメータを簡単に扱うための拡張可能な呼び出し元
+ * @group callers
+ */
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
+/**
+ * 単純なイベント呼び出し元  
  * イベントをトリガーするために直接呼び出される！
  * @example
  * let data=await jsstp.OnTest(123,"abc");
- * //に相当する。
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -376,32 +398,31 @@ interface base_event_caller{
  * });
  * @group callers
  */
-interface simple_event_caller extends base_event_caller {
-	(...args: any[]): Promise<sstp_info_t>,
-	[key: string]: simple_event_caller,//扩展事件名称
-}
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
 /**
- * 汎用イベント・コーラー  
- * イベントをトリガーするオブジェクトを渡すことで呼び出される！
+ * シンプルなコマンド呼び出し元
  * @example
- * let caller=jsstp.get_caller_of_event("OnTest");
- * //...
- * let data=await caller({
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
- * });
- * //に相当する。
+ * let data=await jsstp.SetCookie("abc","def");
+ * //以下に相当する。
  * let data = await jsstp.SEND({
- * 	"Event": "OnTest",
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
+ * 	"Command": "SetCookie",
+ * 	"Reference0": "abc",
+ * 	"Reference1": "def"
  * });
  * @group callers
  */
-interface common_event_caller extends base_event_caller{
-	(info: Object): Promise<sstp_info_t>,
-	[key: string]: common_event_caller,//扩展事件名称
-}
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
+/**
+ * パラメータを簡単に処理できるリスト戻り値コマンド実行
+ * @example
+ * let data=await jsstp.GetNames();
+ * //以下に相当する。
+ * let data = await jsstp.SEND({
+ * 	"Command": "GetNames"
+ * });
+ * @group callers
+ */
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {}
 
 /**
  * link jsstp_t} よりも ghost_info 属性が1つ多い。  
@@ -441,6 +462,10 @@ declare class jsstp_t{
 	/**
 	 * @group Types
 	 */
+	list_info_t: typeof list_info_t;
+	/**
+	 * @group Types
+	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
@@ -466,11 +491,25 @@ declare class jsstp_t{
 
 	/**
 	 * イベント名をマッチさせて単純な呼び出し元を生成する
-	 * @group jsstp_event_members
+	 * @group Index reflactions
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
+	/**
+	 * イベント名をマッチさせて単純な呼び出し元を生成する
+	 * @group Index reflactions
+	 * @example
+	 * let data=await jsstp.GetNames();
+	 */
+	[key: `Get${string}`]: simple_list_command_caller;
+	/**
+	 * イベント名をマッチさせて単純な呼び出し元を生成する
+	 * @group Index reflactions
+	 * @example
+	 * let data=await jsstp.SetCookie("abc","def");
+	 */
+	[key: `Set${string}`]: simple_command_caller;
 
 	/**
 	 * fecth のヘッダ
@@ -498,7 +537,7 @@ declare class jsstp_t{
 	default_security_level: security_level_t;
 
 	/**
-	 * 自己弁護
+	 * セルププロキシ
 	 */
 	proxy: jsstp_t;
 
@@ -540,67 +579,78 @@ declare class jsstp_t{
 
 	/**
 	 * すべてのゴーストのfmoinfoを処理する
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation 操作関数
 	 */
 	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
 	/**
 	 * すべてのゴースト・オペレーション
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation 操作関数
 	 */
 	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
 	/**
 	 * テキストでメッセージを送信し、テキストでそれを受信する
 	 * @param {any} info メッセージ本文 (テキスト)
-	 * @returns {Promise<String|undefined>} プロミスを返します。  
-	 * 何も問題がなければ、その内容は送信後の戻り値となり、そうでなければ `undefined` となる。
+	 * @returns {Promise<String>} プロミスを返します。  
 	 * @group Basic Send Methods
 	 */
-	row_send(info: any): Promise<String | undefined>;
+	row_send(info: any): Promise<String>;
 	/**
 	 * メッセージを送信するが、返された結果は処理しない。
 	 * メッセージのヘッダー。
 	 * @param {Object} info メッセージのボディ。
-	 * @returns {Promise<String|undefined>} プロミスを返します。 
-	 * 何も問題がなければ、その内容は送信後の戻り値となり、そうでなければ `undefined` となる。
+	 * @returns {Promise<String>} プロミスを返します。 
 	 * @group Basic Send Methods
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String | undefined>;
+	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
+	 * @returns {Promise<sstp_info_t>} プロミスを返します。
 	 * メッセージの送信
 	 * @param {String} sstphead メッセージヘッダ
-	 * @param {Object} info メッセージ本文
-	 * @returns {Promise<sstp_info_t>} プロミスを返します。
+	 * @param {Object} info メッセージボディ
+	 * @param {new (info: String)=> result_type} result_type 返される結果の型、デフォルトは sstp_info_t
 	 * @group Basic Send Methods
 	 */
-	costom_send(sstphead: String, info: Object): Promise<sstp_info_t>;
-	
+	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+
 	/**
 	 * 指定したメソッドの呼び出し元を取得する
 	 * @param {String} method_name メソッド名
-	 * @returns {{
-	 * 	(info: Object): Promise<sstp_info_t>,
-	 * 	get_raw(info: Object): Promise<String>
-	 * }} 呼び出し側
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返される結果の型、デフォルトは sstp_info_t
+	 * @param {Function} [args_processor=info => info] パラメータプロセッサ、デフォルトは入力パラメータを直接返す
+	 * @returns {method_caller} 呼び出し元
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
+	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
+	): method_caller<T,Rest>;
 	/**
-	 * 指定されたイベントの呼び出し元を取得する
-	 * @param {String} event_name イベント名
-	 * @param {String|undefined} method_name メソッド名
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 呼び出し元
+	 * 指定したキーの呼び出し元を取得
+	 * @param {String} key_name key名
+	 * @param {String} value_name value名
+	 * @param {Function} method_caller メソッド呼び出し元
+	 * @param {Function} args_processor パラメータプロセッサ
+	 * @returns {Proxy<value>} 呼び出し元
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
+	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+		key_name: String, value_name: String,
+		method_caller?: method_caller<T,[Res]>,
+		args_processor?: (...args: Rest) => Res
+	): base_keyed_method_caller<T,Rest>;
+
 	/**
-	 * 指定されたイベントを取得するためのシンプルな呼び出し元
-	 * @param {String} event_name イベント名
-	 * @param {String|undefined} method_name メソッド名
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} 呼び出し元
+	 * 指定されたキーを取得するシンプルな呼び出し元
+	 * @param {String} key_name key名
+	 * @param {String} value_name value名
+	 * @param {Function} method_caller メソッド呼び出し元
+	 * @returns {Proxy<value>} 呼び出し元
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
+	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
+		key_name: String, value_name: String,
+		method_caller?: method_caller<T,[Object]>,
+	): simple_keyed_method_caller<T>;
 	/**
 	 * 単純な呼び出し元が指定されたイベントを取得するためのプロキシ
 	 * @returns {Proxy}
@@ -612,6 +662,16 @@ declare class jsstp_t{
 		[event_name: string]: simple_event_caller
 	}
 	/**
+	 * 指定されたコマンドの実行者を取得するエージェント
+	 * @returns {Proxy}
+	 * @example
+	 * jsstp.command.GetFMO();
+	 * @group Indexer Members
+	 */
+	/*@__PURE__*/get command(): {
+		[command_name: string]: simple_command_caller
+	}
+	/**
 	 * イベントが存在するかどうかを判断する
 	 * {@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使って、頻繁に呼び出されそうかどうかを問い合わせる。
 	 * @param {String} event_name イベント名
@@ -620,7 +680,7 @@ declare class jsstp_t{
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
 	 * @example
-	 * //示例代码(AYA):
+	 * //サンプルコード(AYA):
 	 * SHIORI_EV.On_Has_Event : void {
 	 * 	_event_name=reference.raw[0]
 	 * 	_SecurityLevel=reference.raw[1]
@@ -648,7 +708,7 @@ declare class jsstp_t{
 	 * @example
 	 * jsstp.get_supported_events().then(result => console.log(result));
 	 * @example
-	 * //示例代码(AYA):
+	 * //サンプルコード(AYA):
 	 * SHIORI_EV.On_Get_Supported_Events: void {
 	 * 	_L=GETFUNCLIST('On')
 	 * 	_base_local_event_funcs=IARRAY
@@ -689,7 +749,7 @@ declare class jsstp_t{
 	}>;
 	/**
 	 * fmo情報を入手
-	 * @returns {Promise<fmo_info_t>} fmoインフォメーション
+	 * @returns {Promise<fmo_info_t>} fmo情報
 	 * @example
 	 * let fmo=await jsstp.get_fmo_infos();
 	 * if(fmo.available)
@@ -859,7 +919,7 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
  * @example
  * jsstp.SEND({
  * 	Event: "OnTest",
- * 	Script: "\\s[0]Hell Wold!\\e"
+ * 	Script: "\\s[0]Hello Wold!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}
@@ -867,4 +927,4 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
  */
 declare var jsstp: jsstp_t;
 
-export { base_sstp_info_t, jsstp as default, fmo_info_t, ghost_events_queryer_t, jsstp, jsstp_t, sstp_info_t };
+export { base_sstp_info_t, jsstp as default, fmo_info_t, ghost_events_queryer_t, jsstp, jsstp_t, list_info_t, sstp_info_t };

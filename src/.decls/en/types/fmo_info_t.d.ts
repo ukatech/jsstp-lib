@@ -78,20 +78,19 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	modulestate: string;
 }
 /**
- * fmo message class: class definition implementation
- * @see fmo_info_t
+ * fmo message class
  * @example
  * let fmo = jsstp.get_fmo_infos();
  * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
  * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- * @group fmo_info_t implementations
  */
-declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_info_t> {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
-	 * Self-string construction fmo_info_t, not recommended for direct use
+	 * Construct fmo_info_t from a string
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore
@@ -101,16 +100,16 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_i
 	 * @param {String} name The name of the property to be checked.
 	 * @param {String} value The value of the property to be checked.
 	 * @returns {String|undefined} corresponding uuid (if any)
-	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute.
+	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
 	 * @example 
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
-	 * @description equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
+	 * @description Equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description Get the values of all the specified properties.
+	 * @description Gets the values of all the specified properties
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description Equivalent to `this.uuids.map(uuid => this[uuid][name])`
@@ -124,71 +123,11 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_i
 	 * @description Determining whether fmo is valid
 	 */
 	/*@__PURE__*/get available(): Boolean;
-	//Inject the toString method for ease of use
-	/**
-	 * Getting a String Message
-	 * @returns {String} String message.
-	 * @ignore
-	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * Get the object to use for `JSON.stringify`.
-	 * @returns {Object} The object to use for `JSON.stringify`.
-	 * @ignore
-	 */
-	/*@__PURE__*/toJSON(): Object;
-}
-/**
- * Default members of the supplementary fmo message class
- * @group fmo_info_t implementations
- */
-type fmo_info_t_members = {
 	/**
 	 * fmo members
 	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: single_fmo_info_t|undefined;
-};
-/**
- * fmo message class: constructor interface declaration
- * @group fmo_info_t implementations
- */
-type fmo_info_t_constructor = {
-	/**
-	 * Construct fmo_info_t from a string, not recommended for direct use
-	 * @param {String} fmo_text
-	 * @returns {void}
-	 * @ignore
-	 */
-	/*@__PURE__*/new(fmo_text: String): fmo_info_t;
-};
-/**
- * fmo message class
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
- * 	console.log(fmo[kikka_uuid].ghostpath);
- * @alias jsstp.fmo_info_t
- * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- * @group fmo_info_t implementations
- */
-declare const fmo_info_t: typeof fmo_info_t_class_impl & fmo_info_t_constructor;
-/**
- * fmo message class
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
- * 	console.log(fmo[kikka_uuid].ghostpath);
- * @alias jsstp.fmo_info_t
- * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- * @group fmo_info_t implementations
- */
-type fmo_info_t = fmo_info_t_class_impl & fmo_info_t_members & {
-	constructor: typeof fmo_info_t;
+	[uuid: `some ${string}`]: single_fmo_info_t|undefined;
 }
 
 export {

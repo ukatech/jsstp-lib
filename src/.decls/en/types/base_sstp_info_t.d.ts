@@ -37,18 +37,12 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * @returns {String} message header
 	 */
 	/*@__PURE__*/get head(): String;
-	//Inject the toString method for ease of use
 	/**
 	 * Getting a String Message
 	 * @returns {String} String message.
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * Getting a String Message
-	 * @returns {String} String message.
-	 */
-	/*@__PURE__*/to_string(): String;
+	/*@__PURE__*/TextContent(): String;
 	/**
 	 * Get the object to use for `JSON.stringify`.
 	 * @returns {Object} The object to use for `JSON.stringify`.

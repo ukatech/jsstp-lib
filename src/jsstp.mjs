@@ -4,6 +4,7 @@
 
 import base_sstp_info_t from "./types/base_sstp_info_t.mjs";
 import sstp_info_t from "./types/sstp_info_t.mjs";
+import list_info_t from "./types/list_info_t.mjs";
 import fmo_info_t from "./types/fmo_info_t.mjs";
 import ghost_events_queryer_t from "./types/ghost_events_queryer_t.mjs";
 
@@ -31,5 +32,6 @@ export {
 	base_sstp_info_t,
 	sstp_info_t,
 	fmo_info_t,
-	ghost_events_queryer_t
+	ghost_events_queryer_t,
+	list_info_t
 }

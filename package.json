@@ -60,7 +60,9 @@
 		"test:dist": "npm run test:dist:mjs && npm run test:dist:cjs",
 
 		"build": "npm run build:dist",
-		"build:dist": "node dev/build/build.mjs",
+		"build:dist:code": "node dev/build/build_code.mjs",
+		"build:dist:dts": "node dev/build/build_dts.mjs",
+		"build:dist": "npm run build:dist:code && npm run build:dist:dts",
 
 		"build:doc:cn": "npx typedoc --plugin typedoc-plugin-missing-exports --plugin ./dev/build/docs-language-sidebar.mjs --excludeExternals --tsconfig \"./src/.decls/cn/tsconfig.json\"",
 		"build:doc:en": "npx typedoc --plugin typedoc-plugin-missing-exports --plugin ./dev/build/docs-language-sidebar.mjs --excludeExternals --tsconfig \"./src/.decls/en/tsconfig.json\"",
@@ -85,6 +87,7 @@
 	},
 	"homepage": "https://github.com/ukatech/jsstp-lib#readme",
 	"devDependencies": {
+		"packer": "github:steve02081504/packer",
 		"rollup": "^4.2.0",
 		"rollup-plugin-dts": "^6.1.0",
 		"terser": "^5.24.0",

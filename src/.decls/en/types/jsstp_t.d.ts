@@ -2,6 +2,7 @@ import type { single_fmo_info_t , fmo_info_t } from "./fmo_info_t.d.ts";
 import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
+import type list_info_t from "./list_info_t.d.js";
 import type { info_object } from "./info_object.d.ts";
 import { security_level_t } from "../base/tools.js";
 
@@ -9,40 +10,33 @@ import { security_level_t } from "../base/tools.js";
  * sstp method caller
  * @group callers
  */
-interface method_caller{
-	(info: Object): Promise<sstp_info_t>,
-	get_raw(info: Object): Promise<String>
+interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
+	(...args: Rest): Promise<T>;
+	get_raw(...args: Rest): Promise<String>;
+	with_type<nT>(result_type: new (str:string) => nT): method_caller<nT, Rest>;
+	bind_args_processor<nRest extends any[]>(processor: (...args: Rest) => Object): method_caller<T, nRest>;
 }
 
 /**
- * event caller
+ * 可以通过成员访问扩充指定key值的拓展调用器
  * @group callers
  */
-interface base_event_caller{
-	[key: string]: base_event_caller,//Extended event name
+interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: base_keyed_method_caller<T, Rest>
 }
 /**
- * Simple event caller  
- * Called directly to trigger an event!
- * @example
- * let data=await jsstp.OnTest(123,"abc");
- * //equivalent to
- * let data = await jsstp.SEND({
- * 	"Event": "OnTest",
- * 	"Reference0": 123,
- * 	"Reference1": "abc"
- * });
+ * 对调用参数进行简易处理的可扩展调用器
  * @group callers
  */
-interface simple_event_caller extends base_event_caller {
-	(...args: any[]): Promise<sstp_info_t>,
-	[key: string]: simple_event_caller,//Extended event name
-}
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
 /**
  * Generic Event Caller  
  * Called by passing in an object to trigger an event!
  * @example
- * let caller=jsstp.get_caller_of_event("OnTest");
+ * let caller=jsstp.get_caller_of_key("Event","OnTest");
  * //...
  * let data=await caller({
  * 	"Reference0": 123,
@@ -56,10 +50,77 @@ interface simple_event_caller extends base_event_caller {
  * });
  * @group callers
  */
-interface common_event_caller extends base_event_caller{
-	(info: Object): Promise<sstp_info_t>,
-	[key: string]: common_event_caller,//Extended event name
-}
+interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
+/**
+ * 简易事件调用器  
+ * 直接调用以触发事件！
+ * @example
+ * let data=await jsstp.OnTest(123,"abc");
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Event": "OnTest",
+ * 	"Reference0": 123,
+ * 	"Reference1": "abc"
+ * });
+ * @group callers
+ */
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
+
+/**
+ * 命令调用器
+ * @example
+ * let caller=jsstp.get_caller_of_key("Command","SetCookie");
+ * //...
+ * let data=await caller({
+ * 	"Reference0": "abc",
+ * 	"Reference1": "def"
+ * });
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Command": "SetCookie",
+ * 	"Reference0": "abc",
+ * 	"Reference1": "def"
+ * });
+ * @group callers
+ */
+interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
+/**
+ * 简易命令调用器
+ * @example
+ * let data=await jsstp.SetCookie("abc","def");
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Command": "SetCookie",
+ * 	"Reference0": "abc",
+ * 	"Reference1": "def"
+ * });
+ * @group callers
+ */
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
+/**
+ * 列表返值命令执行器
+ * @example
+ * let caller=jsstp.get_caller_of_key("Command","GetNames");
+ * //...
+ * let data=await caller();
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Command": "GetNames"
+ * });
+ * @group callers
+ */
+interface list_command_caller extends base_keyed_method_caller<list_info_t> {}
+/**
+ * 对参数进行简易处理的列表返值命令执行器
+ * @example
+ * let data=await jsstp.GetNames();
+ * //等价于
+ * let data = await jsstp.SEND({
+ * 	"Command": "GetNames"
+ * });
+ * @group callers
+ */
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {}
 
 /**
  * One more ghost_info attribute than {@link jsstp_t}  
@@ -100,6 +161,10 @@ declare class jsstp_t{
 	/**
 	 * @group Types
 	 */
+	list_info_t: typeof list_info_t;
+	/**
+	 * @group Types
+	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
@@ -124,12 +189,26 @@ declare class jsstp_t{
 	GIVE: method_caller;
 
 	/**
-	 * Match event names to generate simple callers
-	 * @group jsstp_event_members
+	 * 匹配事件名称以产生简易调用器
+	 * @group Index reflactions
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
+	/**
+	 * 匹配事件名称以产生简易调用器
+	 * @group Index reflactions
+	 * @example
+	 * let data=await jsstp.GetNames();
+	 */
+	[key: `Get${string}`]: simple_list_command_caller;
+	/**
+	 * 匹配事件名称以产生简易调用器
+	 * @group Index reflactions
+	 * @example
+	 * let data=await jsstp.SetCookie("abc","def");
+	 */
+	[key: `Set${string}`]: simple_command_caller;
 
 	/**
 	 * The header used in fecth.
@@ -211,55 +290,66 @@ declare class jsstp_t{
 	/**
 	 * Sends a message in text and receives it back in text
 	 * @param {any} info Message body (text)
-	 * @returns {Promise<String|undefined>} Returns a promise.  
-	 * If everything is fine the content is the value returned after sending, otherwise it is `undefined`.
+	 * @returns {Promise<String>} Returns a promise.  
 	 * @group Basic Send Methods
 	 */
-	row_send(info: any): Promise<String | undefined>;
+	row_send(info: any): Promise<String>;
 	/**
 	 * Sends the message, but does not process the returned results
 	 * @param {String} sstphead The header of the message.
 	 * @param {Object} info The body of the message.
-	 * @returns {Promise<String|undefined>} Returns a promise.  
-	 * If everything is OK it will be the value returned after sending, otherwise it will be `undefined`.
+	 * @returns {Promise<String>} Returns a promise.  
 	 * @group Basic Send Methods
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String | undefined>;
+	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * Send message
 	 * @param {String} sstphead Message header
 	 * @param {Object} info The body of the message.
-	 * @returns {Promise<sstp_info_t>} returns a promise
+	 * @param {new (info: String)=> result_type} result_type 返回结果的类型，默认为sstp_info_t
+	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
-	costom_send(sstphead: String, info: Object): Promise<sstp_info_t>;
-	
+	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+
 	/**
-	 * Get the caller of the specified method
-	 * @param {String} method_name method_name
-	 * @returns {{
-	 * 	(info: Object): Promise<sstp_info_t>,
-	 * 	get_raw(info: Object): Promise<String>
-	 * }} caller
+	 * 获取指定方法的调用器
+	 * @param {String} method_name 方法名称
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
+	 * @param {Function} [args_processor=info => info] 参数处理器，默认直接返回输入参数
+	 * @returns {method_caller} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_method(method_name: String): method_caller;
+	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
+	): method_caller<T,Rest>;
 	/**
-	 * Get the caller of the specified event
-	 * @param {String} event_name event_name
-	 * @param {String|undefined} method_name method_name
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} caller
+	 * 获取指定key的调用器
+	 * @param {String} key_name 键名
+	 * @param {String} value_name 键值
+	 * @param {Function} method_caller 方法调用器
+	 * @param {Function} args_processor 参数处理器
+	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_event(event_name: String, method_name?: String): common_event_caller;
+	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+		key_name: String, value_name: String,
+		method_caller?: method_caller<T,[Res]>,
+		args_processor?: (...args: Rest) => Res
+	): base_keyed_method_caller<T,Rest>;
+
 	/**
-	 * Simple caller for getting the specified event
-	 * @param {String} event_name event_name
-	 * @param {String|undefined} method_name method_name
-	 * @returns {{(info: Object) => Promise<sstp_info_t>}} caller
+	 * 用于获取指定key的简单调用器
+	 * @param {String} key_name 键名
+	 * @param {String} value_name 键值
+	 * @param {Function} method_caller 方法调用器
+	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_simple_caller_of_event(event_name: String, method_name?: String): simple_event_caller;
+	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
+		key_name: String, value_name: String,
+		method_caller?: method_caller<T,[Object]>,
+	): simple_keyed_method_caller<T>;
 	/**
 	 * Proxy for a simple caller to get a specified event
 	 * @returns {Proxy}
@@ -269,6 +359,16 @@ declare class jsstp_t{
 	 */
 	/*@__PURE__*/get event(): {
 		[event_name: string]: simple_event_caller
+	}
+	/**
+	 * 用于获取指定命令的执行器的代理
+	 * @returns {Proxy}
+	 * @example
+	 * jsstp.command.GetFMO();
+	 * @group Indexer Members
+	 */
+	/*@__PURE__*/get command(): {
+		[command_name: string]: simple_command_caller
 	}
 	/**
 	 * Determine if an event exists

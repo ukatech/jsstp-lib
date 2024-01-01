@@ -4,7 +4,6 @@
 declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
 	/**
 	 * Initialising from a function instance  
-	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */

@@ -46,7 +46,7 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
 	readonly length: number;
 }
 /**
- * ghost交互中的安全等级
+ * ghostとの通信におけるセキュリティレベル
  */
 type security_level_t = "local" | "external";
 

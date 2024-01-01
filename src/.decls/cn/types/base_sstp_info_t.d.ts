@@ -37,18 +37,12 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * @returns {String} 报文头
 	 */
 	/*@__PURE__*/get head(): String;
-	//注入toString方法便于使用
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
 	 * @ignore
 	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
-	 */
-	/*@__PURE__*/to_string(): String;
+	/*@__PURE__*/TextContent(): String;
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象

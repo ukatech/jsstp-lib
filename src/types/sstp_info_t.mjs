@@ -1,23 +1,14 @@
 import {
-	the_object,
-
 	//assign,
 	endline,
 	undefined,
-
-	get_passthrough,
-
-	length,
-	split,
-	prototype,
-	from_string,
 } from "../base/value_table.mjs";
 import {
 	key_value_split,
 	new_getter_proxy,
 	reg_test,
 } from "../base/tools.mjs";
-import base_sstp_info_t from "./base_sstp_info_t.mjs";
+import {base_sstp_info_t,split_sstp_text} from "./base_sstp_info_t.mjs";
 import new_object from "./info_object.mjs";
 
 //定义sstp报文类
@@ -41,36 +32,17 @@ Option: notranslate
  */
 class sstp_info_t extends base_sstp_info_t {
 	/**
-	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
-	 * @param {String} info_head 报文头
-	 * @param {Object} info_body 对象格式的报文体
-	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
-	 * @see {@link sstp_info_t.from_string}
-	 * @ignore
-	 */
-	/*@__PURE__*/constructor(info_head, info_body, unknown_lines = {}) {
-		super(info_head, info_body, unknown_lines);
-		return new_getter_proxy(this, {
-			_string_key_handler_: (target, key) => 
-				x_sstp_passthru_head + key in target && !the_object.getOwnPropertyNames(sstp_info_t[prototype]).includes(key)?
-					target[get_passthrough](key) :
-				undefined
-		});
-	}
-	/**
 	 * 从字符串构造sstp_info_t
 	 * @param {String} str 字符串报文
 	 * @returns {sstp_info_t} 构造的sstp_info_t
 	 * @example
 	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
 	 */
-	/*@__PURE__*/static [from_string](str) {
-		let [head, ...lines] = str[split](endline);
+	/*@__PURE__*/constructor(str) {
+		let [head, ...lines] = split_sstp_text(str);
 		let body = {};
 		let unknown_lines = [];
 		let last_key;
-		//去掉最后的空行*2
-		lines[length] -= 2;
 		for (let line of lines) {
 			let [key, value] = key_value_split(line, ': ');
 			if (!/*@__INLINE__*/reg_test(/^\w[^\s]*$/, key)) {
@@ -82,14 +54,20 @@ class sstp_info_t extends base_sstp_info_t {
 			else
 				body[last_key = key] = value;
 		}
-		return new sstp_info_t(head, body, unknown_lines);
+		super(head, body, unknown_lines);
+		return new_getter_proxy(this, {
+			_string_key_handler_: (target, key) => 
+				x_sstp_passthru_head + key in target && !Object.getOwnPropertyNames(sstp_info_t.prototype).includes(key)?
+					target.get_passthrough(key) :
+				undefined
+		});
 	}
 	/**
 	 * 获取PassThru的值
 	 * @param {String} key 获取的PassThru名称
 	 * @returns {String|undefined} PassThru的值
 	 */
-	/*@__PURE__*/[get_passthrough](key) { return this[x_sstp_passthru_head + key]; }
+	/*@__PURE__*/get_passthrough(key) { return this[x_sstp_passthru_head + key]; }
 	/**
 	 * 用于缓存所有的PassThru
 	 * @type {info_object}
@@ -103,7 +81,7 @@ class sstp_info_t extends base_sstp_info_t {
 	/*@__PURE__*/get passthroughs() {
 		return this.#passthroughs ??= new_object().push(
 			this.map((value, key) => key.startsWith(x_sstp_passthru_head) ?
-				[key.slice(x_sstp_passthru_head[length]), value] : undefined
+				[key.slice(x_sstp_passthru_head.length), value] : undefined
 			)
 		);
 	}

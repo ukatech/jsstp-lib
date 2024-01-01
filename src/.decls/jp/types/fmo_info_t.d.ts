@@ -22,17 +22,17 @@ import type { info_object } from "./info_object.d.ts";
  */
 declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
-	 * @description 実行中のベースソフトのルートフォルダへのフルパス
+	 * @description 実行中のベースウェアのルートフォルダへのフルパス
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description メインウィンドウのウィンドウハンドル
+	 * @description \0側のウィンドウハンドル
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description ディスクリプタ.txtのsakura.name
+	 * @description descript.txtのsakura.name
 	 * @example 橘花
 	 */
 	name: string;
@@ -42,17 +42,17 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	 */
 	keroname: string;
 	/**
-	 * @description 現在サイドに表示されているサーフェスID
+	 * @description \0側に表示されているサーフェスID
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description 現在表示されているサーフェスID
+	 * @description \1側に表示されているサーフェスID
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description サイドウィンドウのハンドル
+	 * @description \1側のウィンドウのハンドル
 	 * @example 67008
 	 */
 	kerohwnd: string;
@@ -78,33 +78,32 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	modulestate: string;
 }
 /**
- * fmoメッセージクラス：クラス定義の実装
- * @see fmo_info_t
+ * FMOメッセージクラス
  * @example
  * let fmo = jsstp.get_fmo_infos();
  * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
  * if(kikka_uuid)
  * 	console.log(fmo[kikka_uuid].ghostpath);
+ * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- * @group fmo_info_t implementations
  */
-declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_info_t> {
+declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	/**
-	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する，直接の使用は推奨されない。
+	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する
 	 * @param {String} fmo_text
 	 * @returns {void}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
-	 * @param {String} name チェックするプロパティの名前。
-	 * @param {String} value チェックするプロパティの値。
-	 * returns {String|undefined}対応するuuid(もしあれば)
-	 * @description 指定された属性と属性値を持つfmoのuuidを取得します。
-	 * @example
+	 * @param {String} name チェックするプロパティの名前
+	 * @param {String} value 望ましい属性値
+	 * @returns {String|undefined} 対応するuuid（もしあれば）
+	 * @description 指定された属性を持ち、その属性の値が指定された値であるfmoのuuidを取得する。
+	 * @example 
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
-	 * @description `this.uuids.find(uuid => this[uuid][name] == value)` と等価です。
+	 * @description `this.uuids.find(uuid => this[uuid][name] == value)`に相当する。
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
@@ -113,82 +112,22 @@ declare class fmo_info_t_class_impl extends base_sstp_info_t<string,single_fmo_i
 	 * @description 指定されたすべてのプロパティの値を取得する
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
-	 * @description `this.uuids.map(uuid=>this[uuid][name])`と同じ。
+	 * @description `this.uuids.map(uuid=>this[uuid][name])`に相当する。
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description すべてのuidsを取得する
+	 * @description すべてのuuidsを取得する
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
 	 * @description fmoが有効かどうかの判断
 	 */
 	/*@__PURE__*/get available(): Boolean;
-	//注入toString方法便于使用
-	/**
-	 * 文字列メッセージの取得
-	 * @returns {String} 文字列メッセージ
-	 * @ignore
-	 */
-	/*@__PURE__*/toString(): String;
-	/**
-	 * `JSON.stringify` で使用するオブジェクトを取得する。
-	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
-	 * @ignore
-	 */
-	/*@__PURE__*/toJSON(): Object;
-}
-/**
- * 補足fmoメッセージ・クラスのデフォルト・メンバー
- * @group fmo_info_t implementations
- */
-type fmo_info_t_members = {
 	/**
 	 * fmoメンバー
 	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: single_fmo_info_t|undefined;
-};
-/**
- * fmoメッセージ・クラス：コンストラクタ・インターフェース宣言
- * @group fmo_info_t implementations
- */
-type fmo_info_t_constructor = {
-	/**
-	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する，直接の使用は推奨されない。
-	 * @param {String} fmo_text
-	 * @returns {void}
-	 * @ignore
-	 */
-	/*@__PURE__*/new(fmo_text: String): fmo_info_t;
-};
-/**
- * FMOメッセージクラス
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
- * 	console.log(fmo[kikka_uuid].ghostpath);
- * @alias jsstp.fmo_info_t
- * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- * @group fmo_info_t implementations
- */
-declare const fmo_info_t: typeof fmo_info_t_class_impl & fmo_info_t_constructor;
-/**
- * FMOメッセージクラス
- * @example
- * let fmo = jsstp.get_fmo_infos();
- * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
- * if(kikka_uuid)
- * 	console.log(fmo[kikka_uuid].ghostpath);
- * @alias jsstp.fmo_info_t
- * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
- * @group fmo_info_t implementations
- */
-type fmo_info_t = fmo_info_t_class_impl & fmo_info_t_members & {
-	constructor: typeof fmo_info_t;
+	[uuid: `some ${string}`]: single_fmo_info_t|undefined;
 }
 
 export {
