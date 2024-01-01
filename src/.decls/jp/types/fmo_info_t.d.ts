@@ -22,17 +22,17 @@ import type { info_object } from "./info_object.d.ts";
  */
 declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
-	 * @description 実行中のベースソフトのルートフォルダへのフルパス
+	 * @description 実行中のベースウェアのルートフォルダへのフルパス
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description メインウィンドウのウィンドウハンドル
+	 * @description \0側のウィンドウハンドル
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description ディスクリプタ.txtのsakura.name
+	 * @description descript.txtのsakura.name
 	 * @example 橘花
 	 */
 	name: string;
@@ -42,17 +42,17 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	 */
 	keroname: string;
 	/**
-	 * @description 現在サイドに表示されているサーフェスID
+	 * @description \0側に表示されているサーフェスID
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description 現在表示されているサーフェスID
+	 * @description \1側に表示されているサーフェスID
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description サイドウィンドウのハンドル
+	 * @description \1側のウィンドウのハンドル
 	 * @example 67008
 	 */
 	kerohwnd: string;

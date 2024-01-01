@@ -1,7 +1,7 @@
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 
 /**
- * list报文对象
+ * listメッセージオブジェクト
  * @example
  * let list = jsstp.GetNames();
  * for(let name of list)
@@ -10,31 +10,31 @@ import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
  */
 declare class list_info_t extends base_sstp_info_t<number,string> {
 	/**
-	 * 自字符串构造list_info_t
+	 * 自己文字列構造 list_info_t
 	 * @param {String} list_text
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
 	/*@__PURE__*/toString(): String
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 文字列メッセージの取得
+	 * @returns {String} 文字列メッセージ
 	 * @ignore
 	 */
 	/*@__PURE__*/TextContent(): String
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * `JSON.stringify`用オブジェクトの取得
+	 * @returns {Object} `JSON.stringify` 用のオブジェクト。
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object
 	/**
-	 * 获取迭代器
-	 * @returns {Iterator<Array<String>>} 迭代器
+	 * イテレータ取得
+	 * @returns {Iterator<Array<String>>} イテレータ
 	 */
 	/*@__PURE__*/[Symbol.iterator](): Iterator<Array<String>>
 	/**
-	 * 数组成员
+	 * 配列メンバ
 	 * @type {string|undefined}
 	 */
 	[uuid: number]: string|undefined;

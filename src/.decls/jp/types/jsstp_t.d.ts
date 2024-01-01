@@ -18,23 +18,23 @@ interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
 }
 
 /**
- * 可以通过成员访问扩充指定key值的拓展调用器
+ * 指定されたキー値へのメンバーアクセスによって拡張できる拡張呼び出し元
  * @group callers
  */
 interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
 	/**
-	 * 扩展调用器
+	 * 拡張呼び出し元
 	 */
 	[uuid: `some ${string}`]: base_keyed_method_caller<T, Rest>
 	//_call Ts-index-excluder get_raw,with_type,bind_args_processor base_keyed_method_caller<T, Rest>
 }
 /**
- * 对调用参数进行简易处理的可扩展调用器
+ * 呼び出しパラメータを簡単に扱うための拡張可能な呼び出し元
  * @group callers
  */
 interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
 /**
- * 汎用イベント・コーラー  
+ * 汎用イベント呼び出し元  
  * イベントをトリガーするオブジェクトを渡すことで呼び出される！
  * @example
  * let caller=jsstp.get_caller_of_key("Event","OnTest");
@@ -43,7 +43,7 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
- * //に相当する。
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -53,11 +53,11 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  */
 interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
 /**
- * 简易事件调用器  
- * 直接调用以触发事件！
+ * 単純なイベント呼び出し元  
+ * イベントをトリガーするために直接呼び出される！
  * @example
  * let data=await jsstp.OnTest(123,"abc");
- * //等价于
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -68,7 +68,7 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
 interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
 
 /**
- * 命令调用器
+ * コマンド起動呼び出し元
  * @example
  * let caller=jsstp.get_caller_of_key("Command","SetCookie");
  * //...
@@ -76,7 +76,7 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
  * 	"Reference0": "abc",
  * 	"Reference1": "def"
  * });
- * //等价于
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Command": "SetCookie",
  * 	"Reference0": "abc",
@@ -86,10 +86,10 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
  */
 interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
 /**
- * 简易命令调用器
+ * シンプルなコマンド呼び出し元
  * @example
  * let data=await jsstp.SetCookie("abc","def");
- * //等价于
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Command": "SetCookie",
  * 	"Reference0": "abc",
@@ -99,12 +99,12 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
  */
 interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
 /**
- * 列表返值命令执行器
+ * リスト戻り値コマンド実行
  * @example
  * let caller=jsstp.get_caller_of_key("Command","GetNames");
  * //...
  * let data=await caller();
- * //等价于
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Command": "GetNames"
  * });
@@ -112,10 +112,10 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  */
 interface list_command_caller extends base_keyed_method_caller<list_info_t> {}
 /**
- * 对参数进行简易处理的列表返值命令执行器
+ * パラメータを簡単に処理できるリスト戻り値コマンド実行
  * @example
  * let data=await jsstp.GetNames();
- * //等价于
+ * //以下に相当する。
  * let data = await jsstp.SEND({
  * 	"Command": "GetNames"
  * });
@@ -134,7 +134,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
 	 */
 	ghost_info: single_fmo_info_t
 }
-//定义一个包装器
+//ラッパーの定義
 /**
  * jsstpオブジェクト
  * @see {@link jsstp}
@@ -190,21 +190,21 @@ declare class jsstp_t{
 	GIVE: method_caller;
 
 	/**
-	 * 匹配事件名称以产生简易调用器
+	 * イベント名をマッチさせて単純な呼び出し元を生成する
 	 * @group Index reflactions
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
 	/**
-	 * 匹配事件名称以产生简易调用器
+	 * イベント名をマッチさせて単純な呼び出し元を生成する
 	 * @group Index reflactions
 	 * @example
 	 * let data=await jsstp.GetNames();
 	 */
 	[key: `Get${string}`]: simple_list_command_caller;
 	/**
-	 * 匹配事件名称以产生简易调用器
+	 * イベント名をマッチさせて単純な呼び出し元を生成する
 	 * @group Index reflactions
 	 * @example
 	 * let data=await jsstp.SetCookie("abc","def");
@@ -237,7 +237,7 @@ declare class jsstp_t{
 	default_security_level: security_level_t;
 
 	/**
-	 * 自己弁護
+	 * セルププロキシ
 	 */
 	proxy: jsstp_t;
 
@@ -279,12 +279,12 @@ declare class jsstp_t{
 
 	/**
 	 * すべてのゴーストのfmoinfoを処理する
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation 操作関数
 	 */
 	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
 	/**
 	 * すべてのゴースト・オペレーション
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation 操作関数
 	 */
 	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
@@ -305,32 +305,32 @@ declare class jsstp_t{
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * @returns {Promise<sstp_info_t>} プロミスを返します。
-	 * 发送报文
-	 * @param {String} sstphead 报文头
-	 * @param {Object} info 报文体
-	 * @param {new (info: String)=> result_type} result_type 返回结果的类型，默认为sstp_info_t
+	 * メッセージの送信
+	 * @param {String} sstphead メッセージヘッダ
+	 * @param {Object} info メッセージボディ
+	 * @param {new (info: String)=> result_type} result_type 返される結果の型、デフォルトは sstp_info_t
 	 * @group Basic Send Methods
 	 */
 	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
 	/**
-	 * 获取指定方法的调用器
-	 * @param {String} method_name 方法名称
-	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
-	 * @param {Function} [args_processor=info => info] 参数处理器，默认直接返回输入参数
-	 * @returns {method_caller} 调用器
+	 * 指定したメソッドの呼び出し元を取得する
+	 * @param {String} method_name メソッド名
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返される結果の型、デフォルトは sstp_info_t
+	 * @param {Function} [args_processor=info => info] パラメータプロセッサ、デフォルトは入力パラメータを直接返す
+	 * @returns {method_caller} 呼び出し元
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
 	): method_caller<T,Rest>;
 	/**
-	 * 获取指定key的调用器
-	 * @param {String} key_name 键名
-	 * @param {String} value_name 键值
-	 * @param {Function} method_caller 方法调用器
-	 * @param {Function} args_processor 参数处理器
-	 * @returns {Proxy<value>} 调用器
+	 * 指定したキーの呼び出し元を取得
+	 * @param {String} key_name key名
+	 * @param {String} value_name value名
+	 * @param {Function} method_caller メソッド呼び出し元
+	 * @param {Function} args_processor パラメータプロセッサ
+	 * @returns {Proxy<value>} 呼び出し元
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
@@ -340,11 +340,11 @@ declare class jsstp_t{
 	): base_keyed_method_caller<T,Rest>;
 
 	/**
-	 * 用于获取指定key的简单调用器
-	 * @param {String} key_name 键名
-	 * @param {String} value_name 键值
-	 * @param {Function} method_caller 方法调用器
-	 * @returns {Proxy<value>} 调用器
+	 * 指定されたキーを取得するシンプルな呼び出し元
+	 * @param {String} key_name key名
+	 * @param {String} value_name value名
+	 * @param {Function} method_caller メソッド呼び出し元
+	 * @returns {Proxy<value>} 呼び出し元
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
@@ -362,7 +362,7 @@ declare class jsstp_t{
 		[event_name: string]: simple_event_caller
 	}
 	/**
-	 * 用于获取指定命令的执行器的代理
+	 * 指定されたコマンドの実行者を取得するエージェント
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.command.GetFMO();
@@ -380,7 +380,7 @@ declare class jsstp_t{
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
 	 * @example
-	 * //示例代码(AYA):
+	 * //サンプルコード(AYA):
 	 * SHIORI_EV.On_Has_Event : void {
 	 * 	_event_name=reference.raw[0]
 	 * 	_SecurityLevel=reference.raw[1]
@@ -408,7 +408,7 @@ declare class jsstp_t{
 	 * @example
 	 * jsstp.get_supported_events().then(result => console.log(result));
 	 * @example
-	 * //示例代码(AYA):
+	 * //サンプルコード(AYA):
 	 * SHIORI_EV.On_Get_Supported_Events: void {
 	 * 	_L=GETFUNCLIST('On')
 	 * 	_base_local_event_funcs=IARRAY
@@ -449,7 +449,7 @@ declare class jsstp_t{
 	}>;
 	/**
 	 * fmo情報を入手
-	 * @returns {Promise<fmo_info_t>} fmoインフォメーション
+	 * @returns {Promise<fmo_info_t>} fmo情報
 	 * @example
 	 * let fmo=await jsstp.get_fmo_infos();
 	 * if(fmo.available)
