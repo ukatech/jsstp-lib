@@ -76,9 +76,8 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
-	 * @ignore
 	 */
-	/*@__PURE__*/TextContent(): String;
+	/*@__PURE__*/get text_content(): String;
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
@@ -281,13 +280,13 @@ declare class list_info_t extends base_sstp_info_t<number,string> {
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
-	/*@__PURE__*/toString(): String
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * 获取值的字符串形式
+	 * @returns {String} 值的字符串形式，类似于`${this.values}`
+	 * @summary 这不是获取字符串报文的方法。如果需要获取字符串报文，请使用{@link list_info_t.text_content}
 	 * @ignore
 	 */
-	/*@__PURE__*/TextContent(): String
+	/*@__PURE__*/toString(): String
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象

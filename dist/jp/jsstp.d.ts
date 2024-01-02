@@ -76,9 +76,8 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	/**
 	 * 文字列メッセージの取得
 	 * @returns {String} 文字列メッセージ。
-	 * @ignore
 	 */
-	/*@__PURE__*/TextContent(): String;
+	/*@__PURE__*/get text_content(): String;
 	/**
 	 * `JSON.stringify` で使用するオブジェクトを取得する。
 	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
@@ -282,19 +281,13 @@ declare class list_info_t extends base_sstp_info_t<number,string> {
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
+	/**
+	 * 値の文字列形式を取得します
+	 * @returns {String} 値の文字列形式、`${this.values}`と同様
+	 * @summary これは文字列メッセージを取得するメソッドではありません。文字列メッセージを取得するには、{@link list_info_t.text_content}を使用してください
+	 * @ignore
+	 */
 	/*@__PURE__*/toString(): String
-	/**
-	 * 文字列メッセージの取得
-	 * @returns {String} 文字列メッセージ
-	 * @ignore
-	 */
-	/*@__PURE__*/TextContent(): String
-	/**
-	 * `JSON.stringify`用オブジェクトの取得
-	 * @returns {Object} `JSON.stringify` 用のオブジェクト。
-	 * @ignore
-	 */
-	/*@__PURE__*/toJSON(): Object
 	/**
 	 * イテレータ取得
 	 * @returns {Iterator<Array<String>>} イテレータ
