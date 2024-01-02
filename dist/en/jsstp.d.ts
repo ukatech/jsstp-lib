@@ -1,7 +1,7 @@
 /**
  * Extend object to provide some simple and iterative operations.
  */
-declare class info_object<key_T=PropertyKey,value_T=any> {
+declare class info_object<key_T = PropertyKey, value_T = any> {
 	/**
 	 * @description Get an array of all keys
 	 */
@@ -22,17 +22,17 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 	 * @description Execute a function for each key-value pair.
 	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
 	 */
-	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T|undefined): void;
+	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T | undefined): void;
 	/**
 	 * @description Copy a new object
 	 * @returns {info_object} Copied object
 	 */
-	/*@__PURE__*/get trivial_clone(): info_object<key_T,value_T>;
+	/*@__PURE__*/get trivial_clone(): info_object<key_T, value_T>;
 	/**
 	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
 	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
 	 */
-	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[],value_T]) => T): T[];
+	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[], value_T]) => T): T[];
 	/**
 	 * @description Traverses itself and returns a one-dimensional array of traversal results.
 	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
@@ -42,7 +42,7 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 	 * @description Append elements to itself as an array.
 	 * @param {[undefined|[key_T,value_T]]} array Array to append to.
 	 */
-	/*@__PURE__*/push(array: [undefined|[key_T, value_T]]): void;
+	/*@__PURE__*/push(array: [undefined | [key_T, value_T]]): void;
 }
 
 /**
@@ -53,7 +53,7 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_object<key_T,value_T> {
+declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_object<key_T, value_T> {
 	/**
 	 * Constructing sstp_info_t from split string or object messages, is not recommended.
 	 * @param {String} info_head The header of the message.
@@ -93,7 +93,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * Other message members
 	 * @type {any|undefined}
 	 */
-	[key: string]: any|undefined;
+	[key: string]: any | undefined;
 }
 
 /**
@@ -104,7 +104,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t<string,string> {
+declare class sstp_info_t extends base_sstp_info_t<string, string> {
 	/**
 	 * Constructing sstp_info_t from a string
 	 * @param {String} str string message
@@ -156,7 +156,7 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare interface single_fmo_info_t extends info_object<string,string> {
+declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
 	 * @description Full path to the root folder of the running baseware
 	 * @example E:\ssp\
@@ -224,7 +224,7 @@ declare interface single_fmo_info_t extends info_object<string,string> {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
+declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	/**
 	 * Construct fmo_info_t from a string
 	 * @param {String} fmo_text
@@ -263,7 +263,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 * fmo members
 	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: string]: single_fmo_info_t|undefined;
+	[uuid: string]: single_fmo_info_t | undefined;
 }
 
 /**
@@ -274,7 +274,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
  * 	console.log(name);
  * @alias jsstp.list_info_t
  */
-declare class list_info_t extends base_sstp_info_t<number,string> {
+declare class list_info_t extends base_sstp_info_t<number, string> {
 	/**
 	 * Constructs list_info_t from a string
 	 * @param {String} list_text
@@ -297,13 +297,13 @@ declare class list_info_t extends base_sstp_info_t<number,string> {
 	 * Array member
 	 * @type {string|undefined}
 	 */
-	[uuid: number]: string|undefined;
+	[uuid: number]: string | undefined;
 }
 
 /**
  * An extensible function type that can be initialised with a function for a more readable derived class function type
  */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
 	/**
 	 * Initialising from a function instance  
 	 * @param {Function} func
@@ -356,10 +356,10 @@ type security_level_t = "local" | "external";
  * sstp method caller
  * @group callers
  */
-interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
+interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 	(...args: Rest): Promise<T>;
 	get_raw(...args: Rest): Promise<String>;
-	with_type<nT>(result_type: new (str:string) => nT): method_caller<nT, Rest>;
+	with_type<nT>(result_type: new (str: string) => nT): method_caller<nT, Rest>;
 	bind_args_processor<nRest extends any[]>(processor: (...args: Rest) => Object): method_caller<T, nRest>;
 }
 
@@ -367,7 +367,7 @@ interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
  * An extensible caller that can be accessed by members to extend a specific key value
  * @group callers
  */
-interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
+interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object]> extends method_caller<T, Rest> {
 	/**
 	 * Extensible caller
 	 */
@@ -377,7 +377,7 @@ interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> e
  * An extensible caller that performs simple processing on call parameters
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
 /**
  * Simple Event Caller  
  * Directly call to trigger an event!
@@ -391,7 +391,7 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
 /**
  * Simple Command Caller
  * @example
@@ -404,7 +404,7 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
 /**
  * List Return Command Executor with Simple Parameter Processing
  * @example
@@ -415,14 +415,14 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {}
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
 
 /**
  * One more ghost_info attribute than {@link jsstp_t}  
  * Relies on `ReceiverGhostHWnd` in {@link jsstp_t.default_info} to direct messages to a specific ghost.
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
-interface jsstp_with_ghost_info_t extends jsstp_t{
+interface jsstp_with_ghost_info_t extends jsstp_t {
 	/**
 	 * Information about the ghost pointed to by this instance of jsstp_t
 	 */
@@ -435,7 +435,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-declare class jsstp_t{
+declare class jsstp_t {
 	/**
 	 * @group Types
 	 */
@@ -574,12 +574,12 @@ declare class jsstp_t{
 	 * Processing of fmoinfo for all ghosts
 	 * @param {Function|undefined} operation Operator function
 	 */
-	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string, result_T>>;
 	/**
 	 * Operate on all ghosts
 	 * @param {Function|undefined} operation Operator function
 	 */
-	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string, result_T>>;
 
 	/**
 	 * Sends a message in text and receives it back in text
@@ -614,9 +614,9 @@ declare class jsstp_t{
 	 * @returns {method_caller} The invoker
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+	/*@__PURE__*/get_caller_of_method<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
-	): method_caller<T,Rest>;
+	): method_caller<T, Rest>;
 	/**
 	 * Get the invoker of a specific key
 	 * @param {String} key_name Key name
@@ -626,11 +626,11 @@ declare class jsstp_t{
 	 * @returns {Proxy<value>} The invoker
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+	/*@__PURE__*/get_caller_of_key<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		key_name: String, value_name: String,
-		method_caller?: method_caller<T,[Res]>,
+		method_caller?: method_caller<T, [Res]>,
 		args_processor?: (...args: Rest) => Res
-	): base_keyed_method_caller<T,Rest>;
+	): base_keyed_method_caller<T, Rest>;
 
 	/**
 	 * Get a simple invoker for a specific key
@@ -640,9 +640,9 @@ declare class jsstp_t{
 	 * @returns {Proxy<value>} The invoker
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
+	/*@__PURE__*/get_simple_caller_of_key<T = sstp_info_t>(
 		key_name: String, value_name: String,
-		method_caller?: method_caller<T,[Object]>,
+		method_caller?: method_caller<T, [Object]>,
 	): simple_keyed_method_caller<T>;
 	/**
 	 * Proxy for a simple caller to get a specified event
@@ -773,7 +773,7 @@ declare class jsstp_t{
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/if_available<result_T=undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
+	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
 	 * Get a queryer for querying events supported by ghost
 	 * @returns {Promise<ghost_events_queryer_t>} Query the queryer for supported events.
@@ -798,7 +798,7 @@ declare class jsstp_t{
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
  */
-declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
+declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[], Promise<Boolean>> {
 	/**
 	 * Constructing an Event Querier
 	 * @param {jsstp_t} base_jsstp
