@@ -19,7 +19,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t<string,string> {
+declare class sstp_info_t extends base_sstp_info_t<string, string> {
 	/**
 	 * 文字列から sstp_info_t を構築する
 	 * @param {String} str メッセージ文字列

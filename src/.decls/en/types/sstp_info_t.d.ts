@@ -19,7 +19,7 @@ Consists of a fixed header line and an optional set of message lines, with \r\n 
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t<string,string> {
+declare class sstp_info_t extends base_sstp_info_t<string, string> {
 	/**
 	 * Constructing sstp_info_t from a string
 	 * @param {String} str string message

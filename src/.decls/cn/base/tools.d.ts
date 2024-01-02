@@ -1,7 +1,7 @@
 /**
  * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
  */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
 	/**
 	 * 自函数实例初始化
 	 * @param {Function} func
@@ -50,4 +50,4 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
  */
 type security_level_t = "local" | "external";
 
-export{ ExtensibleFunction, security_level_t };
+export { ExtensibleFunction, security_level_t };

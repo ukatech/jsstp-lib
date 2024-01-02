@@ -6,7 +6,7 @@ import {
 	void_string
 } from "../base/value_table.mjs";
 import { to_string } from "../base/tools.mjs";
-import {base_sstp_info_t,split_sstp_text} from "./base_sstp_info_t.mjs";
+import { base_sstp_info_t, split_sstp_text } from "./base_sstp_info_t.mjs";
 
 /**
  * list报文对象
@@ -43,7 +43,7 @@ class list_info_t extends base_sstp_info_t {
 			this.head,
 			void_string,
 			...this.values,
-			void_string,void_string
+			void_string, void_string
 		].join(endline);
 	}
 	/**

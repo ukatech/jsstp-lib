@@ -68,7 +68,7 @@ class base_sstp_info_t extends info_object {
 			this.#head,
 			...this.#unknown_lines,
 			...this.entries.map(([key, value]) => `${key}: ${value}`),
-			void_string,void_string//空行结尾
+			void_string, void_string//空行结尾
 		].join(endline);
 	}
 	/**

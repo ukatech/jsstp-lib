@@ -1,4 +1,4 @@
-import type { single_fmo_info_t , fmo_info_t } from "./fmo_info_t.d.ts";
+import type { single_fmo_info_t, fmo_info_t } from "./fmo_info_t.d.ts";
 import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
@@ -10,10 +10,10 @@ import { security_level_t } from "../base/tools.js";
  * sstp方法调用器
  * @group callers
  */
-interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
+interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 	(...args: Rest): Promise<T>;
 	get_raw(...args: Rest): Promise<String>;
-	with_type<nT>(result_type: new (str:string) => nT): method_caller<nT, Rest>;
+	with_type<nT>(result_type: new (str: string) => nT): method_caller<nT, Rest>;
 	bind_args_processor<nRest extends any[]>(processor: (...args: Rest) => Object): method_caller<T, nRest>;
 }
 
@@ -21,7 +21,7 @@ interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
  * 可以通过成员访问扩充指定key值的拓展调用器
  * @group callers
  */
-interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
+interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object]> extends method_caller<T, Rest> {
 	/**
 	 * 扩展调用器
 	 */
@@ -31,7 +31,7 @@ interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> e
  * 对调用参数进行简易处理的可扩展调用器
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
 /**
  * 通用事件调用器  
  * 调用时传入一个对象以触发事件！
@@ -50,7 +50,7 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
+interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
 /**
  * 简易事件调用器  
  * 直接调用以触发事件！
@@ -64,7 +64,7 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
 /**
  * 命令调用器
  * @example
@@ -82,7 +82,7 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
+interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
 /**
  * 简易命令调用器
  * @example
@@ -95,7 +95,7 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
 /**
  * 列表返值命令执行器
  * @example
@@ -108,7 +108,7 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface list_command_caller extends base_keyed_method_caller<list_info_t> {}
+interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
 /**
  * 对参数进行简易处理的列表返值命令执行器
  * @example
@@ -119,14 +119,14 @@ interface list_command_caller extends base_keyed_method_caller<list_info_t> {}
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {}
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
 
 /**
  * 比{@link jsstp_t}多了一个ghost_info属性  
  * 依赖{@link jsstp_t.default_info}中的`ReceiverGhostHWnd`定向给特定的ghost发送信息
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
-interface jsstp_with_ghost_info_t extends jsstp_t{
+interface jsstp_with_ghost_info_t extends jsstp_t {
 	/**
 	 * 该jsstp_t实例所指向的ghost的信息
 	 */
@@ -140,7 +140,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-declare class jsstp_t{
+declare class jsstp_t {
 	/**
 	 * @group Types
 	 */
@@ -279,12 +279,12 @@ declare class jsstp_t{
 	 * 对于所有ghost的fmoinfo进行处理
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string, result_T>>;
 	/**
 	 * 对于所有ghost进行操作
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string, result_T>>;
 
 	/**
 	 * 以文本发送报文并以文本接收返信
@@ -319,9 +319,9 @@ declare class jsstp_t{
 	 * @returns {method_caller} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+	/*@__PURE__*/get_caller_of_method<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
-	): method_caller<T,Rest>;
+	): method_caller<T, Rest>;
 	/**
 	 * 获取指定key的调用器
 	 * @param {String} key_name 键名
@@ -331,11 +331,11 @@ declare class jsstp_t{
 	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+	/*@__PURE__*/get_caller_of_key<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		key_name: String, value_name: String,
-		method_caller?: method_caller<T,[Res]>,
+		method_caller?: method_caller<T, [Res]>,
 		args_processor?: (...args: Rest) => Res
-	): base_keyed_method_caller<T,Rest>;
+	): base_keyed_method_caller<T, Rest>;
 
 	/**
 	 * 用于获取指定key的简单调用器
@@ -345,9 +345,9 @@ declare class jsstp_t{
 	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
+	/*@__PURE__*/get_simple_caller_of_key<T = sstp_info_t>(
 		key_name: String, value_name: String,
-		method_caller?: method_caller<T,[Object]>,
+		method_caller?: method_caller<T, [Object]>,
 	): simple_keyed_method_caller<T>;
 	/**
 	 * 用于获取指定事件的简单调用器的代理
@@ -478,7 +478,7 @@ declare class jsstp_t{
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/if_available<result_T=undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
+	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
 	 * 获取一个用于查询ghost所支持事件的queryer
 	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer

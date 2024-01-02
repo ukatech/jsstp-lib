@@ -1,7 +1,7 @@
 /**
  * An extensible function type that can be initialised with a function for a more readable derived class function type
  */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
 	/**
 	 * Initialising from a function instance  
 	 * @param {Function} func
@@ -50,4 +50,4 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
  */
 type security_level_t = "local" | "external";
 
-export{ ExtensibleFunction, security_level_t };
+export { ExtensibleFunction, security_level_t };

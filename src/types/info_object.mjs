@@ -54,11 +54,11 @@ class info_object {
 	 */
 	/*@__PURE__*/flat_map(func) {
 		let result = [];
-		this.entries.map(([key, value]) => 
+		this.entries.map(([key, value]) =>
 			result.push(...(
-				type_judge(value, info_object)?
-				value.flat_map(func.bind(func, key)):
-				[func(key, value)]//构建数组，因为外部有展开操作
+				type_judge(value, info_object) ?
+					value.flat_map(func.bind(func, key)) :
+					[func(key, value)]//构建数组，因为外部有展开操作
 			))
 		);
 		return result;

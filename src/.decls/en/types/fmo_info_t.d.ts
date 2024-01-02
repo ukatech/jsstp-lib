@@ -20,7 +20,7 @@ import type { info_object } from "./info_object.d.ts";
  * }
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare interface single_fmo_info_t extends info_object<string,string> {
+declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
 	 * @description Full path to the root folder of the running baseware
 	 * @example E:\ssp\
@@ -88,7 +88,7 @@ declare interface single_fmo_info_t extends info_object<string,string> {
  * @see {@link jsstp_t.get_fmo_infos}
  * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
-declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
+declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	/**
 	 * Construct fmo_info_t from a string
 	 * @param {String} fmo_text
@@ -127,7 +127,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 	 * fmo members
 	 * @type {single_fmo_info_t|undefined}
 	 */
-	[uuid: `some ${string}`]: single_fmo_info_t|undefined;
+	[uuid: `some ${string}`]: single_fmo_info_t | undefined;
 }
 
 export {

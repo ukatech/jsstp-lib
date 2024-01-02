@@ -8,11 +8,11 @@ import {
 	new_getter_proxy,
 	reg_test,
 } from "../base/tools.mjs";
-import {base_sstp_info_t,split_sstp_text} from "./base_sstp_info_t.mjs";
+import { base_sstp_info_t, split_sstp_text } from "./base_sstp_info_t.mjs";
 import new_object from "./info_object.mjs";
 
 //定义sstp报文类
-import{x_sstp_passthru_head}from"../base/value_table.mjs"
+import { x_sstp_passthru_head } from "../base/value_table.mjs"
 /*
 sstp报文格式：
 SEND SSTP/1.1
@@ -56,8 +56,8 @@ class sstp_info_t extends base_sstp_info_t {
 		}
 		super(head, body, unknown_lines);
 		return new_getter_proxy(this, {
-			_string_key_handler_: (target, key) => 
-				x_sstp_passthru_head + key in target && !Object.getOwnPropertyNames(sstp_info_t.prototype).includes(key)?
+			_string_key_handler_: (target, key) =>
+				x_sstp_passthru_head + key in target && !Object.getOwnPropertyNames(sstp_info_t.prototype).includes(key) ?
 					target.get_passthrough(key) :
 				undefined
 		});

@@ -1,4 +1,4 @@
-import type { single_fmo_info_t , fmo_info_t } from "./fmo_info_t.d.ts";
+import type { single_fmo_info_t, fmo_info_t } from "./fmo_info_t.d.ts";
 import type ghost_events_queryer_t from "./ghost_events_queryer_t.d.ts";
 import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
@@ -10,10 +10,10 @@ import { security_level_t } from "../base/tools.js";
  * sstp method caller
  * @group callers
  */
-interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
+interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 	(...args: Rest): Promise<T>;
 	get_raw(...args: Rest): Promise<String>;
-	with_type<nT>(result_type: new (str:string) => nT): method_caller<nT, Rest>;
+	with_type<nT>(result_type: new (str: string) => nT): method_caller<nT, Rest>;
 	bind_args_processor<nRest extends any[]>(processor: (...args: Rest) => Object): method_caller<T, nRest>;
 }
 
@@ -21,7 +21,7 @@ interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
  * An extensible caller that can be accessed by members to extend a specific key value
  * @group callers
  */
-interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
+interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object]> extends method_caller<T, Rest> {
 	/**
 	 * Extensible caller
 	 */
@@ -31,7 +31,7 @@ interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> e
  * An extensible caller that performs simple processing on call parameters
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
 /**
  * Generic Event Caller  
  * Called by passing in an object to trigger an event!
@@ -50,7 +50,7 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
+interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
 /**
  * Simple Event Caller  
  * Directly call to trigger an event!
@@ -64,7 +64,7 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
 
 /**
  * Command Caller
@@ -83,7 +83,7 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
+interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
 /**
  * Simple Command Caller
  * @example
@@ -96,7 +96,7 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> {}
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
 /**
  * List Return Command Executor
  * @example
@@ -109,7 +109,7 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface list_command_caller extends base_keyed_method_caller<list_info_t> {}
+interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
 /**
  * List Return Command Executor with Simple Parameter Processing
  * @example
@@ -120,14 +120,14 @@ interface list_command_caller extends base_keyed_method_caller<list_info_t> {}
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {}
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
 
 /**
  * One more ghost_info attribute than {@link jsstp_t}  
  * Relies on `ReceiverGhostHWnd` in {@link jsstp_t.default_info} to direct messages to a specific ghost.
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
-interface jsstp_with_ghost_info_t extends jsstp_t{
+interface jsstp_with_ghost_info_t extends jsstp_t {
 	/**
 	 * Information about the ghost pointed to by this instance of jsstp_t
 	 */
@@ -141,7 +141,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
  * @example
  * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
  */
-declare class jsstp_t{
+declare class jsstp_t {
 	/**
 	 * @group Types
 	 */
@@ -280,12 +280,12 @@ declare class jsstp_t{
 	 * Processing of fmoinfo for all ghosts
 	 * @param {Function|undefined} operation Operator function
 	 */
-	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string, result_T>>;
 	/**
 	 * Operate on all ghosts
 	 * @param {Function|undefined} operation Operator function
 	 */
-	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
+	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string, result_T>>;
 
 	/**
 	 * Sends a message in text and receives it back in text
@@ -320,9 +320,9 @@ declare class jsstp_t{
 	 * @returns {method_caller} The invoker
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+	/*@__PURE__*/get_caller_of_method<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
-	): method_caller<T,Rest>;
+	): method_caller<T, Rest>;
 	/**
 	 * Get the invoker of a specific key
 	 * @param {String} key_name Key name
@@ -332,11 +332,11 @@ declare class jsstp_t{
 	 * @returns {Proxy<value>} The invoker
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
+	/*@__PURE__*/get_caller_of_key<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		key_name: String, value_name: String,
-		method_caller?: method_caller<T,[Res]>,
+		method_caller?: method_caller<T, [Res]>,
 		args_processor?: (...args: Rest) => Res
-	): base_keyed_method_caller<T,Rest>;
+	): base_keyed_method_caller<T, Rest>;
 
 	/**
 	 * Get a simple invoker for a specific key
@@ -346,9 +346,9 @@ declare class jsstp_t{
 	 * @returns {Proxy<value>} The invoker
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
+	/*@__PURE__*/get_simple_caller_of_key<T = sstp_info_t>(
 		key_name: String, value_name: String,
-		method_caller?: method_caller<T,[Object]>,
+		method_caller?: method_caller<T, [Object]>,
 	): simple_keyed_method_caller<T>;
 	/**
 	 * Proxy for a simple caller to get a specified event
@@ -479,7 +479,7 @@ declare class jsstp_t{
 	 * });
 	 * @group PromiseLike Methods
 	 */
-	/*@__PURE__*/if_available<result_T=undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
+	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
 	 * Get a queryer for querying events supported by ghost
 	 * @returns {Promise<ghost_events_queryer_t>} Query the queryer for supported events.

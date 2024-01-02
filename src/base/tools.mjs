@@ -99,7 +99,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
  * @returns {Number} 1
  * @ignore
  */
-var default_setter = (target, key, value)=>((target[key] = value),1);
+var default_setter = (target, key, value) => ((target[key] = value), 1);
 /**
  * 根据getter信息创建一个代理
  * @param {Object} target 要代理的对象
@@ -113,10 +113,10 @@ var default_setter = (target, key, value)=>((target[key] = value),1);
  * @returns {Proxy} 代理
  * @ignore
  */
-var new_getter_proxy = (target, getter_info, other_info) => new Proxy(target,assign({
+var new_getter_proxy = (target, getter_info, other_info) => new Proxy(target, assign({
 	get: new_get_handler(getter_info),
 	set: default_setter
-},other_info));
+}, other_info));
 /**
  * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
  */
@@ -186,12 +186,12 @@ var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my
  * @type {String|undefined}
  * @ignore
  */
-var my_code = /*@__PURE__*/(()=>{
+var my_code = /*@__PURE__*/(() => {
 	let my_url = import.meta.url;
-	if(my_url.substring(0,5) == "file:" && !in_browser)
-		import("fs").then(fs=>fs.readFileSync(my_url.substring(8))).then(buffer=>my_code=to_string(buffer));
+	if (my_url.substring(0, 5) == "file:" && !in_browser)
+		import("fs").then(fs => fs.readFileSync(my_url.substring(8))).then(buffer => my_code = to_string(buffer));
 	else
-		fetch(my_url).then(res=>res.text()).then(text=>my_code=text);
+		fetch(my_url).then(res => res.text()).then(text => my_code = text);
 })();
 
 /**

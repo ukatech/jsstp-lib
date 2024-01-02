@@ -1,7 +1,7 @@
 /**
  * より読みやすい派生クラスの関数型で初期化できる拡張可能な関数型。
  */
-declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
+declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
 	/**
 	 * 自己関数のインスタンス初期化
 	 * @param {Function} func
@@ -50,4 +50,4 @@ declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Fun
  */
 type security_level_t = "local" | "external";
 
-export{ ExtensibleFunction, security_level_t };
+export { ExtensibleFunction, security_level_t };

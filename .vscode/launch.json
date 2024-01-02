@@ -14,19 +14,19 @@
 			"program": "${workspaceFolder}/dev/tests/unit.mjs"
 		},
 		{
-			"command": "cls\nnpm run test:dev:repl\nexit",
+			"command": "cls\nnpm run test:dev:repl",
 			"name": "启动REPL",
 			"request": "launch",
 			"type": "node-terminal"
 		},
 		{
-			"command": "cls\nnpm run build:dist\nexit",
+			"command": "cls\nnpm run build:dist",
 			"name": "构建dist",
 			"request": "launch",
 			"type": "node-terminal"
 		},
 		{
-			"command": "cls\nnpm run build:doc\nexit",
+			"command": "cls\nnpm run build:doc",
 			"name": "构建doc",
 			"request": "launch",
 			"type": "node-terminal"

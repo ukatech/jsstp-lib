@@ -17,7 +17,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
  */
-declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_object<key_T,value_T> {
+declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_object<key_T, value_T> {
 	/**
 	 * 分割された文字列やオブジェクト・メッセージから sstp_info_t を構築することは推奨されない。
 	 * @param {String} info_head メッセージのヘッダー。
@@ -57,7 +57,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * その他のメッセージメンバー
 	 * @type {any|undefined}
 	 */
-	[key: string]: any|undefined;
+	[key: string]: any | undefined;
 }
 
 export default base_sstp_info_t;

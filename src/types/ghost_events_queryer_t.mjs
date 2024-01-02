@@ -77,7 +77,7 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 			 * let result = await ghost_events_queryer("On_connect");
 			 * @see 基于 {@link ghost_events_queryer_t.check_event}
 			 */
-			(event_name, security_level = this.default_security_level)=>this.check_event(event_name, security_level)
+			(event_name, security_level = this.default_security_level) => this.check_event(event_name, security_level)
 		);
 		this.#base_jsstp = base_jsstp;
 		/**

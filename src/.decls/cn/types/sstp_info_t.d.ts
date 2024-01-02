@@ -19,7 +19,7 @@ Option: notranslate
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
  */
-declare class sstp_info_t extends base_sstp_info_t<string,string> {
+declare class sstp_info_t extends base_sstp_info_t<string, string> {
 	/**
 	 * 从字符串构造sstp_info_t
 	 * @param {String} str 字符串报文

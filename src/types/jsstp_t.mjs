@@ -35,9 +35,9 @@ import base_sstp_info_t from "./base_sstp_info_t.mjs";
  * @returns {String} SSTP协议头
  * @ignore
  */
-var get_sstp_header = (type,version_table) => `${type} SSTP/${version_table[type]}`;
+var get_sstp_header = (type, version_table) => `${type} SSTP/${version_table[type]}`;
 
-import{SEND as default_sstp_method}from"../base/value_table.mjs"
+import { SEND as default_sstp_method } from "../base/value_table.mjs"
 import new_object from "./info_object.mjs";
 import list_info_t from "./list_info_t.mjs";
 
@@ -89,7 +89,7 @@ class jsstp_t {
 		 */
 		this.default_security_level = my_default_security_level;
 
-		return this.proxy = new_getter_proxy(this,{
+		return this.proxy = new_getter_proxy(this, {
 			_string_key_handler_: (target, key) =>
 				type_judge(target.sstp_version_table[key], Number) ?
 					target.get_caller_of_method(key) :
@@ -123,20 +123,20 @@ class jsstp_t {
 	 * @returns {jsstp_t} 新的指向目标ghost的jsstp对象
 	 * @group Clone Methods
 	 */
-	by_fmo_info(fmo_info){
-		let result=this.clone;
-		result.ghost_info=fmo_info,
-		result.default_info.ReceiverGhostHWnd=fmo_info.hwnd;
+	by_fmo_info(fmo_info) {
+		let result = this.clone;
+		result.ghost_info = fmo_info;
+		result.default_info.ReceiverGhostHWnd = fmo_info.hwnd;
 		return result;
 	}
 	/**
 	 * 对于所有ghost的fmoinfo进行处理
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghost_infos(operation){
+	for_all_ghost_infos(operation) {
 		let result = new_object();
-		return this.get_fmo_infos().then(fmo_infos=>{
-			for(let uuid in fmo_infos)
+		return this.get_fmo_infos().then(fmo_infos => {
+			for (let uuid in fmo_infos)
 				result[uuid] = operation?.(fmo_infos[uuid]);
 			return result;
 		});
@@ -145,8 +145,8 @@ class jsstp_t {
 	 * 对于所有ghost进行操作
 	 * @param {Function|undefined} operation 操作函数
 	 */
-	for_all_ghosts(operation){
-		return this.for_all_ghost_infos(fmo_info=>operation?.(this.by_fmo_info(fmo_info)));
+	for_all_ghosts(operation) {
+		return this.for_all_ghost_infos(fmo_info => operation?.(this.by_fmo_info(fmo_info)));
 	}
 	/**
 	 * 修改host
@@ -170,12 +170,12 @@ class jsstp_t {
 	 */
 	async row_send(info) {
 		//使用fetch发送数据
-		let response=await fetch(this.#host, {
+		let response = await fetch(this.#host, {
 			method: "POST",
 			headers: this.RequestHeader,
 			body: info
 		});
-		if(response.status != 200)
+		if (response.status != 200)
 			throw_error(response.status);
 		return response.text();
 	}
@@ -216,7 +216,7 @@ class jsstp_t {
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name, result_type = sstp_info_t, args_processor = info => info) {
-		let header = get_sstp_header(method_name,this.sstp_version_table);
+		let header = get_sstp_header(method_name, this.sstp_version_table);
 		return assign((...args) => this.costom_send(header, args_processor(...args), result_type), {
 			get_raw: (...args) => this.costom_text_send(header, args_processor(...args)),
 			with_type: (result_type) => this.get_caller_of_method(method_name, result_type, args_processor),
@@ -232,17 +232,17 @@ class jsstp_t {
 	 * @returns {Proxy<value>} 调用器
 	 * @group Caller Methods
 	 */
-	/*@__PURE__*/get_caller_of_key(key_name,value_name,
-		method_caller = this.get_caller_of_method(default_sstp_method), args_processor=info=>info
+	/*@__PURE__*/get_caller_of_key(key_name, value_name,
+		method_caller = this.get_caller_of_method(default_sstp_method), args_processor = info => info
 	) {
 		return new Proxy(method_caller.bind_args_processor(
 			(...args) => assign({ [key_name]: value_name }, args_processor(...args))
 		), {
 			get: (target, prop) =>
-				prop in target?
-					target[prop]:
+				prop in target ?
+					target[prop] :
 				//else
-					this.get_caller_of_key(key_name,value_name+"."+prop, method_caller, args_processor)
+					this.get_caller_of_key(key_name, value_name+"."+prop, method_caller, args_processor)
 		});
 	}
 	/**
@@ -364,7 +364,7 @@ class jsstp_t {
 	 * }
 	 */
 	/*@__PURE__*/get_supported_events() {
-		return this.event.Get_Supported_Events().then(({ local:local_evt, external:external_evt }) => (
+		return this.event.Get_Supported_Events().then(({ local: local_evt, external: external_evt }) => (
 			{
 				local: (local_evt || void_string).split(","),
 				external: (external_evt || void_string).split(",")
@@ -410,7 +410,7 @@ class jsstp_t {
 	 */
 	/*@__PURE__*/if_available(resolve) {
 		//available不会有任何异常风险，所以我们不需要catch
-		return this.available().then(result => 
+		return this.available().then(result =>
 			result ? resolve?.(this.proxy) : throw_error()
 		);
 	}

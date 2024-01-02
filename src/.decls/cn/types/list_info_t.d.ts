@@ -8,7 +8,7 @@ import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
  * 	console.log(name);
  * @alias jsstp.list_info_t
  */
-declare class list_info_t extends base_sstp_info_t<number,string> {
+declare class list_info_t extends base_sstp_info_t<number, string> {
 	/**
 	 * 自字符串构造list_info_t
 	 * @param {String} list_text
@@ -37,7 +37,7 @@ declare class list_info_t extends base_sstp_info_t<number,string> {
 	 * 数组成员
 	 * @type {string|undefined}
 	 */
-	[uuid: number]: string|undefined;
+	[uuid: number]: string | undefined;
 }
 
 export {

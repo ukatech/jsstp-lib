@@ -12,7 +12,7 @@ import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
  */
-declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[],Promise<Boolean>> {
+declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[], Promise<Boolean>> {
 	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp

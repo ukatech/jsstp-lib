@@ -9,7 +9,7 @@ import {
 	key_value_split,
 } from "../base/tools.mjs";
 import new_object from "./info_object.mjs";
-import {base_sstp_info_t,split_sstp_text} from "./base_sstp_info_t.mjs";
+import { base_sstp_info_t, split_sstp_text } from "./base_sstp_info_t.mjs";
 
 /**
  * fmo报文类
@@ -79,7 +79,7 @@ class fmo_info_t extends base_sstp_info_t {
 			this.head,
 			void_string,
 			...this.flat_map((uuid, key, value) => uuid + "." + key + String.fromCharCode(1) + value),
-			void_string,void_string
+			void_string, void_string
 		].join(endline);
 	}
 	/**
