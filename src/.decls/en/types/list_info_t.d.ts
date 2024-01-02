@@ -15,19 +15,13 @@ declare class list_info_t extends base_sstp_info_t<number,string> {
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
+	/**
+	 * Get the string representation of the value
+	 * @returns {String} The string representation of the value, similar to `${this.values}`
+	 * @summary This is not a method to get the string message. If you need to get the string message, please use {@link list_info_t.text_content}
+	 * @ignore
+	 */
 	/*@__PURE__*/toString(): String
-	/**
-	 * Gets the string message
-	 * @returns {String} String message
-	 * @ignore
-	 */
-	/*@__PURE__*/TextContent(): String
-	/**
-	 * Gets the object for `JSON.stringify`
-	 * @returns {Object} Object for `JSON.stringify`
-	 * @ignore
-	 */
-	/*@__PURE__*/toJSON(): Object
 	/**
 	 * Gets the iterator
 	 * @returns {Iterator<Array<String>>} Iterator

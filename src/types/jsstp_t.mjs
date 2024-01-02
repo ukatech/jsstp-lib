@@ -187,7 +187,7 @@ class jsstp_t {
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead, info) {
-		return this.row_send((new base_sstp_info_t(sstphead, { ...this.default_info, ...info })).TextContent());
+		return this.row_send((new base_sstp_info_t(sstphead, { ...this.default_info, ...info })).text_content);
 	}
 	/**
 	 * 发送报文

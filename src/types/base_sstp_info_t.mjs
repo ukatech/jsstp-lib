@@ -62,9 +62,8 @@ class base_sstp_info_t extends info_object {
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
-	 * @ignore
 	 */
-	/*@__PURE__*/TextContent() {
+	/*@__PURE__*/get text_content() {
 		return [
 			this.#head,
 			...this.#unknown_lines,

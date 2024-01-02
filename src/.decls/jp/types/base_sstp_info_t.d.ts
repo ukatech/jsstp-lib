@@ -40,9 +40,8 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	/**
 	 * 文字列メッセージの取得
 	 * @returns {String} 文字列メッセージ。
-	 * @ignore
 	 */
-	/*@__PURE__*/TextContent(): String;
+	/*@__PURE__*/get text_content(): String;
 	/**
 	 * `JSON.stringify` で使用するオブジェクトを取得する。
 	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。

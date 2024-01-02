@@ -25,13 +25,19 @@ class list_info_t extends base_sstp_info_t {
 		let [head, _, ...lines] = split_sstp_text(list_text);
 		super(head, lines);
 	}
-	/*@__PURE__*/toString() { return this.length == 1 ? this[0] : to_string(this.values); }
+	/**
+	 * 获取字符串形式的值
+	 * @returns {String} 字符串形式的值，如同`${this.values}`
+	 * @summary 这不是获取字符串报文的方法，如需获取字符串报文请使用{@link list_info_t.get text_content}
+	 * @ignore
+	 */
+	/*@__PURE__*/toString() { return to_string(this.values); }
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
 	 * @ignore
 	 */
-	/*@__PURE__*/TextContent() {
+	/*@__PURE__*/get text_content() {
 		return [
 			this.head,
 			void_string,

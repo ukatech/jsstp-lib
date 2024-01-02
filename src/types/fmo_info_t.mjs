@@ -74,7 +74,7 @@ class fmo_info_t extends base_sstp_info_t {
 	 * @returns {String} 字符串报文
 	 * @ignore
 	 */
-	/*@__PURE__*/TextContent() {
+	/*@__PURE__*/get text_content() {
 		return [
 			this.head,
 			void_string,

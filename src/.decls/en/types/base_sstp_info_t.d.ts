@@ -40,9 +40,8 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	/**
 	 * Getting a String Message
 	 * @returns {String} String message.
-	 * @ignore
 	 */
-	/*@__PURE__*/TextContent(): String;
+	/*@__PURE__*/get text_content(): String;
 	/**
 	 * Get the object to use for `JSON.stringify`.
 	 * @returns {Object} The object to use for `JSON.stringify`.

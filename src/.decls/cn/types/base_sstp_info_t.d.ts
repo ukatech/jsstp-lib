@@ -40,9 +40,8 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
-	 * @ignore
 	 */
-	/*@__PURE__*/TextContent(): String;
+	/*@__PURE__*/get text_content(): String;
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
