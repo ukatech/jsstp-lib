@@ -5,6 +5,7 @@ import {
 
 	void_string
 } from "../base/value_table.mjs";
+import { to_string } from "../base/tools.mjs";
 import {base_sstp_info_t,split_sstp_text} from "./base_sstp_info_t.mjs";
 
 /**
@@ -31,7 +32,7 @@ class list_info_t extends base_sstp_info_t {
 	 * @summary 这不是获取字符串报文的方法，如需获取字符串报文请使用{@link list_info_t.get text_content}
 	 * @ignore
 	 */
-	/*@__PURE__*/toString() { return to_string(this.values); }
+	/*@__PURE__*/toString() { return /*@__INLINE__*/to_string(this.values); }
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
