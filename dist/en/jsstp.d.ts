@@ -107,9 +107,9 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
  */
 declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
-	 * 从字符串构造sstp_info_t
-	 * @param {String} str 字符串报文
-	 * @returns {sstp_info_t} 构造的sstp_info_t
+	 * Constructing sstp_info_t from a string
+	 * @param {String} str string message
+	 * @returns {sstp_info_t} Constructed sstp_info_t
 	 * @example
 	 * let info = new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
 	 */
@@ -268,7 +268,7 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
 }
 
 /**
- * list报文对象
+ * List message object
  * @example
  * let list = jsstp.GetNames();
  * for(let name of list)
@@ -277,31 +277,31 @@ declare class fmo_info_t extends base_sstp_info_t<string,single_fmo_info_t> {
  */
 declare class list_info_t extends base_sstp_info_t<number,string> {
 	/**
-	 * 自字符串构造list_info_t
+	 * Constructs list_info_t from a string
 	 * @param {String} list_text
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
 	/*@__PURE__*/toString(): String
 	/**
-	 * 获取字符串报文
-	 * @returns {String} 字符串报文
+	 * Gets the string message
+	 * @returns {String} String message
 	 * @ignore
 	 */
 	/*@__PURE__*/TextContent(): String
 	/**
-	 * 获取用于`JSON.stringify`的对象
-	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * Gets the object for `JSON.stringify`
+	 * @returns {Object} Object for `JSON.stringify`
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object
 	/**
-	 * 获取迭代器
-	 * @returns {Iterator<Array<String>>} 迭代器
+	 * Gets the iterator
+	 * @returns {Iterator<Array<String>>} Iterator
 	 */
 	/*@__PURE__*/[Symbol.iterator](): Iterator<Array<String>>
 	/**
-	 * 数组成员
+	 * Array member
 	 * @type {string|undefined}
 	 */
 	[uuid: number]: string|undefined;
@@ -371,26 +371,26 @@ interface method_caller<T=sstp_info_t, Rest extends any[]=[Object]> {
 }
 
 /**
- * 可以通过成员访问扩充指定key值的拓展调用器
+ * An extensible caller that can be accessed by members to extend a specific key value
  * @group callers
  */
 interface base_keyed_method_caller<T=sstp_info_t, Rest extends any[]=[Object]> extends method_caller<T, Rest> {
 	/**
-	 * 扩展调用器
+	 * Extensible caller
 	 */
 	[uuid: string]: base_keyed_method_caller<T, Rest>
 }
 /**
- * 对调用参数进行简易处理的可扩展调用器
+ * An extensible caller that performs simple processing on call parameters
  * @group callers
  */
 interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {}
 /**
- * 简易事件调用器  
- * 直接调用以触发事件！
+ * Simple Event Caller  
+ * Directly call to trigger an event!
  * @example
  * let data=await jsstp.OnTest(123,"abc");
- * //等价于
+ * //equivalent to
  * let data = await jsstp.SEND({
  * 	"Event": "OnTest",
  * 	"Reference0": 123,
@@ -400,10 +400,10 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  */
 interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
 /**
- * 简易命令调用器
+ * Simple Command Caller
  * @example
  * let data=await jsstp.SetCookie("abc","def");
- * //等价于
+ * //equivalent to
  * let data = await jsstp.SEND({
  * 	"Command": "SetCookie",
  * 	"Reference0": "abc",
@@ -413,10 +413,10 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {}
  */
 interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {}
 /**
- * 对参数进行简易处理的列表返值命令执行器
+ * List Return Command Executor with Simple Parameter Processing
  * @example
  * let data=await jsstp.GetNames();
- * //等价于
+ * //equivalent to
  * let data = await jsstp.SEND({
  * 	"Command": "GetNames"
  * });
@@ -490,22 +490,22 @@ declare class jsstp_t{
 	GIVE: method_caller;
 
 	/**
-	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflactions
+	 * Matches event names to generate a simple invoker
+	 * @group Index reflections
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
 	/**
-	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflactions
+	 * Matches event names to generate a simple invoker
+	 * @group Index reflections
 	 * @example
 	 * let data=await jsstp.GetNames();
 	 */
 	[key: `Get${string}`]: simple_list_command_caller;
 	/**
-	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflactions
+	 * Matches event names to generate a simple invoker
+	 * @group Index reflections
 	 * @example
 	 * let data=await jsstp.SetCookie("abc","def");
 	 */
@@ -604,33 +604,33 @@ declare class jsstp_t{
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
-	 * Send message
+	 * Send a custom message
 	 * @param {String} sstphead Message header
 	 * @param {Object} info The body of the message.
-	 * @param {new (info: String)=> result_type} result_type 返回结果的类型，默认为sstp_info_t
-	 * @returns {Promise<sstp_info_t>} 返回一个promise
+	 * @param {new (info: String)=> result_type} result_type The type of the result, defaults to sstp_info_t
+	 * @returns {Promise<sstp_info_t>} Returns a promise
 	 * @group Basic Send Methods
 	 */
-	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+	custom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
 	/**
-	 * 获取指定方法的调用器
-	 * @param {String} method_name 方法名称
-	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
-	 * @param {Function} [args_processor=info => info] 参数处理器，默认直接返回输入参数
-	 * @returns {method_caller} 调用器
+	 * Get the invoker of a specific method
+	 * @param {String} method_name The name of the method
+	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] The type of the result, defaults to sstp_info_t
+	 * @param {Function} [args_processor=info => info] Argument processor, defaults to returning the input argument directly
+	 * @returns {method_caller} The invoker
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_method<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
 	): method_caller<T,Rest>;
 	/**
-	 * 获取指定key的调用器
-	 * @param {String} key_name 键名
-	 * @param {String} value_name 键值
-	 * @param {Function} method_caller 方法调用器
-	 * @param {Function} args_processor 参数处理器
-	 * @returns {Proxy<value>} 调用器
+	 * Get the invoker of a specific key
+	 * @param {String} key_name Key name
+	 * @param {String} value_name Key value
+	 * @param {Function} method_caller Method invoker
+	 * @param {Function} args_processor Argument processor
+	 * @returns {Proxy<value>} The invoker
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_caller_of_key<T=sstp_info_t,Rest extends any[]=[Object],Res=Object>(
@@ -640,11 +640,11 @@ declare class jsstp_t{
 	): base_keyed_method_caller<T,Rest>;
 
 	/**
-	 * 用于获取指定key的简单调用器
-	 * @param {String} key_name 键名
-	 * @param {String} value_name 键值
-	 * @param {Function} method_caller 方法调用器
-	 * @returns {Proxy<value>} 调用器
+	 * Get a simple invoker for a specific key
+	 * @param {String} key_name Key name
+	 * @param {String} value_name Key value
+	 * @param {Function} method_caller Method invoker
+	 * @returns {Proxy<value>} The invoker
 	 * @group Caller Methods
 	 */
 	/*@__PURE__*/get_simple_caller_of_key<T=sstp_info_t>(
@@ -662,7 +662,7 @@ declare class jsstp_t{
 		[event_name: string]: simple_event_caller
 	}
 	/**
-	 * 用于获取指定命令的执行器的代理
+	 * Proxy to get the executor of a specific command
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.command.GetFMO();
