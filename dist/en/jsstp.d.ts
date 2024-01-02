@@ -48,7 +48,7 @@ declare class info_object<key_T=PropertyKey,value_T=any> {
 /**
  * Base sstp message class
  * @example
- * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
@@ -91,7 +91,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 */
 	/*@__PURE__*/get status_code(): Number;
 	/**
-	 * 其他报文成员
+	 * Other message members
 	 * @type {any|undefined}
 	 */
 	[key: string]: any|undefined;
@@ -100,7 +100,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 /**
  * sstp message class
  * @example
- * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * let info = jsstp.sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
@@ -111,7 +111,7 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	 * @param {String} str 字符串报文
 	 * @returns {sstp_info_t} 构造的sstp_info_t
 	 * @example
-	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * let info = sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
 	 */
 	/*@__PURE__*/constructor(str: String);
 	/**
@@ -159,7 +159,7 @@ declare class sstp_info_t extends base_sstp_info_t<string,string> {
  */
 declare interface single_fmo_info_t extends info_object<string,string> {
 	/**
-	 * @description Full path to the root folder of the running base software
+	 * @description Full path to the root folder of the running baseware
 	 * @example E:\ssp\
 	 */
 	path: string;
@@ -169,17 +169,17 @@ declare interface single_fmo_info_t extends info_object<string,string> {
 	 */
 	hwnd: string;
 	/**
-	 * @description descript.txt's sakura.name
+	 * @description sakura.name in descript.txt
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description descript.txt's kero.name
+	 * @description kero.name in descript.txt
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description Surface ID currently displayed on side \0
+	 * @description Surface ID currently displayed on the \0 side
 	 * @example 0
 	 */
 	"sakura.surface": string;
@@ -308,7 +308,7 @@ declare class list_info_t extends base_sstp_info_t<number,string> {
 }
 
 /**
- * An extensible function type that can be initialised with a function for the more readable derived class function type
+ * An extensible function type that can be initialised with a function for a more readable derived class function type
  */
 declare class ExtensibleFunction<args_T extends Array<any>,return_T> extends Function {
 	/**
@@ -579,12 +579,12 @@ declare class jsstp_t{
 
 	/**
 	 * Processing of fmoinfo for all ghosts
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation Operator function
 	 */
 	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
 	/**
 	 * Operate on all ghosts
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation Operator function
 	 */
 	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
@@ -890,7 +890,7 @@ type ghost_events_queryer_t_constructor = {
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
+ * 	console.log("Current ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -903,7 +903,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
+ * 	console.log("Current ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
@@ -919,7 +919,7 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
  * @example
  * jsstp.SEND({
  * 	Event: "OnTest",
- * 	Script: "\\s[0]Hell Wold!\\e"
+ * 	Script: "\\s[0]Hello World!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}

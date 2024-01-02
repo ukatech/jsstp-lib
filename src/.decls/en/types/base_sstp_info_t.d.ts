@@ -1,18 +1,18 @@
 import type { info_object } from "./info_object.d.ts";
 
 /*
-sstp报文格式：
+sstp message format:
 SEND SSTP/1.1
 Charset: UTF-8
-Sender: SSTPクライアント
-Script: \h\s0テストー。\u\s[10]テストやな。
+Sender: SSTP Client
+Script: \h\s0Testing!\u\s[10]It's a test.
 Option: notranslate
-由一行固定的报文头和一组可选的报文体组成，以\r\n换行，结尾以\r\n\r\n结束。
+Consists of a fixed header line and an optional set of message lines, with \r\n line breaks and terminated by \r\n\r\n
 */
 /**
  * Base sstp message class
  * @example
- * let info = jsstp.new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * let info = jsstp.new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
@@ -55,7 +55,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 */
 	/*@__PURE__*/get status_code(): Number;
 	/**
-	 * 其他报文成员
+	 * Other message members
 	 * @type {any|undefined}
 	 */
 	[key: string]: any|undefined;

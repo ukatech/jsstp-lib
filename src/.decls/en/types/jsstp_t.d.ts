@@ -133,7 +133,7 @@ interface jsstp_with_ghost_info_t extends jsstp_t{
 	 */
 	ghost_info: single_fmo_info_t
 }
-//定义一个包装器
+//Define a wrapper
 /**
  * jsstp object
  * @see {@link jsstp}
@@ -278,12 +278,12 @@ declare class jsstp_t{
 
 	/**
 	 * Processing of fmoinfo for all ghosts
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation Operator function
 	 */
 	for_all_ghost_infos<result_T>(operation: (fmo_info: single_fmo_info_t) => result_T): Promise<info_object<string,result_T>>;
 	/**
 	 * Operate on all ghosts
-	 * @param {Function|undefined} operation 操作函数
+	 * @param {Function|undefined} operation Operator function
 	 */
 	for_all_ghosts<result_T>(operation: (jsstp: jsstp_with_ghost_info_t) => result_T): Promise<info_object<string,result_T>>;
 
