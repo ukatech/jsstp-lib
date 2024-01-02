@@ -70,7 +70,8 @@
 		"build:doc": "npm run build:doc:cn && npm run build:doc:en && npm run build:doc:jp",
 
 		"build:all": "npm run build:dist && npm run build:doc",
-		"prepublish": "npm run build"
+		"link": "npm run dev/link.mjs",
+		"prepublish": "npm run build:dist"
 	},
 	"repository": {
 		"type": "git",
