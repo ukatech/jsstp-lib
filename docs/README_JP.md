@@ -38,13 +38,13 @@ var {jsstp}=require('jsstp');
 あるいは、古式ゆかしい方法で、cdn経由でjsstpのソースコードにアクセスすることができます。
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.0/dist/jsstp.min.js"></script>
 ```
 
 jsstpをjsで動的に読み込むこともできます。
 
 ```javascript
-var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.0.0.1/dist/jsstp.mjs");
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.0/dist/jsstp.mjs");
 ```
 
 ##### 型定義
