@@ -12,7 +12,7 @@ Option: notranslate
 /**
  * 基础sstp报文类
  * @example
- * let info = jsstp.base_sstp_info_t.from_string("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+ * let info = jsstp.new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
@@ -23,7 +23,7 @@ declare class base_sstp_info_t<key_T=PropertyKey,value_T=any> extends info_objec
 	 * @param {String} info_head 报文头
 	 * @param {Object} info_body 对象格式的报文体
 	 * @param {Array<String>|undefined} unknown_lines 未知行的数组
-	 * @see {@link sstp_info_t.from_string}
+	 * @see {@link sstp_info_t.constructor}
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head: String, info_body: Object, unknown_lines?: String[]);
