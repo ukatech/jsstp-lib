@@ -189,21 +189,21 @@ declare class jsstp_t{
 
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflactions
+	 * @group Index reflections
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflactions
+	 * @group Index reflections
 	 * @example
 	 * let data=await jsstp.GetNames();
 	 */
 	[key: `Get${string}`]: simple_list_command_caller;
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflactions
+	 * @group Index reflections
 	 * @example
 	 * let data=await jsstp.SetCookie("abc","def");
 	 */

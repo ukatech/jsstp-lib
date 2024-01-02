@@ -21,9 +21,9 @@ Consists of a fixed header line and an optional set of message lines, with \r\n 
  */
 declare class sstp_info_t extends base_sstp_info_t<string,string> {
 	/**
-	 * 从字符串构造sstp_info_t
-	 * @param {String} str 字符串报文
-	 * @returns {sstp_info_t} 构造的sstp_info_t
+	 * Constructing sstp_info_t from a string
+	 * @param {String} str string message
+	 * @returns {sstp_info_t} Constructed sstp_info_t
 	 * @example
 	 * let info = new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
 	 */
