@@ -48,7 +48,7 @@ declare class info_object<key_T = PropertyKey, value_T = any> {
 /**
  * Base sstp message class
  * @example
- * let info = jsstp.new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
+ * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.base_sstp_info_t
@@ -99,7 +99,7 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 /**
  * sstp message class
  * @example
- * let info = jsstp.new sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
+ * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
  * console.log(info.head);//SSTP/1.4 200 OK
  * console.log(info.Option);//notranslate
  * @alias jsstp.sstp_info_t
@@ -297,7 +297,7 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	 * Array member
 	 * @type {string|undefined}
 	 */
-	[uuid: number]: string | undefined;
+	[key: number]: string | undefined;
 }
 
 /**
