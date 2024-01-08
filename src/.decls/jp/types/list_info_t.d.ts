@@ -31,7 +31,7 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	 * 配列メンバ
 	 * @type {string|undefined}
 	 */
-	[uuid: number]: string | undefined;
+	[key: number]: string | undefined;
 }
 
 export {

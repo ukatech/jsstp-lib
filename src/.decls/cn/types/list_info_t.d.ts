@@ -37,7 +37,7 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	 * 数组成员
 	 * @type {string|undefined}
 	 */
-	[uuid: number]: string | undefined;
+	[key: number]: string | undefined;
 }
 
 export {
