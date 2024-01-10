@@ -34,13 +34,13 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
 
 	/**
-	 * 関数の名前
+	 * 関数の名前  
 	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
 	 */
 	readonly name: string;
 
 	/**
-	 * 関数の引数の数
+	 * 関数の引数の数  
 	 * [MDNドキュメント](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
 	 */
 	readonly length: number;
