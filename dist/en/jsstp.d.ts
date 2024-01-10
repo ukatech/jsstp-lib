@@ -336,13 +336,13 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
 
 	/**
-	 * Function's name.
+	 * Function's name.  
 	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
 	 */
 	readonly name: string;
 
 	/**
-	 * The number of arguments expected by the function.
+	 * The number of arguments expected by the function.  
 	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
 	 */
 	readonly length: number;
@@ -798,7 +798,7 @@ declare class jsstp_t {
  * @see {@link jsstp_t.new_event_queryer}
  * @group ghost_events_queryer_t implementations
  */
-declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<string[], Promise<Boolean>> {
+declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[string,string], Promise<Boolean>> {
 	/**
 	 * Constructing an Event Querier
 	 * @param {jsstp_t} base_jsstp
