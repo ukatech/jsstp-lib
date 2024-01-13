@@ -81,6 +81,7 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/**
 	 * `JSON.stringify` で使用するオブジェクトを取得する。
 	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
+	 * @example console.log(JSON.stringify(info));
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
@@ -229,7 +230,6 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する
 	 * @param {String} fmo_text
 	 * @returns {void}
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
@@ -278,7 +278,6 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	/**
 	 * 自己文字列構造 list_info_t
 	 * @param {String} list_text
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
 	/**
@@ -349,6 +348,7 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 }
 /**
  * ghostとの通信におけるセキュリティレベル
+ * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  */
 type security_level_t = "local" | "external";
 
@@ -912,7 +912,7 @@ type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_q
  * @example
  * jsstp.SEND({
  * 	Event: "OnTest",
- * 	Script: "\\s[0]Hello Wold!\\e"
+ * 	Script: "\\s[0]Hell Wold!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}

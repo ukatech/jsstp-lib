@@ -81,6 +81,7 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * @example console.log(JSON.stringify(info));
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;
@@ -228,7 +229,6 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * 自字符串构造fmo_info_t
 	 * @param {String} fmo_text
 	 * @returns {void}
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
@@ -277,7 +277,6 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	/**
 	 * 自字符串构造list_info_t
 	 * @param {String} list_text
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
 	/**
@@ -354,6 +353,7 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 }
 /**
  * ghost交互中的安全等级
+ * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  */
 type security_level_t = "local" | "external";
 
