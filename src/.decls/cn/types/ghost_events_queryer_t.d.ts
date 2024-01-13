@@ -27,13 +27,13 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[stri
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/check_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * 检查是否能够检查事件
 	 * @returns {Promise<Boolean>}
@@ -72,13 +72,13 @@ type ghost_events_queryer_t_call_signature = {
 	 * 调用声明
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
 	 * @see 基于 {@link ghost_events_queryer_t_class_impl.check_event}
 	 */
-	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 }
 /**
  * ghost事件查询器：构造器接口声明

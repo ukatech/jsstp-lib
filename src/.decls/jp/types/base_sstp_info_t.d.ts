@@ -45,6 +45,7 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/**
 	 * `JSON.stringify` で使用するオブジェクトを取得する。
 	 * @returns {Object} `JSON.stringify` で使用するオブジェクト。
+	 * @example console.log(JSON.stringify(info));
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;

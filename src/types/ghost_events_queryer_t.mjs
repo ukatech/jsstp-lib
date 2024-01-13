@@ -71,7 +71,7 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 			 * 调用声明
 			 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 			 * @param {String} event_name
-			 * @param {String|undefined} security_level
+			 * @param {"local" | "external"} security_level
 			 * @returns {Promise<Boolean>}
 			 * @example
 			 * let result = await ghost_events_queryer("On_connect");
@@ -90,7 +90,7 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {"local" | "external"} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");

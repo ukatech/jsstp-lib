@@ -673,7 +673,7 @@ declare class jsstp_t {
 	 * 判断是否存在某个事件
 	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 	 * @param {String} event_name 事件名
-	 * @param {String} security_level 安全等级
+	 * @param {security_level_t} security_level 安全等级
 	 * @returns {Promise<Boolean>} 是否存在
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
@@ -698,7 +698,7 @@ declare class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
 	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
@@ -818,13 +818,13 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[stri
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see 基于 {@link jsstp_t.has_event} 和 {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/check_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * 检查是否能够检查事件
 	 * @returns {Promise<Boolean>}
@@ -863,13 +863,13 @@ type ghost_events_queryer_t_call_signature = {
 	 * 调用声明
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
 	 * @see 基于 {@link ghost_events_queryer_t_class_impl.check_event}
 	 */
-	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 }
 /**
  * ghost事件查询器：构造器接口声明

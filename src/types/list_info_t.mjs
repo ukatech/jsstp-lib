@@ -20,7 +20,6 @@ class list_info_t extends base_sstp_info_t {
 	/**
 	 * 自字符串构造list_info_t
 	 * @param {String} list_text
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text) {
 		let [head, _, ...lines] = split_sstp_text(list_text);

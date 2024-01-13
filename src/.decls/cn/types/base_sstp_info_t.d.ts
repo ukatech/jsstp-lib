@@ -45,6 +45,7 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/**
 	 * 获取用于`JSON.stringify`的对象
 	 * @returns {Object} 用于`JSON.stringify`的对象
+	 * @example console.log(JSON.stringify(info));
 	 * @ignore
 	 */
 	/*@__PURE__*/toJSON(): Object;

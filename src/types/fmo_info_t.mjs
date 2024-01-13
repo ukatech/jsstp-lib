@@ -26,7 +26,6 @@ class fmo_info_t extends base_sstp_info_t {
 	/**
 	 * 自字符串构造fmo_info_t
 	 * @param {String} fmo_text
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text) {
 		let [head, _, ...lines] = split_sstp_text(fmo_text);

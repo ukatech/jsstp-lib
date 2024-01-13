@@ -47,6 +47,7 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 }
 /**
  * Security levels in ghost interactions
+ * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  */
 type security_level_t = "local" | "external";
 

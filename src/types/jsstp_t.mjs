@@ -293,7 +293,7 @@ class jsstp_t {
 	 * 判断是否存在某个事件
 	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 	 * @param {String} event_name 事件名
-	 * @param {String} security_level 安全等级
+	 * @param {"local" | "external"} security_level 安全等级
 	 * @returns {Promise<Boolean>} 是否存在
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));

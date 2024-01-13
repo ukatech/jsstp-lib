@@ -16,7 +16,7 @@ import type list_info_t from "./types/list_info_t.d.js";
  * @example
  * jsstp.SEND({
  * 	Event: "OnTest",
- * 	Script: "\\s[0]Hello World!\\e"
+ * 	Script: "\\s[0]Hell Wold!\\e"
  * });
  * @var jsstp
  * @type {jsstp_t}

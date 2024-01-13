@@ -93,7 +93,6 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * 分割された文字列メッセージまたはオブジェクト・メッセージから fmo_info_t を構築する
 	 * @param {String} fmo_text
 	 * @returns {void}
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**

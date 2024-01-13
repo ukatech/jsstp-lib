@@ -373,7 +373,7 @@ declare class jsstp_t {
 	 * 判断是否存在某个事件
 	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 	 * @param {String} event_name 事件名
-	 * @param {String} security_level 安全等级
+	 * @param {security_level_t} security_level 安全等级
 	 * @returns {Promise<Boolean>} 是否存在
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
@@ -398,7 +398,7 @@ declare class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
 	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询

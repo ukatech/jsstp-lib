@@ -12,7 +12,6 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	/**
 	 * 自字符串构造list_info_t
 	 * @param {String} list_text
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(list_text: String)
 	/**

@@ -93,7 +93,6 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * 自字符串构造fmo_info_t
 	 * @param {String} fmo_text
 	 * @returns {void}
-	 * @ignore
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**

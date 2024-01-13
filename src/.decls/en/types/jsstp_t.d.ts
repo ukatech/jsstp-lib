@@ -374,7 +374,7 @@ declare class jsstp_t {
 	 * Determine if an event exists
 	 * Use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query if it is likely to be called frequently
 	 * @param {String} event_name event_name
-	 * @param {String} security_level security_level
+	 * @param {security_level_t} security_level security_level
 	 * @returns {Promise<Boolean>} whether or not it exists
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
@@ -399,7 +399,7 @@ declare class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events
 	 * If unsure of ghost support, use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query

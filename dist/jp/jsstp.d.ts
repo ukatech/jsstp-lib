@@ -668,7 +668,7 @@ declare class jsstp_t {
 	 * イベントが存在するかどうかを判断する
 	 * {@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使って、頻繁に呼び出されそうかどうかを問い合わせる。
 	 * @param {String} event_name イベント名
-	 * @param {String} security_level セキュリティレベル
+	 * @param {security_level_t} security_level セキュリティレベル
 	 * @returns {Promise<Boolean>} 存在するかどうかを返します。
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
@@ -693,7 +693,7 @@ declare class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * サポートされているイベントを合意された構造で取得するには、ゴーストが `Get_Supported_Events` イベントをサポートしている必要があります。
 	 * ゴーストのサポートが不明な場合は、{@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使用してクエリを実行する。
@@ -813,13 +813,13 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[stri
 	/**
 	 * イベントの存在をチェックするには、ゴーストは少なくとも `Has_Event` イベントをサポートしている必要があり、`Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see {@link jsstp_t.has_event} と {@link jsstp_t.get_supported_events} に基づいています。
 	 */
-	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/check_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * イベントをチェックできるかどうかを確認する
 	 * @returns {Promise<Boolean>}
@@ -858,13 +858,13 @@ type ghost_events_queryer_t_call_signature = {
 	 * 宣言の呼び出し
 	 * ゴーストには少なくとも `Has_Event` イベントサポートが必要で、 `Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
 	 * @see {@link ghost_events_queryer_t_class_impl.check_event} に基づく。
 	 */
-	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 }
 /**
  * ゴースト・イベント・ファインダー: コンストラクタのインターフェイス宣言

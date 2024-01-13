@@ -668,7 +668,7 @@ declare class jsstp_t {
 	 * Determine if an event exists
 	 * Use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query if it is likely to be called frequently
 	 * @param {String} event_name event_name
-	 * @param {String} security_level security_level
+	 * @param {security_level_t} security_level security_level
 	 * @returns {Promise<Boolean>} whether or not it exists
 	 * @example
 	 * jsstp.has_event("OnTest").then(result => console.log(result));
@@ -693,7 +693,7 @@ declare class jsstp_t {
 	 * 	SHIORI_EV.On_Has_Event
 	 * }
 	 */
-	/*@__PURE__*/has_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events
 	 * If unsure of ghost support, use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query
@@ -813,13 +813,13 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[stri
 	/**
 	 * To check for the existence of events, ghost requires at least `Has_Event` event support and can be made more efficient by providing `Get_Supported_Events` events
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer.check_event("On_connect");
 	 * @see base on {@link jsstp_t.has_event} and {@link jsstp_t.get_supported_events}
 	 */
-	/*@__PURE__*/check_event(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/check_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
 	 * Check if the event can be checked
 	 * @returns {Promise<Boolean>}
@@ -858,13 +858,13 @@ type ghost_events_queryer_t_call_signature = {
 	 * Call declarations
 	 * Check for the existence of events, ghost requires at least `Has_Event` event support and can be made more efficient by providing `Get_Supported_Events` events
 	 * @param {String} event_name
-	 * @param {String|undefined} security_level
+	 * @param {security_level_t} security_level
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
 	 * @see based on {@link ghost_events_queryer_t_class_impl.check_event}
 	 */
-	/*@__PURE__*/(event_name: String, security_level?: String): Promise<Boolean>;
+	/*@__PURE__*/(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 }
 /**
  * ghost event finder: constructor interface declaration
