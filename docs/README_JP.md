@@ -5,7 +5,7 @@
 [![npmバンドルのサイズ](https://img.shields.io/bundlephobia/min/jsstp?label=npm%E3%83%90%E3%83%B3%E3%83%89%E3%83%AB%E3%81%AE%E3%82%B5%E3%82%A4%E3%82%BA)](../dist/jsstp.min.js)  
 
 Webページやnode.jsなどの環境で、ゴーストと通信して情報をやりとりするためにjsを使用します。  
-詳細は[伺か](https://ja.wikipedia.org/wiki/%E4%BC%BA%E3%81%8B)と[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)を参照してください。
+詳細は[伺か](https://ja.wikipedia.org/wiki/%E4%BC%BA%E3%81%8B)と[SSTP](https://ssp.shillest.net/ukadoc/manual/spec_sstp.html)を参照してください。
 
 ## 使用方法
 

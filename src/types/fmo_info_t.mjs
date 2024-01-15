@@ -20,7 +20,7 @@ import { base_sstp_info_t, split_sstp_text } from "./base_sstp_info_t.mjs";
  * 	console.log(fmo[kikka_uuid].ghostpath);
  * @alias jsstp.fmo_info_t
  * @see {@link jsstp_t.get_fmo_infos}
- * @see {@link http://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+ * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
  */
 class fmo_info_t extends base_sstp_info_t {
 	/**

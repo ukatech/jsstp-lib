@@ -5,7 +5,7 @@
 [![npm bundle size](https://img.shields.io/bundlephobia/min/jsstp?label=npm%20bundle%20size)](../dist/jsstp.min.js)  
 
 Use js to communicate with ukagaka in environments such as web pages or node.js in order to exchange information.
-See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka) & [SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html) for details.
+See [ukagaka](https://en.wikipedia.org/wiki/Ukagaka) & [SSTP](https://ssp.shillest.net/ukadoc/manual/spec_sstp.html) for details.
 
 ## Usage
 

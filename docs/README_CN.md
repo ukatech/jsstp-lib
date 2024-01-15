@@ -5,7 +5,7 @@
 [![npm bundle大小](https://img.shields.io/bundlephobia/min/jsstp?label=npm%20bundle%E5%A4%A7%E5%B0%8F)](../dist/jsstp.min.js)  
 
 用js在网页或node.js等环境中与伪春菜通信以实现信息交换。
-详情参考[伪春菜](https://zh.moegirl.org.cn/zh-hans/%E4%BC%AA%E6%98%A5%E8%8F%9C)与[SSTP](http://ssp.shillest.net/ukadoc/manual/spec_sstp.html)。
+详情参考[伪春菜](https://zh.moegirl.org.cn/zh-hans/%E4%BC%AA%E6%98%A5%E8%8F%9C)与[SSTP](https://ssp.shillest.net/ukadoc/manual/spec_sstp.html)。
 
 ## 用法
 
