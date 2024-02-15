@@ -1,6 +1,6 @@
-- [JP](docs/README_JP.md)  
-- [EN](docs/README_EN.md)  
-- [CN](docs/README_CN.md)  
+[![日本語](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/48/Japan.png)](./docs/README_JP.md)
+[![English](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/48/United-Kingdom.png)](./docs/README_EN.md)
+[![中文](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/48/China.png)](./docs/README_CN.md)
 
 # jsstp  
 
@@ -42,13 +42,13 @@ var {jsstp}=require('jsstp');
 或者你是怀旧党，你可以通过cdn访问jsstp的源码
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.1/dist/jsstp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.2/dist/jsstp.min.js"></script>
 ```
 
 或者在js中动态载入jsstp
 
 ```javascript
-var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.1/dist/jsstp.mjs");
+var {jsstp}=await import("https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.2/dist/jsstp.mjs");
 ```
 
 ##### 类型定义
