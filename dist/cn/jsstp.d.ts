@@ -893,7 +893,7 @@ type ghost_events_queryer_t_constructor = {
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
- * @group ghost_events_queryer_t implementations
+ * @class
  */
 declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
 /**
@@ -906,7 +906,7 @@ declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl &
  * 	jsstp.OnBoom();
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
- * @group ghost_events_queryer_t implementations
+ * @class
  */
 type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
 	constructor: typeof ghost_events_queryer_t;
