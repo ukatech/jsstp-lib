@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>404 Not Found</title>
+</head>
+<body>
+	<h1>404 Not Found</h1>
+	<p>Sorry, the page you are looking for could not be found.</p>
+	<div id="js-container"></div>
+	<script>
+		// 定义一个代码来重定向未添加语言代码的文档页面
+		function getLangCode() {
+			var language = navigator.language || navigator.userLanguage;
+			switch (language) {
+				case 'zh':
+				case 'zh-CN':
+				case 'zh-TW':
+				case 'zh-HK':
+					return 'CN';
+				case 'ja':
+					return 'JP';
+				default:
+					return 'EN';
+			}
+		}
+		// 若window.location.href中能找到/doc/{LANG_CODE}，说明语言已经被添加，不需要重定向
+		// 否则，替换window.location.href并重定向
+		if (window.location.href.includes('/doc/')) {
+			var langCode = getLangCode();
+			if(!window.location.href.includes(`/doc/${langCode}/`))
+				window.location.href = window.location.href.replace('/doc/', `/doc/${langCode}/`);
+		}
+	</script>
+</body>
+</html>
