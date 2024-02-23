@@ -2,21 +2,20 @@ import type jsstp_t from "./jsstp_t.d.ts";
 import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
 
 /**
- * ゴースト・イベント・ファインダー：クラス定義の実装
+ * ゴースト・イベント・ファインダー
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
  * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
+ * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
- * @group ghost_events_queryer_t implementations
  */
-declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[string,string], Promise<Boolean>> {
+declare class ghost_events_queryer_t extends ExtensibleFunction<[string,security_level_t], Promise<Boolean>> {
 	/**
 	 * イベントクエリアの構築
 	 * @param {jsstp_t} base_jsstp
-	 * @returns {void}
 	 */
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
@@ -64,10 +63,22 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[stri
 	clear(): void;
 }
 /**
- * ゴースト・イベント・ファインダー：コール・シグネチャー
- * @group ghost_events_queryer_t implementations
+ * ゴースト・イベント・ファインダー
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
+ * if(ghost_events_queryer.has_event("OnBoom"))
+ * 	jsstp.OnBoom();
+ * @alias jsstp.ghost_events_queryer_t
+ * @see {@link jsstp_t.new_event_queryer}
  */
-type ghost_events_queryer_t_call_signature = {
+interface ghost_events_queryer_t {
+	/**
+	 * イベントクエリアの構築
+	 * @param {jsstp_t} base_jsstp
+	 */
+	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 	/**
 	 * 宣言の呼び出し
 	 * ゴーストには少なくとも `Has_Event` イベントサポートが必要で、 `Get_Supported_Events` イベントを提供することでより効率的にすることができる。
@@ -76,49 +87,9 @@ type ghost_events_queryer_t_call_signature = {
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see {@link ghost_events_queryer_t_class_impl.check_event} に基づく。
+	 * @see {@link ghost_events_queryer_t_class.check_event} に基づく。
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: security_level_t): Promise<Boolean>;
-}
-/**
- * ゴースト・イベント・ファインダー: コンストラクタのインターフェイス宣言
- * @group ghost_events_queryer_t implementations
- */
-type ghost_events_queryer_t_constructor = {
-	/**
-	 * イベントクエリアの構築
-	 * @param {jsstp_t} base_jsstp
-	 * @returns {void}
-	 */
-	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
-}
-/**
- * ゴースト・イベント・ファインダー
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
- * if(ghost_events_queryer.has_event("OnBoom"))
- * 	jsstp.OnBoom();
- * @alias jsstp.ghost_events_queryer_t
- * @see {@link jsstp_t.new_event_queryer}
- * @class
- */
-declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
-/**
- * ゴースト・イベント・ファインダー
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
- * if(ghost_events_queryer.has_event("OnBoom"))
- * 	jsstp.OnBoom();
- * @alias jsstp.ghost_events_queryer_t
- * @see {@link jsstp_t.new_event_queryer}
- * @class
- */
-type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
-	constructor: typeof ghost_events_queryer_t;
 }
 
 export default ghost_events_queryer_t;

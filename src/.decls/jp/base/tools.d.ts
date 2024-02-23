@@ -45,6 +45,18 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 	 */
 	readonly length: number;
 }
+interface ExtensibleFunction<args_T extends Array<any>, return_T> {
+	/**
+	 * 自己関数のインスタンス初期化
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	new(func: (...args: args_T) => return_T): ExtensibleFunction<args_T, return_T>;
+	/**
+	 * 関数を呼び出し
+	 */
+	(...args: args_T): return_T;
+}
 /**
  * ghostとの通信におけるセキュリティレベル
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}

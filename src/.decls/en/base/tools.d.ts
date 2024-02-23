@@ -45,6 +45,18 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 	 */
 	readonly length: number;
 }
+interface ExtensibleFunction<args_T extends Array<any>, return_T> {
+	/**
+	 * Initialising from a function instance  
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	new(func: (...args: args_T) => return_T): ExtensibleFunction<args_T, return_T>;
+	/**
+	 * The function's signature
+	 */
+	(...args: args_T): return_T;
+}
 /**
  * Security levels in ghost interactions
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
