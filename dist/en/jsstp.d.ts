@@ -1,4 +1,423 @@
 /**
+ * An extensible function type that can be initialised with a function for a more readable derived class function type
+ */
+declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
+	/**
+	 * Initialising from a function instance
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	constructor(func: (...args: args_T) => return_T);
+	/**
+	 * Calls a function and replaces the function's this value with the specified object and the function's arguments with the specified array.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
+	 * @param thisArg The object that will be used as the this object.
+	 * @param argArray A set of arguments to be passed to the function.
+	 */
+	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
+
+	/**
+	 * Calls a method on an object that replaces the current object with another object.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
+	 * @param thisArg The object that will be used as the current object.
+	 * @param argArray The list of arguments to be passed to the method.
+	 */
+	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
+
+	/**
+	 * For a given function, creates a bound function with the same body as the original function.  
+	 * The this object of the bound function is associated with the specified object and has the specified initial argument.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
+	 * @param thisArg An object that the this keyword can refer to in the new function.
+	 * @param argArray A list of arguments to be passed to the new function.
+	 */
+	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
+
+	/**
+	 * Function's name.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
+	 */
+	readonly name: string;
+
+	/**
+	 * The number of arguments expected by the function.  
+	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
+	 */
+	readonly length: number;
+}
+interface ExtensibleFunction<args_T extends Array<any>, return_T> {
+	/**
+	 * Initialising from a function instance
+	 * @param {Function} func
+	 * @returns {ExtensibleFunction}
+	 */
+	new(func: (...args: args_T) => return_T): ExtensibleFunction<args_T, return_T>;
+	/**
+	 * The function's signature
+	 */
+	(...args: args_T): return_T;
+}
+/**
+ * Security levels in ghost interactions
+ * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+ */
+type security_level_t = "local" | "external";
+/**
+ * SSTP return codes  
+ * Same as HTTP, 200s are OK, others are errors.  
+ * 200s are OK, others are errors.
+ * @enum {number}
+ */
+declare enum documented_sstp_return_code_t {
+	/** OK (with return value) */
+	OK = 200,
+	/** OK (without return value) */
+	NO_CONTENT = 204,
+	/**
+	 * Executed but broke during script execution  
+	 * ※Only for very limited situations such as SEND/1.x with Entry, normally immediate 200 or 204 return.
+	 */
+	BREAK = 210,
+	/** Request has some flaw that cannot be covered */
+	BAD_REQUEST = 400,
+	/** Ghost specified in SSTP not installed or started ※SSP only */
+	NOT_FOUND = 404,
+	/** Timeout: cannot communicate with ghost/SHIORI side (rarely happens) */
+	REQUEST_TIMEOUT = 408,
+	/** \t tag or other interruption prohibited state or processing another request */
+	CONFLICT = 409,
+	/** SSTP request too long and rejected ※SSP only */
+	PAYLOAD_TOO_LARGE = 413,
+	/** Rejected by ghost side settings */
+	REFUSE = 420,
+	/** Some problem detected inside the system and cannot process ※SSP only */
+	INTERNAL_SERVER_ERROR = 500,
+	/** Unimplemented command or something included and cannot process */
+	NOT_IMPLEMENTED = 501,
+	/** Cannot accept SSTP due to internal system reasons */
+	SERVICE_UNAVAILABLE = 503,
+	/** SSTP version weird (less than 1.0, more than 3.0, etc.) ※SSP only */
+	VERSION_NOT_SUPPORTED = 505,
+	/** Ghost not displayed due to minimisation or something and cannot process anything */
+	INVISIBLE = 512,
+	/** Content Parse Error */
+	PARSE_ERROR = NaN
+}
+/**
+ * SSTP return codes  
+ * Same as HTTP, 200s are OK, others are errors.  
+ * 200s are OK, others are errors.
+ * @enum {number}
+ */
+type sstp_return_code_t = documented_sstp_return_code_t | number;
+/**
+ * Basic SSTP packet
+ * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#req_res}
+ */
+type base_sstp_content_t = {
+	/**
+	 * The character encoding of the request. It's best to appear on the first line.  
+	 * If there ain't no special reason, UTF-8 is recommended.
+	 */
+	CharSet: string | undefined,
+
+	/**
+	 * A string that indicates the sender. Something like "SSTP sending tool". In the case of the COMMUNICATE method, it's the name of the ghost\0 that sent it.
+	 */
+	Sender: string | undefined,
+
+	/**
+	 * The security level specification for processing with SHIORI and SakuraScript. Either local/external.  
+	 * Only valid for DirectSSTP, or requests that clearly come from local (like 127.0.0.1).
+	 */
+	SecurityLevel: security_level_t | undefined,
+
+	/**
+	 * An option that specifies how the SakuraScript executed by SSTP is handled.  
+	 * Multiple can be specified with commas. The strings to specify are as follows.  
+	 * nodescript : Disable the SSTP display of the balloon (remote SSTP is invalid)  
+	 * notranslate : Do not perform translation processing with OnTranslate or MAKOTO  
+	 * nobreak : Do not interrupt the script that is currently running, wait until it ends
+	 */
+	Option: string | undefined,
+
+	/**
+	 * The so-called "Owned SSTP". If you specify the ID sent by SHIORI uniqueid or the FMO identification ID (SSP only), ignore various security checks and locks, etc., and treat this SSTP as the same priority as the internal processing of the ghost.  
+	 * The SecurityLevel specification becomes local, and even in the case of interruption prohibition states such as \t, it forcibly interrupts and plays.
+	 */
+	ID: string | undefined,
+
+	/**
+	 * A header that is passed directly to SHIORI during communication with the ghost such as NOTIFY.  
+	 * Only the minimum processing such as character code conversion is performed, and the part and contents of (any string) are relayed as they are.
+	 */
+	[key: `X-SSTP-PassThru-${string}`]: string | undefined,
+
+	/**
+	 * DirectSSTP limited, indicates the window handle that should reply to the response.  
+	 * The data of the window handle (equivalent to a pointer) is treated as an unsigned decimal integer and then stringized.  
+	 * If omitted, it is wParam of WM_COMMUNICATE.
+	 */
+	HWnd: string | undefined,
+
+	/**
+	 * (Socket)SSTP limited, indicates the window handle of the ghost\0 that should send the request.  
+	 * If you specify this, the ghost to be processed is fixed, and the same processing as DirectSSTP is possible via Socket.  
+	 * If not found, it will end immediately with an error of 404 Not Found.
+	 */
+	ReceiverGhostHWnd: string | undefined,
+
+	/**
+	 * (Socket)SSTP limited, indicates the name of the ghost\0 that should send the request.  
+	 * If you specify this, the ghost to be processed is fixed, and the same processing as DirectSSTP is possible via Socket. The name version of HWnd.  
+	 * If not found, it will end immediately with an error of 404 Not Found.
+	 */
+	ReceiverGhostName: string | undefined,
+
+	/**
+	 * Other SSTP contents
+	 */
+	[key: string]: string | undefined
+};
+/**
+ * Common Event SSTP packet
+ * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_notify}
+ */
+type common_event_sstp_content_t = {
+	/**
+	 * The name of the event
+	 */
+	Event: string
+	/**
+	 * Arguments
+	 */
+	[key: `Reference${number}`]: any
+	/**
+	* If the name of the ghost is specified in the format of \0 side name and \1 side name, the {@link common_event_sstp_content_t.Script} header that follows it will be considered as specific to that ghost.  
+	* If the content is omitted, the same Script header will be played for any ghost.  
+	* If the SSTP ghost activation option is enabled, the ghost specified here will be temporarily activated.  
+	* Due to the language limitation of js, only one ghost can be specified here.  
+	* When multiple IfGhost are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	*/
+	IfGhost: string | undefined
+	/**
+	* Sakura script  
+	* If the Script header does not follow immediately after the IfGhost, it will be the default processing script when it does not correspond to the IfGhost.  
+	* Due to the language limitation of js, only one script can be specified here.  
+	* When multiple Script are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	*/
+	Script: string | undefined
+	/**
+	 * Other SSTP contents
+	 */
+	[key: string]: string | undefined
+};
+/**
+ * @enum {string} documented_sstp_command_name_t
+ * @description An enumeration of the documented SSTP commands.
+ */
+declare enum documented_sstp_command_name_t {
+	/**
+	 * Returns the names of the active ghosts in the format of (\0name),(\1name) separated by commas.
+	 */
+	GetName = "GetName",
+	/**
+	 * Returns the list of the installed ghosts in the format of \0name per line, terminated by an empty line.
+	 */
+	GetNames = "GetNames",
+	/**
+	 * Returns the information equivalent to the contents of FMO, which is a file that stores the state of the active ghosts.  
+	 * However, this command only returns the information for the application that communicates via SSTP, not the shared FMO for all concurrently running applications.  
+	 * This command is mainly used for console applications that do not have a window and cannot send Direct SSTP, to achieve the functionality equivalent to Direct SSTP using Socket SSTP and the ReceiverGhostHWnd header.  
+	 * The format is one line per ghost, terminated by an empty line.  
+	 * If the request is from a remote client, the path information is omitted and the header and hwnd are replaced by dummy values.
+	 */
+	GetFMO = "GetFMO",
+	/**
+	 * Returns the name of the active ghost body (the name field in descript.txt).
+	 */
+	GetGhostName = "GetGhostName",
+	/**
+	 * Returns the name of the current shell used by the active ghost.
+	 */
+	GetShellName = "GetShellName",
+	/**
+	 * Returns the name of the current balloon used by the active ghost.
+	 */
+	GetBalloonName = "GetBalloonName",
+	/**
+	 * Returns the version of the base ware (the software that runs the ghost).
+	 */
+	GetVersion = "GetVersion",
+	/**
+	 * Returns the list of the names of all ghosts recognized by SSP (the name field in descript.txt) in the format of one line per name, terminated by an empty line.
+	 */
+	GetGhostNameList = "GetGhostNameList",
+	/**
+	 * Returns the list of the names of all shells recognized by the active ghost (the name field in descript.txt) in the format of one line per name, terminated by an empty line.
+	 */
+	GetShellNameList = "GetShellNameList",
+	/**
+	 * Returns the list of the names of all balloons recognized by SSP (the name field in descript.txt) in the format of one line per name, terminated by an empty line.
+	 */
+	GetBalloonNameList = "GetBalloonNameList",
+	/**
+	 * Returns the list of the names of all headlines recognized by SSP (the name field in descript.txt) in the format of one line per name, terminated by an empty line.
+	 */
+	GetHeadlineNameList = "GetHeadlineNameList",
+	/**
+	 * Returns the list of the names of all plugins recognized by SSP (the name field in descript.txt) in the format of one line per name, terminated by an empty line.
+	 */
+	GetPluginNameList = "GetPluginNameList",
+	/**
+	 * Returns the version of the base ware (the software that runs the ghost) in the format of only the version number separated by periods.  
+	 * This can be used to check if the base ware is the latest version by simply comparing it with ssp.full.version in version.json or similar.
+	 */
+	GetShortVersion = "GetShortVersion",
+	/**
+	 * Makes the ghost quiet until Restore is executed or 16 seconds have elapsed. No additional data (success with status code 200 series).
+	 */
+	Quiet = "Quiet",
+	/**
+	 * Cancels Quiet. No additional data (success with status code 200 series).
+	 */
+	Restore = "Restore",
+	/**
+	 * Compresses the files in the specified folder into a compressed file.  
+	 * The response is not returned until the process is finished, so be careful.  
+	 * Parameter 0: Compressed file name  
+	 * Parameter 1: Full path of the folder to be compressed  
+	 * No additional data (success with status code 200 series).
+	 */
+	CompressArchive = "CompressArchive",
+	/**
+	 * Decompresses the specified compressed file.  
+	 * The response is not returned until the process is finished, so be careful.  
+	 * Parameter 0: Compressed file name  
+	 * Parameter 1: Full path of the folder to be decompressed  
+	 * No additional data (success with status code 200 series).
+	 */
+	ExtractArchive = "ExtractArchive",
+	/**
+	 * Outputs the synthesized surface image to the specified directory. The parameters are the same as \![execute,dumpsurface].  
+	 * The response is not returned until the process is finished, so be careful.  
+	 * No additional data (success with status code 200 series).
+	 */
+	DumpSurface = "DumpSurface",
+	/**
+	 * Executes the same thing as \![moveasync] without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
+	 * Move without async cannot be executed because it cannot return a response before the SSTP timeout and causes a deadlock.  
+	 * No additional data (success with status code 200 series).
+	 */
+	MoveAsync = "MoveAsync",
+	/**
+	 * Executes the same thing as \![set,tasktrayicon] without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
+	 * No additional data (success with status code 200 series).
+	 */
+	SetTrayIcon = "SetTrayIcon",
+	/**
+	 * Executes the same thing as \![set,trayballoon] without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
+	 * No additional data (success with status code 200 series).
+	 */
+	SetTrayBalloon = "SetTrayBalloon",
+	/**
+	 * Writes a value to the property system.  
+	 * Parameter 0: Property name  
+	 * Parameter 1: Value to be set  
+	 * No additional data (success with status code 200 series).
+	 */
+	SetProperty = "SetProperty",
+	/**
+	 * Reads a value from the property system.  
+	 * Parameter 0: Property name  
+	 * The additional data is the value of the property obtained.
+	 */
+	GetProperty = "GetProperty",
+	/**
+	 * Writes to the generic data storage area that is saved for each client name specified by Sender.  
+	 * It is intended to be used in the same way as the browser's \"cookie\".  
+	 * Parameter 0: Cookie name  
+	 * Parameter 1: Value to be set  
+	 * No additional data (success with status code 200 series).
+	 */
+	SetCookie = "SetCookie",
+	/**
+	 * Reads from the generic data storage area that is saved for each client name specified by Sender.  
+	 * Parameter 0: Cookie name  
+	 * The additional data is the value of the cookie obtained.
+	 */
+	GetCookie = "GetCookie"
+}
+/**
+ * SSTP command name
+ * @enum {string}
+ */
+type sstp_command_name_t = documented_sstp_command_name_t | string;
+/**
+ * Common SSTP execute packet content
+ * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute}
+ */
+type common_execute_sstp_content_t = {
+	/**
+	 * The command to execute.
+	 */
+	Command: sstp_command_name_t | `${sstp_command_name_t}[${string}]`
+	/**
+	 * The parameter information for the execution.
+	 */
+	[key: `Reference${number}`]: any
+	/**
+	 * Other SSTP content
+	 */
+	[key: string]: string | undefined
+};
+/**
+ * Common SSTP communicate packet content
+ * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_communicate}
+ */
+type common_communicate_sstp_content_t = {
+	/**
+	 * The Sakura Script to transmit
+	 */
+	Sentence: string
+	/**
+	 * The extended information for the communication.  
+	 * Stored in Reference2 and later in SHIORI/3.0. SSTP Reference0 = SHIORI Reference2.
+	 */
+	[key: `Reference${number}`]: any
+	/**
+	 * The expression numbers of \0 and \1 at the communication sending point (≒ script execution end point) of the source ghost.  
+	 * Passed as Surface header in OnCommunicate event.
+	 * @example `5,11` //means \0 is 5, \1 is 11
+	 */
+	Surface: string
+	/**
+	 * Other SSTP content
+	 */
+	[key: string]: string | undefined
+};
+/**
+ * Common SSTP give packet content
+ * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_give}
+ */
+type common_give_sstp_content_t = {
+	/**
+	 * The text to give  
+	 * In SHIORI/3.0, this is the same as user communication and generates OnCommunicate event.
+	 */
+	Document: string
+	/**
+	 * The name of the song to give.  
+	 * In SHIORI/3.0, OnMusicPlay event occurs and Reference0 becomes the specified string.
+	 */
+	Song: string
+	/**
+	 * Other SSTP content
+	 */
+	[key: string]: string | undefined
+};
+
+/**
  * Extend object to provide some simple and iterative operations.
  */
 declare class info_object<key_T = PropertyKey, value_T = any> {
@@ -87,9 +506,9 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/*@__PURE__*/toJSON(): Object;
 	/**
 	 * Get header return code (`NaN` if unexpected)
-	 * @returns {Number} header return code (`NaN` if unexpected)
+	 * @returns {sstp_return_code_t} header return code (`NaN` if unexpected)
 	 */
-	/*@__PURE__*/get status_code(): Number;
+	/*@__PURE__*/get status_code(): sstp_return_code_t;
 	/**
 	 * Other message members
 	 * @type {any|undefined}
@@ -237,7 +656,7 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * @param {String} value The value of the property to be checked.
 	 * @returns {String|undefined} corresponding uuid (if any)
 	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
-	 * @example 
+	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description Equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
@@ -298,59 +717,6 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 	 */
 	[key: number]: string | undefined;
 }
-
-/**
- * An extensible function type that can be initialised with a function for a more readable derived class function type
- */
-declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
-	/**
-	 * Initialising from a function instance  
-	 * @param {Function} func
-	 * @returns {ExtensibleFunction}
-	 */
-	constructor(func: (...args: args_T) => return_T);
-	/**
-	 * Calls a function and replaces the function's this value with the specified object and the function's arguments with the specified array.  
-	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
-	 * @param thisArg The object that will be used as the this object.
-	 * @param argArray A set of arguments to be passed to the function.
-	 */
-	apply(thisArg: (...args: args_T) => return_T, argArray?: args_T): return_T;
-
-	/**
-	 * Calls a method on an object that replaces the current object with another object.  
-	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
-	 * @param thisArg The object that will be used as the current object.
-	 * @param argArray The list of arguments to be passed to the method.
-	 */
-	call(thisArg: (...args: args_T) => return_T, ...argArray: args_T): return_T;
-
-	/**
-	 * For a given function, creates a bound function with the same body as the original function.  
-	 * The this object of the bound function is associated with the specified object and has the specified initial argument.  
-	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
-	 * @param thisArg An object that the this keyword can refer to in the new function.
-	 * @param argArray A list of arguments to be passed to the new function.
-	 */
-	bind(thisArg: (...args: args_T) => return_T, ...argArray: any): (...args: args_T) => return_T;
-
-	/**
-	 * Function's name.  
-	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
-	 */
-	readonly name: string;
-
-	/**
-	 * The number of arguments expected by the function.  
-	 * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
-	 */
-	readonly length: number;
-}
-/**
- * Security levels in ghost interactions
- * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
- */
-type security_level_t = "local" | "external";
 
 /**
  * sstp method caller
@@ -464,23 +830,23 @@ declare class jsstp_t {
 	/**
 	 * @group SSTP Base Methods
 	*/
-	SEND: method_caller;
+	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	NOTIFY: method_caller;
+	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	COMMUNICATE: method_caller;
+	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	EXECUTE: method_caller;
+	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	GIVE: method_caller;
+	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 
 	/**
 	 * Matches event names to generate a simple invoker
@@ -513,9 +879,7 @@ declare class jsstp_t {
 	/**
 	 * Default Message Content
 	 */
-	default_info: {
-		[key: string]: string,
-	};
+	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP protocol version number list
@@ -584,7 +948,7 @@ declare class jsstp_t {
 	/**
 	 * Sends a message in text and receives it back in text
 	 * @param {any} info Message body (text)
-	 * @returns {Promise<String>} Returns a promise.  
+	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String>;
@@ -592,7 +956,7 @@ declare class jsstp_t {
 	 * Sends the message, but does not process the returned results
 	 * @param {String} sstphead The header of the message.
 	 * @param {Object} info The body of the message.
-	 * @returns {Promise<String>} Returns a promise.  
+	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
@@ -665,7 +1029,7 @@ declare class jsstp_t {
 		[command_name: string]: simple_command_caller
 	}
 	/**
-	 * Determine if an event exists
+	 * Determine if an event exists  
 	 * Use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query if it is likely to be called frequently
 	 * @param {String} event_name event_name
 	 * @param {security_level_t} security_level security_level
@@ -695,7 +1059,7 @@ declare class jsstp_t {
 	 */
 	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
-	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events
+	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events  
 	 * If unsure of ghost support, use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query
 	 * @returns {Promise<{local:string[],external:string[]}>} Object containing both local and external arrays
 	 * @example
@@ -788,21 +1152,20 @@ declare class jsstp_t {
 }
 
 /**
- * ghost event finder: class definition implementation
+ * ghost event finder
  * @example
  * let ghost_events_queryer = jsstp.new_event_queryer();
  * if(!ghost_events_queryer.available)
- * 	console.log("Currently ghost does not support event queries");
+ * 	console.log("Current ghost does not support event queries");
  * if(ghost_events_queryer.has_event("OnBoom"))
  * 	jsstp.OnBoom();
+ * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
- * @group ghost_events_queryer_t implementations
  */
-declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[string,string], Promise<Boolean>> {
+declare class ghost_events_queryer_t extends ExtensibleFunction<[string, security_level_t], Promise<Boolean>> {
 	/**
 	 * Constructing an Event Querier
 	 * @param {jsstp_t} base_jsstp
-	 * @returns {void}
 	 */
 	/*@__PURE__*/constructor(base_jsstp: jsstp_t);
 	/**
@@ -850,10 +1213,22 @@ declare class ghost_events_queryer_t_class_impl extends ExtensibleFunction<[stri
 	clear(): void;
 }
 /**
- * ghost event finder: call signatures
- * @group ghost_events_queryer_t implementations
+ * ghost event finder
+ * @example
+ * let ghost_events_queryer = jsstp.new_event_queryer();
+ * if(!ghost_events_queryer.available)
+ * 	console.log("Current ghost does not support event queries");
+ * if(ghost_events_queryer.has_event("OnBoom"))
+ * 	jsstp.OnBoom();
+ * @alias jsstp.ghost_events_queryer_t
+ * @see {@link jsstp_t.new_event_queryer}
  */
-type ghost_events_queryer_t_call_signature = {
+interface ghost_events_queryer_t {
+	/**
+	 * Constructing an Event Querier
+	 * @param {jsstp_t} base_jsstp
+	 */
+	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 	/**
 	 * Call declarations
 	 * Check for the existence of events, ghost requires at least `Has_Event` event support and can be made more efficient by providing `Get_Supported_Events` events
@@ -862,49 +1237,9 @@ type ghost_events_queryer_t_call_signature = {
 	 * @returns {Promise<Boolean>}
 	 * @example
 	 * let result = await ghost_events_queryer("On_connect");
-	 * @see based on {@link ghost_events_queryer_t_class_impl.check_event}
+	 * @see based on {@link ghost_events_queryer_t.check_event}
 	 */
 	/*@__PURE__*/(event_name: String, security_level?: security_level_t): Promise<Boolean>;
-}
-/**
- * ghost event finder: constructor interface declaration
- * @group ghost_events_queryer_t implementations
- */
-type ghost_events_queryer_t_constructor = {
-	/**
-	 * Constructing an Event Querier
-	 * @param {jsstp_t} base_jsstp
-	 * @returns {void}
-	 */
-	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
-}
-/**
- * ghost event finder
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("Current ghost does not support event queries");
- * if(ghost_events_queryer.has_event("OnBoom"))
- * 	jsstp.OnBoom();
- * @alias jsstp.ghost_events_queryer_t
- * @see {@link jsstp_t.new_event_queryer}
- * @class
- */
-declare const ghost_events_queryer_t: typeof ghost_events_queryer_t_class_impl & ghost_events_queryer_t_constructor;
-/**
- * ghost event finder
- * @example
- * let ghost_events_queryer = jsstp.new_event_queryer();
- * if(!ghost_events_queryer.available)
- * 	console.log("Current ghost does not support event queries");
- * if(ghost_events_queryer.has_event("OnBoom"))
- * 	jsstp.OnBoom();
- * @alias jsstp.ghost_events_queryer_t
- * @see {@link jsstp_t.new_event_queryer}
- * @class
- */
-type ghost_events_queryer_t = ghost_events_queryer_t_class_impl & ghost_events_queryer_t_call_signature & {
-	constructor: typeof ghost_events_queryer_t;
 }
 
 /**
