@@ -100,7 +100,7 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * @param {String} value 期望的属性值
 	 * @returns {String|undefined} 对应的uuid（如果有的话）
 	 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
-	 * @example 
+	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
 	 */

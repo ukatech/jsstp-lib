@@ -12,7 +12,7 @@ import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-declare class ghost_events_queryer_t extends ExtensibleFunction<[string,security_level_t], Promise<Boolean>> {
+declare class ghost_events_queryer_t extends ExtensibleFunction<[string, security_level_t], Promise<Boolean>> {
 	/**
 	 * イベントクエリアの構築
 	 * @param {jsstp_t} base_jsstp
@@ -80,7 +80,7 @@ interface ghost_events_queryer_t {
 	 */
 	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 	/**
-	 * 宣言の呼び出し
+	 * 宣言の呼び出し  
 	 * ゴーストには少なくとも `Has_Event` イベントサポートが必要で、 `Get_Supported_Events` イベントを提供することでより効率的にすることができる。
 	 * @param {String} event_name
 	 * @param {security_level_t} security_level

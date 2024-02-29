@@ -4,7 +4,7 @@ import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 import type list_info_t from "./list_info_t.d.js";
 import type { info_object } from "./info_object.d.ts";
-import { security_level_t } from "../base/tools.js";
+import type { base_sstp_content_t, common_communicate_sstp_content_t, common_event_sstp_content_t, common_execute_sstp_content_t, common_give_sstp_content_t, security_level_t } from "../base/tools.d.ts";
 
 /**
  * sstp方法调用器
@@ -169,23 +169,23 @@ declare class jsstp_t {
 	/**
 	 * @group SSTP Base Methods
 	*/
-	SEND: method_caller;
+	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	NOTIFY: method_caller;
+	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	COMMUNICATE: method_caller;
+	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	EXECUTE: method_caller;
+	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	GIVE: method_caller;
+	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 
 	/**
 	 * 匹配事件名称以产生简易调用器
@@ -218,9 +218,7 @@ declare class jsstp_t {
 	/**
 	 * 默认的报文内容
 	 */
-	default_info: {
-		[key: string]: string,
-	};
+	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP协议版本号列表
@@ -289,7 +287,7 @@ declare class jsstp_t {
 	/**
 	 * 以文本发送报文并以文本接收返信
 	 * @param {any} info 报文体（文本）
-	 * @returns {Promise<String>} 返回一个promise  
+	 * @returns {Promise<String>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String>;
@@ -297,7 +295,7 @@ declare class jsstp_t {
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
-	 * @returns {Promise<String>} 返回一个promise  
+	 * @returns {Promise<String>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
@@ -370,7 +368,7 @@ declare class jsstp_t {
 		[command_name: string]: simple_command_caller
 	}
 	/**
-	 * 判断是否存在某个事件
+	 * 判断是否存在某个事件  
 	 * 若可能频繁调用，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 	 * @param {String} event_name 事件名
 	 * @param {security_level_t} security_level 安全等级
@@ -400,7 +398,7 @@ declare class jsstp_t {
 	 */
 	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
-	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件
+	 * 以约定好的结构获取支持的事件，需要ghost支持`Get_Supported_Events`事件  
 	 * 若不确定ghost的支持情况，使用{@link ghost_events_queryer_t}（通过{@link jsstp_t.new_event_queryer}获取）来查询
 	 * @returns {Promise<{local:string[],external:string[]}>} 包含local和external两个数组的Object
 	 * @example

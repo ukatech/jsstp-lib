@@ -12,7 +12,7 @@ import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-declare class ghost_events_queryer_t extends ExtensibleFunction<[string,security_level_t], Promise<Boolean>> {
+declare class ghost_events_queryer_t extends ExtensibleFunction<[string, security_level_t], Promise<Boolean>> {
 	/**
 	 * Constructing an Event Querier
 	 * @param {jsstp_t} base_jsstp

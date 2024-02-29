@@ -12,7 +12,7 @@ import type { ExtensibleFunction, security_level_t } from "../base/tools.d.ts"
  * @alias jsstp.ghost_events_queryer_t
  * @see {@link jsstp_t.new_event_queryer}
  */
-declare class ghost_events_queryer_t extends ExtensibleFunction<[string,security_level_t], Promise<Boolean>> {
+declare class ghost_events_queryer_t extends ExtensibleFunction<[string, security_level_t], Promise<Boolean>> {
 	/**
 	 * 构造一个事件查询器
 	 * @param {jsstp_t} base_jsstp
@@ -80,7 +80,7 @@ interface ghost_events_queryer_t {
 	 */
 	/*@__PURE__*/new(base_jsstp: jsstp_t): ghost_events_queryer_t;
 	/**
-	 * 调用声明
+	 * 调用声明  
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
 	 * @param {String} event_name
 	 * @param {security_level_t} security_level

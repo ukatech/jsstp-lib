@@ -100,7 +100,7 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * @param {String} value The value of the property to be checked.
 	 * @returns {String|undefined} corresponding uuid (if any)
 	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
-	 * @example 
+	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description Equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
 	 */

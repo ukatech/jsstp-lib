@@ -1,3 +1,4 @@
+import type { sstp_return_code_t } from "../base/tools.d.ts";
 import type { info_object } from "./info_object.d.ts";
 
 /*
@@ -51,9 +52,9 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/*@__PURE__*/toJSON(): Object;
 	/**
 	 * Get header return code (`NaN` if unexpected)
-	 * @returns {Number} header return code (`NaN` if unexpected)
+	 * @returns {sstp_return_code_t} header return code (`NaN` if unexpected)
 	 */
-	/*@__PURE__*/get status_code(): Number;
+	/*@__PURE__*/get status_code(): sstp_return_code_t;
 	/**
 	 * Other message members
 	 * @type {any|undefined}

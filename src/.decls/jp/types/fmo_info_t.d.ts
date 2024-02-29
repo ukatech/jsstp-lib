@@ -100,7 +100,7 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 * @param {String} value 望ましい属性値
 	 * @returns {String|undefined} 対応するuuid（もしあれば）
 	 * @description 指定された属性を持ち、その属性の値が指定された値であるfmoのuuidを取得する。
-	 * @example 
+	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description `this.uuids.find(uuid => this[uuid][name] == value)`に相当する。
 	 */

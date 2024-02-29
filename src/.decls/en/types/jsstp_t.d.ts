@@ -4,7 +4,7 @@ import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 import type list_info_t from "./list_info_t.d.js";
 import type { info_object } from "./info_object.d.ts";
-import { security_level_t } from "../base/tools.js";
+import type { base_sstp_content_t, common_communicate_sstp_content_t, common_event_sstp_content_t, common_execute_sstp_content_t, common_give_sstp_content_t, security_level_t } from "../base/tools.d.ts";
 
 /**
  * sstp method caller
@@ -170,23 +170,23 @@ declare class jsstp_t {
 	/**
 	 * @group SSTP Base Methods
 	*/
-	SEND: method_caller;
+	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	NOTIFY: method_caller;
+	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	COMMUNICATE: method_caller;
+	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	EXECUTE: method_caller;
+	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	GIVE: method_caller;
+	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 
 	/**
 	 * Matches event names to generate a simple invoker
@@ -219,9 +219,7 @@ declare class jsstp_t {
 	/**
 	 * Default Message Content
 	 */
-	default_info: {
-		[key: string]: string,
-	};
+	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP protocol version number list
@@ -290,7 +288,7 @@ declare class jsstp_t {
 	/**
 	 * Sends a message in text and receives it back in text
 	 * @param {any} info Message body (text)
-	 * @returns {Promise<String>} Returns a promise.  
+	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String>;
@@ -298,7 +296,7 @@ declare class jsstp_t {
 	 * Sends the message, but does not process the returned results
 	 * @param {String} sstphead The header of the message.
 	 * @param {Object} info The body of the message.
-	 * @returns {Promise<String>} Returns a promise.  
+	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
@@ -371,7 +369,7 @@ declare class jsstp_t {
 		[command_name: string]: simple_command_caller
 	}
 	/**
-	 * Determine if an event exists
+	 * Determine if an event exists  
 	 * Use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query if it is likely to be called frequently
 	 * @param {String} event_name event_name
 	 * @param {security_level_t} security_level security_level
@@ -401,7 +399,7 @@ declare class jsstp_t {
 	 */
 	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
-	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events
+	 * Getting supported events in an agreed structure requires ghost to support `Get_Supported_Events` events  
 	 * If unsure of ghost support, use {@link ghost_events_queryer_t} (obtained via {@link jsstp_t.new_event_queryer}) to query
 	 * @returns {Promise<{local:string[],external:string[]}>} Object containing both local and external arrays
 	 * @example

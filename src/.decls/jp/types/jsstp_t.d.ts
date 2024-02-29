@@ -4,7 +4,7 @@ import type sstp_info_t from "./sstp_info_t.d.ts";
 import type base_sstp_info_t from "./base_sstp_info_t.d.ts";
 import type list_info_t from "./list_info_t.d.js";
 import type { info_object } from "./info_object.d.ts";
-import { security_level_t } from "../base/tools.js";
+import type { base_sstp_content_t, common_communicate_sstp_content_t, common_event_sstp_content_t, common_execute_sstp_content_t, common_give_sstp_content_t, security_level_t } from "../base/tools.d.ts";
 
 /**
  * sstp メソッド呼び出し元
@@ -171,23 +171,23 @@ declare class jsstp_t {
 	/**
 	 * @group SSTP Base Methods
 	*/
-	SEND: method_caller;
+	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	NOTIFY: method_caller;
+	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	COMMUNICATE: method_caller;
+	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	EXECUTE: method_caller;
+	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
 	*/
-	GIVE: method_caller;
+	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 
 	/**
 	 * イベント名をマッチさせて単純な呼び出し元を生成する
@@ -220,9 +220,7 @@ declare class jsstp_t {
 	/**
 	 * デフォルトのメッセージ内容
 	 */
-	default_info: {
-		[key: string]: string,
-	};
+	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP プロトコルバージョン番号リスト
@@ -291,20 +289,20 @@ declare class jsstp_t {
 	/**
 	 * テキストでメッセージを送信し、テキストでそれを受信する
 	 * @param {any} info メッセージ本文 (テキスト)
-	 * @returns {Promise<String>} プロミスを返します。  
+	 * @returns {Promise<String>} プロミスを返します。
 	 * @group Basic Send Methods
 	 */
 	row_send(info: any): Promise<String>;
 	/**
-	 * メッセージを送信するが、返された結果は処理しない。
+	 * メッセージを送信するが、返された結果は処理しない。  
 	 * メッセージのヘッダー。
 	 * @param {Object} info メッセージのボディ。
-	 * @returns {Promise<String>} プロミスを返します。 
+	 * @returns {Promise<String>} プロミスを返します。
 	 * @group Basic Send Methods
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
-	 * @returns {Promise<sstp_info_t>} プロミスを返します。
+	 * @returns {Promise<sstp_info_t>} プロミスを返します。  
 	 * メッセージの送信
 	 * @param {String} sstphead メッセージヘッダ
 	 * @param {Object} info メッセージボディ
@@ -372,7 +370,7 @@ declare class jsstp_t {
 		[command_name: string]: simple_command_caller
 	}
 	/**
-	 * イベントが存在するかどうかを判断する
+	 * イベントが存在するかどうかを判断する  
 	 * {@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使って、頻繁に呼び出されそうかどうかを問い合わせる。
 	 * @param {String} event_name イベント名
 	 * @param {security_level_t} security_level セキュリティレベル
@@ -402,7 +400,7 @@ declare class jsstp_t {
 	 */
 	/*@__PURE__*/has_event(event_name: String, security_level?: security_level_t): Promise<Boolean>;
 	/**
-	 * サポートされているイベントを合意された構造で取得するには、ゴーストが `Get_Supported_Events` イベントをサポートしている必要があります。
+	 * サポートされているイベントを合意された構造で取得するには、ゴーストが `Get_Supported_Events` イベントをサポートしている必要があります。  
 	 * ゴーストのサポートが不明な場合は、{@link ghost_events_queryer_t}（{@link jsstp_t.new_event_queryer}で取得）を使用してクエリを実行する。
 	 * @returns {Promise<{local:string[],external:string[]}>}ローカル配列と外部配列を含むオブジェクト。
 	 * @example

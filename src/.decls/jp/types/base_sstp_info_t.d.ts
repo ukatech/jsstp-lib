@@ -1,3 +1,4 @@
+import type { sstp_return_code_t } from "../base/tools.d.ts";
 import type { info_object } from "./info_object.d.ts";
 
 /*
@@ -51,9 +52,9 @@ declare class base_sstp_info_t<key_T = PropertyKey, value_T = any> extends info_
 	/*@__PURE__*/toJSON(): Object;
 	/**
 	 * ヘッダーのリターンコード (予期しない場合は `NaN`) を取得します。
-	 * @returns {Number} ヘッダのリターンコード (予期しない場合は `NaN`)
+	 * @returns {sstp_return_code_t} ヘッダのリターンコード (予期しない場合は `NaN`)
 	 */
-	/*@__PURE__*/get status_code(): Number;
+	/*@__PURE__*/get status_code(): sstp_return_code_t;
 	/**
 	 * その他のメッセージメンバー
 	 * @type {any|undefined}
