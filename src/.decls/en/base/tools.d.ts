@@ -64,8 +64,7 @@ interface ExtensibleFunction<args_T extends Array<any>, return_T> {
 type security_level_t = "local" | "external";
 /**
  * SSTP return codes  
- * Same as HTTP, 200s are OK, others are errors.  
- * 200s are OK, others are errors.
+ * Same as HTTP, 200s are OK, others are errors.
  * @enum {number}
  */
 declare enum documented_sstp_return_code_t {
@@ -105,11 +104,10 @@ declare enum documented_sstp_return_code_t {
 }
 /**
  * SSTP return codes  
- * Same as HTTP, 200s are OK, others are errors.  
- * 200s are OK, others are errors.
+ * Same as HTTP, 200s are OK, others are errors.
  * @enum {number}
  */
-type sstp_return_code_t = documented_sstp_return_code_t | number;
+type sstp_return_code_t = number & documented_sstp_return_code_t;
 /**
  * Basic SSTP packet
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#req_res}
@@ -271,7 +269,7 @@ declare enum documented_sstp_command_name_t {
 	GetPluginNameList = "GetPluginNameList",
 	/**
 	 * Returns the version of the base ware (the software that runs the ghost) in the format of only the version number separated by periods.  
-	 * This can be used to check if the base ware is the latest version by simply comparing it with ssp.full.version in version.json or similar.
+	 * This can be used to check if the base ware is the latest version by simply comparing it with `ssp.full.version` in [version.json](https://ssp.shillest.net/archive/version.json) or similar.
 	 */
 	GetShortVersion = "GetShortVersion",
 	/**
@@ -299,24 +297,24 @@ declare enum documented_sstp_command_name_t {
 	 */
 	ExtractArchive = "ExtractArchive",
 	/**
-	 * Outputs the synthesized surface image to the specified directory. The parameters are the same as \![execute,dumpsurface].  
+	 * Outputs the synthesized surface image to the specified directory. The parameters are the same as `\![execute,dumpsurface]`.  
 	 * The response is not returned until the process is finished, so be careful.  
 	 * No additional data (success with status code 200 series).
 	 */
 	DumpSurface = "DumpSurface",
 	/**
-	 * Executes the same thing as \![moveasync] without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
+	 * Executes the same thing as `\![moveasync]` without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
 	 * Move without async cannot be executed because it cannot return a response before the SSTP timeout and causes a deadlock.  
 	 * No additional data (success with status code 200 series).
 	 */
 	MoveAsync = "MoveAsync",
 	/**
-	 * Executes the same thing as \![set,tasktrayicon] without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
+	 * Executes the same thing as `\![set,tasktrayicon]` without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
 	 * No additional data (success with status code 200 series).
 	 */
 	SetTrayIcon = "SetTrayIcon",
 	/**
-	 * Executes the same thing as \![set,trayballoon] without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
+	 * Executes the same thing as `\![set,trayballoon]` without using Sakura Script. The parameter specification method is the same as the Sakura Script version.  
 	 * No additional data (success with status code 200 series).
 	 */
 	SetTrayBalloon = "SetTrayBalloon",
@@ -352,7 +350,7 @@ declare enum documented_sstp_command_name_t {
  * SSTP command name
  * @enum {string}
  */
-type sstp_command_name_t = documented_sstp_command_name_t | string;
+type sstp_command_name_t = string & documented_sstp_command_name_t;
 /**
  * Common SSTP execute packet content
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute}

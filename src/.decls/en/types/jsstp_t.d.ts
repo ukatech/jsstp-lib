@@ -31,7 +31,12 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
  * An extensible caller that performs simple processing on call parameters
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: simple_keyed_method_caller<result_T>
+}
 /**
  * Generic Event Caller  
  * Called by passing in an object to trigger an event!
@@ -50,7 +55,12 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
+interface event_caller extends base_keyed_method_caller<sstp_info_t> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: event_caller
+}
 /**
  * Simple Event Caller  
  * Directly call to trigger an event!
@@ -64,7 +74,12 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: simple_event_caller
+}
 
 /**
  * Command Caller
@@ -83,7 +98,12 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { 
  * });
  * @group callers
  */
-interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
+interface command_caller extends base_keyed_method_caller<sstp_info_t> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: command_caller
+}
 /**
  * Simple Command Caller
  * @example
@@ -96,7 +116,12 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: simple_command_caller
+}
 /**
  * List Return Command Executor
  * @example
@@ -109,7 +134,12 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
+interface list_command_caller extends base_keyed_method_caller<list_info_t> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: list_command_caller
+}
 /**
  * List Return Command Executor with Simple Parameter Processing
  * @example
@@ -120,7 +150,12 @@ interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
+	/**
+	 * Extensible caller
+	 */
+	[uuid: `some ${string}`]: simple_list_command_caller
+}
 
 /**
  * One more ghost_info attribute than {@link jsstp_t}  

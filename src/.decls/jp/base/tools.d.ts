@@ -64,8 +64,7 @@ interface ExtensibleFunction<args_T extends Array<any>, return_T> {
 type security_level_t = "local" | "external";
 /**
  * SSTP return codes  
- * HTTPと同じく、200番台は正常受理、その他はエラー。  
- * 200番台は正常受理、その他はエラー。
+ * HTTPと同じく、200番台は正常受理、その他はエラー。
  * @enum {number}
  */
 declare enum documented_sstp_return_code_t {
@@ -105,11 +104,10 @@ declare enum documented_sstp_return_code_t {
 }
 /**
  * SSTP return codes  
- * HTTPと同じく、200番台は正常受理、その他はエラー。  
- * 200番台は正常受理、その他はエラー。
+ * HTTPと同じく、200番台は正常受理、その他はエラー。
  * @enum {number}
  */
-type sstp_return_code_t = documented_sstp_return_code_t | number;
+type sstp_return_code_t = number & documented_sstp_return_code_t;
 /**
  * 基本的な SSTP パケット
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#req_res}
@@ -271,7 +269,7 @@ declare enum documented_sstp_command_name_t {
 	GetPluginNameList = "GetPluginNameList",
 	/**
 	 * ベースウェア（ゴーストを実行するソフト）のバージョンを、ピリオド区切りのバージョン番号のみの形式で返す  
-	 * これをversion.jsonのssp.full.versionなどと単純比較すると最新版かどうかチェックできる
+	 * これを[version.json](https://ssp.shillest.net/archive/version.json)の`ssp.full.version`などと単純比較すると最新版かどうかチェックできる
 	 */
 	GetShortVersion = "GetShortVersion",
 	/**
@@ -299,24 +297,24 @@ declare enum documented_sstp_command_name_t {
 	 */
 	ExtractArchive = "ExtractArchive",
 	/**
-	 * 合成済みのサーフェス画像を指定したディレクトリに出力する。パラメータは\![execute,dumpsurface]と同じ  
+	 * 合成済みのサーフェス画像を指定したディレクトリに出力する。パラメータは`\![execute,dumpsurface]`と同じ  
 	 * 処理が終わるまでレスポンスが返らないので注意  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	DumpSurface = "DumpSurface",
 	/**
-	 * \![moveasync]と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
+	 * `\![moveasync]`と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
 	 * SSTPのタイムアウトまでにresponseを返せないのとデッドロックの原因になるため、asyncなしのmoveは実行できない  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	MoveAsync = "MoveAsync",
 	/**
-	 * \![set,tasktrayicon]と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
+	 * `\![set,tasktrayicon]`と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	SetTrayIcon = "SetTrayIcon",
 	/**
-	 * \![set,trayballoon]と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
+	 * `\![set,trayballoon]`と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	SetTrayBalloon = "SetTrayBalloon",
@@ -352,7 +350,7 @@ declare enum documented_sstp_command_name_t {
  * SSTPコマンド名
  * @enum {string}
  */
-type sstp_command_name_t = documented_sstp_command_name_t | string;
+type sstp_command_name_t = string & documented_sstp_command_name_t;
 /**
  * 一般的なSSTP実行パケットの内容
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute}

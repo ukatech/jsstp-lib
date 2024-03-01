@@ -32,7 +32,12 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
  * 呼び出しパラメータを簡単に扱うための拡張可能な呼び出し元
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: simple_keyed_method_caller<result_T>
+}
 /**
  * 汎用イベント呼び出し元  
  * イベントをトリガーするオブジェクトを渡すことで呼び出される！
@@ -51,7 +56,12 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
+interface event_caller extends base_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: event_caller
+}
 /**
  * 単純なイベント呼び出し元  
  * イベントをトリガーするために直接呼び出される！
@@ -65,7 +75,12 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: simple_event_caller
+}
 
 /**
  * コマンド起動呼び出し元
@@ -84,7 +99,12 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { 
  * });
  * @group callers
  */
-interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
+interface command_caller extends base_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: command_caller
+}
 /**
  * シンプルなコマンド呼び出し元
  * @example
@@ -97,7 +117,12 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: simple_command_caller
+}
 /**
  * リスト戻り値コマンド実行
  * @example
@@ -110,7 +135,12 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
+interface list_command_caller extends base_keyed_method_caller<list_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: list_command_caller
+}
 /**
  * パラメータを簡単に処理できるリスト戻り値コマンド実行
  * @example
@@ -121,7 +151,12 @@ interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: `some ${string}`]: simple_list_command_caller
+}
 
 /**
  * link jsstp_t} よりも ghost_info 属性が1つ多い。  

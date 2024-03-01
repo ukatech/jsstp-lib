@@ -31,7 +31,12 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
  * 对调用参数进行简易处理的可扩展调用器
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: simple_keyed_method_caller<result_T>
+}
 /**
  * 通用事件调用器  
  * 调用时传入一个对象以触发事件！
@@ -50,7 +55,12 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
+interface event_caller extends base_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: event_caller
+}
 /**
  * 简易事件调用器  
  * 直接调用以触发事件！
@@ -64,7 +74,12 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> { }
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: simple_event_caller
+}
 /**
  * 命令调用器
  * @example
@@ -82,7 +97,12 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { 
  * });
  * @group callers
  */
-interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
+interface command_caller extends base_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: command_caller
+}
 /**
  * 简易命令调用器
  * @example
@@ -95,7 +115,12 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> { }
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: simple_command_caller
+}
 /**
  * 列表返值命令执行器
  * @example
@@ -108,7 +133,12 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
+interface list_command_caller extends base_keyed_method_caller<list_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: list_command_caller
+}
 /**
  * 对参数进行简易处理的列表返值命令执行器
  * @example
@@ -119,7 +149,12 @@ interface list_command_caller extends base_keyed_method_caller<list_info_t> { }
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: `some ${string}`]: simple_list_command_caller
+}
 
 /**
  * 比{@link jsstp_t}多了一个ghost_info属性  
