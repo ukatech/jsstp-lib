@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name			Web Ukagaka
 // @namespace		https://github.com/ukatech/jsstp-lib
-// @version			0.0.0.10
+// @version			0.0.0.11
 // @description		try to take over the world!
 // @author			steve02081504
 // @match			*://*/*
 // @icon			https://www.google.com/s2/favicons?sz=64&domain=shillest.net
-// @require			https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.0.2/dist/jsstp.min.js
+// @require			https://cdn.jsdelivr.net/gh/ukatech/jsstp-lib@v3.1.1.2/dist/jsstp.min.js
 // @grant			window.onurlchange
 // @grant			GM.setValue
 // @grant			GM.getValue
