@@ -64,8 +64,7 @@ interface ExtensibleFunction<args_T extends Array<any>, return_T> {
 type security_level_t = "local" | "external";
 /**
  * SSTP return codes  
- * HTTPと同じく、200番台は正常受理、その他はエラー。  
- * 200番台は正常受理、その他はエラー。
+ * HTTPと同じく、200番台は正常受理、その他はエラー。
  * @enum {number}
  */
 declare enum documented_sstp_return_code_t {
@@ -105,11 +104,10 @@ declare enum documented_sstp_return_code_t {
 }
 /**
  * SSTP return codes  
- * HTTPと同じく、200番台は正常受理、その他はエラー。  
- * 200番台は正常受理、その他はエラー。
+ * HTTPと同じく、200番台は正常受理、その他はエラー。
  * @enum {number}
  */
-type sstp_return_code_t = documented_sstp_return_code_t | number;
+type sstp_return_code_t = number & documented_sstp_return_code_t;
 /**
  * 基本的な SSTP パケット
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#req_res}
@@ -271,7 +269,7 @@ declare enum documented_sstp_command_name_t {
 	GetPluginNameList = "GetPluginNameList",
 	/**
 	 * ベースウェア（ゴーストを実行するソフト）のバージョンを、ピリオド区切りのバージョン番号のみの形式で返す  
-	 * これをversion.jsonのssp.full.versionなどと単純比較すると最新版かどうかチェックできる
+	 * これを[version.json](https://ssp.shillest.net/archive/version.json)の`ssp.full.version`などと単純比較すると最新版かどうかチェックできる
 	 */
 	GetShortVersion = "GetShortVersion",
 	/**
@@ -299,24 +297,24 @@ declare enum documented_sstp_command_name_t {
 	 */
 	ExtractArchive = "ExtractArchive",
 	/**
-	 * 合成済みのサーフェス画像を指定したディレクトリに出力する。パラメータは\![execute,dumpsurface]と同じ  
+	 * 合成済みのサーフェス画像を指定したディレクトリに出力する。パラメータは`\![execute,dumpsurface]`と同じ  
 	 * 処理が終わるまでレスポンスが返らないので注意  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	DumpSurface = "DumpSurface",
 	/**
-	 * \![moveasync]と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
+	 * `\![moveasync]`と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
 	 * SSTPのタイムアウトまでにresponseを返せないのとデッドロックの原因になるため、asyncなしのmoveは実行できない  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	MoveAsync = "MoveAsync",
 	/**
-	 * \![set,tasktrayicon]と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
+	 * `\![set,tasktrayicon]`と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	SetTrayIcon = "SetTrayIcon",
 	/**
-	 * \![set,trayballoon]と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
+	 * `\![set,trayballoon]`と同じことをSakura Scriptを介さずに実行する。パラメータ指定方法はSakura Script版と同じ  
 	 * 追加データなし（ステータスコード200番台で成功）
 	 */
 	SetTrayBalloon = "SetTrayBalloon",
@@ -352,7 +350,7 @@ declare enum documented_sstp_command_name_t {
  * SSTPコマンド名
  * @enum {string}
  */
-type sstp_command_name_t = documented_sstp_command_name_t | string;
+type sstp_command_name_t = string & documented_sstp_command_name_t;
 /**
  * 一般的なSSTP実行パケットの内容
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute}
@@ -743,7 +741,12 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
  * 呼び出しパラメータを簡単に扱うための拡張可能な呼び出し元
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: string]: simple_keyed_method_caller<result_T>
+}
 /**
  * 単純なイベント呼び出し元  
  * イベントをトリガーするために直接呼び出される！
@@ -757,7 +760,12 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: string]: simple_event_caller
+}
 /**
  * シンプルなコマンド呼び出し元
  * @example
@@ -770,7 +778,12 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { 
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: string]: simple_command_caller
+}
 /**
  * パラメータを簡単に処理できるリスト戻り値コマンド実行
  * @example
@@ -781,7 +794,12 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
+	/**
+	 * 拡張呼び出し元
+	 */
+	[uuid: string]: simple_list_command_caller
+}
 
 /**
  * link jsstp_t} よりも ghost_info 属性が1つ多い。  

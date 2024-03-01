@@ -64,8 +64,7 @@ interface ExtensibleFunction<args_T extends Array<any>, return_T> {
 type security_level_t = "local" | "external";
 /**
  * SSTP 返回码  
- * 和 HTTP 一样，200 系列是正常接受，其他的是错误。  
- * 200 系列是正常接受，其他的是错误。
+ * 和 HTTP 一样，200 系列是正常接受，其他的是错误。
  * @enum {number}
  */
 declare enum documented_sstp_return_code_t {
@@ -105,11 +104,10 @@ declare enum documented_sstp_return_code_t {
 }
 /**
  * SSTP 返回码  
- * 和 HTTP 一样，200 系列是正常接受，其他的是错误。  
- * 200 系列是正常接受，其他的是错误。
+ * 和 HTTP 一样，200 系列是正常接受，其他的是错误。
  * @enum {number}
  */
-type sstp_return_code_t = documented_sstp_return_code_t | number;
+type sstp_return_code_t = number & documented_sstp_return_code_t;
 /**
  * 基本的SSTP包
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#req_res}
@@ -271,7 +269,7 @@ declare enum documented_sstp_command_name_t {
 	GetPluginNameList = "GetPluginNameList",
 	/**
 	 * 返回基础软件（运行人格的软件）的版本，以点分隔的版本号的格式  
-	 * 这可以和version.json的ssp.full.version等简单比较，就可以检查是否是最新版
+	 * 这可以和[version.json](https://ssp.shillest.net/archive/version.json)的`ssp.full.version`等简单比较，就可以检查是否是最新版
 	 */
 	GetShortVersion = "GetShortVersion",
 	/**
@@ -299,24 +297,24 @@ declare enum documented_sstp_command_name_t {
 	 */
 	ExtractArchive = "ExtractArchive",
 	/**
-	 * 将合成好的表面图片输出到指定的目录。参数和\![execute,dumpsurface]相同  
+	 * 将合成好的表面图片输出到指定的目录。参数和`\![execute,dumpsurface]`相同  
 	 * 响应会在处理结束后才返回，注意  
 	 * 没有附加数据（状态码200系列表示成功）
 	 */
 	DumpSurface = "DumpSurface",
 	/**
-	 * 不通过Sakura Script执行和\![moveasync]相同的事情。参数指定方法和Sakura Script版相同  
+	 * 不通过Sakura Script执行和`\![moveasync]`相同的事情。参数指定方法和Sakura Script版相同  
 	 * 因为不能在SSTP的超时时间内返回响应，而且会导致死锁，所以不能执行没有async的move  
 	 * 没有附加数据（状态码200系列表示成功）
 	 */
 	MoveAsync = "MoveAsync",
 	/**
-	 * 不通过Sakura Script执行和\![set,tasktrayicon]相同的事情。参数指定方法和Sakura Script版相同  
+	 * 不通过Sakura Script执行和`\![set,tasktrayicon]`相同的事情。参数指定方法和Sakura Script版相同  
 	 * 没有附加数据（状态码200系列表示成功）
 	 */
 	SetTrayIcon = "SetTrayIcon",
 	/**
-	 * 不通过Sakura Script执行和\![set,trayballoon]相同的事情。参数指定方法和Sakura Script版相同  
+	 * 不通过Sakura Script执行和`\![set,trayballoon]`相同的事情。参数指定方法和Sakura Script版相同  
 	 * 没有附加数据（状态码200系列表示成功）
 	 */
 	SetTrayBalloon = "SetTrayBalloon",
@@ -352,7 +350,7 @@ declare enum documented_sstp_command_name_t {
  * SSTP命令名称
  * @enum {string}
  */
-type sstp_command_name_t = documented_sstp_command_name_t | string;
+type sstp_command_name_t = string & documented_sstp_command_name_t;
 /**
  * 常见的SSTP执行包内容
  * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute}
@@ -748,7 +746,12 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
  * 对调用参数进行简易处理的可扩展调用器
  * @group callers
  */
-interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> { }
+interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: string]: simple_keyed_method_caller<result_T>
+}
 /**
  * 简易事件调用器  
  * 直接调用以触发事件！
@@ -762,7 +765,12 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * });
  * @group callers
  */
-interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: string]: simple_event_caller
+}
 /**
  * 简易命令调用器
  * @example
@@ -775,7 +783,12 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> { 
  * });
  * @group callers
  */
-interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> { }
+interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: string]: simple_command_caller
+}
 /**
  * 对参数进行简易处理的列表返值命令执行器
  * @example
@@ -786,7 +799,12 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * });
  * @group callers
  */
-interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> { }
+interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
+	/**
+	 * 扩展调用器
+	 */
+	[uuid: string]: simple_list_command_caller
+}
 
 /**
  * 比{@link jsstp_t}多了一个ghost_info属性  
