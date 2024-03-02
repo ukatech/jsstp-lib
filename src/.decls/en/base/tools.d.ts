@@ -3,7 +3,7 @@
  */
 declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Function {
 	/**
-	 * Initialising from a function instance
+	 * Initializing from a function instance
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */
@@ -47,7 +47,7 @@ declare class ExtensibleFunction<args_T extends Array<any>, return_T> extends Fu
 }
 interface ExtensibleFunction<args_T extends Array<any>, return_T> {
 	/**
-	 * Initialising from a function instance
+	 * Initializing from a function instance
 	 * @param {Function} func
 	 * @returns {ExtensibleFunction}
 	 */
@@ -74,30 +74,30 @@ declare enum documented_sstp_return_code_t {
 	NO_CONTENT = 204,
 	/**
 	 * Executed but broke during script execution  
-	 * ※Only for very limited situations such as SEND/1.x with Entry, normally immediate 200 or 204 return.
+	 * ※Only for very limited situations such as SEND/1.x with Entry, normally it will return 200 or 204 immediately.
 	 */
 	BREAK = 210,
-	/** Request has some flaw that cannot be covered */
+	/** Something in the request can't be processed */
 	BAD_REQUEST = 400,
-	/** Ghost specified in SSTP not installed or started ※SSP only */
+	/** Ghost specified in SSTP is not installed or started ※SSP only */
 	NOT_FOUND = 404,
 	/** Timeout: cannot communicate with ghost/SHIORI side (rarely happens) */
 	REQUEST_TIMEOUT = 408,
-	/** \t tag or other interruption prohibited state or processing another request */
+	/** \t tag or other state that prohibits interruption, or processing another request */
 	CONFLICT = 409,
-	/** SSTP request too long and rejected ※SSP only */
+	/** SSTP request is too long and was rejected ※SSP only */
 	PAYLOAD_TOO_LARGE = 413,
 	/** Rejected by ghost side settings */
 	REFUSE = 420,
-	/** Some problem detected inside the system and cannot process ※SSP only */
+	/** Some problem was detected inside the system that cannot be handled ※SSP only */
 	INTERNAL_SERVER_ERROR = 500,
-	/** Unimplemented command or something included and cannot process */
+	/** Contains unimplemented commands, etc., that cannot be processed */
 	NOT_IMPLEMENTED = 501,
 	/** Cannot accept SSTP due to internal system reasons */
 	SERVICE_UNAVAILABLE = 503,
-	/** SSTP version weird (less than 1.0, more than 3.0, etc.) ※SSP only */
+	/** SSTP version is strange (lower than 1.0, higher than 3.0, etc.) ※SSP only */
 	VERSION_NOT_SUPPORTED = 505,
-	/** Ghost not displayed due to minimisation or something and cannot process anything */
+	/** Ghost not displayed due to minimization, etc., and nothing can be processed */
 	INVISIBLE = 512,
 	/** Content Parse Error */
 	PARSE_ERROR = NaN
@@ -114,13 +114,13 @@ type sstp_return_code_t = number & documented_sstp_return_code_t;
  */
 type base_sstp_content_t = {
 	/**
-	 * The character encoding of the request. It's best to appear on the first line.  
-	 * If there ain't no special reason, UTF-8 is recommended.
+	 * The character encoding of the request. It's best if it appears on the first line.  
+	 * If there is no special reason, UTF-8 is recommended.
 	 */
 	CharSet: string | undefined,
 
 	/**
-	 * A string that indicates the sender. Something like "SSTP sending tool". In the case of the COMMUNICATE method, it's the name of the ghost\0 that sent it.
+	 * A string that indicates the sender. Something like "SSTP sending tool". In the case of the COMMUNICATE method, it's the name of the ghost's \0 that sent it.
 	 */
 	Sender: string | undefined,
 
@@ -133,40 +133,40 @@ type base_sstp_content_t = {
 	/**
 	 * An option that specifies how the SakuraScript executed by SSTP is handled.  
 	 * Multiple can be specified with commas. The strings to specify are as follows.  
-	 * nodescript : Disable the SSTP display of the balloon (remote SSTP is invalid)  
-	 * notranslate : Do not perform translation processing with OnTranslate or MAKOTO  
-	 * nobreak : Do not interrupt the script that is currently running, wait until it ends
+	 * nodescript - Disable the SSTP display of the balloon (invalid for remote SSTP)  
+	 * notranslate - Do not perform translation processing with OnTranslate or MAKOTO  
+	 * nobreak - Do not interrupt the script that is currently running, wait until it ends
 	 */
 	Option: string | undefined,
 
 	/**
-	 * The so-called "Owned SSTP". If you specify the ID sent by SHIORI uniqueid or the FMO identification ID (SSP only), ignore various security checks and locks, etc., and treat this SSTP as the same priority as the internal processing of the ghost.  
-	 * The SecurityLevel specification becomes local, and even in the case of interruption prohibition states such as \t, it forcibly interrupts and plays.
+	 * The so-called "Owned SSTP". If it is specified by the ID sent by SHIORI uniqueid or the FMO ID (SSP only), it is treated as the same priority as the internal processing of the ghost, and will ignore various security checks and locks.  
+	 * The SecurityLevel specification becomes local, and even in the case of states that prohibit interruption such as \t, it forcibly interrupts and plays.
 	 */
 	ID: string | undefined,
 
 	/**
-	 * A header that is passed directly to SHIORI during communication with the ghost such as NOTIFY.  
-	 * Only the minimum processing such as character code conversion is performed, and the part and contents of (any string) are relayed as they are.
+	 * A header that is passed directly to SHIORI during communication with the ghost, such as NOTIFY.  
+	 * Only the minimum processing such as character code conversion is performed, and the contents of the (arbitrary string) are relayed as they are.
 	 */
 	[key: `X-SSTP-PassThru-${string}`]: string | undefined,
 
 	/**
-	 * DirectSSTP limited, indicates the window handle that should reply to the response.  
+	 * DirectSSTP only, indicates the window handle to which the response should be returned.  
 	 * The data of the window handle (equivalent to a pointer) is treated as an unsigned decimal integer and then stringized.  
 	 * If omitted, it is wParam of WM_COMMUNICATE.
 	 */
 	HWnd: string | undefined,
 
 	/**
-	 * (Socket)SSTP limited, indicates the window handle of the ghost\0 that should send the request.  
+	 * (Socket)SSTP only, indicates the window handle of the ghost's \0 to which the request should be sent.  
 	 * If you specify this, the ghost to be processed is fixed, and the same processing as DirectSSTP is possible via Socket.  
 	 * If not found, it will end immediately with an error of 404 Not Found.
 	 */
 	ReceiverGhostHWnd: string | undefined,
 
 	/**
-	 * (Socket)SSTP limited, indicates the name of the ghost\0 that should send the request.  
+	 * (Socket)SSTP only, indicates the name of the ghost's \0 to which the request should be sent.  
 	 * If you specify this, the ghost to be processed is fixed, and the same processing as DirectSSTP is possible via Socket. The name version of HWnd.  
 	 * If not found, it will end immediately with an error of 404 Not Found.
 	 */
@@ -179,7 +179,7 @@ type base_sstp_content_t = {
 };
 /**
  * Common Event SSTP packet
- * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_notify}
+ * @see {@link https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_notify}
  */
 type common_event_sstp_content_t = {
 	/**
@@ -193,16 +193,16 @@ type common_event_sstp_content_t = {
 	/**
 	* If the name of the ghost is specified in the format of \0 side name and \1 side name, the {@link common_event_sstp_content_t.Script} header that follows it will be considered as specific to that ghost.  
 	* If the content is omitted, the same Script header will be played for any ghost.  
-	* If the SSTP ghost activation option is enabled, the ghost specified here will be temporarily activated.  
-	* Due to the language limitation of js, only one ghost can be specified here.  
-	* When multiple IfGhost are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	* If the SSTP ghost activation option is enabled, the ghost specified here will be temporarily booted.  
+	* Due to language limitations in js, only one ghost can be specified here.  
+	* When multiple IfGhosts are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
 	*/
 	IfGhost: string | undefined
 	/**
 	* Sakura script  
 	* If the Script header does not follow immediately after the IfGhost, it will be the default processing script when it does not correspond to the IfGhost.  
-	* Due to the language limitation of js, only one script can be specified here.  
-	* When multiple Script are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	* Due to language limitations in js, only one script can be specified here.  
+	* When multiple Scripts are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
 	*/
 	Script: string | undefined
 	/**
@@ -216,11 +216,11 @@ type common_event_sstp_content_t = {
  */
 declare enum documented_sstp_command_name_t {
 	/**
-	 * Returns the names of the active ghosts in the format of (\0name),(\1name) separated by commas.
+	 * Returns the names of the active ghosts in the format of (\0 name),(\1 name) separated by commas.
 	 */
 	GetName = "GetName",
 	/**
-	 * Returns the list of the installed ghosts in the format of \0name per line, terminated by an empty line.
+	 * Returns the list of the installed ghosts in the format of one \0 name per line, terminated by an empty line.
 	 */
 	GetNames = "GetNames",
 	/**
@@ -244,7 +244,7 @@ declare enum documented_sstp_command_name_t {
 	 */
 	GetBalloonName = "GetBalloonName",
 	/**
-	 * Returns the version of the base ware (the software that runs the ghost).
+	 * Returns the version of the baseware (the software that runs the ghost).
 	 */
 	GetVersion = "GetVersion",
 	/**
@@ -268,8 +268,8 @@ declare enum documented_sstp_command_name_t {
 	 */
 	GetPluginNameList = "GetPluginNameList",
 	/**
-	 * Returns the version of the base ware (the software that runs the ghost) in the format of only the version number separated by periods.  
-	 * This can be used to check if the base ware is the latest version by simply comparing it with `ssp.full.version` in [version.json](https://ssp.shillest.net/archive/version.json) or similar.
+	 * Returns the version of the baseware (the software that runs the ghost) in the format of just the version number separated by periods.  
+	 * This can be used to check if the baseware is the latest version by simply comparing it with `ssp.full.version` in [version.json](https://ssp.shillest.net/archive/version.json) or similar.
 	 */
 	GetShortVersion = "GetShortVersion",
 	/**
@@ -353,7 +353,7 @@ declare enum documented_sstp_command_name_t {
 type sstp_command_name_t = string & documented_sstp_command_name_t;
 /**
  * Common SSTP execute packet content
- * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute}
+ * @see {@link https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_execute}
  */
 type common_execute_sstp_content_t = {
 	/**
@@ -371,7 +371,7 @@ type common_execute_sstp_content_t = {
 };
 /**
  * Common SSTP communicate packet content
- * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_communicate}
+ * @see {@link https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_communicate}
  */
 type common_communicate_sstp_content_t = {
 	/**
@@ -384,7 +384,7 @@ type common_communicate_sstp_content_t = {
 	 */
 	[key: `Reference${number}`]: any
 	/**
-	 * The expression numbers of \0 and \1 at the communication sending point (≒ script execution end point) of the source ghost.  
+	 * The surface numbers of \0 and \1 at the communication sending point (≒ script execution end point) of the source ghost.  
 	 * Passed as Surface header in OnCommunicate event.
 	 * @example `5,11` //means \0 is 5, \1 is 11
 	 */
@@ -396,12 +396,12 @@ type common_communicate_sstp_content_t = {
 };
 /**
  * Common SSTP give packet content
- * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_give}
+ * @see {@link https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_give}
  */
 type common_give_sstp_content_t = {
 	/**
 	 * The text to give  
-	 * In SHIORI/3.0, this is the same as user communication and generates OnCommunicate event.
+	 * In SHIORI/3.0, this is the same as user communication and generates the OnCommunicate event.
 	 */
 	Document: string
 	/**
