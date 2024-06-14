@@ -15,8 +15,8 @@ import {
  * @ignore
  */
 var key_value_split = /*@__PURE__*/(str, spliter) => {
-	let index = str.indexOf(spliter);
-	return [str.substring(0, index), str.substring(index + spliter.length)];
+	let index = str.indexOf(spliter)
+	return [str.substring(0, index), str.substring(index + spliter.length)]
 }
 /**
  * 判断某一string是否符合给定的正则表达式
@@ -26,21 +26,21 @@ var key_value_split = /*@__PURE__*/(str, spliter) => {
  * @inline 这个函数使用的还不够多，以至于它带来的字节减少还没有抵消它本身的定义，我们持续inline直到未来其收益为正
  * @ignore
  */
-/*@__INLINE__*/var reg_test = /*@__PURE__*/(reg, str) => reg.test(str);
+/*@__INLINE__*/var reg_test = /*@__PURE__*/(reg, str) => reg.test(str)
 /**
  * 判断某一string是否是事件名
  * @param {String} str 要判断的string
  * @returns {Boolean} 是否是事件名
  * @ignore
  */
-var is_event_name = /*@__PURE__*/(str) => /*@__INLINE__*/reg_test(/^On/, str);
+var is_event_name = /*@__PURE__*/(str) => /*@__INLINE__*/reg_test(/^On/, str)
 /**
  * 获取重整过的事件名
  * @param {String} str 要重整的事件名
  * @returns {String} 重整后的事件名
  * @ignore
  */
-var get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str.substring(3) : str;
+var get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str.substring(3) : str
 /**
  * 判断一个数是否不是NaN
  * @param {Number} num 要判断的数
@@ -48,7 +48,7 @@ var get_reorganized_event_name = /*@__PURE__*/(str) => str[2] == "_" ? str.subst
  * @description 不使用Number.isNaN是为了节省压缩后字数
  * @ignore
  */
-var is_not_nan = /*@__PURE__*/(num) => num == num;
+var is_not_nan = /*@__PURE__*/(num) => num == num
 /**
  * 将任意数据转换为字符串
  * @param {*} data 任意数据
@@ -56,7 +56,7 @@ var is_not_nan = /*@__PURE__*/(num) => num == num;
  * @inline 这个函数不会带来任何压缩收益，所以我们保持其inline以节省其定义所占空间
  * @ignore
  */
-/*@__INLINE__*/var to_string = /*@__PURE__*/(data) => void_string + data;
+/*@__INLINE__*/var to_string = /*@__PURE__*/(data) => void_string + data
 /**
  * 判断给定值是否为X类型
  * @param {*} value 要判断的值
@@ -64,7 +64,7 @@ var is_not_nan = /*@__PURE__*/(num) => num == num;
  * @returns {Boolean} 是否为X类型
  * @ignore
  */
-var type_judge = /*@__PURE__*/(value, X) => Object(value) instanceof X;
+var type_judge = /*@__PURE__*/(value, X) => Object(value) instanceof X
 /**
  * 对代理的get方法进行封装，使其定义更为简单
  * @param {{
@@ -79,17 +79,17 @@ var type_judge = /*@__PURE__*/(value, X) => Object(value) instanceof X;
 var new_get_handler = /*@__PURE__*/(info) =>
 	(target, key) => {
 		if (info._blocker_?.(target, key))
-			return;
-		let result;
+			return
+		let result
 		if (type_judge(key, String))
-			result = info._string_key_handler_?.(target, key);
+			result = info._string_key_handler_?.(target, key)
 		else//symbol
-			result = info._symbol_key_handler_?.(target, key);
+			result = info._symbol_key_handler_?.(target, key)
 		if (result !== undefined)
-			return result;
+			return result
 		else if (info._default_handler_)
 			return info._default_handler_(target, key)
-		return type_judge(result = target[key], Function) ? result.bind(target) : result;
+		return type_judge(result = target[key], Function) ? result.bind(target) : result
 	}
 /**
  * 更合适的默认代理setter
@@ -99,7 +99,7 @@ var new_get_handler = /*@__PURE__*/(info) =>
  * @returns {Number} 1
  * @ignore
  */
-var default_setter = (target, key, value) => ((target[key] = value), 1);
+var default_setter = (target, key, value) => ((target[key] = value), 1)
 /**
  * 根据getter信息创建一个代理
  * @param {Object} target 要代理的对象
@@ -116,7 +116,7 @@ var default_setter = (target, key, value) => ((target[key] = value), 1);
 var new_getter_proxy = (target, getter_info, other_info) => new Proxy(target, assign({
 	get: new_get_handler(getter_info),
 	set: default_setter
-}, other_info));
+}, other_info))
 /**
  * 一个可用函数初始化的可扩展的函数类型，用于更为可读的派生类函数类型
  */
@@ -127,7 +127,7 @@ class ExtensibleFunction extends Function {
 	 * @returns {ExtensibleFunction}
 	 */
 	constructor(func) {
-		return Object.setPrototypeOf(func, new.target.prototype);
+		return Object.setPrototypeOf(func, new.target.prototype)
 	}
 }
 
@@ -140,13 +140,13 @@ class ExtensibleFunction extends Function {
  */
 var index_by_keys = /*@__PURE__*/(obj, ...keys) => {
 	for (let key of keys)
-		obj = obj[key];
-	return obj;
+		obj = obj[key]
+	return obj
 }
 /**
  * 扔出一个错误
  */
-var throw_error = /*@__PURE__*/(error) => { throw error; }
+var throw_error = /*@__PURE__*/(error) => { throw error }
 
 /**
  * 根据端口返回本地地址
@@ -154,14 +154,14 @@ var throw_error = /*@__PURE__*/(error) => { throw error; }
  * @returns {String} 本地地址
  * @ignore
  */
-var get_local_address = /*@__PURE__*/(port) => `http://localhost:${port??9801}`;
+var get_local_address = /*@__PURE__*/(port) => `http://localhost:${port??9801}`
 
 /**
  * 是否在浏览器中
  * @type {Boolean}
  * @ignore
  */
-var in_browser = !!globalThis.window;//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
+var in_browser = !!globalThis.window//尽管globalThis.self也可以做到同样的事情（并且可以在压缩后的代码中节省2字节）
 //但是为了避免node今后实现self，我们使用window
 //node大概率不会实现window，因为多数代码都在使用window判断是否在浏览器中
 //这样做还能兼容html4！...大概？
@@ -171,7 +171,7 @@ var in_browser = !!globalThis.window;//尽管globalThis.self也可以做到同�
  * @type {String}
  * @ignore
  */
-var my_origin = in_browser ? location.origin : get_local_address(process.env.PORT);
+var my_origin = in_browser ? location.origin : get_local_address(process.env.PORT)
 
 /**
  * 默认的安全等级，视origin而定，如果是本地的话为local，否则为external
@@ -179,7 +179,7 @@ var my_origin = in_browser ? location.origin : get_local_address(process.env.POR
  * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
  * @ignore
  */
-var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? "local" : "external";
+var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my_origin) ? "local" : "external"
 
 /**
  * 自身的代码内容
@@ -187,17 +187,17 @@ var my_default_security_level = /*@__INLINE__*/reg_test(/^\w+:\/\/localhost/, my
  * @ignore
  */
 var my_code = /*@__PURE__*/(() => {
-	let my_url = import.meta.url;
+	let my_url = import.meta.url
 	if (my_url.substring(0, 5) == "file:" && !in_browser)
-		import("fs").then(fs => fs.readFileSync(my_url.substring(8))).then(buffer => my_code = to_string(buffer));
+		import("fs").then(fs => fs.readFileSync(my_url.substring(8))).then(buffer => my_code = to_string(buffer))
 	else
-		fetch(my_url).then(res => res.text()).then(text => my_code = text);
-})();
+		fetch(my_url).then(res => res.text()).then(text => my_code = text)
+})()
 
 /**
  * clone一个对象
  */
-var clone = /*@__PURE__*/(obj) => assign({}, obj);
+var clone = /*@__PURE__*/(obj) => assign({}, obj)
 
 export {
 	key_value_split,
@@ -221,4 +221,4 @@ export {
 	ExtensibleFunction,
 
 	my_code,
-};
+}

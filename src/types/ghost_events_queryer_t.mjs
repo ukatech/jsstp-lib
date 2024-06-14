@@ -6,10 +6,10 @@ import {
 	*/
 
 	_false_,
-} from "../base/value_table.mjs";
+} from "../base/value_table.mjs"
 import {
 	ExtensibleFunction,
-} from "../base/tools.mjs";
+} from "../base/tools.mjs"
 
 /**
  * ghost事件查询器
@@ -27,38 +27,38 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 	 * 基础{@link jsstp_t}对象
 	 * @type {jsstp_t}
 	 */
-	#base_jsstp;
+	#base_jsstp
 	/**
 	 * 是否有`Has_Event`方法
 	 * @type {Boolean}
 	 */
-	#ghost_has_has_event;
+	#ghost_has_has_event
 	/**
 	 * 是否有`Get_Supported_Events`方法
 	 * @type {Boolean}
 	 */
-	#ghost_has_get_supported_events;
+	#ghost_has_get_supported_events
 	/**
 	 * 自`Get_Supported_Events`获取的事件列表
 	 * @type {{local:Array<String>,external:Array<String>}}
-	 * @example 
+	 * @example
 	 * {
 	 * 	local:["On_connect","On_disconnect"],
 	 * 	external:["On_connect"]
 	 * }
 	 */
-	#ghost_event_list;
+	#ghost_event_list
 	/**
 	 * 自`Has_Event`获取的事件列表缓存
 	 * @type {{local:{String:Boolean},external:{String:Boolean}}}
-	 * @example 
+	 * @example
 	 * {
 	 * 	local:{On_connect:true,On_disconnect:true},
 	 * 	external:{On_connect:true}
 	 * }
 	 * @description 仅当`#ghost_has_get_supported_events`为false时有效
 	 */
-	#ghost_event_list_cache;
+	#ghost_event_list_cache
 
 	/**
 	 * 构造一个事件查询器
@@ -78,14 +78,14 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 			 * @see 基于 {@link ghost_events_queryer_t.check_event}
 			 */
 			(event_name, security_level = this.default_security_level) => this.check_event(event_name, security_level)
-		);
-		this.#base_jsstp = base_jsstp;
+		)
+		this.#base_jsstp = base_jsstp
 		/**
 		 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
 		 * @type {String}
 		 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
 		 */
-		this.default_security_level = base_jsstp.default_security_level;
+		this.default_security_level = base_jsstp.default_security_level
 	}
 	/**
 	 * 检查事件是否存在，ghost至少需要`Has_Event`事件的支持，并可以通过提供`Get_Supported_Events`事件来提高效率
@@ -98,11 +98,11 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 	 */
 	/*@__PURE__*/async check_event(event_name, security_level = this.default_security_level) {
 		if (this.#ghost_has_get_supported_events)
-			return this.#ghost_event_list[security_level].includes(event_name);
+			return this.#ghost_event_list[security_level].includes(event_name)
 		else if (this.#ghost_has_has_event)
-			return this.#ghost_event_list_cache[security_level][event_name] ??= await this.#base_jsstp.has_event(event_name);
+			return this.#ghost_event_list_cache[security_level][event_name] ??= await this.#base_jsstp.has_event(event_name)
 		else
-			return _false_;
+			return _false_
 	}
 	/**
 	 * 检查是否能够检查事件
@@ -111,7 +111,7 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 	 * if(!ghost_events_queryer.available)
 	 * 	console.error("无法检查事件");
 	 */
-	/*@__PURE__*/get available() { return this.#ghost_has_has_event; }
+	/*@__PURE__*/get available() { return this.#ghost_has_has_event }
 	/**
 	 * 检查是否能够使用`Get_Supported_Events`快速获取支持的事件列表
 	 * @returns {Promise<Boolean>}
@@ -122,29 +122,29 @@ class ghost_events_queryer_t extends ExtensibleFunction {
 	 * 	console.info("好哦");
 	 * @description 如果不支持也只是会变慢，`check_event`仍然可以使用
 	 */
-	/*@__PURE__*/get fast_query_available() { return this.#ghost_has_get_supported_events; }
+	/*@__PURE__*/get fast_query_available() { return this.#ghost_has_get_supported_events }
 	/**
 	 * @returns {Promise<ghost_events_queryer_t>} this
 	 */
 	reset() {
-		this.clear();
-		return this.init();
+		this.clear()
+		return this.init()
 	}
 	/**
 	 * @returns {Promise<ghost_events_queryer_t>} this
 	 */
 	async init() {
-		let jsstp = this.#base_jsstp;
-		this.#ghost_has_has_event = await jsstp.has_event("Has_Event");
-		this.#ghost_has_get_supported_events = this.#ghost_has_has_event && await jsstp.has_event("Get_Supported_Events");
+		let jsstp = this.#base_jsstp
+		this.#ghost_has_has_event = await jsstp.has_event("Has_Event")
+		this.#ghost_has_get_supported_events = this.#ghost_has_has_event && await jsstp.has_event("Get_Supported_Events")
 		if (this.#ghost_has_get_supported_events)
-			this.#ghost_event_list = await jsstp.get_supported_events();
-		return this;
+			this.#ghost_event_list = await jsstp.get_supported_events()
+		return this
 	}
 	clear() {
-		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = _false_;
-		this.#ghost_event_list_cache = { local: {}, external: {} };
+		this.#ghost_has_has_event = this.#ghost_has_get_supported_events = _false_
+		this.#ghost_event_list_cache = { local: {}, external: {} }
 	}
 }
 
-export default ghost_events_queryer_t;
+export default ghost_events_queryer_t

@@ -518,7 +518,7 @@ declare class jsstp_t {
 	 * ghostがサポートするイベントのクエリーを取得する
 	 * @returns {Promise<ghost_events_queryer_t>} イベントをサポートするクエリへの問い合わせ
 	 * @example
-	 * jsstp.new_event_queryer().then(queryer => 
+	 * jsstp.new_event_queryer().then(queryer =>
 	 * 	queryer.check_event("OnTest").then(result =>
 	 * 		console.log(result)
 	 * 	)

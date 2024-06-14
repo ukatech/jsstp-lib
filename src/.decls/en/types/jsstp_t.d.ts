@@ -517,7 +517,7 @@ declare class jsstp_t {
 	 * Get a queryer for querying events supported by ghost
 	 * @returns {Promise<ghost_events_queryer_t>} Query the queryer for supported events.
 	 * @example
-	 * jsstp.new_event_queryer().then(queryer => 
+	 * jsstp.new_event_queryer().then(queryer =>
 	 * 	queryer.check_event("OnTest").then(result =>
 	 * 		console.log(result)
 	 * 	)

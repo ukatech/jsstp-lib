@@ -18,18 +18,18 @@
 /// <reference types="jsstp" />
 
 /** @type {typeof import("jsstp").jsstp} */
-var jsstp;
+var jsstp
 
-jsstp.sendername = 'web_ukagaka';
+jsstp.sendername = 'web_ukagaka'
 
 
-var IntervalNumbers = [];
-var TrustGhosts = {};
-var DiscardedGhosts = [];
+var IntervalNumbers = []
+var TrustGhosts = {}
+var DiscardedGhosts = []
 
 function get_prompt_text(ghostname) {
 	// 获取浏览器的语言
-	let language = navigator.language || navigator.userLanguage;
+	let language = navigator.language || navigator.userLanguage
 	switch (language) {
 		case 'zh-CN':
 		case 'zh':
@@ -66,128 +66,127 @@ function get_prompt_text(ghostname) {
 
 async function AddTrustGhost(ghostname) {
 	// 弹出一个对话框，询问用户是否信任该ghost
-	let result = prompt(get_prompt_text(ghostname));
+	let result = prompt(get_prompt_text(ghostname))
 	switch (result) {
 		case 'y':
 		case 'yes': {
-			let domin = location.hostname;
-			TrustGhosts[ghostname] ??= [];
-			TrustGhosts[ghostname].push(domin);
-			await GM.setValue('TrustGhosts', TrustGhosts);
-			break;
+			let domin = location.hostname
+			TrustGhosts[ghostname] ??= []
+			TrustGhosts[ghostname].push(domin)
+			await GM.setValue('TrustGhosts', TrustGhosts)
+			break
 		}
 		case 'n':
 		case 'no':
-			break;
+			break
 		case 'discard':
-			DiscardedGhosts.push(ghostname);
-			await GM.setValue('DiscardedGhosts', DiscardedGhosts);
-			break;
+			DiscardedGhosts.push(ghostname)
+			await GM.setValue('DiscardedGhosts', DiscardedGhosts)
+			break
 		case '*': {
-			TrustGhosts[ghostname] = '*';
-			await GM.setValue('TrustGhosts', TrustGhosts);
-			break;
+			TrustGhosts[ghostname] = '*'
+			await GM.setValue('TrustGhosts', TrustGhosts)
+			break
 		}
 		default:
-			alert('输入错误');
-			await AddTrustGhost(ghostname);
-			return;
+			alert('输入错误')
+			await AddTrustGhost(ghostname)
+			return
 	}
 }
 function IsTrustGhost(ghostname) {
 	if (TrustGhosts[ghostname] == '*')
-		return true;
-	let domin = location.hostname;
-	return TrustGhosts[ghostname].includes(domin);
+		return true
+	let domin = location.hostname
+	return TrustGhosts[ghostname].includes(domin)
 }
 
 async function InitValue() {
-	TrustGhosts = await GM.getValue('TrustGhosts', {});
-	DiscardedGhosts = await GM.getValue('DiscardedGhosts', []);
+	TrustGhosts = await GM.getValue('TrustGhosts', {})
+	DiscardedGhosts = await GM.getValue('DiscardedGhosts', [])
 }
 
 async function OnBrowserPageLoad(jsstp) {
-	const ghostname = jsstp.ghost_info.name;
-	const url = location.href;
-	const title = document.title;
-	let info = await jsstp.OnBrowserPageLoad(url, title);
+	const ghostname = jsstp.ghost_info.name
+	const url = location.href
+	const title = document.title
+	let info = await jsstp.OnBrowserPageLoad(url, title)
 
 	if (info.EnableActionRequest == 1) {
-		if (!IsTrustGhost(ghostname)) {
+		if (!IsTrustGhost(ghostname))
 			if (!DiscardedGhosts.includes(ghostname)) {
-				await AddTrustGhost(ghostname);
+				await AddTrustGhost(ghostname)
 				if (!IsTrustGhost(ghostname))
-					return;
+					return
 			}
-		}
+
 		// 设置一个定时器，每隔一段时间就向ghost发送一次请求
-		IntervalNumbers.push(setInterval(() => OnBrowserActionRequest(jsstp), 1000));
+		IntervalNumbers.push(setInterval(() => OnBrowserActionRequest(jsstp), 1000))
 	}
 }
 
 async function RunOnBrowserPageLoad() {
 	for (let IntervalNumber in IntervalNumbers)
-		clearInterval(IntervalNumber);
-	IntervalNumbers = [];
+		clearInterval(IntervalNumber)
+	IntervalNumbers = []
 
 	if (await jsstp.available())
-		jsstp.for_all_ghosts(OnBrowserPageLoad);
+		jsstp.for_all_ghosts(OnBrowserPageLoad)
 }
 
 async function OnBrowserActionRequest(jsstp) {
-	let info = await jsstp.OnBrowserActionRequest(location.href, document.title);
-	let base_ActionResponse = [info.id, info.action];
+	let info = await jsstp.OnBrowserActionRequest(location.href, document.title)
+	let base_ActionResponse = [info.id, info.action]
 	switch (info.action) {
 		case 'get_element': {
-			let element = document.querySelector(info.selector);
+			let element = document.querySelector(info.selector)
 			if (element) {
-				let html = element.innerHTML;
-				html = html.replace(/\r\n[ \t]*/g, '');
-				await jsstp.OnBrowserActionResponse(...base_ActionResponse, element.innerHTML);
+				let html = element.innerHTML
+				html = html.replace(/\r\n[ \t]*/g, '')
+				await jsstp.OnBrowserActionResponse(...base_ActionResponse, element.innerHTML)
 			}
-			break;
+			break
 		}
 		case 'get_elements': {
-			let elements = document.querySelectorAll(info.selector);
+			let elements = document.querySelectorAll(info.selector)
 			if (elements) {
-				let htmls = [];
+				let htmls = []
 				for (let element of elements) {
-					let html = element.innerHTML;
-					html = html.replace(/\r\n[ \t]*/g, '');
-					htmls.push(html);
+					let html = element.innerHTML
+					html = html.replace(/\r\n[ \t]*/g, '')
+					htmls.push(html)
 				}
-				await jsstp.OnBrowserActionResponse(...base_ActionResponse, ...htmls);
+				await jsstp.OnBrowserActionResponse(...base_ActionResponse, ...htmls)
 			}
-			break;
+			break
 		}
 		case 'set_element': {
-			let element = document.querySelector(info.selector);
+			let element = document.querySelector(info.selector)
 			if (element) {
-				element.innerHTML = info.html;
-				await jsstp.OnBrowserActionResponse(...base_ActionResponse, true);
+				element.innerHTML = info.html
+				await jsstp.OnBrowserActionResponse(...base_ActionResponse, true)
 			}
-			break;
+			break
 		}
 		case 'exec': {
-			let result = Function('jsstp', info.code)(jsstp);
-			await jsstp.OnBrowserActionResponse(...base_ActionResponse, result);
-			break;
+			let result = Function('jsstp', info.code)(jsstp)
+			await jsstp.OnBrowserActionResponse(...base_ActionResponse, result)
+			break
 		}
 		case 'set_url': {
-			location.href = info.url;
-			await jsstp.OnBrowserActionResponse(...base_ActionResponse, true);
-			break;
+			location.href = info.url
+			await jsstp.OnBrowserActionResponse(...base_ActionResponse, true)
+			break
 		}
 	}
 }
 
 async function main() {
-	await InitValue();
-	RunOnBrowserPageLoad();
-	if (window.onurlchange === null) {
-		// feature is supported
-		window.addEventListener('urlchange', RunOnBrowserPageLoad);
-	}
+	await InitValue()
+	RunOnBrowserPageLoad()
+	if (window.onurlchange === null) // feature is supported
+		window.addEventListener('urlchange', RunOnBrowserPageLoad)
+
 }
 
-main();
+main()

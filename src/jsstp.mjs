@@ -2,13 +2,13 @@
 //发信方法：Content-Type: text/plain HTTP/1.1でPOST
 //收信方法：HTTP/1.1 200 OKのContent-Type: text/plain
 
-import base_sstp_info_t from "./types/base_sstp_info_t.mjs";
-import sstp_info_t from "./types/sstp_info_t.mjs";
-import list_info_t from "./types/list_info_t.mjs";
-import fmo_info_t from "./types/fmo_info_t.mjs";
-import ghost_events_queryer_t from "./types/ghost_events_queryer_t.mjs";
+import base_sstp_info_t from "./types/base_sstp_info_t.mjs"
+import sstp_info_t from "./types/sstp_info_t.mjs"
+import list_info_t from "./types/list_info_t.mjs"
+import fmo_info_t from "./types/fmo_info_t.mjs"
+import ghost_events_queryer_t from "./types/ghost_events_queryer_t.mjs"
 
-import jsstp_t from "./types/jsstp_t.mjs";
+import jsstp_t from "./types/jsstp_t.mjs"
 
 //定义一个包装器
 /**
@@ -22,7 +22,7 @@ import jsstp_t from "./types/jsstp_t.mjs";
  * @type {jsstp_t}
  * @global
  */
-var jsstp = new jsstp_t();
+var jsstp = new jsstp_t()
 
 //导出
 export {

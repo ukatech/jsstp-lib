@@ -4,12 +4,12 @@ import {
 	//undefined,
 
 	void_string,
-} from "../base/value_table.mjs";
+} from "../base/value_table.mjs"
 import {
 	is_not_nan,
 	to_string,
-} from "../base/tools.mjs";
-import { info_object } from "./info_object.mjs";
+} from "../base/tools.mjs"
+import { info_object } from "./info_object.mjs"
 
 /*
 sstp报文格式：
@@ -29,12 +29,12 @@ Option: notranslate
  * @alias jsstp.base_sstp_info_t
  */
 class base_sstp_info_t extends info_object {
-	#head;
+	#head
 	/**
 	 * 未知行的数组
 	 * @type {Array<String>}
 	 */
-	#unknown_lines;
+	#unknown_lines
 
 	/**
 	 * 自拆分好的字符串报文或对象报文构造sstp_info_t，不建议直接使用
@@ -45,20 +45,20 @@ class base_sstp_info_t extends info_object {
 	 * @ignore
 	 */
 	/*@__PURE__*/constructor(info_head, info_body, unknown_lines) {
-		super(info_body);
-		this.#head = info_head;
-		this.#unknown_lines = unknown_lines || [];
+		super(info_body)
+		this.#head = info_head
+		this.#unknown_lines = unknown_lines || []
 	}
 	/**
 	 * 获取未知行的数组
 	 * @returns {Array<String>} 未知行的数组
 	 */
-	/*@__PURE__*/get unknown_lines() { return this.#unknown_lines || []; }
+	/*@__PURE__*/get unknown_lines() { return this.#unknown_lines || [] }
 	/**
 	 * 获取报文头
 	 * @returns {String} 报文头
 	 */
-	/*@__PURE__*/get head() { return this.#head; }
+	/*@__PURE__*/get head() { return this.#head }
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
@@ -69,7 +69,7 @@ class base_sstp_info_t extends info_object {
 			...this.#unknown_lines,
 			...this.entries.map(([key, value]) => `${key}: ${value}`),
 			void_string, void_string//空行结尾
-		].join(endline);
+		].join(endline)
 	}
 	/**
 	 * 获取用于`JSON.stringify`的对象
@@ -81,7 +81,7 @@ class base_sstp_info_t extends info_object {
 			head: this.#head,
 			unknown_lines: this.#unknown_lines,
 			body: this.trivial_clone
-		};
+		}
 	}
 	/**
 	 * 获取报头返回码（若出现意外返回`NaN`）
@@ -89,7 +89,7 @@ class base_sstp_info_t extends info_object {
 	 */
 	/*@__PURE__*/get status_code() {
 		//比如：SSTP/1.4 200 OK，返回200
-		return +this.#head.split(" ").find(value => is_not_nan(+value));
+		return +this.#head.split(" ").find(value => is_not_nan(+value))
 	}
 }
 /**
@@ -98,14 +98,14 @@ class base_sstp_info_t extends info_object {
  * @returns {Array<String>} [报文头, ...报文体]
  */
 /*@__PURE__*/function split_sstp_text(info_text) {
-	let result = info_text.split(endline);
+	let result = info_text.split(endline)
 	//去掉最后的空行*2
-	result.length -= 2;
-	return result;
+	result.length -= 2
+	return result
 }
 
 export {
 	base_sstp_info_t as default,
 	base_sstp_info_t,
 	split_sstp_text,
-};
+}

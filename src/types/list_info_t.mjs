@@ -4,9 +4,9 @@ import {
 	//undefined,
 
 	void_string
-} from "../base/value_table.mjs";
-import { to_string } from "../base/tools.mjs";
-import { base_sstp_info_t, split_sstp_text } from "./base_sstp_info_t.mjs";
+} from "../base/value_table.mjs"
+import { to_string } from "../base/tools.mjs"
+import { base_sstp_info_t, split_sstp_text } from "./base_sstp_info_t.mjs"
 
 /**
  * list报文对象
@@ -22,8 +22,8 @@ class list_info_t extends base_sstp_info_t {
 	 * @param {String} list_text
 	 */
 	/*@__PURE__*/constructor(list_text) {
-		let [head, _, ...lines] = split_sstp_text(list_text);
-		super(head, lines);
+		let [head, _, ...lines] = split_sstp_text(list_text)
+		super(head, lines)
 	}
 	/**
 	 * 获取字符串形式的值
@@ -31,7 +31,7 @@ class list_info_t extends base_sstp_info_t {
 	 * @summary 这不是获取字符串报文的方法，如需获取字符串报文请使用{@link list_info_t.get text_content}
 	 * @ignore
 	 */
-	/*@__PURE__*/toString() { return /*@__INLINE__*/to_string(this.values); }
+	/*@__PURE__*/toString() { return /*@__INLINE__*/to_string(this.values) }
 	/**
 	 * 获取字符串报文
 	 * @returns {String} 字符串报文
@@ -43,7 +43,7 @@ class list_info_t extends base_sstp_info_t {
 			void_string,
 			...this.values,
 			void_string, void_string
-		].join(endline);
+		].join(endline)
 	}
 	/**
 	 * 获取用于`JSON.stringify`的对象
@@ -54,7 +54,7 @@ class list_info_t extends base_sstp_info_t {
 		return {
 			head: this.head,
 			data: this.values
-		};
+		}
 	}
 	//可迭代
 	/**
@@ -66,4 +66,4 @@ class list_info_t extends base_sstp_info_t {
 	}
 }
 
-export default list_info_t;
+export default list_info_t
