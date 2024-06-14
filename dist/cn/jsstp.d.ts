@@ -1165,7 +1165,7 @@ declare class jsstp_t {
 	 * 获取一个用于查询ghost所支持事件的queryer
 	 * @returns {Promise<ghost_events_queryer_t>} 查询支持事件的queryer
 	 * @example
-	 * jsstp.new_event_queryer().then(queryer => 
+	 * jsstp.new_event_queryer().then(queryer =>
 	 * 	queryer.check_event("OnTest").then(result =>
 	 * 		console.log(result)
 	 * 	)
