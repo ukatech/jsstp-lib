@@ -43,7 +43,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: latest
-      - run: npm install
+      - run: npm install --force
       - run: npm run build:doc
       - run: mv dist/* .github/pages
 

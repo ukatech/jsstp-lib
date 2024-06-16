@@ -13,7 +13,7 @@
 		"entryPoints": [
 			"jsstp.d.ts"
 		],
-		"htmlLang": "en",
+		"lang": "en",
 		"out": "../../../.github/pages/doc/EN",
 		"readme": "../../../docs/README_EN.md",
 	}

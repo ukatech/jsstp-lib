@@ -13,8 +13,13 @@
 		"entryPoints": [
 			"jsstp.d.ts"
 		],
-		"htmlLang": "ja",
+		"lang": "jp",
 		"out": "../../../.github/pages/doc/JP",
 		"readme": "../../../docs/README_JP.md",
+		"locales": {
+			"jp": {
+				"tag_alias": "別名"
+			}
+		}
 	}
 }

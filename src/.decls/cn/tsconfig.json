@@ -13,8 +13,13 @@
 		"entryPoints": [
 			"jsstp.d.ts"
 		],
-		"htmlLang": "zh-CN",
+		"lang": "zh",
 		"out": "../../../.github/pages/doc/CN",
 		"readme": "../../../docs/README_CN.md",
+		"locales": {
+			"zh": {
+				"tag_alias": "別名"
+			}
+		}
 	}
 }

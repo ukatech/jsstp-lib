@@ -8,7 +8,7 @@ import type { base_sstp_content_t, common_communicate_sstp_content_t, common_eve
 
 /**
  * sstp メソッド呼び出し元
- * @group callers
+ * @group 呼び出し元
  */
 interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 	(...args: Rest): Promise<T>;
@@ -19,7 +19,7 @@ interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 
 /**
  * 指定されたキー値へのメンバーアクセスによって拡張できる拡張呼び出し元
- * @group callers
+ * @group 呼び出し元
  */
 interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object]> extends method_caller<T, Rest> {
 	/**
@@ -30,7 +30,7 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
 }
 /**
  * 呼び出しパラメータを簡単に扱うための拡張可能な呼び出し元
- * @group callers
+ * @group 呼び出し元
  */
 interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
 	/**
@@ -54,7 +54,7 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
- * @group callers
+ * @group 呼び出し元
  */
 interface event_caller extends base_keyed_method_caller<sstp_info_t> {
 	/**
@@ -73,7 +73,7 @@ interface event_caller extends base_keyed_method_caller<sstp_info_t> {
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
- * @group callers
+ * @group 呼び出し元
  */
 interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
 	/**
@@ -97,7 +97,7 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
  * 	"Reference0": "abc",
  * 	"Reference1": "def"
  * });
- * @group callers
+ * @group 呼び出し元
  */
 interface command_caller extends base_keyed_method_caller<sstp_info_t> {
 	/**
@@ -115,7 +115,7 @@ interface command_caller extends base_keyed_method_caller<sstp_info_t> {
  * 	"Reference0": "abc",
  * 	"Reference1": "def"
  * });
- * @group callers
+ * @group 呼び出し元
  */
 interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
 	/**
@@ -133,7 +133,7 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * let data = await jsstp.SEND({
  * 	"Command": "GetNames"
  * });
- * @group callers
+ * @group 呼び出し元
  */
 interface list_command_caller extends base_keyed_method_caller<list_info_t> {
 	/**
@@ -149,7 +149,7 @@ interface list_command_caller extends base_keyed_method_caller<list_info_t> {
  * let data = await jsstp.SEND({
  * 	"Command": "GetNames"
  * });
- * @group callers
+ * @group 呼び出し元
  */
 interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
 	/**
@@ -179,68 +179,114 @@ interface jsstp_with_ghost_info_t extends jsstp_t {
  */
 declare class jsstp_t {
 	/**
-	 * @group Types
+	 * jsstpオブジェクト
+	 * @see {@link jsstp}
+	 * @example
+	 * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
+	 * @group クラス
+	 * @see {@link jsstp_t}
 	 */
 	type: typeof jsstp_t;
 	/**
-	 * @group Types
+	 * ベースsstpメッセージクラス
+	 * @example
+	 * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
+	 * @group クラス
+	 * @see {@link base_sstp_info_t}
 	 */
 	base_sstp_info_t: typeof base_sstp_info_t;
 	/**
-	 * @group Types
+	 * SSTPメッセージクラス
+	 * @example
+	 * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
+	 * @group クラス
+	 * @see {@link sstp_info_t}
 	 */
 	sstp_info_t: typeof sstp_info_t;
 	/**
-	 * @group Types
+	 * FMOメッセージクラス
+	 * @example
+	 * let fmo = jsstp.get_fmo_infos();
+	 * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+	 * if(kikka_uuid)
+	 * 	console.log(fmo[kikka_uuid].ghostpath);
+	 * @see {@link jsstp_t.get_fmo_infos}
+	 * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+	 * @group クラス
+	 * @see {@link fmo_info_t}
 	 */
 	fmo_info_t: typeof fmo_info_t;
 	/**
-	 * @group Types
+	 * listメッセージオブジェクト
+	 * @example
+	 * let list = jsstp.GetNames();
+	 * for(let name of list)
+	 * 	console.log(name);
+	 * @group クラス
+	 * @see {@link list_info_t}
 	 */
 	list_info_t: typeof list_info_t;
 	/**
-	 * @group Types
+	 * ゴースト・イベント・ファインダー
+	 * @example
+	 * let ghost_events_queryer = jsstp.new_event_queryer();
+	 * if(!ghost_events_queryer.available)
+	 * 	console.log("現在、ゴーストはイベントクエリをサポートしていません。");
+	 * if(ghost_events_queryer.has_event("OnBoom"))
+	 * 	jsstp.OnBoom();
+	 * @see {@link jsstp_t.new_event_queryer}
+	 * @group クラス
+	 * @see {@link ghost_events_queryer_t}
 	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基本通信タイプ
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_send
 	*/
 	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基本通信タイプ
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_notify
 	*/
 	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基本通信タイプ
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_communicate
 	*/
 	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基本通信タイプ
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute
 	*/
 	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基本通信タイプ
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_give
 	*/
 	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 
 	/**
 	 * イベント名をマッチさせて単純な呼び出し元を生成する
-	 * @group Index reflections
+	 * @group インデックス反射
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
 	/**
 	 * イベント名をマッチさせて単純な呼び出し元を生成する
-	 * @group Index reflections
+	 * @group インデックス反射
 	 * @example
 	 * let data=await jsstp.GetNames();
 	 */
 	[key: `Get${string}`]: simple_list_command_caller;
 	/**
 	 * イベント名をマッチさせて単純な呼び出し元を生成する
-	 * @group Index reflections
+	 * @group インデックス反射
 	 * @example
 	 * let data=await jsstp.SetCookie("abc","def");
 	 */
@@ -284,21 +330,21 @@ declare class jsstp_t {
 	/**
 	 * ホストの変更
 	 * @param {string} host
-	 * @group Properties
+	 * @group プロパティ
 	 */
 	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
 	 * 送信者名を変更する
 	 * @param {String} sender_name
-	 * @group Properties
+	 * @group プロパティ
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
 
 	/**
 	 * 新しいjsstpオブジェクトをコピーする
-	 * @group Clone Methods
+	 * @group コピー関数
 	 */
 	get clone(): jsstp_t;
 
@@ -306,7 +352,7 @@ declare class jsstp_t {
 	 * 与えられたfmo_infoに対して新しいjsstpオブジェクトをコピーする。
 	 * @param fmo_info ターゲットゴーストのfm_info
 	 * @returns {jsstp_t} ターゲットゴーストを指す新しいjsstpオブジェクト
-	 * @group Clone Methods
+	 * @group コピー関数
 	 */
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
@@ -325,7 +371,7 @@ declare class jsstp_t {
 	 * テキストでメッセージを送信し、テキストでそれを受信する
 	 * @param {any} info メッセージ本文 (テキスト)
 	 * @returns {Promise<String>} プロミスを返します。
-	 * @group Basic Send Methods
+	 * @group 基本的なメッセージング関数
 	 */
 	row_send(info: any): Promise<String>;
 	/**
@@ -333,7 +379,7 @@ declare class jsstp_t {
 	 * メッセージのヘッダー。
 	 * @param {Object} info メッセージのボディ。
 	 * @returns {Promise<String>} プロミスを返します。
-	 * @group Basic Send Methods
+	 * @group 基本的なメッセージング関数
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
@@ -342,7 +388,7 @@ declare class jsstp_t {
 	 * @param {String} sstphead メッセージヘッダ
 	 * @param {Object} info メッセージボディ
 	 * @param {new (info: String)=> result_type} result_type 返される結果の型、デフォルトは sstp_info_t
-	 * @group Basic Send Methods
+	 * @group 基本的なメッセージング関数
 	 */
 	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
@@ -352,7 +398,7 @@ declare class jsstp_t {
 	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返される結果の型、デフォルトは sstp_info_t
 	 * @param {Function} [args_processor=info => info] パラメータプロセッサ、デフォルトは入力パラメータを直接返す
 	 * @returns {method_caller} 呼び出し元
-	 * @group Caller Methods
+	 * @group 呼び出し元生成関数
 	 */
 	/*@__PURE__*/get_caller_of_method<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
@@ -364,7 +410,7 @@ declare class jsstp_t {
 	 * @param {Function} method_caller メソッド呼び出し元
 	 * @param {Function} args_processor パラメータプロセッサ
 	 * @returns {Proxy<value>} 呼び出し元
-	 * @group Caller Methods
+	 * @group 呼び出し元生成関数
 	 */
 	/*@__PURE__*/get_caller_of_key<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		key_name: String, value_name: String,
@@ -378,7 +424,7 @@ declare class jsstp_t {
 	 * @param {String} value_name value名
 	 * @param {Function} method_caller メソッド呼び出し元
 	 * @returns {Proxy<value>} 呼び出し元
-	 * @group Caller Methods
+	 * @group 呼び出し元生成関数
 	 */
 	/*@__PURE__*/get_simple_caller_of_key<T = sstp_info_t>(
 		key_name: String, value_name: String,
@@ -389,7 +435,7 @@ declare class jsstp_t {
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.event.OnTest("test");
-	 * @group Indexer Members
+	 * @group リフレクターメンバー
 	 */
 	/*@__PURE__*/get event(): {
 		[event_name: string]: simple_event_caller
@@ -399,7 +445,7 @@ declare class jsstp_t {
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.command.GetFMO();
-	 * @group Indexer Members
+	 * @group リフレクターメンバー
 	 */
 	/*@__PURE__*/get command(): {
 		[command_name: string]: simple_command_caller
@@ -511,7 +557,7 @@ declare class jsstp_t {
 	 * xxx.then(v => jsstp.if_available()).then(() => {
 	 * 	//do something
 	 * });
-	 * @group PromiseLike Methods
+	 * @group Promiseのような関数
 	 */
 	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
