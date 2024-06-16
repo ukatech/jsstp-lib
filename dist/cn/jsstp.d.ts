@@ -195,14 +195,14 @@ type common_event_sstp_content_t = {
 	 * 如果省略内容，将为任何 ghost 播放相同的 Script 标头。  
 	 * 如果启用了 SSTP ghost激活选项，则此处指定的ghost将被临时激活。  
 	 * 由于js的语言限制，这里只能指定一个ghost。  
-	 * 需要使用多个 IfGhost 时，考虑使用{@link jsstp_t.row_send}发送SSTP消息
+	 * 需要使用多个 IfGhost 时，考虑使用{@link jsstp_t.raw_send}发送SSTP消息
 	 */
 	IfGhost: string | undefined
 	/**
 	 * Sakura脚本  
 	 * 如果 Script 标头不紧跟在 IfGhost 之后，则当它与 IfGhost 不对应时，它将是默认的处理脚本。  
 	 * 由于js的语言限制，这里只能指定一个脚本。  
-	 * 需要使用多个 Script 时，考虑使用{@link jsstp_t.row_send}发送SSTP消息
+	 * 需要使用多个 Script 时，考虑使用{@link jsstp_t.raw_send}发送SSTP消息
 	 */
 	Script: string | undefined
 	/**
@@ -211,8 +211,8 @@ type common_event_sstp_content_t = {
 	[key: string]: string | undefined
 };
 /**
+ * SSTP的已记录于文档的命令名称的枚举类型
  * @enum {string} documented_sstp_command_name_t
- * @description SSTP的已记录于文档的命令名称的枚举类型
  */
 declare enum documented_sstp_command_name_t {
 	/**
@@ -420,43 +420,43 @@ type common_give_sstp_content_t = {
  */
 declare class info_object<key_T = PropertyKey, value_T = any> {
 	/**
-	 * @description 获取所有key的数组
+	 * 获取所有key的数组
 	 */
 	/*@__PURE__*/get keys(): key_T[];
 	/**
-	 * @description 获取所有value的数组
+	 * 获取所有value的数组
 	 */
 	/*@__PURE__*/get values(): value_T[];
 	/**
-	 * @description 获取所有key-value对的数组
+	 * 获取所有key-value对的数组
 	 */
 	/*@__PURE__*/get entries(): [key_T, value_T][];
 	/**
-	 * @description 获取成员数量
+	 * 获取成员数量
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
-	 * @description 对每个key-value对执行某个函数
+	 * 对每个key-value对执行某个函数
 	 * @param {(value,key?)} func 要执行的函数，若返回值不为undefined，则会替换原value
 	 */
 	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T | undefined): void;
 	/**
-	 * @description 复制一个新的对象
+	 * 复制一个新的对象
 	 * @returns {info_object} 复制的对象
 	 */
 	/*@__PURE__*/get trivial_clone(): info_object<key_T, value_T>;
 	/**
-	 * @description 遍历自身和子对象并返回一个由遍历结果构成的一维数组
+	 * 遍历自身和子对象并返回一个由遍历结果构成的一维数组
 	 * @param {(dimensions[...],value):any} func 要执行的函数，返回值将被添加到数组中
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[], value_T]) => T): T[];
 	/**
-	 * @description 遍历自身并返回一个由遍历结果构成的一维数组
+	 * 遍历自身并返回一个由遍历结果构成的一维数组
 	 * @param {(value,key?):any} func 要执行的函数，返回值将被添加到数组中
 	 */
 	/*@__PURE__*/map<T>(func: (value: value_T, key?: key_T) => T): T[];
 	/**
-	 * @description 对自身按照数组追加元素
+	 * 对自身按照数组追加元素
 	 * @param {[undefined|[key_T,value_T]]} array 要追加的数组
 	 */
 	/*@__PURE__*/push(array: [undefined | [key_T, value_T]]): void;
@@ -575,57 +575,57 @@ declare class sstp_info_t extends base_sstp_info_t<string, string> {
  */
 declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
-	 * @description 正在运行的基础软件根文件夹的完整路径
+	 * 正在运行的基础软件根文件夹的完整路径
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description 主窗口的窗口句柄
+	 * 主窗口的窗口句柄
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description descript.txt的sakura.name
+	 * descript.txt的sakura.name
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description descript.txt的kero.name
+	 * descript.txt的kero.name
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description \0侧当前显示的surface ID
+	 * \0侧当前显示的surface ID
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description \1侧当前显示的surface ID
+	 * \1侧当前显示的surface ID
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description \1侧窗口的窗口句柄
+	 * \1侧窗口的窗口句柄
 	 * @example 67008
 	 */
 	kerohwnd: string;
 	/**
-	 * @description 当前使用的窗口句柄的逗号分隔列表
+	 * 当前使用的窗口句柄的逗号分隔列表
 	 * @example 918820,67008
 	 */
 	hwndlist: string;
 	/**
-	 * @description 正在运行的ghost的完整路径
+	 * 正在运行的ghost的完整路径
 	 * @example E:\ssp\ghost\Taromati2\
 	 */
 	ghostpath: string;
 	/**
-	 * @description 正在运行的ghost的descript.txt的name
+	 * 正在运行的ghost的descript.txt的name
 	 * @example Taromati2
 	 */
 	fullname: string;
 	/**
-	 * @description 正在运行的ghost的模块状态
+	 * 正在运行的ghost的模块状态
 	 * @example shiori:running,makoto-ghost:running
 	 */
 	modulestate: string;
@@ -649,30 +649,30 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
+	 * 获取具有指定属性且属性值为指定值的fmo的uuid
 	 * @param {String} name 要检查的属性名
 	 * @param {String} value 期望的属性值
 	 * @returns {String|undefined} 对应的uuid（如果有的话）
-	 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
 	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
+	 * 获取所有指定属性的值
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description 获取所有指定属性的值
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description 等价于`this.uuids.map(uuid => this[uuid][name])`
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description 获取所有uuid
+	 * 获取所有uuid
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description 判断fmo是否有效
+	 * 判断fmo是否有效
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
@@ -941,17 +941,20 @@ declare class jsstp_t {
 
 	/**
 	 * 在fecth时使用的header
+	 * @group 属性
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
 	 * 默认的报文内容
+	 * @group 属性
 	 */
 	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP协议版本号列表
+	 * @group 属性
 	 */
 	sstp_version_table: {
 		[method: string]: Number
@@ -959,11 +962,13 @@ declare class jsstp_t {
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 * @group 属性
 	 */
 	default_security_level: security_level_t;
 
 	/**
 	 * 自身代理
+	 * @group 属性
 	 */
 	proxy: jsstp_t;
 
@@ -1020,7 +1025,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} 返回一个promise
 	 * @group 基础送信函数
 	 */
-	row_send(info: any): Promise<String>;
+	raw_send(info: any): Promise<String>;
 	/**
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
@@ -1028,7 +1033,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} 返回一个promise
 	 * @group 基础送信函数
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String>;
+	custom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * 发送报文
 	 * @param {String} sstphead 报文头
@@ -1037,7 +1042,7 @@ declare class jsstp_t {
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 * @group 基础送信函数
 	 */
-	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+	custom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
 	/**
 	 * 获取指定方法的调用器

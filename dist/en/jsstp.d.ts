@@ -195,14 +195,14 @@ type common_event_sstp_content_t = {
 	* If the content is omitted, the same Script header will be played for any ghost.  
 	* If the SSTP ghost activation option is enabled, the ghost specified here will be temporarily booted.  
 	* Due to language limitations in js, only one ghost can be specified here.  
-	* When multiple IfGhosts are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	* When multiple IfGhosts are needed, consider using {@link jsstp_t.raw_send} to send SSTP messages
 	*/
 	IfGhost: string | undefined
 	/**
 	* Sakura script  
 	* If the Script header does not follow immediately after the IfGhost, it will be the default processing script when it does not correspond to the IfGhost.  
 	* Due to language limitations in js, only one script can be specified here.  
-	* When multiple Scripts are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	* When multiple Scripts are needed, consider using {@link jsstp_t.raw_send} to send SSTP messages
 	*/
 	Script: string | undefined
 	/**
@@ -211,8 +211,8 @@ type common_event_sstp_content_t = {
 	[key: string]: string | undefined
 };
 /**
+ * An enumeration of the documented SSTP commands.
  * @enum {string} documented_sstp_command_name_t
- * @description An enumeration of the documented SSTP commands.
  */
 declare enum documented_sstp_command_name_t {
 	/**
@@ -420,43 +420,43 @@ type common_give_sstp_content_t = {
  */
 declare class info_object<key_T = PropertyKey, value_T = any> {
 	/**
-	 * @description Get an array of all keys
+	 * Get an array of all keys
 	 */
 	/*@__PURE__*/get keys(): key_T[];
 	/**
-	 * @description Get an array of all values
+	 * Get an array of all values
 	 */
 	/*@__PURE__*/get values(): value_T[];
 	/**
-	 * @description Get an array of all key-value pairs.
+	 * Get an array of all key-value pairs.
 	 */
 	/*@__PURE__*/get entries(): [key_T, value_T][];
 	/**
-	 * @description Get the number of members
+	 * Get the number of members
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
-	 * @description Execute a function for each key-value pair.
+	 * Execute a function for each key-value pair.
 	 * @param {(value,key?)} func A function to be executed that replaces value if the return value is not undefined.
 	 */
 	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T | undefined): void;
 	/**
-	 * @description Copy a new object
+	 * Copy a new object
 	 * @returns {info_object} Copied object
 	 */
 	/*@__PURE__*/get trivial_clone(): info_object<key_T, value_T>;
 	/**
-	 * @description Traverses itself and its children and returns a one-dimensional array of traversal results.
+	 * Traverses itself and its children and returns a one-dimensional array of traversal results.
 	 * @param {(dimensions[...] ,value):any} func Function to execute, the return value will be added to the array.
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[], value_T]) => T): T[];
 	/**
-	 * @description Traverses itself and returns a one-dimensional array of traversal results.
+	 * Traverses itself and returns a one-dimensional array of traversal results.
 	 * @param {(value,key?):any} func Function to execute, the return value will be added to the array.
 	 */
 	/*@__PURE__*/map<T>(func: (value: value_T, key?: key_T) => T): T[];
 	/**
-	 * @description Append elements to itself as an array.
+	 * Append elements to itself as an array.
 	 * @param {[undefined|[key_T,value_T]]} array Array to append to.
 	 */
 	/*@__PURE__*/push(array: [undefined | [key_T, value_T]]): void;
@@ -576,57 +576,57 @@ declare class sstp_info_t extends base_sstp_info_t<string, string> {
  */
 declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
-	 * @description Full path to the root folder of the running baseware
+	 * Full path to the root folder of the running baseware
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description Window handle of the main window
+	 * Window handle of the main window
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description sakura.name in descript.txt
+	 * sakura.name in descript.txt
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description kero.name in descript.txt
+	 * kero.name in descript.txt
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description Surface ID currently displayed on the \0 side
+	 * Surface ID currently displayed on the \0 side
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description Surface ID currently displayed on the \1 side
+	 * Surface ID currently displayed on the \1 side
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description Window handle of the \1 side window
+	 * Window handle of the \1 side window
 	 * @example 67008
 	 */
 	kerohwnd: string;
 	/**
-	 * @description Comma-separated list of currently used window handles
+	 * Comma-separated list of currently used window handles
 	 * @example 918820,67008
 	 */
 	hwndlist: string;
 	/**
-	 * @description Full path to the running ghost
+	 * Full path to the running ghost
 	 * @example E:\ssp\ghost\Taromati2\
 	 */
 	ghostpath: string;
 	/**
-	 * @description Name in the running ghost's descript.txt
+	 * Name in the running ghost's descript.txt
 	 * @example Taromati2
 	 */
 	fullname: string;
 	/**
-	 * @description Module status of the running ghost
+	 * Module status of the running ghost
 	 * @example shiori:running,makoto-ghost:running
 	 */
 	modulestate: string;
@@ -650,30 +650,30 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
+	 * Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
 	 * @param {String} name The name of the property to be checked.
 	 * @param {String} value The value of the property to be checked.
 	 * @returns {String|undefined} corresponding uuid (if any)
-	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
 	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description Equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
+	 * Gets the values of all the specified properties
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description Gets the values of all the specified properties
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description Equivalent to `this.uuids.map(uuid => this[uuid][name])`
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description Get all uuids
+	 * Get all uuids
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description Determining whether fmo is valid
+	 * Determining whether fmo is valid
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
@@ -936,17 +936,20 @@ declare class jsstp_t {
 
 	/**
 	 * The header used in fecth.
+	 * @group Properties
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
 	 * Default Message Content
+	 * @group Properties
 	 */
 	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP protocol version number list
+	 * @group Properties
 	 */
 	sstp_version_table: {
 		[method: string]: Number
@@ -954,11 +957,13 @@ declare class jsstp_t {
 	/**
 	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 * @group Properties
 	 */
 	default_security_level: security_level_t;
 
 	/**
 	 * Self Proxy
+	 * @group Properties
 	 */
 	proxy: jsstp_t;
 
@@ -1015,7 +1020,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
-	row_send(info: any): Promise<String>;
+	raw_send(info: any): Promise<String>;
 	/**
 	 * Sends the message, but does not process the returned results
 	 * @param {String} sstphead The header of the message.
@@ -1023,7 +1028,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String>;
+	custom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * Send a custom message
 	 * @param {String} sstphead Message header

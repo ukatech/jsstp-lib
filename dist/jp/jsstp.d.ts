@@ -195,14 +195,14 @@ type common_event_sstp_content_t = {
 	 * 内容を省略すると、同じScriptヘッダーが任意のゴーストに対して再生されます。  
 	 * SSTPゴースト有効化オプションが有効になっている場合、ここで指定したゴーストは一時的に有効化されます。  
 	 * jsの言語制限のため、ここでは一つのゴーストしか指定できません。  
-	 * 複数のIfGhostが必要な場合は、{@link jsstp_t.row_send}を使ってSSTPメッセージを送信することを検討してください。
+	 * 複数のIfGhostが必要な場合は、{@link jsstp_t.raw_send}を使ってSSTPメッセージを送信することを検討してください。
 	 */
 	IfGhost: string | undefined
 	/**
 	 * サクラスクリプト  
 	 * ScriptヘッダーがIfGhostの直後に続かない場合、IfGhostに対応しない場合は、デフォルトの処理スクリプトになります。  
 	 * jsの言語制限のため、ここでは一つのスクリプトしか指定できません。  
-	 * 複数のScriptが必要な場合は、{@link jsstp_t.row_send}を使ってSSTPメッセージを送信することを検討してください。
+	 * 複数のScriptが必要な場合は、{@link jsstp_t.raw_send}を使ってSSTPメッセージを送信することを検討してください。
 	 */
 	Script: string | undefined
 	/**
@@ -211,8 +211,8 @@ type common_event_sstp_content_t = {
 	[key: string]: string | undefined
 };
 /**
+ * SSTPの文書化されたコマンドの列挙型
  * @enum {string} documented_sstp_command_name_t
- * @description SSTPの文書化されたコマンドの列挙型
  */
 declare enum documented_sstp_command_name_t {
 	/**
@@ -420,43 +420,43 @@ type common_give_sstp_content_t = {
  */
 declare class info_object<key_T = PropertyKey, value_T = any> {
 	/**
-	 * @description すべてのキーの配列を取得する
+	 * すべてのキーの配列を取得する
 	 */
 	/*@__PURE__*/get keys(): key_T[];
 	/**
-	 * @description すべての値の配列を取得する
+	 * すべての値の配列を取得する
 	 */
 	/*@__PURE__*/get values(): value_T[];
 	/**
-	 * @description すべてのキーと値のペアの配列を取得します。
+	 * すべてのキーと値のペアの配列を取得します。
 	 */
 	/*@__PURE__*/get entries(): [key_T, value_T][];
 	/**
-	 * @description 会員数の取得
+	 * 会員数の取得
 	 */
 	/*@__PURE__*/get length(): number;
 	/**
-	 * @description キーと値のペアごとに関数を実行する。
+	 * キーと値のペアごとに関数を実行する。
 	 * @param {(value,key?)} func 戻り値が未定義でない場合に、元の値を置き換えるために実行される関数。
 	 */
 	/*@__PURE__*/forEach(func: (value: value_T, key?: key_T) => value_T | undefined): void;
 	/**
-	 * @description 新しいオブジェクトをコピーします。
+	 * 新しいオブジェクトをコピーします。
 	 * @returns {info_object} コピーされたオブジェクト
 	 */
 	/*@__PURE__*/get trivial_clone(): info_object<key_T, value_T>;
 	/**
-	 * @description 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
+	 * 自分自身とその子をトラバースし、トラバース結果の1次元配列を返す。
 	 * @param {(dimensions[...] ,value):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/flat_map<T>(func: (...dimensions_with_value_in_last: [...key_T[], value_T]) => T): T[];
 	/**
-	 * @description 自分自身をトラバースし、トラバース結果の1次元配列を返す。
+	 * 自分自身をトラバースし、トラバース結果の1次元配列を返す。
 	 * @param {(value,key?):any} func 関数を実行し、戻り値を配列に追加します。
 	 */
 	/*@__PURE__*/map<T>(func: (value: value_T, key?: key_T) => T): T[];
 	/**
-	 * @description 要素を配列として自分自身に追加する。
+	 * 要素を配列として自分自身に追加する。
 	 * @param {[undefined|[key_T,value_T]]} array 追加する配列。
 	 */
 	/*@__PURE__*/push(array: [undefined | [key_T, value_T]]): void;
@@ -576,57 +576,57 @@ declare class sstp_info_t extends base_sstp_info_t<string, string> {
  */
 declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
-	 * @description 実行中のベースウェアのルートフォルダへのフルパス
+	 * 実行中のベースウェアのルートフォルダへのフルパス
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description \0側のウィンドウハンドル
+	 * \0側のウィンドウハンドル
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description descript.txtのsakura.name
+	 * descript.txtのsakura.name
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description descript.txtのkero.name
+	 * descript.txtのkero.name
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description \0側に表示されているサーフェスID
+	 * \0側に表示されているサーフェスID
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description \1側に表示されているサーフェスID
+	 * \1側に表示されているサーフェスID
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description \1側のウィンドウのハンドル
+	 * \1側のウィンドウのハンドル
 	 * @example 67008
 	 */
 	kerohwnd: string;
 	/**
-	 * @description 現在使用されているウィンドウハンドルのカンマ区切りリスト
+	 * 現在使用されているウィンドウハンドルのカンマ区切りリスト
 	 * @example 918820,67008
 	 */
 	hwndlist: string;
 	/**
-	 * @description 実行中のゴーストへのフルパス
+	 * 実行中のゴーストへのフルパス
 	 * @example E:\ssp\ghost\Taromati2\
 	 */
 	ghostpath: string;
 	/**
-	 * @description 実行中のゴーストのdescript.txtの名前
+	 * 実行中のゴーストのdescript.txtの名前
 	 * @example Taromati2
 	 */
 	fullname: string;
 	/**
-	 * @description 実行中のゴーストのモジュール状態
+	 * 実行中のゴーストのモジュール状態
 	 * @example shiori:running,makoto-ghost:running
 	 */
 	modulestate: string;
@@ -650,30 +650,30 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
+	 * 指定された属性を持ち、その属性の値が指定された値であるfmoのuuidを取得する。
 	 * @param {String} name チェックするプロパティの名前
 	 * @param {String} value 望ましい属性値
 	 * @returns {String|undefined} 対応するuuid（もしあれば）
-	 * @description 指定された属性を持ち、その属性の値が指定された値であるfmoのuuidを取得する。
 	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description `this.uuids.find(uuid => this[uuid][name] == value)`に相当する。
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
+	 * 指定されたすべてのプロパティの値を取得する
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description 指定されたすべてのプロパティの値を取得する
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description `this.uuids.map(uuid=>this[uuid][name])`に相当する。
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description すべてのuuidsを取得する
+	 * すべてのuuidsを取得する
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description fmoが有効かどうかの判断
+	 * fmoが有効かどうかの判断
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**
@@ -802,7 +802,7 @@ interface simple_list_command_caller extends simple_keyed_method_caller<list_inf
 }
 
 /**
- * link jsstp_t} よりも ghost_info 属性が1つ多い。  
+ * {@link jsstp_t} よりも ghost_info 属性が1つ多い。  
  * 特定のゴーストにメッセージを送るには {@link jsstp_t.default_info} の `ReceiverGhostHWnd` に依存する。
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
@@ -887,27 +887,27 @@ declare class jsstp_t {
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_send
 	*/
 	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_notify
 	*/
 	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_communicate
 	*/
 	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute
 	*/
 	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_give
 	*/
 	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
@@ -936,17 +936,20 @@ declare class jsstp_t {
 
 	/**
 	 * fecth のヘッダ
+	 * @group プロパティ
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
 	 * デフォルトのメッセージ内容
+	 * @group プロパティ
 	 */
 	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP プロトコルバージョン番号リスト
+	 * @group プロパティ
 	 */
 	sstp_version_table: {
 		[method: string]: Number
@@ -954,11 +957,13 @@ declare class jsstp_t {
 	/**
 	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external "です。
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 * @group プロパティ
 	 */
 	default_security_level: security_level_t;
 
 	/**
 	 * セルププロキシ
+	 * @group プロパティ
 	 */
 	proxy: jsstp_t;
 
@@ -1015,7 +1020,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} プロミスを返します。
 	 * @group 基本的なメッセージング関数
 	 */
-	row_send(info: any): Promise<String>;
+	raw_send(info: any): Promise<String>;
 	/**
 	 * メッセージを送信するが、返された結果は処理しない。  
 	 * メッセージのヘッダー。
@@ -1023,7 +1028,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} プロミスを返します。
 	 * @group 基本的なメッセージング関数
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String>;
+	custom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * @returns {Promise<sstp_info_t>} プロミスを返します。  
 	 * メッセージの送信
@@ -1032,7 +1037,7 @@ declare class jsstp_t {
 	 * @param {new (info: String)=> result_type} result_type 返される結果の型、デフォルトは sstp_info_t
 	 * @group 基本的なメッセージング関数
 	 */
-	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+	custom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
 	/**
 	 * 指定したメソッドの呼び出し元を取得する
@@ -1199,7 +1204,7 @@ declare class jsstp_t {
 	 * xxx.then(v => jsstp.if_available()).then(() => {
 	 * 	//do something
 	 * });
-	 * @group Promiseのような関数
+	 * @group Promiseライクなメソッド
 	 */
 	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
