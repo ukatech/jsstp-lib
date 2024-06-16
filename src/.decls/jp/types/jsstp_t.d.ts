@@ -390,7 +390,7 @@ declare class jsstp_t {
 	 * @param {new (info: String)=> result_type} result_type 返される結果の型、デフォルトは sstp_info_t
 	 * @group 基本的なメッセージング関数
 	 */
-	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+	custom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
 	/**
 	 * 指定したメソッドの呼び出し元を取得する

@@ -197,7 +197,7 @@ class jsstp_t {
 	 * @returns {Promise<result_type>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
-	costom_send(sstphead, info, result_type = sstp_info_t) {
+	custom_send(sstphead, info, result_type = sstp_info_t) {
 		return this.costom_text_send(sstphead, info).then(
 			result => new result_type(result)
 		)
@@ -217,7 +217,7 @@ class jsstp_t {
 	 */
 	/*@__PURE__*/get_caller_of_method(method_name, result_type = sstp_info_t, args_processor = info => info) {
 		let header = get_sstp_header(method_name, this.sstp_version_table)
-		return assign((...args) => this.costom_send(header, args_processor(...args), result_type), {
+		return assign((...args) => this.custom_send(header, args_processor(...args), result_type), {
 			get_raw: (...args) => this.costom_text_send(header, args_processor(...args)),
 			with_type: (result_type) => this.get_caller_of_method(method_name, result_type, args_processor),
 			bind_args_processor: (processor) => this.get_caller_of_method(method_name, result_type, processor)

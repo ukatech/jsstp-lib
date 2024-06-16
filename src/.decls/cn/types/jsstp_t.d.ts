@@ -388,7 +388,7 @@ declare class jsstp_t {
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
 	 * @group 基础送信函数
 	 */
-	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
+	custom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
 	/**
 	 * 获取指定方法的调用器
