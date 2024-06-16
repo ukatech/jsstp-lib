@@ -38,10 +38,10 @@ class fmo_info_t extends base_sstp_info_t {
 		}
 	}
 	/**
+	 * 获取具有指定属性且属性值为指定值的fmo的uuid
 	 * @param {String} name 要检查的属性名
 	 * @param {String} value 期望的属性值
 	 * @returns {String|undefined} 对应的uuid（如果有的话）
-	 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
 	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
@@ -50,9 +50,9 @@ class fmo_info_t extends base_sstp_info_t {
 		return this.uuids.find(uuid => this[uuid][name] == value)
 	}
 	/**
+	 * 获取所有指定属性的值
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description 获取所有指定属性的值
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description 等价于`this.uuids.map(uuid => this[uuid][name])`
@@ -61,11 +61,11 @@ class fmo_info_t extends base_sstp_info_t {
 		return this.uuids.map(uuid => this[uuid][name])
 	}
 	/**
-	 * @description 获取所有uuid
+	 * 获取所有uuid
 	 */
 	/*@__PURE__*/get uuids() { return this.keys }
 	/**
-	 * @description 判断fmo是否有效
+	 * 判断fmo是否有效
 	 */
 	/*@__PURE__*/get available() { return !!this.length }
 	/**

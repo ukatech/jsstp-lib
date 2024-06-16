@@ -211,8 +211,8 @@ type common_event_sstp_content_t = {
 	[key: string]: string | undefined
 };
 /**
+ * An enumeration of the documented SSTP commands.
  * @enum {string} documented_sstp_command_name_t
- * @description An enumeration of the documented SSTP commands.
  */
 declare enum documented_sstp_command_name_t {
 	/**

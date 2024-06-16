@@ -211,8 +211,8 @@ type common_event_sstp_content_t = {
 	[key: string]: string | undefined
 };
 /**
+ * SSTP的已记录于文档的命令名称的枚举类型
  * @enum {string} documented_sstp_command_name_t
- * @description SSTP的已记录于文档的命令名称的枚举类型
  */
 declare enum documented_sstp_command_name_t {
 	/**

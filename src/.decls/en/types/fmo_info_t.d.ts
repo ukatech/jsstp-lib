@@ -22,57 +22,57 @@ import type { info_object } from "./info_object.d.ts";
  */
 declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
-	 * @description Full path to the root folder of the running baseware
+	 * Full path to the root folder of the running baseware
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description Window handle of the main window
+	 * Window handle of the main window
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description sakura.name in descript.txt
+	 * sakura.name in descript.txt
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description kero.name in descript.txt
+	 * kero.name in descript.txt
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description Surface ID currently displayed on the \0 side
+	 * Surface ID currently displayed on the \0 side
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description Surface ID currently displayed on the \1 side
+	 * Surface ID currently displayed on the \1 side
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description Window handle of the \1 side window
+	 * Window handle of the \1 side window
 	 * @example 67008
 	 */
 	kerohwnd: string;
 	/**
-	 * @description Comma-separated list of currently used window handles
+	 * Comma-separated list of currently used window handles
 	 * @example 918820,67008
 	 */
 	hwndlist: string;
 	/**
-	 * @description Full path to the running ghost
+	 * Full path to the running ghost
 	 * @example E:\ssp\ghost\Taromati2\
 	 */
 	ghostpath: string;
 	/**
-	 * @description Name in the running ghost's descript.txt
+	 * Name in the running ghost's descript.txt
 	 * @example Taromati2
 	 */
 	fullname: string;
 	/**
-	 * @description Module status of the running ghost
+	 * Module status of the running ghost
 	 * @example shiori:running,makoto-ghost:running
 	 */
 	modulestate: string;
@@ -96,30 +96,30 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
+	 * Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
 	 * @param {String} name The name of the property to be checked.
 	 * @param {String} value The value of the property to be checked.
 	 * @returns {String|undefined} corresponding uuid (if any)
-	 * @description Get the uuid of the fmo with the specified attribute and the value of the attribute is the specified value
 	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description Equivalent to `this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
+	 * Gets the values of all the specified properties
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description Gets the values of all the specified properties
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description Equivalent to `this.uuids.map(uuid => this[uuid][name])`
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description Get all uuids
+	 * Get all uuids
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description Determining whether fmo is valid
+	 * Determining whether fmo is valid
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**

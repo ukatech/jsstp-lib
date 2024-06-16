@@ -22,57 +22,57 @@ import type { info_object } from "./info_object.d.ts";
  */
 declare interface single_fmo_info_t extends info_object<string, string> {
 	/**
-	 * @description 正在运行的基础软件根文件夹的完整路径
+	 * 正在运行的基础软件根文件夹的完整路径
 	 * @example E:\ssp\
 	 */
 	path: string;
 	/**
-	 * @description 主窗口的窗口句柄
+	 * 主窗口的窗口句柄
 	 * @example 918820
 	 */
 	hwnd: string;
 	/**
-	 * @description descript.txt的sakura.name
+	 * descript.txt的sakura.name
 	 * @example 橘花
 	 */
 	name: string;
 	/**
-	 * @description descript.txt的kero.name
+	 * descript.txt的kero.name
 	 * @example 斗和
 	 */
 	keroname: string;
 	/**
-	 * @description \0侧当前显示的surface ID
+	 * \0侧当前显示的surface ID
 	 * @example 0
 	 */
 	"sakura.surface": string;
 	/**
-	 * @description \1侧当前显示的surface ID
+	 * \1侧当前显示的surface ID
 	 * @example 10
 	 */
 	"kero.surface": string;
 	/**
-	 * @description \1侧窗口的窗口句柄
+	 * \1侧窗口的窗口句柄
 	 * @example 67008
 	 */
 	kerohwnd: string;
 	/**
-	 * @description 当前使用的窗口句柄的逗号分隔列表
+	 * 当前使用的窗口句柄的逗号分隔列表
 	 * @example 918820,67008
 	 */
 	hwndlist: string;
 	/**
-	 * @description 正在运行的ghost的完整路径
+	 * 正在运行的ghost的完整路径
 	 * @example E:\ssp\ghost\Taromati2\
 	 */
 	ghostpath: string;
 	/**
-	 * @description 正在运行的ghost的descript.txt的name
+	 * 正在运行的ghost的descript.txt的name
 	 * @example Taromati2
 	 */
 	fullname: string;
 	/**
-	 * @description 正在运行的ghost的模块状态
+	 * 正在运行的ghost的模块状态
 	 * @example shiori:running,makoto-ghost:running
 	 */
 	modulestate: string;
@@ -96,30 +96,30 @@ declare class fmo_info_t extends base_sstp_info_t<string, single_fmo_info_t> {
 	 */
 	/*@__PURE__*/constructor(fmo_text: String);
 	/**
+	 * 获取具有指定属性且属性值为指定值的fmo的uuid
 	 * @param {String} name 要检查的属性名
 	 * @param {String} value 期望的属性值
 	 * @returns {String|undefined} 对应的uuid（如果有的话）
-	 * @description 获取具有指定属性且属性值为指定值的fmo的uuid
 	 * @example
 	 * let kikka_uuid = fmo_info.get_uuid_by("name", "橘花");
 	 * @description 等价于`this.uuids.find(uuid => this[uuid][name] == value)`
 	 */
 	/*@__PURE__*/get_uuid_by(name: String, value: String): String | undefined;
 	/**
+	 * 获取所有指定属性的值
 	 * @param {String} name
 	 * @returns {Array<String>}
-	 * @description 获取所有指定属性的值
 	 * @example
 	 * let ghost_list = fmo_info.get_list_of("name");
 	 * @description 等价于`this.uuids.map(uuid => this[uuid][name])`
 	 */
 	/*@__PURE__*/get_list_of(name: String): Array<String>;
 	/**
-	 * @description 获取所有uuid
+	 * 获取所有uuid
 	 */
 	/*@__PURE__*/get uuids(): Array<String>;
 	/**
-	 * @description 判断fmo是否有效
+	 * 判断fmo是否有效
 	 */
 	/*@__PURE__*/get available(): Boolean;
 	/**

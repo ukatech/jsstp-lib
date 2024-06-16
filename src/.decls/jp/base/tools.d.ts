@@ -211,8 +211,8 @@ type common_event_sstp_content_t = {
 	[key: string]: string | undefined
 };
 /**
+ * SSTPの文書化されたコマンドの列挙型
  * @enum {string} documented_sstp_command_name_t
- * @description SSTPの文書化されたコマンドの列挙型
  */
 declare enum documented_sstp_command_name_t {
 	/**
