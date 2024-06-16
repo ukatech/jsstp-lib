@@ -168,7 +168,7 @@ class jsstp_t {
 	 * @returns {Promise<String>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
-	async row_send(info) {
+	async raw_send(info) {
 		//使用fetch发送数据
 		let response = await fetch(this.#host, {
 			method: "POST",
@@ -186,8 +186,8 @@ class jsstp_t {
 	 * @returns {Promise<String>} 返回一个promise
 	 * @group Basic Send Methods
 	 */
-	costom_text_send(sstphead, info) {
-		return this.row_send((new base_sstp_info_t(sstphead, { ...this.default_info, ...info })).text_content)
+	custom_text_send(sstphead, info) {
+		return this.raw_send((new base_sstp_info_t(sstphead, { ...this.default_info, ...info })).text_content)
 	}
 	/**
 	 * 发送报文
@@ -198,7 +198,7 @@ class jsstp_t {
 	 * @group Basic Send Methods
 	 */
 	custom_send(sstphead, info, result_type = sstp_info_t) {
-		return this.costom_text_send(sstphead, info).then(
+		return this.custom_text_send(sstphead, info).then(
 			result => new result_type(result)
 		)
 	}
@@ -218,7 +218,7 @@ class jsstp_t {
 	/*@__PURE__*/get_caller_of_method(method_name, result_type = sstp_info_t, args_processor = info => info) {
 		let header = get_sstp_header(method_name, this.sstp_version_table)
 		return assign((...args) => this.custom_send(header, args_processor(...args), result_type), {
-			get_raw: (...args) => this.costom_text_send(header, args_processor(...args)),
+			get_raw: (...args) => this.custom_text_send(header, args_processor(...args)),
 			with_type: (result_type) => this.get_caller_of_method(method_name, result_type, args_processor),
 			bind_args_processor: (processor) => this.get_caller_of_method(method_name, result_type, processor)
 		})

@@ -195,14 +195,14 @@ type common_event_sstp_content_t = {
 	 * 如果省略内容，将为任何 ghost 播放相同的 Script 标头。  
 	 * 如果启用了 SSTP ghost激活选项，则此处指定的ghost将被临时激活。  
 	 * 由于js的语言限制，这里只能指定一个ghost。  
-	 * 需要使用多个 IfGhost 时，考虑使用{@link jsstp_t.row_send}发送SSTP消息
+	 * 需要使用多个 IfGhost 时，考虑使用{@link jsstp_t.raw_send}发送SSTP消息
 	 */
 	IfGhost: string | undefined
 	/**
 	 * Sakura脚本  
 	 * 如果 Script 标头不紧跟在 IfGhost 之后，则当它与 IfGhost 不对应时，它将是默认的处理脚本。  
 	 * 由于js的语言限制，这里只能指定一个脚本。  
-	 * 需要使用多个 Script 时，考虑使用{@link jsstp_t.row_send}发送SSTP消息
+	 * 需要使用多个 Script 时，考虑使用{@link jsstp_t.raw_send}发送SSTP消息
 	 */
 	Script: string | undefined
 	/**

@@ -195,14 +195,14 @@ type common_event_sstp_content_t = {
 	 * 内容を省略すると、同じScriptヘッダーが任意のゴーストに対して再生されます。  
 	 * SSTPゴースト有効化オプションが有効になっている場合、ここで指定したゴーストは一時的に有効化されます。  
 	 * jsの言語制限のため、ここでは一つのゴーストしか指定できません。  
-	 * 複数のIfGhostが必要な場合は、{@link jsstp_t.row_send}を使ってSSTPメッセージを送信することを検討してください。
+	 * 複数のIfGhostが必要な場合は、{@link jsstp_t.raw_send}を使ってSSTPメッセージを送信することを検討してください。
 	 */
 	IfGhost: string | undefined
 	/**
 	 * サクラスクリプト  
 	 * ScriptヘッダーがIfGhostの直後に続かない場合、IfGhostに対応しない場合は、デフォルトの処理スクリプトになります。  
 	 * jsの言語制限のため、ここでは一つのスクリプトしか指定できません。  
-	 * 複数のScriptが必要な場合は、{@link jsstp_t.row_send}を使ってSSTPメッセージを送信することを検討してください。
+	 * 複数のScriptが必要な場合は、{@link jsstp_t.raw_send}を使ってSSTPメッセージを送信することを検討してください。
 	 */
 	Script: string | undefined
 	/**

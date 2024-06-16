@@ -377,7 +377,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
-	row_send(info: any): Promise<String>;
+	raw_send(info: any): Promise<String>;
 	/**
 	 * Sends the message, but does not process the returned results
 	 * @param {String} sstphead The header of the message.
@@ -385,7 +385,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} Returns a promise.
 	 * @group Basic Send Methods
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String>;
+	custom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * Send a custom message
 	 * @param {String} sstphead Message header

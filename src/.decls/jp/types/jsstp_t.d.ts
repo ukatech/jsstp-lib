@@ -378,7 +378,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} プロミスを返します。
 	 * @group 基本的なメッセージング関数
 	 */
-	row_send(info: any): Promise<String>;
+	raw_send(info: any): Promise<String>;
 	/**
 	 * メッセージを送信するが、返された結果は処理しない。  
 	 * メッセージのヘッダー。
@@ -386,7 +386,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} プロミスを返します。
 	 * @group 基本的なメッセージング関数
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String>;
+	custom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * @returns {Promise<sstp_info_t>} プロミスを返します。  
 	 * メッセージの送信

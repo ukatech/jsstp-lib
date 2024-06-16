@@ -195,14 +195,14 @@ type common_event_sstp_content_t = {
 	* If the content is omitted, the same Script header will be played for any ghost.  
 	* If the SSTP ghost activation option is enabled, the ghost specified here will be temporarily booted.  
 	* Due to language limitations in js, only one ghost can be specified here.  
-	* When multiple IfGhosts are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	* When multiple IfGhosts are needed, consider using {@link jsstp_t.raw_send} to send SSTP messages
 	*/
 	IfGhost: string | undefined
 	/**
 	* Sakura script  
 	* If the Script header does not follow immediately after the IfGhost, it will be the default processing script when it does not correspond to the IfGhost.  
 	* Due to language limitations in js, only one script can be specified here.  
-	* When multiple Scripts are needed, consider using {@link jsstp_t.row_send} to send SSTP messages
+	* When multiple Scripts are needed, consider using {@link jsstp_t.raw_send} to send SSTP messages
 	*/
 	Script: string | undefined
 	/**

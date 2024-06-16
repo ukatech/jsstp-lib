@@ -376,7 +376,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} 返回一个promise
 	 * @group 基础送信函数
 	 */
-	row_send(info: any): Promise<String>;
+	raw_send(info: any): Promise<String>;
 	/**
 	 * 发送报文，但是不对返回结果进行处理
 	 * @param {String} sstphead 报文头
@@ -384,7 +384,7 @@ declare class jsstp_t {
 	 * @returns {Promise<String>} 返回一个promise
 	 * @group 基础送信函数
 	 */
-	costom_text_send(sstphead: String, info: Object): Promise<String>;
+	custom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
 	 * 发送报文
 	 * @param {String} sstphead 报文头
