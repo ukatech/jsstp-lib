@@ -159,7 +159,7 @@ interface simple_list_command_caller extends simple_keyed_method_caller<list_inf
 }
 
 /**
- * link jsstp_t} よりも ghost_info 属性が1つ多い。  
+ * {@link jsstp_t} よりも ghost_info 属性が1つ多い。  
  * 特定のゴーストにメッセージを送るには {@link jsstp_t.default_info} の `ReceiverGhostHWnd` に依存する。
  * @see {@link jsstp_with_ghost_info_t.ghost_info}
  */
@@ -245,27 +245,27 @@ declare class jsstp_t {
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_send
 	*/
 	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_notify
 	*/
 	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_communicate
 	*/
 	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute
 	*/
 	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
-	 * @group SSTP基本通信タイプ
+	 * @group SSTP基本メソッド
 	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_give
 	*/
 	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
@@ -557,7 +557,7 @@ declare class jsstp_t {
 	 * xxx.then(v => jsstp.if_available()).then(() => {
 	 * 	//do something
 	 * });
-	 * @group Promiseのような関数
+	 * @group Promiseライクなメソッド
 	 */
 	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
