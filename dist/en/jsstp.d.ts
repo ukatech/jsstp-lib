@@ -821,48 +821,94 @@ interface jsstp_with_ghost_info_t extends jsstp_t {
  */
 declare class jsstp_t {
 	/**
+	 * jsstp object
+	 * @see {@link jsstp}
+	 * @example
+	 * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
 	 * @group Types
+	 * @see {@link jsstp_t}
 	 */
 	type: typeof jsstp_t;
 	/**
+	 * Base sstp message class
+	 * @example
+	 * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
 	 * @group Types
+	 * @see {@link base_sstp_info_t}
 	 */
 	base_sstp_info_t: typeof base_sstp_info_t;
 	/**
+	 * sstp message class
+	 * @example
+	 * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTP Client\r\nScript: \\h\\s0Testing!\\u\\s[10]It's a test.\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
 	 * @group Types
+	 * @see {@link sstp_info_t}
 	 */
 	sstp_info_t: typeof sstp_info_t;
 	/**
+	 * fmo message class
+	 * @example
+	 * let fmo = jsstp.get_fmo_infos();
+	 * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+	 * if(kikka_uuid)
+	 * 	console.log(fmo[kikka_uuid].ghostpath);
+	 * @see {@link jsstp_t.get_fmo_infos}
+	 * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
 	 * @group Types
+	 * @see {@link fmo_info_t}
 	 */
 	fmo_info_t: typeof fmo_info_t;
 	/**
+	 * List message object
+	 * @example
+	 * let list = jsstp.GetNames();
+	 * for(let name of list)
+	 * 	console.log(name);
 	 * @group Types
+	 * @see {@link list_info_t}
 	 */
 	list_info_t: typeof list_info_t;
 	/**
+	 * ghost event finder
+	 * @example
+	 * let ghost_events_queryer = jsstp.new_event_queryer();
+	 * if(!ghost_events_queryer.available)
+	 * 	console.log("Current ghost does not support event queries");
+	 * if(ghost_events_queryer.has_event("OnBoom"))
+	 * 	jsstp.OnBoom();
+	 * @see {@link jsstp_t.new_event_queryer}
 	 * @group Types
+	 * @see {@link ghost_events_queryer_t}
 	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
 	 * @group SSTP Base Methods
+	 * @see https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_send
 	*/
 	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
+	 * @see https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_notify
 	*/
 	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
+	 * @see https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_communicate
 	*/
 	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
+	 * @see https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_execute
 	*/
 	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
 	 * @group SSTP Base Methods
+	 * @see https://ukagakadreamteam.github.io/ukadoc/manual/spec_sstp.html#method_give
 	*/
 	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 

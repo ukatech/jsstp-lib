@@ -723,7 +723,7 @@ declare class list_info_t extends base_sstp_info_t<number, string> {
 
 /**
  * sstp方法调用器
- * @group callers
+ * @group 调用器
  */
 interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 	(...args: Rest): Promise<T>;
@@ -734,7 +734,7 @@ interface method_caller<T = sstp_info_t, Rest extends any[] = [Object]> {
 
 /**
  * 可以通过成员访问扩充指定key值的拓展调用器
- * @group callers
+ * @group 调用器
  */
 interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object]> extends method_caller<T, Rest> {
 	/**
@@ -744,7 +744,7 @@ interface base_keyed_method_caller<T = sstp_info_t, Rest extends any[] = [Object
 }
 /**
  * 对调用参数进行简易处理的可扩展调用器
- * @group callers
+ * @group 调用器
  */
 interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<result_T, any[]> {
 	/**
@@ -763,7 +763,7 @@ interface simple_keyed_method_caller<result_T> extends base_keyed_method_caller<
  * 	"Reference0": 123,
  * 	"Reference1": "abc"
  * });
- * @group callers
+ * @group 调用器
  */
 interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
 	/**
@@ -781,7 +781,7 @@ interface simple_event_caller extends simple_keyed_method_caller<sstp_info_t> {
  * 	"Reference0": "abc",
  * 	"Reference1": "def"
  * });
- * @group callers
+ * @group 调用器
  */
 interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> {
 	/**
@@ -797,7 +797,7 @@ interface simple_command_caller extends simple_keyed_method_caller<sstp_info_t> 
  * let data = await jsstp.SEND({
  * 	"Command": "GetNames"
  * });
- * @group callers
+ * @group 调用器
  */
 interface simple_list_command_caller extends simple_keyed_method_caller<list_info_t> {
 	/**
@@ -826,68 +826,114 @@ interface jsstp_with_ghost_info_t extends jsstp_t {
  */
 declare class jsstp_t {
 	/**
-	 * @group Types
+	 * jsstp对象
+	 * @see {@link jsstp}
+	 * @example
+	 * let my_jsstp=new jsstp.type("my_coooool_jsstp",sstp_server_url);
+	 * @group 类型
+	 * @see {@link jsstp_t}
 	 */
 	type: typeof jsstp_t;
 	/**
-	 * @group Types
+	 * 基础sstp报文类
+	 * @example
+	 * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
+	 * @group 类型
+	 * @see {@link base_sstp_info_t}
 	 */
 	base_sstp_info_t: typeof base_sstp_info_t;
 	/**
-	 * @group Types
+	 * sstp报文类
+	 * @example
+	 * let info = new jsstp.sstp_info_t("SSTP/1.4 200 OK\r\nCharset: UTF-8\r\nSender: SSTPクライアント\r\nScript: \\h\\s0テストー。\\u\\s[10]テストやな。\r\nOption: notranslate\r\n\r\n");
+	 * console.log(info.head);//SSTP/1.4 200 OK
+	 * console.log(info.Option);//notranslate
+	 * @group 类型
+	 * @see {@link sstp_info_t}
 	 */
 	sstp_info_t: typeof sstp_info_t;
 	/**
-	 * @group Types
+	 * fmo报文类
+	 * @example
+	 * let fmo = jsstp.get_fmo_infos();
+	 * let kikka_uuid = fmo.get_uuid_by("name", "橘花");
+	 * if(kikka_uuid)
+	 * 	console.log(fmo[kikka_uuid].ghostpath);
+	 * @see {@link jsstp_t.get_fmo_infos}
+	 * @see {@link https://ssp.shillest.net/ukadoc/manual/spec_fmo_mutex.html}
+	 * @group 类型
+	 * @see {@link fmo_info_t}
 	 */
 	fmo_info_t: typeof fmo_info_t;
 	/**
-	 * @group Types
+	 * list报文对象
+	 * @example
+	 * let list = jsstp.GetNames();
+	 * for(let name of list)
+	 * 	console.log(name);
+	 * @group 类型
+	 * @see {@link list_info_t}
 	 */
 	list_info_t: typeof list_info_t;
 	/**
-	 * @group Types
+	 * ghost事件查询器
+	 * @example
+	 * let ghost_events_queryer = jsstp.new_event_queryer();
+	 * if(!ghost_events_queryer.available)
+	 * 	console.log("当前ghost不支持事件查询");
+	 * if(ghost_events_queryer.has_event("OnBoom"))
+	 * 	jsstp.OnBoom();
+	 * @see {@link jsstp_t.new_event_queryer}
+	 * @group 类型
+	 * @see {@link ghost_events_queryer_t}
 	 */
 	ghost_events_queryer_t: typeof ghost_events_queryer_t;
 
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基础通讯类型
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_send
 	*/
 	SEND: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基础通讯类型
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_notify
 	*/
 	NOTIFY: method_caller<sstp_info_t, [common_event_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基础通讯类型
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_communicate
 	*/
 	COMMUNICATE: method_caller<sstp_info_t, [common_communicate_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基础通讯类型
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_execute
 	*/
 	EXECUTE: method_caller<sstp_info_t, [common_execute_sstp_content_t]>;
 	/**
-	 * @group SSTP Base Methods
+	 * @group SSTP基础通讯类型
+	 * @see https://ssp.shillest.net/ukadoc/manual/spec_sstp.html#method_give
 	*/
 	GIVE: method_caller<sstp_info_t, [common_give_sstp_content_t]>;
 
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflections
+	 * @group 访问反射
 	 * @example
 	 * let data=await jsstp.OnTest(123,"abc");
 	 */
 	[key: `On${string}`]: simple_event_caller;
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflections
+	 * @group 访问反射
 	 * @example
 	 * let data=await jsstp.GetNames();
 	 */
 	[key: `Get${string}`]: simple_list_command_caller;
 	/**
 	 * 匹配事件名称以产生简易调用器
-	 * @group Index reflections
+	 * @group 访问反射
 	 * @example
 	 * let data=await jsstp.SetCookie("abc","def");
 	 */
@@ -931,21 +977,21 @@ declare class jsstp_t {
 	/**
 	 * 修改host
 	 * @param {string} host
-	 * @group Properties
+	 * @group 属性
 	 */
 	set host(host: string);
 	/*@__PURE__*/get host(): string;
 	/**
 	 * 修改sendername
 	 * @param {String} sender_name
-	 * @group Properties
+	 * @group 属性
 	 */
 	set sendername(sender_name: String);
 	/*@__PURE__*/get sendername(): String;
 
 	/**
 	 * 复制一个新的jsstp对象
-	 * @group Clone Methods
+	 * @group 复制函数
 	 */
 	get clone(): jsstp_t;
 
@@ -953,7 +999,7 @@ declare class jsstp_t {
 	 * 复制一个新的jsstp对象对于给定的fmo_info
 	 * @param fmo_info 目标ghost的fmo_info
 	 * @returns {jsstp_t} 新的指向目标ghost的jsstp对象
-	 * @group Clone Methods
+	 * @group 复制函数
 	 */
 	by_fmo_info(fmo_info: single_fmo_info_t): jsstp_with_ghost_info_t;
 
@@ -972,7 +1018,7 @@ declare class jsstp_t {
 	 * 以文本发送报文并以文本接收返信
 	 * @param {any} info 报文体（文本）
 	 * @returns {Promise<String>} 返回一个promise
-	 * @group Basic Send Methods
+	 * @group 基础送信函数
 	 */
 	row_send(info: any): Promise<String>;
 	/**
@@ -980,7 +1026,7 @@ declare class jsstp_t {
 	 * @param {String} sstphead 报文头
 	 * @param {Object} info 报文体
 	 * @returns {Promise<String>} 返回一个promise
-	 * @group Basic Send Methods
+	 * @group 基础送信函数
 	 */
 	costom_text_send(sstphead: String, info: Object): Promise<String>;
 	/**
@@ -989,7 +1035,7 @@ declare class jsstp_t {
 	 * @param {Object} info 报文体
 	 * @param {new (info: String)=> result_type} result_type 返回结果的类型，默认为sstp_info_t
 	 * @returns {Promise<sstp_info_t>} 返回一个promise
-	 * @group Basic Send Methods
+	 * @group 基础送信函数
 	 */
 	costom_send<T>(sstphead: String, info: Object, result_type: new (str: string) => T): Promise<T>;
 
@@ -999,7 +1045,7 @@ declare class jsstp_t {
 	 * @param {new (info: String) => result_type} [result_type=sstp_info_t] 返回结果的类型，默认为sstp_info_t
 	 * @param {Function} [args_processor=info => info] 参数处理器，默认直接返回输入参数
 	 * @returns {method_caller} 调用器
-	 * @group Caller Methods
+	 * @group 调用器生成函数
 	 */
 	/*@__PURE__*/get_caller_of_method<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		method_name: String, result_type?: new (str: string) => T, args_processor?: (...args: Rest) => Res
@@ -1011,7 +1057,7 @@ declare class jsstp_t {
 	 * @param {Function} method_caller 方法调用器
 	 * @param {Function} args_processor 参数处理器
 	 * @returns {Proxy<value>} 调用器
-	 * @group Caller Methods
+	 * @group 调用器生成函数
 	 */
 	/*@__PURE__*/get_caller_of_key<T = sstp_info_t, Rest extends any[] = [Object], Res = Object>(
 		key_name: String, value_name: String,
@@ -1025,7 +1071,7 @@ declare class jsstp_t {
 	 * @param {String} value_name 键值
 	 * @param {Function} method_caller 方法调用器
 	 * @returns {Proxy<value>} 调用器
-	 * @group Caller Methods
+	 * @group 调用器生成函数
 	 */
 	/*@__PURE__*/get_simple_caller_of_key<T = sstp_info_t>(
 		key_name: String, value_name: String,
@@ -1036,7 +1082,7 @@ declare class jsstp_t {
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.event.OnTest("test");
-	 * @group Indexer Members
+	 * @group 反射器成员
 	 */
 	/*@__PURE__*/get event(): {
 		[event_name: string]: simple_event_caller
@@ -1046,7 +1092,7 @@ declare class jsstp_t {
 	 * @returns {Proxy}
 	 * @example
 	 * jsstp.command.GetFMO();
-	 * @group Indexer Members
+	 * @group 反射器成员
 	 */
 	/*@__PURE__*/get command(): {
 		[command_name: string]: simple_command_caller
@@ -1158,7 +1204,7 @@ declare class jsstp_t {
 	 * xxx.then(v => jsstp.if_available()).then(() => {
 	 * 	//do something
 	 * });
-	 * @group PromiseLike Methods
+	 * @group 类Promise函数
 	 */
 	/*@__PURE__*/if_available<result_T = undefined>(resolve: (value?: jsstp_t) => result_T): Promise<result_T>;
 	/**
