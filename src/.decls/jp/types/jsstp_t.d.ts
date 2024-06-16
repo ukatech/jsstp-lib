@@ -294,17 +294,20 @@ declare class jsstp_t {
 
 	/**
 	 * fecth のヘッダ
+	 * @group プロパティ
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
 	 * デフォルトのメッセージ内容
+	 * @group プロパティ
 	 */
 	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP プロトコルバージョン番号リスト
+	 * @group プロパティ
 	 */
 	sstp_version_table: {
 		[method: string]: Number
@@ -312,11 +315,13 @@ declare class jsstp_t {
 	/**
 	 * デフォルトのセキュリティレベルを問い合わせます。nodejsでは "local"、ブラウザでは "external "です。
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 * @group プロパティ
 	 */
 	default_security_level: security_level_t;
 
 	/**
 	 * セルププロキシ
+	 * @group プロパティ
 	 */
 	proxy: jsstp_t;
 

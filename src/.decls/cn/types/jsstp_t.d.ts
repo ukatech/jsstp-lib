@@ -292,17 +292,20 @@ declare class jsstp_t {
 
 	/**
 	 * 在fecth时使用的header
+	 * @group 属性
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
 	 * 默认的报文内容
+	 * @group 属性
 	 */
 	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP协议版本号列表
+	 * @group 属性
 	 */
 	sstp_version_table: {
 		[method: string]: Number
@@ -310,11 +313,13 @@ declare class jsstp_t {
 	/**
 	 * 查询默认的安全等级，在nodejs中为"local"，在浏览器中为"external"
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 * @group 属性
 	 */
 	default_security_level: security_level_t;
 
 	/**
 	 * 自身代理
+	 * @group 属性
 	 */
 	proxy: jsstp_t;
 

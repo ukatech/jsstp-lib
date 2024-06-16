@@ -293,17 +293,20 @@ declare class jsstp_t {
 
 	/**
 	 * The header used in fecth.
+	 * @group Properties
 	 */
 	RequestHeader: {
 		[key: string]: string,
 	};
 	/**
 	 * Default Message Content
+	 * @group Properties
 	 */
 	default_info: base_sstp_content_t;
 
 	/**
 	 * SSTP protocol version number list
+	 * @group Properties
 	 */
 	sstp_version_table: {
 		[method: string]: Number
@@ -311,11 +314,13 @@ declare class jsstp_t {
 	/**
 	 * Queries the default security level, which is "local" in nodejs and "external" in browsers.
 	 * @see {@link https://www.google.com/search?q=site%3Assp.shillest.net%2Fukadoc%2F+SecurityLevel}
+	 * @group Properties
 	 */
 	default_security_level: security_level_t;
 
 	/**
 	 * Self Proxy
+	 * @group Properties
 	 */
 	proxy: jsstp_t;
 
