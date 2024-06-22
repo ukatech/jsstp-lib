@@ -92,7 +92,7 @@
 		"rollup": "^4.18.0",
 		"rollup-plugin-dts": "^6.1.1",
 		"terser": "^5.31.1",
-		"typedoc": "^0.26.0-beta.4",
+		"typedoc": "^0.26.0",
 		"typedoc-plugin-missing-exports": "^2.3.0",
 		"uglify-js": "^3.18.0"
 	},

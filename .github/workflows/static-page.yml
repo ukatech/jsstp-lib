@@ -10,6 +10,7 @@ on:
       - "dist/**"
       - "docs/**"
       - ".github/pages/**"
+      - "package.json"
       - "README.md"
       # 省略掉src目录，因为src目录下的文件会触发build，进而更新dist目录
 
